@@ -58,7 +58,7 @@ order = must(order, '<p class="ep-eyebrow">Pedido en 1 minuto</p>', '<p class="e
 order = must(order, '<h2 class="ep-h2" id="ep-h-order">Elige tu plan y <em>pagas al recibir</em></h2>',
              '<h2 class="ep-h2" id="ep-h-order">Completa tu pedido y <em>pagas al recibir</em></h2>')
 order = re.sub(r'<p class="ep-lead"[^>]*>.*?</p>', '<p class="ep-lead" style="margin-inline:auto">Revisa tu plan, déjanos tus datos y te lo enviamos en bolsa negra sellada. Te confirmamos por WhatsApp antes de despacharlo.</p>', order, count=1, flags=re.S)
-order_block = '<div class="ep-root" data-ep-theme="claro">\n' + order + '\n</div>'
+order_block = '<div class="ep-root" data-ep-theme="negro">\n' + order + '\n</div>'
 
 head_styles = re.sub(r'<style id="shopify-accelerated-checkout-cart">.*?</style>', '', d['headStyles'], flags=re.S)
 base_css = '<link href="https://losgomosos.lat/cdn/shop/t/3/assets/base.css?v=101470124488811828791792019403" rel="stylesheet" type="text/css" media="all">'
@@ -68,7 +68,7 @@ config = (PDP / 'config.js').read_text()
 app = (PDP / 'app.js').read_text()
 overrides = """window.EP_CONFIG.checkout.mode = 'inline';
 window.EP_CONFIG.checkout.funnelLite = true;
-window.EP_CONFIG.theme = 'claro';
+window.EP_CONFIG.theme = 'negro';
 window.EP_CONFIG.tracking.fireStandardEvents = true;
 """
 pixel = f"""<script>

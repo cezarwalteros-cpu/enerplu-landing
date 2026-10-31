@@ -51,9 +51,9 @@ items = item * 3 + '<span class="epb-dup" style="display:contents">' + item * 3 
 barra = (ROOT / 'fuente' / 'barra-oferta.html').read_text().replace('{{PCT}}', str(PCT)).replace('{{ITEMS}}', items)
 
 # Secciones de Shopify que quedan (índices de fuente/shopify.json):
-#   0 embudo · BARRA DE OFERTA (en lugar de 1, la franja) · 2 hero · 5 jarabes · 6 matriz sublingual · 7 decisión · 8 espacio · OFERTA+FORMULARIO · 10 reseñas con fotos · 11 legal
-# Se quitan: 3 (selector viejo con Releasit), 4 (testimonios de WhatsApp), 9 (reseñas sin fotos).
-ORDER = [0, 'barra', 2, 5, 6, 7, 8, 'oferta', 10, 11]
+#   0 embudo · BARRA DE OFERTA (en lugar de 1, la franja) · 2 hero · 5 jarabes · 6 matriz sublingual · 7 decisión · OFERTA+FORMULARIO · 10 reseñas con fotos · 11 legal
+# Se quitan: 3 (selector viejo con Releasit), 4 (testimonios de WhatsApp), 8 (franja blanca vacía), 9 (reseñas sin fotos).
+ORDER = [0, 'barra', 2, 5, 6, 7, 'oferta', 10, 11]
 head_styles = re.sub(r'<style id="shopify-accelerated-checkout-cart">.*?</style>', '', d['headStyles'], flags=re.S)
 base_css = '<link href="https://losgomosos.lat/cdn/shop/t/3/assets/base.css?v=101470124488811828791792019403" rel="stylesheet" type="text/css" media="all">'
 ep_css = (PDP / 'styles.css').read_text()

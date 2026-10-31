@@ -1496,6 +1496,9 @@ display: none;
 .ep-root .eph-guarantee { width: 88px; height: auto; margin: 6px auto 0; display: block; }
 .ep-root .eph-trust { text-align: center; font-size: 12.5px; color: #cfcfcf; border: 1px solid #2a2a2a; border-radius: 10px; padding: 8px 10px; }
 
+/* barra fija de la landing: no aparece mientras la oferta o el formulario están en pantalla */
+html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer-events: none; }
+
 </style>
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -5836,6 +5839,14 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       '</label>';
     }).join('');
   };
+
+  /* La barra fija ("VER OFERTAS") se oculta mientras la oferta o el formulario están en pantalla */
+  var order = document.getElementById("ep-order");
+  if (order && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (en) {
+      document.documentElement.classList.toggle("ep-in-order", en[0].isIntersecting);
+    }, { rootMargin: "0px 0px -15% 0px" }).observe(order);
+  }
 
   /* Botones de la landing ("Quiero…", "Ver ofertas", "Comprar"…) → bajan a las ofertas */
   var CTA = /quiero|ver ofertas|ofertas|elige|elegir|comprar|pedir|ordenar/i;

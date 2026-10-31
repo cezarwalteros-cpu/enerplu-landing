@@ -34,6 +34,14 @@
     }).join('');
   };
 
+  /* La barra fija ("VER OFERTAS") se oculta mientras la oferta o el formulario están en pantalla */
+  var order = document.getElementById("ep-order");
+  if (order && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (en) {
+      document.documentElement.classList.toggle("ep-in-order", en[0].isIntersecting);
+    }, { rootMargin: "0px 0px -15% 0px" }).observe(order);
+  }
+
   /* Botones de la landing ("Quiero…", "Ver ofertas", "Comprar"…) → bajan a las ofertas */
   var CTA = /quiero|ver ofertas|ofertas|elige|elegir|comprar|pedir|ordenar/i;
   document.addEventListener("click", function (e) {

@@ -34,7 +34,11 @@ s3 = must(s3, 'utm_content: qs.get("utm_content"), extra: extra || null });', 'u
 s3 = must(s3, 'send("plan_click", { plan: p.key, via: "releasit" });\n    openReleasit(p);',
           'send("plan_click", { plan: p.key, via: "formulario" });\n    if (window.EP_SELECT_PLAN) window.EP_SELECT_PLAN(p.key, "selector");')
 # los precios y tachados salen de la configuración del selector (en Vercel no existe /products.json de Shopify)
-s3 = re.sub(r'// precios, tachados y variante desde Shopify.*?\}\)\.catch\(function \(\) \{\}\);\n', '', s3, count=1, flags=re.S)
+i = s3.find('fetch("/products.json')
+if i >= 0:
+    j = s3.find('.catch(function () {});', i)
+    assert j > i
+    s3 = s3[:i] + s3[j + len('.catch(function () {});'):]
 assert 'fetch("/products.json' not in s3
 # los botones del formulario no deben subir al selector
 s3 = must(s3, 't.closest(".epv") || t.closest(\'[class*="_rsi"]\')', 't.closest(".epv") || t.closest(".ep-root") || t.closest(\'[class*="_rsi"]\')')
@@ -84,7 +88,7 @@ html = f"""<!doctype html>
 <link rel="preconnect" href="https://mqwscbpdozrdiqxofmod.supabase.co" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Figtree:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap">
 {base_css}
 {head_styles}
 <style>

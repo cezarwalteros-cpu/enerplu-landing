@@ -1484,6 +1484,7 @@ fbq('track', 'PageView');
   var sent = {};
 
   function send(ev, extra) {
+    if (/[?&]ep_test=1(&|$)/.test(location.search)) return;
     if (sent[ev] && ev !== "plan_click" && ev !== "cta_click") return;
     sent[ev] = 1;
     var body = JSON.stringify({
@@ -2313,6 +2314,7 @@ fbq('track', 'PageView');
     try { var s = sessionStorage.getItem("ep_sid"); if (!s) { s = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem("ep_sid", s); } return s; } catch (e) { return null; }
   }
   function send(ev, extra) {
+    if (/[?&]ep_test=1(&|$)/.test(location.search)) return;
     var body = JSON.stringify({ sid: sid(), ev: ev, page: location.host + location.pathname, store: "enerplu",
       utm_source: qs.get("utm_source"), utm_campaign: qs.get("utm_campaign"), utm_content: qs.get("utm_content"), utm_term: qs.get("utm_term"), extra: extra || null });
     try { if (navigator.sendBeacon && navigator.sendBeacon(TRACK_URL, new Blob([body], { type: "text/plain" }))) return; } catch (e) {}

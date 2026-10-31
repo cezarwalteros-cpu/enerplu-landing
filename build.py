@@ -27,8 +27,12 @@ secs = [re.sub(r'class="([^"]*)"', lambda m: 'class="' + re.sub(r'(?<![\w-])gps-
 secs[0] = must(secs[0], 'page: location.pathname, store: STORE,', 'page: location.host + location.pathname, store: STORE,')
 secs[0] = must(secs[0], 'utm_content: q.get("utm_content"),\n      extra', 'utm_content: q.get("utm_content"), utm_term: q.get("utm_term"),\n      extra')
 
+# en modo prueba (?ep_test=1) los scripts de embudo de la página no registran nada
+secs[0] = must(secs[0], 'function send(ev, extra) {', 'function send(ev, extra) {\n    if (/[?&]ep_test=1(&|$)/.test(location.search)) return;')
+
 # 3 · selector (carrusel): "Pedir y pagar al recibir" ya no abre Releasit; elige el plan en el formulario de abajo
 s3 = secs[3]
+s3 = must(s3, 'function send(ev, extra) {', 'function send(ev, extra) {\n    if (/[?&]ep_test=1(&|$)/.test(location.search)) return;')
 s3 = must(s3, 'page: location.pathname, store: "enerplu",', 'page: location.host + location.pathname, store: "enerplu",')
 s3 = must(s3, 'utm_content: qs.get("utm_content"), extra: extra || null });', 'utm_content: qs.get("utm_content"), utm_term: qs.get("utm_term"), extra: extra || null });')
 s3 = must(s3, 'send("plan_click", { plan: p.key, via: "releasit" });\n    openReleasit(p);',

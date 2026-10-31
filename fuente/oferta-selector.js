@@ -1,0 +1,50 @@
+/* Selector de ofertas con el diseño del selector v13 (tarjetas horizontales).
+   Reemplaza el dibujo del selector del formulario; la lógica (plan elegido, total, carrito, pedido) sigue igual.
+   Precio = el del checkout (se actualiza solo). Tachado = precio de 1 caja × cajas. */
+(function () {
+  var R = window.EP_RENDER;
+  if (!R) return;
+  var CDN = "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/";
+  var LOOK = {
+    dominio: { tag: "★ El más pedido", rec: true, inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: CDN + "DOMINIO.webp?v=1793468717&width=700" },
+    elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: CDN + "ELITE.webp?v=1793468748&width=700" },
+    inicial: { tag: "Para probar", inc: ["Obsequio Velvet <b>gratis</b>"], img: CDN + "BASICO.webp?v=1793468688&width=700" }
+  };
+  R.selector = function (cfg, sel) {
+    sel = sel || cfg.defaultPack;
+    return R.ordered(cfg).map(function (p) {
+      var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
+      var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
+      return '<label class="ep-sel-opt eph-card' + (L.rec ? ' rec' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
+        '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
+        (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
+        '<span class="eph-check" aria-hidden="true"></span>' +
+        '<span class="eph-row">' +
+          '<span class="eph-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
+          '<span class="eph-info">' +
+            '<span class="eph-name">' + R.esc(p.name) + '</span>' +
+            '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
+            '<span class="eph-inc">' + L.inc.map(function (t) { return '<span><i>+</i><em>' + t + '</em></span>'; }).join('') + '</span>' +
+            (save > 0 ? '<span class="eph-por">Por solo</span>' : '') +
+            '<span class="eph-prices"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
+            (save > 0 ? '<span class="eph-save">Ahorras ' + R.money(save) + '</span>' : '') +
+          '</span>' +
+        '</span>' +
+      '</label>';
+    }).join('');
+  };
+
+  /* Botones de la landing ("Quiero…", "Ver ofertas", "Comprar"…) → bajan a las ofertas */
+  var CTA = /quiero|ver ofertas|ofertas|elige|elegir|comprar|pedir|ordenar/i;
+  document.addEventListener("click", function (e) {
+    if (!e.isTrusted) return;
+    var t = e.target && e.target.closest ? e.target.closest("a, button, .gp-button, [role=button]") : null;
+    if (!t || t.closest(".ep-root") || t.closest(".ep-hc-sticky") || t.closest("#ep-hero-clean")) return;
+    var href = t.getAttribute && (t.getAttribute("href") || "");
+    if (href && !/^#|^javascript:/i.test(href) && !/\/products\/enerplu/i.test(href)) return;
+    if (!CTA.test(t.textContent || "")) return;
+    e.preventDefault(); e.stopPropagation();
+    var box = document.getElementById("ep-offer-widget");
+    if (box) window.scrollTo({ top: box.getBoundingClientRect().top + window.pageYOffset - 10, behavior: "smooth" });
+  }, true);
+})();

@@ -38,10 +38,22 @@ order_block = (ROOT / 'fuente' / 'oferta-formulario.html').read_text()
 oferta_css = (ROOT / 'fuente' / 'oferta.css').read_text()
 oferta_js = (ROOT / 'fuente' / 'oferta-selector.js').read_text()
 
+# barra de oferta (reemplaza la franja desplazante de Shopify, que sin su script queda como lista quieta)
+# descuento = Plan Élite frente a 4 cajas sueltas (precios de fuente/formulario/config.js)
+cfg_js = (PDP / 'config.js').read_text()
+single = int(re.search(r'singleBoxPrice:\s*(\d+)', cfg_js).group(1))
+elite = re.search(r"id: 'elite',.*?boxes: (\d+).*?price: (\d+)", cfg_js, re.S)
+PCT = int((1 - int(elite.group(2)) / (single * int(elite.group(1)))) * 100)
+item = ('<span class="epb-item"><i>🔥</i>Oferta hasta <b>{pct} % de descuento</b></span><span class="epb-item epb-dot">★</span>'
+        '<span class="epb-item">💵 Pagas al recibir</span><span class="epb-item epb-dot">★</span>'
+        '<span class="epb-item">🚚 Envío gratis</span><span class="epb-item epb-dot">★</span>').format(pct=PCT)
+items = item * 3 + '<span class="epb-dup" style="display:contents">' + item * 3 + '</span>'
+barra = (ROOT / 'fuente' / 'barra-oferta.html').read_text().replace('{{PCT}}', str(PCT)).replace('{{ITEMS}}', items)
+
 # Secciones de Shopify que quedan (índices de fuente/shopify.json):
-#   0 embudo · 1 franja · 2 hero · 5 jarabes · 6 matriz sublingual · 7 decisión · 8 espacio · OFERTA+FORMULARIO · 10 reseñas con fotos · 11 legal
+#   0 embudo · BARRA DE OFERTA (en lugar de 1, la franja) · 2 hero · 5 jarabes · 6 matriz sublingual · 7 decisión · 8 espacio · OFERTA+FORMULARIO · 10 reseñas con fotos · 11 legal
 # Se quitan: 3 (selector viejo con Releasit), 4 (testimonios de WhatsApp), 9 (reseñas sin fotos).
-ORDER = [0, 1, 2, 5, 6, 7, 8, 'oferta', 10, 11]
+ORDER = [0, 'barra', 2, 5, 6, 7, 8, 'oferta', 10, 11]
 head_styles = re.sub(r'<style id="shopify-accelerated-checkout-cart">.*?</style>', '', d['headStyles'], flags=re.S)
 base_css = '<link href="https://losgomosos.lat/cdn/shop/t/3/assets/base.css?v=101470124488811828791792019403" rel="stylesheet" type="text/css" media="all">'
 ep_css = (PDP / 'styles.css').read_text()
@@ -59,7 +71,7 @@ fbq('init', '{PIXEL}');
 fbq('track', 'PageView');
 </script>"""
 
-body = '\n'.join(order_block if k == 'oferta' else secs[k] for k in ORDER)
+body = '\n'.join({'oferta': order_block, 'barra': barra}.get(k) if isinstance(k, str) else secs[k] for k in ORDER)
 
 html = f"""<!doctype html>
 <html {d['htmlAttrs']}>

@@ -34,6 +34,7 @@
 .ep-root .eph-por { font-size: 10.5px; font-weight: 600; color: #9a9a9a; letter-spacing: 1.2px; text-transform: uppercase; }
 .ep-root .eph-prices { display: flex !important; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .ep-root .eph-price { font-size: 26px; font-weight: 800; color: #35d04a; letter-spacing: -.4px; font-variant-numeric: tabular-nums; }
+.ep-root .eph-card.is-basic .eph-price { color: #fff; font-weight: 800; }
 .ep-root .eph-was { font-size: 13px; color: #8a8a8a; text-decoration: line-through; }
 .ep-root .eph-save { font-size: 12.5px; font-weight: 600; color: #7fe08f; margin-top: 2px; }
 .ep-root .eph-card.is-pulse { animation: ep-pulse .6s ease; }

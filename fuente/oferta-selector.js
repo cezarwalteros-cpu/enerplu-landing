@@ -8,14 +8,14 @@
   var LOOK = {
     dominio: { tag: "★ El más pedido", rec: true, inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: CDN + "DOMINIO.webp?v=1793468717&width=700" },
     elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: CDN + "ELITE.webp?v=1793468748&width=700" },
-    inicial: { tag: "Para probar", inc: ["Obsequio Velvet <b>gratis</b>"], img: CDN + "BASICO.webp?v=1793468688&width=700" }
+    inicial: { tag: "Para probar", inc: [], basic: true, img: CDN + "BASICO.webp?v=1793468688&width=700" }
   };
   R.selector = function (cfg, sel) {
     sel = sel || cfg.defaultPack;
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
-      return '<label class="ep-sel-opt eph-card' + (L.rec ? ' rec' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
+      return '<label class="ep-sel-opt eph-card' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
         '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
         (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
         '<span class="eph-check" aria-hidden="true"></span>' +
@@ -24,7 +24,7 @@
           '<span class="eph-info">' +
             '<span class="eph-name">' + R.esc(p.name) + '</span>' +
             '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
-            '<span class="eph-inc">' + L.inc.map(function (t) { return '<span><i>+</i><em>' + t + '</em></span>'; }).join('') + '</span>' +
+            (L.inc.length ? '<span class="eph-inc">' + L.inc.map(function (t) { return '<span><i>+</i><em>' + t + '</em></span>'; }).join('') + '</span>' : '') +
             (save > 0 ? '<span class="eph-por">Por solo</span>' : '') +
             '<span class="eph-prices"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
             (save > 0 ? '<span class="eph-save">Ahorras ' + R.money(save) + '</span>' : '') +

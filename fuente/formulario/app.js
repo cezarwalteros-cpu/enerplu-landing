@@ -883,8 +883,10 @@
       if (name === 'last_name') return v('last_name').length < 2 ? 'Escribe tu apellido' : '';
       if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return p.length && p.charAt(0) !== '3' ? 'Debe ser un celular (empieza por 3). Por ahí te confirmamos el pedido' : (p.length ? 'Te faltan ' + (10 - p.length) + ' números: el celular tiene 10 dígitos' : 'Escribe tu celular (10 dígitos, empieza por 3)'); return this.st.phoneMsg || ''; }
       if (name === 'city') { if (!this.st.city) return !v('city') ? 'Escribe tu ciudad o municipio' : this.cityAmbiguous ? 'Hay varios municipios con ese nombre: toca el tuyo en la lista' : this.cityFuzzy ? '¿Quisiste decir ' + (this.cityRows || []).slice(0, 2).map(function (c) { return c.municipio; }).join(' o ') + '? Tócalo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
-      if (name === 'address1') { var a = v('address1'); if (a.length < 6) return 'Escribe la dirección completa (calle y número)'; if (!/\d/.test(a)) return /vereda|finca|corregimiento|sector|parcela|km|kil[oó]metro|hacienda|lote/i.test(a) ? 'Agrega un número de referencia: kilómetro, lote o casa (ej: Vereda La Palma, finca 3)' : 'Falta el número: ej. Calle 45 # 23-10'; return ''; }
-      if (name === 'additional') return v('additional').length < 3 ? 'Escribe barrio, apto, casa o una referencia' : '';
+      /* dirección flexible: veredas, fincas, oficinas de transportadora o direcciones sin nomenclatura pasan;
+         sin número, el pedido queda marcado en las notas para confirmar el punto por WhatsApp */
+      if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección o el punto de entrega' : '';
+      if (name === 'additional') return v('additional').length < 2 ? 'Escribe barrio, apto, casa o una referencia' : '';
       return '';
     },
     fields: ['first_name', 'last_name', 'phone', 'city', 'address1', 'additional'],
@@ -993,7 +995,7 @@
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
         customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone() },
-        address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') },
+        address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
         payment_method: 'cod', tracking: this.tracking()

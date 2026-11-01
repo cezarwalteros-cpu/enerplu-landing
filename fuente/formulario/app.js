@@ -731,7 +731,7 @@
       var v = String(i.value || '').replace(/\D/g, '');
       if (v.indexOf('0057') === 0) v = v.slice(4);
       else if (v.length > 10 && v.indexOf('57') === 0) v = v.slice(2);
-      else if (v.length === 11 && v.indexOf('03') === 0) v = v.slice(1);
+      if (v.length === 11 && v.charAt(0) === '0') v = v.slice(1);   /* 0300… */
       return v.slice(0, 10);
     },
     validPhone: function (v) { return /^3\d{9}$/.test(v); },

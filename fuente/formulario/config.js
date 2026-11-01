@@ -133,6 +133,9 @@ window.EP_CONFIG = {
     api: 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-native',
     slug: 'enerplu',
     funnelApi: 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track',
+    /* municipios mal escritos ("guaican" → Güicán): función pública de solo lectura sobre el catálogo de municipios */
+    cityFuzzyApi: 'https://mqwscbpdozrdiqxofmod.supabase.co/rest/v1/rpc/municipio_parecido',
+    publicKey: 'sb_publishable_kM9IIf3S1A3wJg6t6ctJfg_bbkrBmNG',
     /* valores de respaldo; al cargar el formulario se actualizan con la configuración real del checkout */
     bump: { price: 19900, compare: 29900, title: 'Estrechante Premium 30 ml', text: 'Para ella. Precio solo en este pedido y llega en el mismo paquete discreto.',
             image: 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1774019347/ESTRECHANTE_mvgh1z.webp' },

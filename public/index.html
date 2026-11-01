@@ -1338,12 +1338,16 @@ display: none;
 .ep-root .ep-f-help { font-size: 12.5px; color: var(--ep-muted); }
 .ep-root .ep-f-err { font-size: 13px; font-weight: 600; color: var(--ep-err); line-height: 1.4; }
 .ep-root .ep-f-err a { font-weight: 800; }
-.ep-root .ep-city-list { position: absolute; z-index: 30; top: 78px; left: 0; right: 0; margin-top: 4px !important; max-height: 280px; overflow-y: auto; background: var(--ep-surface); border: 1.5px solid var(--ep-line-strong); border-radius: 12px; box-shadow: 0 16px 36px var(--ep-shadow); }
-.ep-root .ep-city-list li { display: flex; justify-content: space-between; gap: 10px; padding: 12px 14px; cursor: pointer; font-size: 15px; border-bottom: 1px solid var(--ep-line); }
+.ep-root .ep-city-list { position: absolute; z-index: 30; top: 78px; left: 0; right: 0; margin-top: 4px !important; max-height: min(300px, 45vh); overflow-y: auto; background: var(--ep-surface); border: 1.5px solid var(--ep-line-strong); border-radius: 12px; box-shadow: 0 16px 36px var(--ep-shadow); }
+.ep-root .ep-city-list li { display: grid; gap: 1px; padding: 12px 14px; cursor: pointer; font-size: 15.5px; line-height: 1.3; border-bottom: 1px solid var(--ep-line); }
 .ep-root .ep-city-list li:last-child { border-bottom: 0; }
-.ep-root .ep-city-list li span { color: var(--ep-muted); font-size: 13.5px; text-align: right; }
+.ep-root .ep-city-name b { font-weight: 700; }
+.ep-root .ep-city-name em, .ep-root .ep-city-ok em { font-style: normal; font-weight: 700; color: #e00000; }
+.ep-root .ep-city-alias { font-size: 12.5px; color: var(--ep-muted); }
 .ep-root .ep-city-list li:hover, .ep-root .ep-city-list li[aria-selected="true"] { background: var(--ep-surface-2); }
 .ep-root .ep-city-list li.ep-city-empty { cursor: default; color: var(--ep-muted); font-size: 14px; }
+.ep-root .ep-city-ok { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ep-text); }
+.ep-root .ep-city-ok .ep-ico { width: 16px; height: 16px; color: #e00000; }
 .ep-root .ep-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* envío */
@@ -1473,7 +1477,11 @@ display: none;
 .ep-root .eph-order .ep-f-phone span { background: #ececec; border-color: #d6d6d6; color: #333; }
 .ep-root .eph-order .ep-city-list { background: #fff; border-color: #d6d6d6; }
 .ep-root .eph-order .ep-city-list li { color: #111; border-bottom-color: #eee; }
-.ep-root .eph-order .ep-city-list li span { color: #555; }
+.ep-root .eph-order .ep-city-alias { color: #555; }
+.ep-root .eph-order .ep-city-name em { color: #e00000; }
+.ep-root .eph-order .ep-city-ok { color: #f2f2f2; }
+.ep-root .eph-order .ep-city-ok em { color: #ff4d4d; }
+.ep-root .eph-order .ep-city-ok .ep-ico { color: #ff4d4d; }
 .ep-root .eph-order .ep-city-list li:hover, .ep-root .eph-order .ep-city-list li[aria-selected="true"] { background: #f3f3f3; }
 .ep-root .eph-order .ep-city-list li.ep-city-empty { color: #555; }
 
@@ -3031,10 +3039,11 @@ fbq('track', 'PageView');
         </div>
         <div class="ep-f ep-f--city">
           <label for="ep-f-city">Ciudad o municipio</label>
-          <input id="ep-f-city" name="city" type="text" autocomplete="off" autocapitalize="words" maxlength="60" placeholder="Escribe y elige de la lista" required
+          <input id="ep-f-city" name="city" type="text" autocomplete="off" autocapitalize="words" maxlength="60" placeholder="Ej: Itagüí, Bogotá, Cali…" required
                  role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ep-f-city-list">
           <ul class="ep-city-list" id="ep-f-city-list" role="listbox" hidden></ul>
           <p class="ep-f-err" data-ep-err="city" hidden></p>
+          <p class="ep-city-ok" data-ep-city-ok hidden></p>
         </div>
         <div class="ep-f">
           <label for="ep-f-addr">Dirección</label>
@@ -4553,6 +4562,21 @@ window.EP_CONFIG = {
     thanksTitle: '¡Pedido recibido!',
     thanksText: 'Te escribiremos por WhatsApp para confirmar tu pedido. Ten tu celular a la mano.',
     deliveryDays: [3, 4],
+    /* corregimientos, localidades y comunas que la gente escribe en vez del municipio: [lo que escribe, municipio, departamento] */
+    cityAliases: [
+      ['San Antonio de Prado', 'Medellín', 'Antioquia'], ['San Cristóbal (Medellín)', 'Medellín', 'Antioquia'], ['Santa Elena', 'Medellín', 'Antioquia'],
+      ['Altavista', 'Medellín', 'Antioquia'], ['Palmitas', 'Medellín', 'Antioquia'], ['El Poblado', 'Medellín', 'Antioquia'], ['Laureles', 'Medellín', 'Antioquia'],
+      ['Belén (Medellín)', 'Medellín', 'Antioquia'], ['Robledo', 'Medellín', 'Antioquia'], ['Castilla (Medellín)', 'Medellín', 'Antioquia'], ['Manrique', 'Medellín', 'Antioquia'],
+      ['Aranjuez', 'Medellín', 'Antioquia'], ['Guayabal', 'Medellín', 'Antioquia'], ['Doce de Octubre', 'Medellín', 'Antioquia'], ['Villa Hermosa', 'Medellín', 'Antioquia'],
+      ['Usaquén', 'Bogotá D.C.', 'Bogotá D.C.'], ['Chapinero', 'Bogotá D.C.', 'Bogotá D.C.'], ['Usme', 'Bogotá D.C.', 'Bogotá D.C.'], ['Tunjuelito', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Bosa', 'Bogotá D.C.', 'Bogotá D.C.'], ['Kennedy', 'Bogotá D.C.', 'Bogotá D.C.'], ['Fontibón', 'Bogotá D.C.', 'Bogotá D.C.'], ['Engativá', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Suba', 'Bogotá D.C.', 'Bogotá D.C.'], ['Barrios Unidos', 'Bogotá D.C.', 'Bogotá D.C.'], ['Teusaquillo', 'Bogotá D.C.', 'Bogotá D.C.'], ['Los Mártires', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Antonio Nariño (Bogotá)', 'Bogotá D.C.', 'Bogotá D.C.'], ['Puente Aranda', 'Bogotá D.C.', 'Bogotá D.C.'], ['La Candelaria', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Rafael Uribe Uribe', 'Bogotá D.C.', 'Bogotá D.C.'], ['Ciudad Bolívar', 'Bogotá D.C.', 'Bogotá D.C.'], ['San Cristóbal (Bogotá)', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Santa Fe (Bogotá)', 'Bogotá D.C.', 'Bogotá D.C.'], ['Sumapaz', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Pance', 'Cali', 'Valle del Cauca'], ['La Buitrera', 'Cali', 'Valle del Cauca'],
+      ['Corregimiento de Bocachica', 'Cartagena de Indias', 'Bolívar'], ['La Boquilla', 'Cartagena de Indias', 'Bolívar']
+    ],
     /* festivos de Colombia (no cuentan como día hábil para la fecha estimada de entrega) */
     holidays: ['2026-11-02', '2026-11-16', '2026-12-08', '2026-12-25', '2027-01-01', '2027-01-11', '2027-03-22', '2027-03-25', '2027-03-26', '2027-05-01'],
     funnelish: {
@@ -5334,28 +5358,60 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         if (self.st.phoneBlock) track('PhoneBlocked', { recent: !!j.recent_order }); else self.queueCart();
       }, function () {});
     },
-    /* ---- ciudad con autocompletado ---- */
-    citySearch: function () {
-      var self = this, inp = this.el('city'), list = qs('#ep-f-city-list'), q = (inp.value || '').trim();
+    /* ---- ciudad con autocompletado ----
+       - lo que va después de una coma o "/" se usa para filtrar por departamento ("Itagüí, Antioquia", "Yopal / Casanare")
+       - "Colombia" y "D.C." no cuentan ("Bogotá, Colombia")
+       - corregimientos, localidades y comunas conocidas llevan a su municipio ("San Antonio de Prado" → Medellín) */
+    cityParts: function (raw) {
+      var parts = String(raw || '').split(/[,\/|]/);
+      var clean = function (x) { return R.norm(x).replace(/\b(colombia|col|d c|dc)\b/g, ' ').replace(/\s+/g, ' ').trim(); };
+      return { q: clean(parts[0]), dep: clean(parts.slice(1).join(' ')) };
+    },
+    cityAliases: function (q) {
+      if (q.length < 3) return [];
+      var out = [];
+      (C.checkout.cityAliases || []).forEach(function (a) {
+        var n = R.norm(a[0].replace(/\(.*?\)/g, ' '));   /* lo que va entre paréntesis solo aclara, no se busca */
+        if (n.indexOf(q) === 0 || (q.length >= 4 && n.indexOf(' ' + q) >= 0)) out.push({ municipio: a[1], departamento: a[2], alias: a[0], solo_pago_anticipado: false });
+      });
+      return out.slice(0, 4);
+    },
+    citySearchNow: function (raw) {
+      var self = this, pr = this.cityParts(raw), seq = (this.citySeq = (this.citySeq || 0) + 1);
       clearTimeout(this.cityTimer);
-      if (q.length < 2) { this.cityList([]); return; }
-      var seq = (this.citySeq = (this.citySeq || 0) + 1);
-      this.cityTimer = setTimeout(function () {
-        self.api('GET', '?q=' + encodeURIComponent(q.slice(0, 40))).then(function (r) {
-          if (seq !== self.citySeq) return;
-          self.cityList((r.j && r.j.ciudades) || [], q);
-        }, function () {});
-      }, 220);
+      if (pr.q.length < 2) { this.cityList([], ''); return Promise.resolve([]); }
+      var aliases = this.cityAliases(pr.q);
+      return this.api('GET', '?q=' + encodeURIComponent(pr.q.slice(0, 40))).then(function (r) {
+        var rows = (r.j && r.j.ciudades) || [];
+        if (pr.dep) {   /* escribió el departamento: se queda con los que coinciden */
+          var f = rows.filter(function (c) { var d = R.norm(c.departamento); return d.indexOf(pr.dep) === 0 || pr.dep.indexOf(d) === 0; });
+          if (f.length) rows = f;
+        }
+        var all = aliases.concat(rows.filter(function (c) { return !aliases.some(function (a) { return a.municipio === c.municipio && a.departamento === c.departamento && !a.alias; }); }));
+        if (seq === self.citySeq) self.cityList(all, String(raw || '').trim());
+        return all;
+      }, function () {
+        if (seq === self.citySeq) self.cityList(aliases, String(raw || '').trim());
+        return aliases;
+      });
+    },
+    citySearch: function () {
+      var self = this, raw = this.el('city').value;
+      clearTimeout(this.cityTimer);
+      if (this.cityParts(raw).q.length < 2) { this.cityList([], ''); return; }
+      this.cityTimer = setTimeout(function () { self.cityPending = self.citySearchNow(raw); }, 200);
     },
     cityList: function (rows, q) {
       var list = qs('#ep-f-city-list'), inp = this.el('city'); if (!list) return;
       this.cityRows = rows; this.cityIdx = -1;
       if (!rows.length) {
-        list.innerHTML = q ? '<li class="ep-city-empty" role="presentation">No encontramos “' + R.esc(q) + '”. Revisa cómo se escribe.</li>' : '';
+        list.innerHTML = q ? '<li class="ep-city-empty" role="presentation">No encontramos “' + R.esc(q) + '”. Escribe el municipio; si vives en un corregimiento o vereda, escribe el municipio al que pertenece.</li>' : '';
         list.hidden = !q; inp.setAttribute('aria-expanded', q ? 'true' : 'false'); return;
       }
       list.innerHTML = rows.map(function (c, i) {
-        return '<li role="option" id="ep-city-' + i + '" data-i="' + i + '"><b>' + R.esc(c.municipio) + '</b><span>' + R.esc(c.departamento) + '</span></li>';
+        return '<li role="option" id="ep-city-' + i + '" data-i="' + i + '">' +
+          (c.alias ? '<span class="ep-city-alias">' + R.esc(c.alias) + '</span>' : '') +
+          '<span class="ep-city-name"><b>' + R.esc(c.municipio) + '</b>' + (c.departamento !== c.municipio ? '<em> / ' + R.esc(c.departamento) + '</em>' : '') + '</span></li>';
       }).join('');
       list.hidden = false; inp.setAttribute('aria-expanded', 'true');
     },
@@ -5363,9 +5419,34 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var c = (this.cityRows || [])[i]; if (!c) return;
       var inp = this.el('city'), list = qs('#ep-f-city-list');
       this.st.city = { municipio: c.municipio, departamento: c.departamento, prepaid: !!c.solo_pago_anticipado };
-      inp.value = c.municipio + ', ' + c.departamento; this.cityLabel = inp.value;
+      inp.value = c.municipio + (c.departamento !== c.municipio ? ' / ' + c.departamento : ''); this.cityLabel = inp.value;
       list.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant');
+      var add = this.el('additional');
+      if (c.alias && add && !String(add.value || '').trim()) add.value = c.alias;   /* el corregimiento o la localidad quedan en "barrio y detalles" */
+      this.cityShow();
       this.err('city', this.cityProblem());
+    },
+    cityShow: function () {   /* confirmación bajo el campo: Itagüí / Antioquia, con el departamento en rojo */
+      var box = qs('[data-ep-city-ok]', this.form), c = this.st.city;
+      if (!box) return;
+      box.innerHTML = c && !c.prepaid ? R.ico('pin') + '<span>Enviamos a <b>' + R.esc(c.municipio) + '</b>' + (c.departamento !== c.municipio ? '<em> / ' + R.esc(c.departamento) + '</em>' : '') + '</span>' : '';
+      box.hidden = !(c && !c.prepaid);
+    },
+    /* escribió la ciudad y no tocó la lista: se elige sola si hay una coincidencia clara */
+    cityAuto: function () {
+      var rows = this.cityRows || [], pr = this.cityParts(this.el('city').value);
+      if (!pr.q) return false;
+      var base = function (x) { return R.norm(x).replace(/\b(d c|dc)\b/g, ' ').replace(/\s+/g, ' ').trim(); };
+      var exact = rows.filter(function (c) { return c.alias ? base(c.alias.replace(/\(.*?\)/g, ' ')) === pr.q : base(c.municipio) === pr.q; });
+      var pick = exact.length === 1 ? exact[0] : (rows.length === 1 ? rows[0] : null);
+      this.cityAmbiguous = !pick && rows.length > 1;   /* varios posibles (ej. "La Unión"): el cliente elige en la lista */
+      if (pick) { this.cityPick(rows.indexOf(pick)); return true; }
+      return false;
+    },
+    cityResolve: function () {
+      var self = this, inp = this.el('city');
+      if (this.st.city || !String(inp.value || '').trim()) return Promise.resolve();
+      return this.citySearchNow(inp.value).then(function () { self.cityAuto(); var list = qs('#ep-f-city-list'); if (list) { list.hidden = !!self.st.city || !(self.cityRows || []).length; inp.setAttribute('aria-expanded', list.hidden ? 'false' : 'true'); } });
     },
     cityProblem: function () {
       var c = this.st.city; if (!c || !c.prepaid) return '';
@@ -5390,7 +5471,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       if (name === 'first_name') return v('first_name').length < 2 ? 'Escribe tu nombre' : '';
       if (name === 'last_name') return v('last_name').length < 2 ? 'Escribe tu apellido' : '';
       if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return 'Escribe tu celular: 10 dígitos y empieza por 3'; return this.st.phoneMsg || ''; }
-      if (name === 'city') { if (!this.st.city) return v('city') ? 'Elige tu ciudad de la lista' : 'Escribe tu ciudad y elígela de la lista'; return this.cityProblem(); }
+      if (name === 'city') { if (!this.st.city) return !v('city') ? 'Escribe tu ciudad o municipio' : this.cityAmbiguous ? 'Hay varios municipios con ese nombre: toca el tuyo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
       if (name === 'address1') { var a = v('address1'); return (a.length < 6 || !/\d/.test(a)) ? 'Escribe la dirección completa (calle y número)' : ''; }
       if (name === 'additional') return v('additional').length < 3 ? 'Escribe barrio, apto, casa o una referencia' : '';
       return '';
@@ -5428,7 +5509,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
           if (self.validPhone(ph)) { self.err('phone', ''); self.checkPhone(); }
           else if (self.touched.phone) self.err('phone', ph.length >= 10 ? 'El celular debe empezar por 3' : '');
         } else if (t.name === 'city') {
-          if (t.value !== self.cityLabel) { self.st.city = null; self.err('city', ''); }
+          if (t.value !== self.cityLabel) { self.st.city = null; self.cityAmbiguous = false; self.err('city', ''); self.cityShow(); }
           self.citySearch();
         } else if (self.touched[t.name] && self.fields.indexOf(t.name) >= 0) self.err(t.name, self.check(t.name));
       });
@@ -5437,10 +5518,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         if (t.name === 'city') {
           setTimeout(function () {
             if (!list.hidden) { list.hidden = true; cityInp.setAttribute('aria-expanded', 'false'); }
-            if (!self.st.city && cityInp.value.trim()) {   /* escribió el nombre exacto y no tocó la lista: se elige solo */
-              var rows = self.cityRows || [], nv = R.norm(cityInp.value.split(',')[0]);
-              var hit = rows.filter(function (c) { return R.norm(c.municipio) === nv; });
-              if (hit.length === 1) self.cityPick(rows.indexOf(hit[0]));
+            if (!self.st.city && cityInp.value.trim()) {
+              self.cityResolve().then(function () { self.touched.city = true; self.err('city', self.check('city')); });
+              return;
             }
             if (cityInp.value.trim()) { self.touched.city = true; self.err('city', self.check('city')); }
           }, 180);
@@ -5449,6 +5529,10 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         if (String(t.value || '').trim()) self.touched[t.name] = true;
         if (self.touched[t.name]) self.err(t.name, self.check(t.name));
         if (t.name === 'first_name' || t.name === 'last_name' || t.name === 'phone') self.queueCart();
+      });
+      cityInp.addEventListener('focus', function () {
+        if (global.innerWidth > 700) return;
+        setTimeout(function () { var y = cityInp.getBoundingClientRect().top + global.pageYOffset - 84; global.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' }); }, 320);
       });
       list.addEventListener('mousedown', function (e) { var li = e.target.closest('li[data-i]'); if (li) { e.preventDefault(); self.cityPick(+li.getAttribute('data-i')); } });
       cityInp.addEventListener('keydown', function (e) {
@@ -5471,6 +5555,10 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     },
     submit: function () {
       var self = this; if (this.sending || this.done) return;
+      if (!this.st.city && String(this.el('city').value || '').trim() && !this.cityResolving) {
+        this.cityResolving = true;
+        return this.cityResolve().then(function () { self.cityResolving = false; self.submit(); }, function () { self.cityResolving = false; self.submit(); });
+      }
       this.formError('');
       this.fields.forEach(function (f) { self.touched[f] = true; });
       var bad = this.validate(), p = packById(state.pack);

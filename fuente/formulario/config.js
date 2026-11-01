@@ -140,6 +140,21 @@ window.EP_CONFIG = {
     thanksTitle: '¡Pedido recibido!',
     thanksText: 'Te escribiremos por WhatsApp para confirmar tu pedido. Ten tu celular a la mano.',
     deliveryDays: [3, 4],
+    /* corregimientos, localidades y comunas que la gente escribe en vez del municipio: [lo que escribe, municipio, departamento] */
+    cityAliases: [
+      ['San Antonio de Prado', 'Medellín', 'Antioquia'], ['San Cristóbal (Medellín)', 'Medellín', 'Antioquia'], ['Santa Elena', 'Medellín', 'Antioquia'],
+      ['Altavista', 'Medellín', 'Antioquia'], ['Palmitas', 'Medellín', 'Antioquia'], ['El Poblado', 'Medellín', 'Antioquia'], ['Laureles', 'Medellín', 'Antioquia'],
+      ['Belén (Medellín)', 'Medellín', 'Antioquia'], ['Robledo', 'Medellín', 'Antioquia'], ['Castilla (Medellín)', 'Medellín', 'Antioquia'], ['Manrique', 'Medellín', 'Antioquia'],
+      ['Aranjuez', 'Medellín', 'Antioquia'], ['Guayabal', 'Medellín', 'Antioquia'], ['Doce de Octubre', 'Medellín', 'Antioquia'], ['Villa Hermosa', 'Medellín', 'Antioquia'],
+      ['Usaquén', 'Bogotá D.C.', 'Bogotá D.C.'], ['Chapinero', 'Bogotá D.C.', 'Bogotá D.C.'], ['Usme', 'Bogotá D.C.', 'Bogotá D.C.'], ['Tunjuelito', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Bosa', 'Bogotá D.C.', 'Bogotá D.C.'], ['Kennedy', 'Bogotá D.C.', 'Bogotá D.C.'], ['Fontibón', 'Bogotá D.C.', 'Bogotá D.C.'], ['Engativá', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Suba', 'Bogotá D.C.', 'Bogotá D.C.'], ['Barrios Unidos', 'Bogotá D.C.', 'Bogotá D.C.'], ['Teusaquillo', 'Bogotá D.C.', 'Bogotá D.C.'], ['Los Mártires', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Antonio Nariño (Bogotá)', 'Bogotá D.C.', 'Bogotá D.C.'], ['Puente Aranda', 'Bogotá D.C.', 'Bogotá D.C.'], ['La Candelaria', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Rafael Uribe Uribe', 'Bogotá D.C.', 'Bogotá D.C.'], ['Ciudad Bolívar', 'Bogotá D.C.', 'Bogotá D.C.'], ['San Cristóbal (Bogotá)', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Santa Fe (Bogotá)', 'Bogotá D.C.', 'Bogotá D.C.'], ['Sumapaz', 'Bogotá D.C.', 'Bogotá D.C.'],
+      ['Pance', 'Cali', 'Valle del Cauca'], ['La Buitrera', 'Cali', 'Valle del Cauca'],
+      ['Corregimiento de Bocachica', 'Cartagena de Indias', 'Bolívar'], ['La Boquilla', 'Cartagena de Indias', 'Bolívar']
+    ],
     /* festivos de Colombia (no cuentan como día hábil para la fecha estimada de entrega) */
     holidays: ['2026-11-02', '2026-11-16', '2026-12-08', '2026-12-25', '2027-01-01', '2027-01-11', '2027-03-22', '2027-03-25', '2027-03-26', '2027-05-01'],
     funnelish: {

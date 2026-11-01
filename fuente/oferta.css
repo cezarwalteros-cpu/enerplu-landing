@@ -67,7 +67,11 @@
 .ep-root .eph-order .ep-f-phone span { background: #ececec; border-color: #d6d6d6; color: #333; }
 .ep-root .eph-order .ep-city-list { background: #fff; border-color: #d6d6d6; }
 .ep-root .eph-order .ep-city-list li { color: #111; border-bottom-color: #eee; }
-.ep-root .eph-order .ep-city-list li span { color: #555; }
+.ep-root .eph-order .ep-city-alias { color: #555; }
+.ep-root .eph-order .ep-city-name em { color: #e00000; }
+.ep-root .eph-order .ep-city-ok { color: #f2f2f2; }
+.ep-root .eph-order .ep-city-ok em { color: #ff4d4d; }
+.ep-root .eph-order .ep-city-ok .ep-ico { color: #ff4d4d; }
 .ep-root .eph-order .ep-city-list li:hover, .ep-root .eph-order .ep-city-list li[aria-selected="true"] { background: #f3f3f3; }
 .ep-root .eph-order .ep-city-list li.ep-city-empty { color: #555; }
 

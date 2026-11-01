@@ -729,7 +729,9 @@
     phone: function () {
       var i = this.el('phone'); if (!i) return '';
       var v = String(i.value || '').replace(/\D/g, '');
-      if (v.length > 10 && v.indexOf('57') === 0) v = v.slice(2);
+      if (v.indexOf('0057') === 0) v = v.slice(4);
+      else if (v.length > 10 && v.indexOf('57') === 0) v = v.slice(2);
+      else if (v.length === 11 && v.indexOf('03') === 0) v = v.slice(1);
       return v.slice(0, 10);
     },
     validPhone: function (v) { return /^3\d{9}$/.test(v); },
@@ -879,9 +881,9 @@
       var v = function (n) { var e = Order.el(n); return e ? String(e.value || '').trim() : ''; };
       if (name === 'first_name') return v('first_name').length < 2 ? 'Escribe tu nombre' : '';
       if (name === 'last_name') return v('last_name').length < 2 ? 'Escribe tu apellido' : '';
-      if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return 'Escribe tu celular: 10 dígitos y empieza por 3'; return this.st.phoneMsg || ''; }
+      if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return p.length && p.charAt(0) !== '3' ? 'Debe ser un celular (empieza por 3). Por ahí te confirmamos el pedido' : (p.length ? 'Te faltan ' + (10 - p.length) + ' números: el celular tiene 10 dígitos' : 'Escribe tu celular (10 dígitos, empieza por 3)'); return this.st.phoneMsg || ''; }
       if (name === 'city') { if (!this.st.city) return !v('city') ? 'Escribe tu ciudad o municipio' : this.cityAmbiguous ? 'Hay varios municipios con ese nombre: toca el tuyo en la lista' : this.cityFuzzy ? '¿Quisiste decir ' + (this.cityRows || []).slice(0, 2).map(function (c) { return c.municipio; }).join(' o ') + '? Tócalo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
-      if (name === 'address1') { var a = v('address1'); return (a.length < 6 || !/\d/.test(a)) ? 'Escribe la dirección completa (calle y número)' : ''; }
+      if (name === 'address1') { var a = v('address1'); if (a.length < 6) return 'Escribe la dirección completa (calle y número)'; if (!/\d/.test(a)) return /vereda|finca|corregimiento|sector|parcela|km|kil[oó]metro|hacienda|lote/i.test(a) ? 'Agrega un número de referencia: kilómetro, lote o casa (ej: Vereda La Palma, finca 3)' : 'Falta el número: ej. Calle 45 # 23-10'; return ''; }
       if (name === 'additional') return v('additional').length < 3 ? 'Escribe barrio, apto, casa o una referencia' : '';
       return '';
     },
@@ -937,6 +939,14 @@
         }
         if (String(t.value || '').trim()) self.touched[t.name] = true;
         if (self.touched[t.name]) self.err(t.name, self.check(t.name));
+        if (t.name === 'first_name') {   /* escribió nombre y apellido en el mismo campo: se reparten solos */
+          var last = self.el('last_name'), parts = String(t.value || '').trim().split(/\s+/);
+          if (parts.length >= 2 && last && !String(last.value || '').trim()) {
+            var cut = parts.length >= 4 ? 2 : 1;
+            t.value = parts.slice(0, cut).join(' '); last.value = parts.slice(cut).join(' ');
+            self.err('first_name', ''); self.err('last_name', '');
+          }
+        }
         if (t.name === 'first_name' || t.name === 'last_name' || t.name === 'phone') self.queueCart();
       });
       cityInp.addEventListener('focus', function () {
@@ -974,6 +984,8 @@
       Funnel.send('cta_click', { from: 'form', plan: p.checkoutPlan || p.id, ok: !bad.length });
       if (bad.length) {
         track('FormInvalid', { fields: bad.join(',') });
+        var cityTxt = bad.indexOf('city') >= 0 ? String(this.el('city').value || '').slice(0, 40) : null;
+        Funnel.send('form_error', { fields: bad, city: cityTxt, plan: p.checkoutPlan || p.id });
         var first = this.el(bad[0]); if (first) { first.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); setTimeout(function () { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, reduce ? 0 : 350); }
         return;
       }

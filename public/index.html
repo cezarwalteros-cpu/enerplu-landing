@@ -3046,6 +3046,12 @@ fbq('track', 'PageView');
           <p class="ep-f-err" data-ep-err="city" hidden></p>
           <p class="ep-city-ok" data-ep-city-ok hidden></p>
         </div>
+        <div class="ep-f" data-ep-email-row hidden>
+          <label for="ep-f-email">Correo electrónico</label>
+          <input id="ep-f-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="tucorreo@ejemplo.com" aria-describedby="ep-f-email-h">
+          <p class="ep-f-help" id="ep-f-email-h">Bold te envía ahí el comprobante del pago.</p>
+          <p class="ep-f-err" data-ep-err="email" hidden></p>
+        </div>
         <div class="ep-f">
           <label for="ep-f-addr">Dirección</label>
           <input id="ep-f-addr" name="address1" type="text" autocomplete="address-line1" maxlength="160" placeholder="Ej: Calle 45 # 23-10" required>
@@ -3071,7 +3077,7 @@ fbq('track', 'PageView');
       <p class="ep-error" data-ep-form-error hidden></p>
 
       <button type="submit" class="ep-cta ep-of-submit" data-ep-submit>
-        <span class="ep-cta-label"><b>Hacer mi pedido</b><small>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
+        <span class="ep-cta-label"><b>Hacer mi pedido</b><small data-ep-cta-sub>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
       </button>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
@@ -4852,9 +4858,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     if (t.b) h += line(R.esc(t.b.title), R.money(t.b.price));
     h += line('Envío' + (t.ship ? ' express' : ''), t.ship ? R.money(t.ship) : 'Gratis', t.ship ? '' : 'is-gift');
     return '<p class="ep-sum-title">Resumen de tu pedido</p><ul class="ep-sum-list">' + h + '</ul>' +
-      '<div class="ep-sum-total"><span>Total a pagar al recibir</span><b>' + R.money(t.total) + '</b></div>' +
+      '<div class="ep-sum-total"><span>' + (st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir') + '</span><b>' + R.money(t.total) + '</b></div>' +
       (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + ' en este pedido</p>' : '') +
-      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>. Pagas en efectivo cuando lo recibes.</span></p>';
+      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>.' + (st.pay ? '' : ' Pagas en efectivo cuando lo recibes.') + '</span></p>';
   };
 
   R.fallback = function (cfg, slideIndex, label) {
@@ -5259,6 +5265,8 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       if (!this.sid) { this.sid = 'ep' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); try { sessionStorage.setItem('ep_sid', this.sid); } catch (e) {} }
       this.t0 = Date.now();
       this.paint(); this.bind();
+      var bq = new URLSearchParams(global.location.search), bref = bq.get('bold-order-id');
+      if (bref) this.payResume(bref, bq.get('bold-tx-status'));
       var self = this, sec = qs('#ep-order');
       if (sec && 'IntersectionObserver' in global) {   /* la configuración real se pide cuando el cliente se acerca al formulario */
         var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { self.loadConfig(); io.disconnect(); } }); }, { rootMargin: '900px 0px' });
@@ -5276,7 +5284,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       if (!this.form) return;
       var t = R.totals(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship });
       var n = qs('[data-ep-nudge]'); if (n) n.innerHTML = R.nudge(C, state.pack);
-      var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship });
+      var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship, pay: this.payOnline() });
       qsa('[data-ep-bind="total"]').forEach(function (el) { el.textContent = R.money(t.total); });
       var x = R.extraGifts(t.p);
       qsa('[data-ep-bind="featured-name"]').forEach(function (el) { el.textContent = R.short(t.p) + (t.p.badge ? ' · ' + t.p.badge : ''); });
@@ -5288,7 +5296,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     loadConfig: function () {
       var self = this;
       if (this.cfgState) return; this.cfgState = 'loading';
-      this.api('GET', '?slug=' + encodeURIComponent(C.checkout.slug)).then(function (r) {
+      this.api('GET', '?slug=' + encodeURIComponent(C.checkout.slug) + '&pp=1').then(function (r) {
         var c = r.j && r.j.config; if (!c) { self.cfgState = ''; return; }
         self.cfgState = 'ok';
         var changed = false;
@@ -5305,6 +5313,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         if (c.thank_you_title) C.checkout.thanksTitle = c.thank_you_title;
         if (c.thank_you_text) C.checkout.thanksText = c.thank_you_text;
         C.checkout.online = !!c.online_payment;
+        /* Bold solo para ciudades sin contra entrega (Chocó, Amazonas…): se paga aquí mismo */
+        C.checkout.payPrepaid = !!(c.online_payment && c.online_payment.live && c.online_payment.prepaid_only);
+        self.payMode();
         if (changed) {
           var sig = 'live' + Date.now();
           renderInto('[data-ep-render="compact"]', R.packsCompact(C), sig);
@@ -5438,14 +5449,16 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       list.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant');
       var add = this.el('additional');
       if (c.alias && add && !String(add.value || '').trim()) add.value = c.alias;   /* el corregimiento o la localidad quedan en "barrio y detalles" */
-      this.cityShow();
+      this.cityShow(); this.payMode();
       this.err('city', this.cityProblem());
     },
     cityShow: function () {   /* confirmación bajo el campo: Itagüí / Antioquia, con el departamento en rojo */
       var box = qs('[data-ep-city-ok]', this.form), c = this.st.city;
       if (!box) return;
-      box.innerHTML = c && !c.prepaid ? R.ico('pin') + '<span>Enviamos a <b>' + R.esc(c.municipio) + '</b>' + (c.departamento !== c.municipio ? '<em> / ' + R.esc(c.departamento) + '</em>' : '') + '</span>' : '';
-      box.hidden = !(c && !c.prepaid);
+      var pay = this.payOnline();
+      box.innerHTML = c && (!c.prepaid || pay) ? R.ico('pin') + '<span>Enviamos a <b>' + R.esc(c.municipio) + '</b>' + (c.departamento !== c.municipio ? '<em> / ' + R.esc(c.departamento) + '</em>' : '') +
+        (pay ? '. Allí no hay pago contra entrega: <b>pagas en línea con Bold</b> (tarjeta, PSE o Nequi).' : '') + '</span>' : '';
+      box.hidden = !(c && (!c.prepaid || pay));
     },
     /* escribió la ciudad y no tocó la lista: se elige sola si hay una coincidencia clara */
     cityAuto: function () {
@@ -5466,15 +5479,76 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       return this.citySearchNow(inp.value).then(function () { self.cityAuto(); var list = qs('#ep-f-city-list'); if (list) { list.hidden = !!self.st.city || !(self.cityRows || []).length; inp.setAttribute('aria-expanded', list.hidden ? 'false' : 'true'); } });
     },
     cityProblem: function () {
-      var c = this.st.city; if (!c || !c.prepaid) return '';
-      return 'En ' + c.municipio + ' no tenemos pago contra entrega' + (C.checkout.online ? '. Puedes pedir con pago en línea en nuestro checkout.' : ' por ahora, así que no podemos enviarte este pedido.');
+      var c = this.st.city; if (!c || !c.prepaid || this.payOnline()) return '';
+      return 'En ' + c.municipio + ' no tenemos pago contra entrega por ahora, así que no podemos enviarte este pedido.';
+    },
+    /* ---- pago en línea con Bold (solo ciudades sin contra entrega) ---- */
+    payOnline: function () { return !!(C.checkout.payPrepaid && this.st.city && this.st.city.prepaid); },
+    payMode: function () {
+      if (!this.form) return;
+      var on = this.payOnline(), row = qs('[data-ep-email-row]', this.form), em = this.el('email');
+      if (row) row.hidden = !on;
+      if (em) { if (on) em.setAttribute('required', ''); else { em.removeAttribute('required'); this.err('email', ''); } }
+      var sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = on ? 'Pago seguro en línea con Bold' : 'Pagas en efectivo al recibir';
+      if (this.payWas !== on) { this.payWas = on; this.update(); }
+      if (!this.sending) this.busy(false);
+    },
+    loadBold: function () {
+      if (global.BoldCheckout) return Promise.resolve();
+      if (this.boldP) return this.boldP;
+      this.boldP = new Promise(function (ok, ko) {
+        var js = document.createElement('script');
+        js.src = 'https://checkout.bold.co/library/boldPaymentButton.js';
+        js.onload = function () { ok(); }; js.onerror = function () { ko(new Error('bold')); };
+        document.head.appendChild(js);
+      });
+      var self = this; this.boldP.catch(function () { self.boldP = null; });
+      return this.boldP;
+    },
+    payOpen: function (j) {
+      var self = this;
+      try { sessionStorage.setItem('ep_pay_ref', j.payment_ref); } catch (e) {}
+      track('PaymentStart', { ref: j.payment_ref, value: j.total_cop });
+      return this.loadBold().then(function () {
+        var checkout = new global.BoldCheckout(j.payment);
+        checkout.open();
+      }, function () {
+        self.formError('No pudimos abrir el pago en línea. Revisa tu conexión y toca el botón otra vez.');
+      });
+    },
+    /* regreso de Bold: ?bold-order-id=…&bold-tx-status=…; el estado real lo confirma el servidor */
+    payResume: function (ref, txStatus) {
+      var self = this, tries = 0, sec = qs('#ep-order');
+      if (sec) setTimeout(function () { scrollToEl(sec); }, 300);
+      this.done = true; this.busy(true);
+      var l = qs('[data-ep-submit] .ep-cta-label b', this.form); if (l) l.textContent = 'Confirmando tu pago…';
+      var poll = function () {
+        tries++;
+        self.api('POST', '', { action: 'payment_status', payment_ref: ref }).then(function (r) {
+          var j = r.j || {};
+          if (j.status === 'approved' && j.order_number) {
+            try { sessionStorage.removeItem('ep_pay_ref'); } catch (e) {}
+            self.success({ order_id: j.order_id, order_number: j.order_number, event_id: j.event_id, total_cop: j.total_cop, shipping_cop: j.shipping_cop, items: j.items || [], paid: true },
+              { address: { city: (j.address || {}).city || '' }, bump: false });
+            return;
+          }
+          var final = /^(rejected|failed|voided)$/.test(j.status || '');
+          if (!final && tries < 12) { setTimeout(poll, tries < 4 ? 2500 : 5000); return; }
+          self.done = false; self.busy(false);
+          self.formError(final || /rejected|failed/.test(txStatus || '')
+            ? 'El pago no se aprobó. Puedes intentarlo de nuevo con otro medio de pago.'
+            : 'Aún no vemos tu pago confirmado. Si ya pagaste, te escribimos por WhatsApp apenas Bold lo apruebe.');
+          track('PaymentResult', { ref: ref, status: j.status || txStatus || 'unknown' });
+        }, function () { if (tries < 12) setTimeout(poll, 4000); });
+      };
+      poll();
     },
     /* ---- validación ---- */
     err: function (name, msg) {
       var box = qs('[data-ep-err="' + name + '"]', this.form), inp = this.el(name);
       if (box) {
         box.textContent = msg || ''; box.hidden = !msg;
-        if (msg && name === 'city' && this.st.city && this.st.city.prepaid && C.checkout.online) {
+        if (msg && name === 'city' && this.st.city && this.st.city.prepaid && C.checkout.online && !C.checkout.payPrepaid) {
           var a = document.createElement('a'); a.href = withParams(C.checkout.url, packById(state.pack)); a.textContent = ' Ir al checkout'; box.appendChild(a);
         }
         if (msg && name === 'phone' && this.st.phoneBlock && C.checkout.online && /línea/.test(msg)) {
@@ -5493,9 +5567,10 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
          sin número, el pedido queda marcado en las notas para confirmar el punto por WhatsApp */
       if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección o el punto de entrega' : '';
       if (name === 'additional') return v('additional').length < 2 ? 'Escribe barrio, apto, casa o una referencia' : '';
+      if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
       return '';
     },
-    fields: ['first_name', 'last_name', 'phone', 'city', 'address1', 'additional'],
+    fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'address1', 'additional'],
     validate: function () {
       var self = this, bad = [];
       this.fields.forEach(function (f) { var m = self.check(f); self.err(f, m); if (m) bad.push(f); });
@@ -5528,7 +5603,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
           if (self.validPhone(ph)) { self.err('phone', ''); self.checkPhone(); }
           else if (self.touched.phone) self.err('phone', ph.length >= 10 ? 'El celular debe empezar por 3' : '');
         } else if (t.name === 'city') {
-          if (t.value !== self.cityLabel) { self.st.city = null; self.cityAmbiguous = false; self.cityFuzzy = false; self.err('city', ''); self.cityShow(); }
+          if (t.value !== self.cityLabel) { self.st.city = null; self.cityAmbiguous = false; self.cityFuzzy = false; self.err('city', ''); self.cityShow(); self.payMode(); }
           self.citySearch();
         } else if (self.touched[t.name] && self.fields.indexOf(t.name) >= 0) self.err(t.name, self.check(t.name));
       });
@@ -5578,7 +5653,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     busy: function (on) {
       var b = qs('[data-ep-submit]', this.form); if (!b) return;
       if (on) b.setAttribute('aria-busy', 'true'); else b.removeAttribute('aria-busy');
-      var l = qs('.ep-cta-label b', b); if (l) l.textContent = on ? 'Enviando tu pedido…' : 'Hacer mi pedido';
+      var pay = this.payOnline(), l = qs('.ep-cta-label b', b); if (l) l.textContent = on ? (pay ? 'Abriendo el pago…' : 'Enviando tu pedido…') : (pay ? 'Pagar mi pedido' : 'Hacer mi pedido');
     },
     submit: function () {
       var self = this; if (this.sending || this.done) return;
@@ -5600,17 +5675,19 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
-        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone() },
+        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
-        payment_method: 'cod', tracking: this.tracking()
+        payment_method: this.payOnline() ? 'bold' : 'cod', tracking: this.tracking()
       };
+      if (body.payment_method === 'bold') body.return_url = global.location.origin + global.location.pathname;
       if (this.test) body.dry_run = true;
       this.sending = true; this.busy(true);
       track('SubmitOrder', payload(p));
       this.api('POST', '', body).then(function (r) {
         var j = r.j || {};
+        if (r.ok && j.success && j.payment_required) { self.payOpen(j); return; }
         if (r.ok && j.success) { self.success(j, body); return; }
         var map = j.fields || {}, shown = false;
         Object.keys(map).forEach(function (k) {
@@ -5639,9 +5716,13 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       }
       track('OrderPlaced', Object.assign(payload(p), { value: total, order: j.order_number, test: !!j.dry_run }));
       var city = body.address.city, row = function (a, b) { return '<li><span>' + a + '</span><span>' + b + '</span></li>'; };
-      var li = row(R.esc(p.name) + ' <small>' + p.tablets + ' tabletas</small>', R.money(p.price));
-      p.gifts.forEach(function (g) { li += row(R.esc(g), 'Regalo'); });
-      if (body.bump && C.checkout.bump) li += row(R.esc(C.checkout.bump.title), R.money(C.checkout.bump.price));
+      var li = '';
+      if (j.paid) items.forEach(function (i) { li += row(R.esc(i.name || ''), R.money(i.price)); });   /* regreso de Bold: lo que guardó el servidor */
+      else {
+        li = row(R.esc(p.name) + ' <small>' + p.tablets + ' tabletas</small>', R.money(p.price));
+        p.gifts.forEach(function (g) { li += row(R.esc(g), 'Regalo'); });
+        if (body.bump && C.checkout.bump) li += row(R.esc(C.checkout.bump.title), R.money(C.checkout.bump.price));
+      }
       li += row('Envío' + (j.shipping_cop ? ' express' : ''), j.shipping_cop ? R.money(j.shipping_cop) : 'Gratis');
       var box = qs('[data-ep-thanks]');
       box.innerHTML = '<span class="ep-thanks-ico" aria-hidden="true">' + R.ico('check') + '</span>' +
@@ -5649,7 +5730,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         '<p class="ep-thanks-num">Pedido <b>' + R.esc(j.order_number || '') + '</b>' + (j.dry_run ? ' (prueba, no se creó)' : '') + '</p>' +
         '<p class="ep-thanks-text">' + R.esc(C.checkout.thanksText) + '</p>' +
         (li ? '<ul class="ep-sum-list">' + li + '</ul>' : '') +
-        '<div class="ep-sum-total"><span>Pagas al recibir</span><b>' + R.money(total) + '</b></div>' +
+        '<div class="ep-sum-total"><span>' + (j.paid ? 'Pagado en línea' : 'Pagas al recibir') + '</span><b>' + R.money(total) + '</b></div>' +
         '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Llega a ' + R.esc(city) + ' <b>' + R.delivery(C) + '</b> en bolsa negra sellada.</span></p>';
       this.form.hidden = true; box.hidden = false;
       var sticky = qs('[data-ep-sticky]'); if (sticky) { sticky.classList.remove('is-visible'); sticky.setAttribute('aria-hidden', 'true'); }

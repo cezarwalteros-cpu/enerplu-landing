@@ -39,6 +39,12 @@
           <p class="ep-f-err" data-ep-err="city" hidden></p>
           <p class="ep-city-ok" data-ep-city-ok hidden></p>
         </div>
+        <div class="ep-f" data-ep-email-row hidden>
+          <label for="ep-f-email">Correo electrónico</label>
+          <input id="ep-f-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="tucorreo@ejemplo.com" aria-describedby="ep-f-email-h">
+          <p class="ep-f-help" id="ep-f-email-h">Bold te envía ahí el comprobante del pago.</p>
+          <p class="ep-f-err" data-ep-err="email" hidden></p>
+        </div>
         <div class="ep-f">
           <label for="ep-f-addr">Dirección</label>
           <input id="ep-f-addr" name="address1" type="text" autocomplete="address-line1" maxlength="160" placeholder="Ej: Calle 45 # 23-10" required>
@@ -64,7 +70,7 @@
       <p class="ep-error" data-ep-form-error hidden></p>
 
       <button type="submit" class="ep-cta ep-of-submit" data-ep-submit>
-        <span class="ep-cta-label"><b>Hacer mi pedido</b><small>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
+        <span class="ep-cta-label"><b>Hacer mi pedido</b><small data-ep-cta-sub>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
       </button>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">

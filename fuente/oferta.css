@@ -76,6 +76,12 @@
 .ep-root .eph-order .ep-city-list li:hover, .ep-root .eph-order .ep-city-list li[aria-selected="true"] { background: #f3f3f3; }
 .ep-root .eph-order .ep-city-list li.ep-city-empty { color: #555; }
 
+/* envío sin recuadro ni título, resumen corto (cesar 2026-11-04: formulario más corto) */
+.ep-root .eph-order [data-ep-ship-block] { padding: 0; background: none; border: 0; box-shadow: none; }
+.ep-root .eph-order [data-ep-ship-block] .ep-of-legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.ep-root .eph-order .ep-sum { gap: 6px; padding: 12px 14px; }
+.ep-root .eph-order .ep-sum-total { border-top: 0; padding-top: 0; }
+
 /* envío, regalo extra y resumen en la misma paleta */
 .ep-root .eph-order .ep-ship-opt { border-color: #2f2f2f; }
 .ep-root .eph-order .ep-ship-opt.is-on { border-color: #d4af37; background: #11100c; }

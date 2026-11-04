@@ -62,7 +62,7 @@ config = (PDP / 'config.js').read_text()
 app = (PDP / 'app.js').read_text()
 overrides = """window.EP_CONFIG.checkout.mode = 'inline';
 window.EP_CONFIG.checkout.funnelLite = true;
-window.EP_CONFIG.theme = 'negro';
+window.EP_CONFIG.theme = 'claro';   // sección de oferta + formulario en fondo claro (2026-11-04)
 window.EP_CONFIG.tracking.fireStandardEvents = true;
 """
 pixel = f"""<script>

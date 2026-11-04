@@ -1409,7 +1409,7 @@ display: none;
 @media (max-width: 359px) { .ep-root .ep-of-grid { grid-template-columns: 1fr; } }
 
 /* Oferta + formulario con el diseño del selector v13: fondo negro, Inter, dorado para destacar,
-   verde solo en el precio, rojo solo en el botón. Campos en blanco con texto gris oscuro. */
+   verde solo en el precio, rojo solo en el botón. Tarjetas de oferta y campos en BLANCO (cesar 2026-11-04). */
 .ep-root .eph-order { background: #000; padding-block: 28px 44px; scroll-margin-top: 8px; }
 .ep-root .eph-order, .ep-root .eph-order .ep-of-legend, .ep-root .eph-order .ep-sel-name { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
 .ep-root .eph-order .ep-of { margin-top: 0; }
@@ -1419,34 +1419,34 @@ display: none;
 
 /* tarjetas (selector: se elige tocando la tarjeta) */
 .ep-root .eph-list { display: flex; flex-direction: column; gap: 16px; padding-top: 6px; }
-.ep-root .eph-list .eph-card { position: relative; display: block; background: #0d0d0d; border: 1.5px solid #3a3320; border-radius: 16px; padding: 14px 12px 12px; cursor: pointer; box-shadow: none; transition: border-color .2s, box-shadow .2s, background .2s; -webkit-tap-highlight-color: transparent; }
-.ep-root .eph-list .eph-card.is-on { border: 2px solid #d4af37; padding: 13.5px 11.5px 11.5px; box-shadow: 0 0 0 3px rgba(212, 175, 55, .14); background: #11100c; }
+.ep-root .eph-list .eph-card { position: relative; display: block; background: #fff; border: 1.5px solid #dedad0; border-radius: 16px; padding: 14px 12px 12px; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, .05); transition: border-color .2s, box-shadow .2s, background .2s; -webkit-tap-highlight-color: transparent; }
+.ep-root .eph-list .eph-card.is-on { border: 2px solid #d4af37; padding: 13.5px 11.5px 11.5px; box-shadow: 0 0 0 3px rgba(212, 175, 55, .22), 0 6px 18px rgba(0, 0, 0, .08); background: #fffbeb; }
 .ep-root .eph-list .eph-card input { position: absolute; opacity: 0; pointer-events: none; }
 .ep-root .eph-list .eph-card:has(input:focus-visible) { outline: 2px solid #d4af37; outline-offset: 3px; }
-.ep-root .eph-tag { position: absolute; top: -10px; left: 14px; background: #1a1a1a; color: #d4af37; border: 1px solid #3a3320; font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; line-height: 1.3; }
+.ep-root .eph-tag { position: absolute; top: -10px; left: 14px; background: #fff; color: #8a6a00; border: 1px solid #dccb8c; font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; line-height: 1.3; }
 .ep-root .eph-card.rec .eph-tag { background: #d4af37; color: #111; border-color: #d4af37; }
-.ep-root .eph-check { position: absolute; top: 12px; right: 12px; width: 24px; height: 24px; border-radius: 50%; border: 2px solid #5a5240; display: grid; place-items: center; background: #0d0d0d; }
+.ep-root .eph-check { position: absolute; top: 12px; right: 12px; width: 24px; height: 24px; border-radius: 50%; border: 2px solid #bdb59c; display: grid; place-items: center; background: #fff; }
 .ep-root .eph-check::after { content: ""; width: 12px; height: 12px; border-radius: 50%; background: #d4af37; transform: scale(0); transition: transform .18s; }
 .ep-root .eph-card.is-on .eph-check { border-color: #d4af37; }
 .ep-root .eph-card.is-on .eph-check::after { transform: scale(1); }
 .ep-root .eph-row { display: flex; gap: 12px; align-items: center; margin-top: 6px; }
-.ep-root .eph-img { flex: 0 0 44%; max-width: 44%; aspect-ratio: 3 / 2; border-radius: 10px; overflow: hidden; background: #fff; }
+.ep-root .eph-img { flex: 0 0 44%; max-width: 44%; aspect-ratio: 3 / 2; border-radius: 10px; overflow: hidden; background: #f2f2f2; }
 .ep-root .eph-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; max-width: none; }
 .ep-root .eph-info { flex: 1 1 auto; min-width: 0; display: block; padding-right: 22px; }
 .ep-root .eph-info > span { display: block; line-height: 1.3; }
-.ep-root .eph-name { font-size: 17px; font-weight: 700; color: #fff; margin: 0 0 2px; }
-.ep-root .eph-qty { font-size: 13px; color: #bdbdbd; margin: 0 0 3px; }
+.ep-root .eph-name { font-size: 17px; font-weight: 700; color: #111; margin: 0 0 2px; }
+.ep-root .eph-qty { font-size: 13px; color: #555; margin: 0 0 3px; }
 .ep-root .eph-inc { margin: 0 0 6px; }
-.ep-root .eph-inc > span { display: flex; align-items: baseline; gap: 5px; font-size: 12.5px; color: #e6e6e6; padding: 1px 0; }
-.ep-root .eph-inc i { font-style: normal; font-weight: 700; color: #d4af37; font-size: 13px; }
+.ep-root .eph-inc > span { display: flex; align-items: baseline; gap: 5px; font-size: 12.5px; color: #222; padding: 1px 0; }
+.ep-root .eph-inc i { font-style: normal; font-weight: 700; color: #b8900f; font-size: 13px; }
 .ep-root .eph-inc em { font-style: normal; min-width: 0; }
-.ep-root .eph-inc b { font-weight: 600; color: #d4af37; }
-.ep-root .eph-por { font-size: 10.5px; font-weight: 600; color: #9a9a9a; letter-spacing: 1.2px; text-transform: uppercase; }
+.ep-root .eph-inc b { font-weight: 700; color: #138a36; }
+.ep-root .eph-por { font-size: 10.5px; font-weight: 600; color: #777; letter-spacing: 1.2px; text-transform: uppercase; }
 .ep-root .eph-prices { display: flex !important; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.ep-root .eph-price { font-size: 26px; font-weight: 800; color: #35d04a; letter-spacing: -.4px; font-variant-numeric: tabular-nums; }
-.ep-root .eph-card.is-basic .eph-price { color: #fff; font-weight: 800; }
-.ep-root .eph-was { font-size: 13px; color: #8a8a8a; text-decoration: line-through; }
-.ep-root .eph-save { font-size: 12.5px; font-weight: 600; color: #7fe08f; margin-top: 2px; }
+.ep-root .eph-price { font-size: 26px; font-weight: 800; color: #138a36; letter-spacing: -.4px; font-variant-numeric: tabular-nums; }
+.ep-root .eph-card.is-basic .eph-price { color: #111; font-weight: 800; }
+.ep-root .eph-was { font-size: 13px; color: #888; text-decoration: line-through; }
+.ep-root .eph-save { font-size: 12.5px; font-weight: 700; color: #138a36; margin-top: 2px; }
 .ep-root .eph-card.is-pulse { animation: ep-pulse .6s ease; }
 @media (max-width: 360px) {
   .ep-root .eph-price { font-size: 23px; }
@@ -1485,6 +1485,12 @@ display: none;
 .ep-root .eph-order .ep-city-ok .ep-ico { color: #ff4d4d; }
 .ep-root .eph-order .ep-city-list li:hover, .ep-root .eph-order .ep-city-list li[aria-selected="true"] { background: #f3f3f3; }
 .ep-root .eph-order .ep-city-list li.ep-city-empty { color: #555; }
+
+/* envío sin recuadro ni título, resumen corto (cesar 2026-11-04: formulario más corto) */
+.ep-root .eph-order [data-ep-ship-block] { padding: 0; background: none; border: 0; box-shadow: none; }
+.ep-root .eph-order [data-ep-ship-block] .ep-of-legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.ep-root .eph-order .ep-sum { gap: 6px; padding: 12px 14px; }
+.ep-root .eph-order .ep-sum-total { border-top: 0; padding-top: 0; }
 
 /* envío, regalo extra y resumen en la misma paleta */
 .ep-root .eph-order .ep-ship-opt { border-color: #2f2f2f; }
@@ -3019,24 +3025,17 @@ fbq('track', 'PageView');
       </div>
 
       <fieldset class="ep-of-block">
-        <legend class="ep-of-legend">¿A dónde te lo enviamos?</legend>
-        <div class="ep-of-grid">
-          <div class="ep-f">
-            <label for="ep-f-first">Nombre</label>
-            <input id="ep-f-first" name="first_name" type="text" autocomplete="given-name" autocapitalize="words" maxlength="60" placeholder="Tu nombre" required>
-            <p class="ep-f-err" data-ep-err="first_name" hidden></p>
-          </div>
-          <div class="ep-f">
-            <label for="ep-f-last">Apellido</label>
-            <input id="ep-f-last" name="last_name" type="text" autocomplete="family-name" autocapitalize="words" maxlength="60" placeholder="Tu apellido" required>
-            <p class="ep-f-err" data-ep-err="last_name" hidden></p>
-          </div>
+        <legend class="ep-of-legend">Tus datos de envío</legend>
+        <div class="ep-f">
+          <label for="ep-f-phone">Tu celular (WhatsApp)</label>
+          <div class="ep-f-phone"><span aria-hidden="true">+57</span><input id="ep-f-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="20" placeholder="300 123 4567" required aria-describedby="ep-f-phone-h"></div>
+          <p class="ep-f-help" id="ep-f-phone-h">Por aquí te confirmamos el pedido.</p>
+          <p class="ep-f-err" data-ep-err="phone" hidden></p>
         </div>
         <div class="ep-f">
-          <label for="ep-f-phone">Celular (WhatsApp)</label>
-          <div class="ep-f-phone"><span aria-hidden="true">+57</span><input id="ep-f-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="20" placeholder="300 123 4567" required aria-describedby="ep-f-phone-h"></div>
-          <p class="ep-f-help" id="ep-f-phone-h">Por aquí te confirmamos el pedido antes de enviarlo.</p>
-          <p class="ep-f-err" data-ep-err="phone" hidden></p>
+          <label for="ep-f-first">Nombre y apellido</label>
+          <input id="ep-f-first" name="first_name" type="text" autocomplete="name" autocapitalize="words" maxlength="120" placeholder="Ej: Carlos Pérez" required>
+          <p class="ep-f-err" data-ep-err="first_name" hidden></p>
         </div>
         <div class="ep-f ep-f--city">
           <label for="ep-f-city">Ciudad o municipio</label>
@@ -3081,7 +3080,6 @@ fbq('track', 'PageView');
       </button>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
-      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo</p>
     </form>
 
     <div class="ep-thanks" data-ep-thanks hidden tabindex="-1"></div>
@@ -4851,16 +4849,11 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     var save = Math.max(0, d.save) + (b && b.compare > b.price ? b.compare - b.price : 0);
     return { p: p, d: d, b: b, ship: ship, save: save, total: p.price + (b ? b.price : 0) + ship };
   };
-  R.summary = function (cfg, st, now) {
-    var t = R.totals(cfg, st), line = function (name, val, cls) { return '<li' + (cls ? ' class="' + cls + '"' : '') + '><span>' + name + '</span><span>' + val + '</span></li>'; };
-    var h = line(R.esc(t.p.name) + ' <small>' + t.p.tablets + ' tabletas</small>', (t.d.save > 0 ? '<s>' + R.money(t.d.compare) + '</s> ' : '') + R.money(t.p.price));
-    t.p.gifts.forEach(function (g) { h += line(R.esc(g), 'Regalo', 'is-gift'); });
-    if (t.b) h += line(R.esc(t.b.title), R.money(t.b.price));
-    h += line('Envío' + (t.ship ? ' express' : ''), t.ship ? R.money(t.ship) : 'Gratis', t.ship ? '' : 'is-gift');
-    return '<p class="ep-sum-title">Resumen de tu pedido</p><ul class="ep-sum-list">' + h + '</ul>' +
-      '<div class="ep-sum-total"><span>' + (st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir') + '</span><b>' + R.money(t.total) + '</b></div>' +
-      (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + ' en este pedido</p>' : '') +
-      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>.' + (st.pay ? '' : ' Pagas en efectivo cuando lo recibes.') + '</span></p>';
+  R.summary = function (cfg, st, now) {   /* corto (cesar 2026-11-04): solo total, ahorro y fecha de entrega */
+    var t = R.totals(cfg, st);
+    return '<div class="ep-sum-total"><span>' + (st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir') + '</span><b>' + R.money(t.total) + '</b></div>' +
+      (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + '</p>' : '') +
+      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>.</span></p>';
   };
 
   R.fallback = function (cfg, slideIndex, label) {
@@ -5358,7 +5351,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       if (this.test || this.done) return;
       this.cartTimer = setTimeout(function () {
         var ph = self.phone(); if (!self.validPhone(ph) || self.st.phoneBlock || self.done) return;
-        var nm = ((self.el('first_name').value || '') + ' ' + (self.el('last_name').value || '')).trim();
+        var nm = String(self.el('first_name').value || '').trim();
         self.api('POST', '', { action: 'cart', slug: C.checkout.slug, phone: ph, name: nm, offer_key: packById(state.pack).offerKey, bump: !!self.st.bump, session_id: self.sid, tracking: self.tracking() }, true).catch(function () {});
       }, 1500);
     },
@@ -5559,8 +5552,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     },
     check: function (name) {
       var v = function (n) { var e = Order.el(n); return e ? String(e.value || '').trim() : ''; };
-      if (name === 'first_name') return v('first_name').length < 2 ? 'Escribe tu nombre' : '';
-      if (name === 'last_name') return v('last_name').length < 2 ? 'Escribe tu apellido' : '';
+      if (name === 'first_name') { var nm = v('first_name'); return nm.length < 2 ? 'Escribe tu nombre y apellido' : (nm.split(/\s+/).length < 2 || nm.length < 5 ? 'Escribe también tu apellido' : ''); }
       if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return p.length && p.charAt(0) !== '3' ? 'Debe ser un celular (empieza por 3). Por ahí te confirmamos el pedido' : (p.length ? 'Te faltan ' + (10 - p.length) + ' números: el celular tiene 10 dígitos' : 'Escribe tu celular (10 dígitos, empieza por 3)'); return this.st.phoneMsg || ''; }
       if (name === 'city') { if (!this.st.city) return !v('city') ? 'Escribe tu ciudad o municipio' : this.cityAmbiguous ? 'Hay varios municipios con ese nombre: toca el tuyo en la lista' : this.cityFuzzy ? '¿Quisiste decir ' + (this.cityRows || []).slice(0, 2).map(function (c) { return c.municipio; }).join(' o ') + '? Tócalo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
       /* dirección flexible: veredas, fincas, oficinas de transportadora o direcciones sin nomenclatura pasan;
@@ -5570,7 +5562,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
       return '';
     },
-    fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'address1', 'additional'],
+    fields: ['first_name', 'phone', 'city', 'email', 'address1', 'additional'],
     validate: function () {
       var self = this, bad = [];
       this.fields.forEach(function (f) { var m = self.check(f); self.err(f, m); if (m) bad.push(f); });
@@ -5622,15 +5614,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         }
         if (String(t.value || '').trim()) self.touched[t.name] = true;
         if (self.touched[t.name]) self.err(t.name, self.check(t.name));
-        if (t.name === 'first_name') {   /* escribió nombre y apellido en el mismo campo: se reparten solos */
-          var last = self.el('last_name'), parts = String(t.value || '').trim().split(/\s+/);
-          if (parts.length >= 2 && last && !String(last.value || '').trim()) {
-            var cut = parts.length >= 4 ? 2 : 1;
-            t.value = parts.slice(0, cut).join(' '); last.value = parts.slice(cut).join(' ');
-            self.err('first_name', ''); self.err('last_name', '');
-          }
-        }
-        if (t.name === 'first_name' || t.name === 'last_name' || t.name === 'phone') self.queueCart();
+        if (t.name === 'first_name' || t.name === 'phone') self.queueCart();
       });
       cityInp.addEventListener('focus', function () {
         if (global.innerWidth > 700) return;
@@ -5675,7 +5659,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
-        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
+        customer: { full_name: v('first_name').replace(/\s+/g, ' '), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
@@ -5691,7 +5675,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         if (r.ok && j.success) { self.success(j, body); return; }
         var map = j.fields || {}, shown = false;
         Object.keys(map).forEach(function (k) {
-          var key = k === 'full_name' ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
+          var key = (k === 'full_name' || k === 'last_name') ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
           if (self.fields.indexOf(key) >= 0) { self.err(key, map[k]); shown = true; }
         });
         if (j.recent_order || j.blocked) { self.st.phoneBlock = true; self.st.phoneMsg = j.error || map.phone || ''; self.err('phone', self.st.phoneMsg); shown = true; }
@@ -5998,7 +5982,6 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
             '<span class="eph-name">' + R.esc(p.name) + '</span>' +
             '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
             (L.inc.length ? '<span class="eph-inc">' + L.inc.map(function (t) { return '<span><i>+</i><em>' + t + '</em></span>'; }).join('') + '</span>' : '') +
-            (save > 0 ? '<span class="eph-por">Por solo</span>' : '') +
             '<span class="eph-prices"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
             (save > 0 ? '<span class="eph-save">Ahorras ' + R.money(save) + '</span>' : '') +
           '</span>' +

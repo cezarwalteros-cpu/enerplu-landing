@@ -1,12 +1,11 @@
-/* Oferta + formulario con el diseño del selector v13, en FONDO CLARO (cesar 2026-11-04: las tarjetas
-   oscuras confundían). Inter, dorado para destacar el plan elegido, verde solo en el precio,
-   rojo solo en el botón. Tarjetas blancas sobre gris muy claro, texto negro. */
-.ep-root .eph-order { background: #f4f3ef; padding-block: 28px 44px; scroll-margin-top: 8px; }
+/* Oferta + formulario con el diseño del selector v13: fondo negro, Inter, dorado para destacar,
+   verde solo en el precio, rojo solo en el botón. Tarjetas de oferta y campos en BLANCO (cesar 2026-11-04). */
+.ep-root .eph-order { background: #000; padding-block: 28px 44px; scroll-margin-top: 8px; }
 .ep-root .eph-order, .ep-root .eph-order .ep-of-legend, .ep-root .eph-order .ep-sel-name { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
 .ep-root .eph-order .ep-of { margin-top: 0; }
 .ep-root .eph { display: block; }
-.ep-root .eph-title { text-align: center; font-size: 22px; font-weight: 700; color: #111; margin: 0 0 4px; letter-spacing: -.2px; line-height: 1.25; }
-.ep-root .eph-sub { text-align: center; font-size: 13px; color: #555; margin: 0 0 16px; }
+.ep-root .eph-title { text-align: center; font-size: 22px; font-weight: 700; color: #fff; margin: 0 0 4px; letter-spacing: -.2px; line-height: 1.25; }
+.ep-root .eph-sub { text-align: center; font-size: 13px; color: #bdbdbd; margin: 0 0 16px; }
 
 /* tarjetas (selector: se elige tocando la tarjeta) */
 .ep-root .eph-list { display: flex; flex-direction: column; gap: 16px; padding-top: 6px; }
@@ -47,21 +46,21 @@
 
 /* empujón al siguiente plan, en dorado */
 .ep-root .eph-order .ep-nudge { margin-top: 14px; }
-.ep-root .eph-order .ep-nudge-in { background: #fff; border-color: #dccb8c; color: #222; }
-.ep-root .eph-order .ep-nudge-in > .ep-ico { color: #b8900f; }
-.ep-root .eph-order .ep-nudge-in.is-strong { background: #fffbeb; border-color: #d4af37; }
-.ep-root .eph-order .ep-nudge-in b { color: #111; }
-.ep-root .eph-order .ep-nudge-btn { border-color: #b8900f !important; color: #8a6a00 !important; background: transparent !important; }
+.ep-root .eph-order .ep-nudge-in { background: #0d0d0d; border-color: #3a3320; color: #e6e6e6; }
+.ep-root .eph-order .ep-nudge-in > .ep-ico { color: #d4af37; }
+.ep-root .eph-order .ep-nudge-in.is-strong { background: #16130a; border-color: #d4af37; }
+.ep-root .eph-order .ep-nudge-in b { color: #fff; }
+.ep-root .eph-order .ep-nudge-btn { border-color: #d4af37 !important; color: #d4af37 !important; background: transparent !important; }
 .ep-root .eph-order .ep-nudge-in.is-strong .ep-nudge-btn { background: #d4af37 !important; color: #111 !important; }
 
 /* bloques del formulario */
-.ep-root .eph-order .ep-of-block { background: #fff; border-color: #e3e0d8; box-shadow: 0 2px 8px rgba(0, 0, 0, .04); }
-.ep-root .eph-order .ep-of-legend { font-size: 18px; font-weight: 700; color: #111; }
-.ep-root .eph-order .ep-f label { color: #222; }
-.ep-root .eph-order .ep-f-help { color: #666; }
+.ep-root .eph-order .ep-of-block { background: #0d0d0d; border-color: #2a2a2a; box-shadow: none; }
+.ep-root .eph-order .ep-of-legend { font-size: 18px; font-weight: 700; color: #fff; }
+.ep-root .eph-order .ep-f label { color: #f2f2f2; }
+.ep-root .eph-order .ep-f-help { color: #a8a8a8; }
 
 /* campos: fondo blanco, texto negro, placeholder gris oscuro */
-.ep-root .eph-order .ep-f input { background: #fff; color: #111; border: 1.5px solid #cfcac0; caret-color: #111; }
+.ep-root .eph-order .ep-f input { background: #fff; color: #111; border: 1.5px solid #d6d6d6; caret-color: #111; }
 .ep-root .eph-order .ep-f input::placeholder { color: #555; opacity: 1; }
 .ep-root .eph-order .ep-f input:focus { border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212, 175, 55, .28); }
 .ep-root .eph-order .ep-f input[aria-invalid="true"] { border-color: #f04438; }
@@ -71,30 +70,30 @@
 .ep-root .eph-order .ep-city-list li { color: #111; border-bottom-color: #eee; }
 .ep-root .eph-order .ep-city-alias { color: #555; }
 .ep-root .eph-order .ep-city-name em { color: #e00000; }
-.ep-root .eph-order .ep-city-ok { color: #222; }
-.ep-root .eph-order .ep-city-ok em { color: #c4141f; }
-.ep-root .eph-order .ep-city-ok .ep-ico { color: #c4141f; }
+.ep-root .eph-order .ep-city-ok { color: #f2f2f2; }
+.ep-root .eph-order .ep-city-ok em { color: #ff4d4d; }
+.ep-root .eph-order .ep-city-ok .ep-ico { color: #ff4d4d; }
 .ep-root .eph-order .ep-city-list li:hover, .ep-root .eph-order .ep-city-list li[aria-selected="true"] { background: #f3f3f3; }
 .ep-root .eph-order .ep-city-list li.ep-city-empty { color: #555; }
 
 /* envío, regalo extra y resumen en la misma paleta */
-.ep-root .eph-order .ep-ship-opt { border-color: #dedad0; background: #fff; }
-.ep-root .eph-order .ep-ship-opt.is-on { border-color: #d4af37; background: #fffbeb; }
+.ep-root .eph-order .ep-ship-opt { border-color: #2f2f2f; }
+.ep-root .eph-order .ep-ship-opt.is-on { border-color: #d4af37; background: #11100c; }
 .ep-root .eph-order .ep-ship-opt.is-on .ep-pack-dot { border-color: #d4af37; }
 .ep-root .eph-order .ep-ship-opt .ep-pack-dot::after { background: #d4af37; }
-.ep-root .eph-order .ep-bump { border-color: rgba(212, 175, 55, .7); background: #fff; }
+.ep-root .eph-order .ep-bump { border-color: rgba(212, 175, 55, .6); background: #0d0d0d; }
 .ep-root .eph-order .ep-bump.is-on { border-color: #d4af37; }
-.ep-root .eph-order .ep-bump-box { border-color: #d4af37; background: #fff; }
+.ep-root .eph-order .ep-bump-box { border-color: #d4af37; background: #0d0d0d; }
 .ep-root .eph-order .ep-bump.is-on .ep-bump-box { background: #d4af37; }
 .ep-root .eph-order .ep-bump-box .ep-ico { color: #111; }
-.ep-root .eph-order .ep-bump-price b { color: #138a36; }
-.ep-root .eph-order .ep-sum { background: #fff; border-color: #e3e0d8; }
-.ep-root .eph-order .ep-sum-total b { color: #138a36; }
+.ep-root .eph-order .ep-bump-price b { color: #35d04a; }
+.ep-root .eph-order .ep-sum { background: #0d0d0d; border-color: #2a2a2a; }
+.ep-root .eph-order .ep-sum-total b { color: #35d04a; }
 .ep-root .eph-order .ep-of-submit { background: #e00000; box-shadow: 0 10px 24px rgba(224, 0, 0, .3); border-radius: 12px; }
-.ep-root .eph-order .ep-micro { color: #555; }
+.ep-root .eph-order .ep-micro { color: #bdbdbd; }
 
 .ep-root .eph-guarantee { width: 88px; height: auto; margin: 6px auto 0; display: block; }
-.ep-root .eph-trust { text-align: center; font-size: 12.5px; color: #444; background: #fff; border: 1px solid #e3e0d8; border-radius: 10px; padding: 8px 10px; }
+.ep-root .eph-trust { text-align: center; font-size: 12.5px; color: #cfcfcf; border: 1px solid #2a2a2a; border-radius: 10px; padding: 8px 10px; }
 
 /* barra fija de la landing: no aparece mientras la oferta o el formulario están en pantalla */
 html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer-events: none; }

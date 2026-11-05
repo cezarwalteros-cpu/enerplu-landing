@@ -3061,7 +3061,7 @@ fbq('track', 'PageView');
           <input id="ep-f-add" name="additional" type="text" autocomplete="address-line2" maxlength="160" placeholder="Barrio, apto, casa o una referencia" required>
           <p class="ep-f-err" data-ep-err="additional" hidden></p>
         </div>
-        <div class="ep-hp" aria-hidden="true"><label for="ep-f-web">No llenar</label><input id="ep-f-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <div class="ep-hp" aria-hidden="true"><label for="ep-f-web">No llenar</label><input id="ep-f-web" name="ep_hp_ref" type="text" tabindex="-1" autocomplete="new-password" data-lpignore="true" data-1p-ignore data-form-type="other"></div>
       </fieldset>
 
       <fieldset class="ep-of-block" data-ep-ship-block>
@@ -5658,7 +5658,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       }
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
-        action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
+        action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('ep_hp_ref') /* honeypot: name raro para que el autocompletar del celular no lo llene */,
         customer: { full_name: v('first_name').replace(/\s+/g, ' '), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,

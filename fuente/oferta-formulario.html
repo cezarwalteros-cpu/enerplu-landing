@@ -12,17 +12,24 @@
       </div>
 
       <fieldset class="ep-of-block">
-        <legend class="ep-of-legend">Tus datos de envío</legend>
-        <div class="ep-f">
-          <label for="ep-f-phone">Tu celular (WhatsApp)</label>
-          <div class="ep-f-phone"><span aria-hidden="true">+57</span><input id="ep-f-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="20" placeholder="300 123 4567" required aria-describedby="ep-f-phone-h"></div>
-          <p class="ep-f-help" id="ep-f-phone-h">Por aquí te confirmamos el pedido.</p>
-          <p class="ep-f-err" data-ep-err="phone" hidden></p>
+        <legend class="ep-of-legend">¿A dónde te lo enviamos?</legend>
+        <div class="ep-of-grid">
+          <div class="ep-f">
+            <label for="ep-f-first">Nombre</label>
+            <input id="ep-f-first" name="first_name" type="text" autocomplete="given-name" autocapitalize="words" maxlength="60" placeholder="Tu nombre" required>
+            <p class="ep-f-err" data-ep-err="first_name" hidden></p>
+          </div>
+          <div class="ep-f">
+            <label for="ep-f-last">Apellido</label>
+            <input id="ep-f-last" name="last_name" type="text" autocomplete="family-name" autocapitalize="words" maxlength="60" placeholder="Tu apellido" required>
+            <p class="ep-f-err" data-ep-err="last_name" hidden></p>
+          </div>
         </div>
         <div class="ep-f">
-          <label for="ep-f-first">Nombre y apellido</label>
-          <input id="ep-f-first" name="first_name" type="text" autocomplete="name" autocapitalize="words" maxlength="120" placeholder="Ej: Carlos Pérez" required>
-          <p class="ep-f-err" data-ep-err="first_name" hidden></p>
+          <label for="ep-f-phone">Celular (WhatsApp)</label>
+          <div class="ep-f-phone"><span aria-hidden="true">+57</span><input id="ep-f-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="20" placeholder="300 123 4567" required aria-describedby="ep-f-phone-h"></div>
+          <p class="ep-f-help" id="ep-f-phone-h">Por aquí te confirmamos el pedido antes de enviarlo.</p>
+          <p class="ep-f-err" data-ep-err="phone" hidden></p>
         </div>
         <div class="ep-f ep-f--city">
           <label for="ep-f-city">Ciudad o municipio</label>
@@ -48,7 +55,7 @@
           <input id="ep-f-add" name="additional" type="text" autocomplete="address-line2" maxlength="160" placeholder="Barrio, apto, casa o una referencia" required>
           <p class="ep-f-err" data-ep-err="additional" hidden></p>
         </div>
-        <div class="ep-hp" aria-hidden="true"><label for="ep-f-web">No llenar</label><input id="ep-f-web" name="ep_hp_ref" type="text" tabindex="-1" autocomplete="new-password" data-lpignore="true" data-1p-ignore data-form-type="other"></div>
+        <div class="ep-hp" aria-hidden="true"><label for="ep-f-web">No llenar</label><input id="ep-f-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       </fieldset>
 
       <fieldset class="ep-of-block" data-ep-ship-block>
@@ -67,6 +74,7 @@
       </button>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
+      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo</p>
     </form>
 
     <div class="ep-thanks" data-ep-thanks hidden tabindex="-1"></div>

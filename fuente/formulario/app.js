@@ -239,11 +239,16 @@
     var save = Math.max(0, d.save) + (b && b.compare > b.price ? b.compare - b.price : 0);
     return { p: p, d: d, b: b, ship: ship, save: save, total: p.price + (b ? b.price : 0) + ship };
   };
-  R.summary = function (cfg, st, now) {   /* corto (cesar 2026-11-04): solo total, ahorro y fecha de entrega */
-    var t = R.totals(cfg, st);
-    return '<div class="ep-sum-total"><span>' + (st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir') + '</span><b>' + R.money(t.total) + '</b></div>' +
-      (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + '</p>' : '') +
-      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>.</span></p>';
+  R.summary = function (cfg, st, now) {
+    var t = R.totals(cfg, st), line = function (name, val, cls) { return '<li' + (cls ? ' class="' + cls + '"' : '') + '><span>' + name + '</span><span>' + val + '</span></li>'; };
+    var h = line(R.esc(t.p.name) + ' <small>' + t.p.tablets + ' tabletas</small>', (t.d.save > 0 ? '<s>' + R.money(t.d.compare) + '</s> ' : '') + R.money(t.p.price));
+    t.p.gifts.forEach(function (g) { h += line(R.esc(g), 'Regalo', 'is-gift'); });
+    if (t.b) h += line(R.esc(t.b.title), R.money(t.b.price));
+    h += line('Envío' + (t.ship ? ' express' : ''), t.ship ? R.money(t.ship) : 'Gratis', t.ship ? '' : 'is-gift');
+    return '<p class="ep-sum-title">Resumen de tu pedido</p><ul class="ep-sum-list">' + h + '</ul>' +
+      '<div class="ep-sum-total"><span>' + (st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir') + '</span><b>' + R.money(t.total) + '</b></div>' +
+      (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + ' en este pedido</p>' : '') +
+      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>.' + (st.pay ? '' : ' Pagas en efectivo cuando lo recibes.') + '</span></p>';
   };
 
   R.fallback = function (cfg, slideIndex, label) {
@@ -741,7 +746,7 @@
       if (this.test || this.done) return;
       this.cartTimer = setTimeout(function () {
         var ph = self.phone(); if (!self.validPhone(ph) || self.st.phoneBlock || self.done) return;
-        var nm = String(self.el('first_name').value || '').trim();
+        var nm = ((self.el('first_name').value || '') + ' ' + (self.el('last_name').value || '')).trim();
         self.api('POST', '', { action: 'cart', slug: C.checkout.slug, phone: ph, name: nm, offer_key: packById(state.pack).offerKey, bump: !!self.st.bump, session_id: self.sid, tracking: self.tracking() }, true).catch(function () {});
       }, 1500);
     },
@@ -942,7 +947,8 @@
     },
     check: function (name) {
       var v = function (n) { var e = Order.el(n); return e ? String(e.value || '').trim() : ''; };
-      if (name === 'first_name') { var nm = v('first_name'); return nm.length < 2 ? 'Escribe tu nombre y apellido' : (nm.split(/\s+/).length < 2 || nm.length < 5 ? 'Escribe también tu apellido' : ''); }
+      if (name === 'first_name') return v('first_name').length < 2 ? 'Escribe tu nombre' : '';
+      if (name === 'last_name') return v('last_name').length < 2 ? 'Escribe tu apellido' : '';
       if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return p.length && p.charAt(0) !== '3' ? 'Debe ser un celular (empieza por 3). Por ahí te confirmamos el pedido' : (p.length ? 'Te faltan ' + (10 - p.length) + ' números: el celular tiene 10 dígitos' : 'Escribe tu celular (10 dígitos, empieza por 3)'); return this.st.phoneMsg || ''; }
       if (name === 'city') { if (!this.st.city) return !v('city') ? 'Escribe tu ciudad o municipio' : this.cityAmbiguous ? 'Hay varios municipios con ese nombre: toca el tuyo en la lista' : this.cityFuzzy ? '¿Quisiste decir ' + (this.cityRows || []).slice(0, 2).map(function (c) { return c.municipio; }).join(' o ') + '? Tócalo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
       /* dirección flexible: veredas, fincas, oficinas de transportadora o direcciones sin nomenclatura pasan;
@@ -952,7 +958,7 @@
       if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
       return '';
     },
-    fields: ['first_name', 'phone', 'city', 'email', 'address1', 'additional'],
+    fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'address1', 'additional'],
     validate: function () {
       var self = this, bad = [];
       this.fields.forEach(function (f) { var m = self.check(f); self.err(f, m); if (m) bad.push(f); });
@@ -1004,7 +1010,15 @@
         }
         if (String(t.value || '').trim()) self.touched[t.name] = true;
         if (self.touched[t.name]) self.err(t.name, self.check(t.name));
-        if (t.name === 'first_name' || t.name === 'phone') self.queueCart();
+        if (t.name === 'first_name') {   /* escribió nombre y apellido en el mismo campo: se reparten solos */
+          var last = self.el('last_name'), parts = String(t.value || '').trim().split(/\s+/);
+          if (parts.length >= 2 && last && !String(last.value || '').trim()) {
+            var cut = parts.length >= 4 ? 2 : 1;
+            t.value = parts.slice(0, cut).join(' '); last.value = parts.slice(cut).join(' ');
+            self.err('first_name', ''); self.err('last_name', '');
+          }
+        }
+        if (t.name === 'first_name' || t.name === 'last_name' || t.name === 'phone') self.queueCart();
       });
       cityInp.addEventListener('focus', function () {
         if (global.innerWidth > 700) return;
@@ -1048,8 +1062,8 @@
       }
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
-        action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('ep_hp_ref') /* honeypot: name raro para que el autocompletar del celular no lo llene */,
-        customer: { full_name: v('first_name').replace(/\s+/g, ' '), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
+        action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
+        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
@@ -1065,7 +1079,7 @@
         if (r.ok && j.success) { self.success(j, body); return; }
         var map = j.fields || {}, shown = false;
         Object.keys(map).forEach(function (k) {
-          var key = (k === 'full_name' || k === 'last_name') ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
+          var key = k === 'full_name' ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
           if (self.fields.indexOf(key) >= 0) { self.err(key, map[k]); shown = true; }
         });
         if (j.recent_order || j.blocked) { self.st.phoneBlock = true; self.st.phoneMsg = j.error || map.phone || ''; self.err('phone', self.st.phoneMsg); shown = true; }

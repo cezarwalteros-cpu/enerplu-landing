@@ -25,6 +25,7 @@
             '<span class="eph-name">' + R.esc(p.name) + '</span>' +
             '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
             (L.inc.length ? '<span class="eph-inc">' + L.inc.map(function (t) { return '<span><i>+</i><em>' + t + '</em></span>'; }).join('') + '</span>' : '') +
+            (save > 0 ? '<span class="eph-por">Por solo</span>' : '') +
             '<span class="eph-prices"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
             (save > 0 ? '<span class="eph-save">Ahorras ' + R.money(save) + '</span>' : '') +
           '</span>' +

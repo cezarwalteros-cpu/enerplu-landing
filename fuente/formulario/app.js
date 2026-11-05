@@ -1048,7 +1048,7 @@
       }
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
-        action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
+        action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('ep_hp_ref') /* honeypot: name raro para que el autocompletar del celular no lo llene */,
         customer: { full_name: v('first_name').replace(/\s+/g, ' '), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,

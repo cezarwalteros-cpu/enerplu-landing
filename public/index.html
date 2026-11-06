@@ -1588,7 +1588,7 @@ fbq('track', 'PageView');
 
   function send(ev, extra) {
     if (/[?&]ep_test=1(&|$)/.test(location.search)) return;
-    if (sent[ev] && ev !== "plan_click" && ev !== "cta_click") return;
+    if (sent[ev] && ev !== "plan_click" && ev !== "cta_click" && ev !== "ping" && ev !== "salida") return;
     sent[ev] = 1;
     var body = JSON.stringify({
       sid: sid, ev: ev, page: location.host + location.pathname, store: STORE,
@@ -1601,6 +1601,12 @@ fbq('track', 'PageView');
 
   // 1) Visita
   send("page_view");
+
+  // 1b) En línea ahora (CRM): latido cada 30 s con la página a la vista, máx. 30 min; al ocultarla avisa la salida
+  var latidos = 0;
+  function latido() { if (document.visibilityState === "visible" && latidos < 60) { latidos++; send("ping"); } }
+  setInterval(latido, 30000);
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") send("salida"); else latido(); });
 
   // 2) Vio los planes (GemPages puede duplicar el bloque: se observan todas las copias)
   function watch() {

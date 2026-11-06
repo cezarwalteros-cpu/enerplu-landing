@@ -30,6 +30,19 @@ secs[0] = must(secs[0], 'utm_content: q.get("utm_content"),\n      extra', 'utm_
 # en modo prueba (?ep_test=1) los scripts de embudo de la página no registran nada
 secs[0] = must(secs[0], 'function send(ev, extra) {', 'function send(ev, extra) {\n    if (/[?&]ep_test=1(&|$)/.test(location.search)) return;')
 
+# "En línea ahora" del CRM: latido cada 30 s mientras la página está a la vista (máx. 30 min) y aviso de salida al ocultarla.
+# funnel-track guarda ping/salida solo en funnel_en_vivo (no en funnel_events), así que el embudo no cambia.
+secs[0] = must(secs[0], 'if (sent[ev] && ev !== "plan_click" && ev !== "cta_click") return;',
+               'if (sent[ev] && ev !== "plan_click" && ev !== "cta_click" && ev !== "ping" && ev !== "salida") return;')
+secs[0] = must(secs[0], '  send("page_view");\n', """  send("page_view");
+
+  // 1b) En línea ahora (CRM): latido cada 30 s con la página a la vista, máx. 30 min; al ocultarla avisa la salida
+  var latidos = 0;
+  function latido() { if (document.visibilityState === "visible" && latidos < 60) { latidos++; send("ping"); } }
+  setInterval(latido, 30000);
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") send("salida"); else latido(); });
+""")
+
 # 11 · enlaces legales a la tienda
 secs[11] = secs[11].replace('href="/pages/', 'href="' + SHOP + '/pages/')
 

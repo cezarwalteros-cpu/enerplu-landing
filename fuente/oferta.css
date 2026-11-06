@@ -97,3 +97,11 @@
 
 /* barra fija de la landing: no aparece mientras la oferta o el formulario están en pantalla */
 html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer-events: none; }
+
+/* C-02: precio por tableta */
+.ep-root .eph-unit { font-size: 12px; font-weight: 600; color: #cfcfcf; margin-top: 1px; }
+/* C-01: preguntas frecuentes debajo del botón */
+.ep-root .eph-faq { margin-top: 18px; }
+.ep-root .eph-faq-title { font-size: 17px; font-weight: 800; margin: 0 0 6px; text-align: center; }
+.ep-root .eph-faq .ep-faq-list summary { font-size: 15px; padding: 14px 2px; min-height: 48px; }
+.ep-root .eph-faq .ep-faq-list details > div { font-size: 14px; padding-bottom: 14px; }

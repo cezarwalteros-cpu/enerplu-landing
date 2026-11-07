@@ -147,7 +147,44 @@ OCULTAR_PRODUCTO = [
     'gpGrrwtDmE',   # "RESULTADOS VISIBLES DE INMEDIATO" (resultados_enerplu.avif), oculta 2026-11-07 a pedido de cesar
 ]
 ocultar = '<style>' + ''.join('[data-id="%s"]{display:none!important}' % i for i in OCULTAR_PRODUCTO) + '</style>\n' if OCULTAR_PRODUCTO else ''
-(OUT / 'producto.html').write_text(must(html, '<main ', ocultar + gate + '\n<main '))
+# Textos que cambian solo en /producto (TikTok), pedido de cesar 2026-11-07: sin términos explícitos ni promesas médicas.
+# Cada par es (texto actual, texto nuevo); si el texto de Shopify cambia, el build falla en vez de dejarlo a medias.
+CAMBIOS_PRODUCTO = [
+    ('v1774025718/ENEPLU_MECANISMO_fextu4.webp" alt="Mecanismo Enerplu"',
+     'v1794091617/Tecnolog%C3%ADa_sublingual__absorci%C3%B3n_directa_al_torrente_sangu%C3%ADneo_wsarhe.webp" alt="Tecnología sublingual: absorción directa al torrente sanguíneo"'),
+    ('content="ENERPLU, tableta masticable sublingual.', 'content="ENERPLU, tableta sublingual.'),
+    ('alt="ENERPLU tabletas masticables con maca negra"', 'alt="ENERPLU tabletas sublinguales con maca negra"'),
+    ('La tableta masticable que inunda tu zona pélvica de sangre antes de que ella termine de desvestirse.',
+     'La tableta que se disuelve bajo la lengua y actúa en minutos, para que llegues con toda la energía al momento decisivo.'),
+    ('<strong>Más duro. Más firme. Más control.</strong>', '<strong>Más firmeza. Más energía. Más control.</strong>'),
+    ('alt="Masticables Enerplu"', 'alt="Tabletas sublinguales Enerplu"'),
+    ('<span>MASTICABLES ENERPLU</span>', '<span>TABLETAS SUBLINGUALES ENERPLU</span>'),
+    ('Lo masticas como un caramelo de menta.', 'La disuelves bajo la lengua como un caramelo de menta.'),
+    ('Al masticarla, nuestra matriz activa', 'Al disolverla bajo la lengua, nuestra matriz activa'),
+    (' (el mismo método de emergencia rápida que usa la medicina).', '.'),
+    ('Es el mismo método de emergencia rápida usado en cardiología.',
+     'Tecnología de rápida biodisponibilidad que ingresa directo al flujo sanguíneo evitando la degradación digestiva.'),
+    ('Absorción avalada por la ciencia vascular para un bombeo masivo en 5 minutos.', 'Absorción rápida: empieza a actuar en 5 a 15 minutos.'),
+    ('<p>Mastica una tableta de 5 a 15 minutos antes del encuentro y déjala disolver bajo la lengua.',
+     '<p>Disuelve una tableta bajo la lengua de 5 a 15 minutos antes del encuentro.'),
+    ("'Mastica una tableta'", "'Disuelve una tableta bajo la lengua'"),
+    ('<h3>Se mastica y se deja bajo la lengua</h3>', '<h3>Se disuelve bajo la lengua</h3>'),
+    ('aria-label="Masticas, esperas de 5 a 15 minutos, listo"><span>Masticas</span>',
+     'aria-label="La disuelves, esperas de 5 a 15 minutos, listo"><span>La disuelves</span>'),
+    ("alt: 'Caja de ENERPLU con tabletas masticables'", "alt: 'Caja de ENERPLU con tabletas sublinguales'"),
+    ("'ENERPLU, tabletas masticables'", "'ENERPLU, tabletas sublinguales'"),
+]
+# Reseñas: no se reescriben las palabras de los clientes; en /producto solo se muestran estas (las que no tienen lenguaje explícito).
+# Son los números de posición en la lista REVIEWS de la sección de reseñas (0 = la primera).
+RESENAS_PRODUCTO = [20, 23, 30, 39, 40, 41, 42, 43, 44, 45, 47, 49, 51, 53, 57, 59, 101, 108, 109, 111, 114, 117]
+prod = html
+for a, b in CAMBIOS_PRODUCTO:
+    prod = must(prod, a, b)
+_k = prod.index('const REVIEWS=') + len('const REVIEWS=')
+_arr, _n = json.JSONDecoder().raw_decode(prod[_k:])
+assert len(_arr) == 120, len(_arr)
+prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=False, separators=(',', ':')) + prod[_k + _n:]
+(OUT / 'producto.html').write_text(must(prod, '<main ', ocultar + gate + '\n<main '))
 (OUT / 'terminos.html').write_text((ROOT / 'fuente' / 'producto' / 'terminos.html').read_text())
 (ROOT / 'vercel.json').write_text(json.dumps({
     "framework": None,

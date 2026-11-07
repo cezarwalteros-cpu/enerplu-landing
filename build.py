@@ -142,7 +142,12 @@ html = f"""<!doctype html>
 # /producto: la misma landing con aviso de restricción de edad (+18) a pantalla completa, para el tráfico de TikTok.
 # Lo ve todo el que abre esa URL, igual en celular y computador. La landing de Meta (/) no cambia.
 gate = (ROOT / 'fuente' / 'producto' / 'aviso-edad.html').read_text()
-(OUT / 'producto.html').write_text(must(html, '<main ', gate + '\n<main '))
+# Imágenes que se ocultan solo en /producto (TikTok). Para volver a mostrar una, quítala de esta lista.
+OCULTAR_PRODUCTO = [
+    'gpGrrwtDmE',   # "RESULTADOS VISIBLES DE INMEDIATO" (resultados_enerplu.avif), oculta 2026-11-07 a pedido de cesar
+]
+ocultar = '<style>' + ''.join('[data-id="%s"]{display:none!important}' % i for i in OCULTAR_PRODUCTO) + '</style>\n' if OCULTAR_PRODUCTO else ''
+(OUT / 'producto.html').write_text(must(html, '<main ', ocultar + gate + '\n<main '))
 (OUT / 'terminos.html').write_text((ROOT / 'fuente' / 'producto' / 'terminos.html').read_text())
 (ROOT / 'vercel.json').write_text(json.dumps({
     "framework": None,

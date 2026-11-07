@@ -9,6 +9,8 @@ OUT = ROOT / 'public'
 OUT.mkdir(exist_ok=True)
 d = json.loads((ROOT / 'fuente' / 'shopify.json').read_text())
 PIXEL = '1248121626590977'
+# TikTok: pixel de ENERPLU (vacío = no se instala). La compra también va por la Events API desde checkout-native.
+TIKTOK_PIXEL = 'D7MGRHBC77U8CJLL8D70'
 SHOP = 'https://enerplu.lat'
 
 
@@ -83,6 +85,15 @@ pixel = f"""<script>
 fbq('init', '{PIXEL}');
 fbq('track', 'PageView');
 </script>"""
+if TIKTOK_PIXEL:
+    pixel += f"""
+<script>
+!function (w, d, t) {{
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){{t[e]=function(){{t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){{for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e}},ttq.load=function(e,n){{var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{{}},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{{}},ttq._t[e]=+new Date,ttq._o=ttq._o||{{}},ttq._o[e]=n||{{}};n=d.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=d.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)}};
+  ttq.load('{TIKTOK_PIXEL}');
+  ttq.page();
+}}(window, document, 'ttq');
+</script>"""
 
 body = '\n'.join({'oferta': order_block, 'barra': barra}.get(k) if isinstance(k, str) else secs[k] for k in ORDER)
 
@@ -127,6 +138,12 @@ html = f"""<!doctype html>
 </html>
 """
 (OUT / 'index.html').write_text(html)
+
+# /producto: la misma landing con aviso de restricción de edad (+18) a pantalla completa, para el tráfico de TikTok.
+# Lo ve todo el que abre esa URL, igual en celular y computador. La landing de Meta (/) no cambia.
+gate = (ROOT / 'fuente' / 'producto' / 'aviso-edad.html').read_text()
+(OUT / 'producto.html').write_text(must(html, '<main ', gate + '\n<main '))
+(OUT / 'terminos.html').write_text((ROOT / 'fuente' / 'producto' / 'terminos.html').read_text())
 (ROOT / 'vercel.json').write_text(json.dumps({
     "framework": None,
     "buildCommand": "",

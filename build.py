@@ -138,6 +138,12 @@ html = f"""<!doctype html>
 </html>
 """
 (OUT / 'index.html').write_text(html)
+
+# /producto: la misma landing con aviso de restricción de edad (+18) a pantalla completa, para el tráfico de TikTok.
+# Lo ve todo el que abre esa URL, igual en celular y computador. La landing de Meta (/) no cambia.
+gate = (ROOT / 'fuente' / 'producto' / 'aviso-edad.html').read_text()
+(OUT / 'producto.html').write_text(must(html, '<main ', gate + '\n<main '))
+(OUT / 'terminos.html').write_text((ROOT / 'fuente' / 'producto' / 'terminos.html').read_text())
 (ROOT / 'vercel.json').write_text(json.dumps({
     "framework": None,
     "buildCommand": "",

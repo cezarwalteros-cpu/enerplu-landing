@@ -1,0 +1,44 @@
+<div id="ep-gate" role="dialog" aria-modal="true" aria-labelledby="ep-gate-t" hidden>
+  <div class="ep-gate-top"></div>
+  <div class="ep-gate-box">
+    <div class="ep-gate-badge">+18</div>
+    <h2 id="ep-gate-t">Página con restricción de edad</h2>
+    <p>Para ver esta página debes ser mayor de 18 años. Al continuar confirmas que tienes la edad y aceptas los Términos y condiciones.</p>
+    <button type="button" class="ep-gate-ok" data-ep-gate-ok>SOY MAYOR DE 18, AVANZAR →</button>
+    <a class="ep-gate-out" href="https://www.google.com/">Salir</a>
+  </div>
+  <div class="ep-gate-foot">
+    <a href="/terminos">Términos y condiciones</a>
+    <div>Registro INVIMA NSA2314-2025 · Envío discreto a toda Colombia</div>
+  </div>
+</div>
+<style>
+#ep-gate{position:fixed;inset:0;z-index:2147483000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;background:#000;color:#fff;text-align:center;font-family:Inter,system-ui,sans-serif;box-sizing:border-box;overflow:auto}
+#ep-gate[hidden]{display:none}
+#ep-gate .ep-gate-top{margin-bottom:auto}
+#ep-gate .ep-gate-box{width:100%;max-width:400px}
+#ep-gate .ep-gate-badge{display:inline-grid;place-items:center;width:84px;height:84px;border-radius:50%;border:3px solid #e60000;font:800 30px Archivo,Inter,sans-serif;margin-bottom:22px}
+#ep-gate h2{margin:0 0 12px;font:800 30px/1.1 Archivo,Inter,sans-serif;color:#fff}
+#ep-gate p{margin:0 0 28px;font-size:16px;line-height:1.5;color:#cfcfcf}
+#ep-gate .ep-gate-ok{width:100%;padding:18px;border:0;border-radius:12px;background:#e60000;color:#fff;font:800 18px Archivo,Inter,sans-serif;letter-spacing:.02em;box-shadow:0 10px 30px rgba(230,0,0,.35);cursor:pointer}
+#ep-gate .ep-gate-out{display:inline-block;margin-top:16px;color:#9a9a9a;font-size:15px;text-decoration:underline}
+#ep-gate .ep-gate-foot{margin-top:auto;padding-top:24px;font-size:12px;color:#777}
+#ep-gate .ep-gate-foot a{color:#bdbdbd;font-size:13px;text-decoration:underline}
+#ep-gate .ep-gate-foot div{margin-top:8px}
+html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
+</style>
+<script>
+/* Aviso +18: igual para todos los que abren /producto (celular, computador, revisores). Se muestra una vez por navegador. */
+(function () {
+  var g = document.getElementById('ep-gate'), K = 'ep_edad_ok', ok = false;
+  try { ok = localStorage.getItem(K) === '1'; } catch (e) {}
+  if (ok || /[?&]bold-order-id=/.test(location.search)) return;
+  g.hidden = false; document.documentElement.classList.add('ep-gate-on');
+  g.querySelector('[data-ep-gate-ok]').addEventListener('click', function () {
+    try { localStorage.setItem(K, '1'); } catch (e) {}
+    g.hidden = true; document.documentElement.classList.remove('ep-gate-on');
+    try { if (window.fbq) fbq('trackCustom', 'EP_AgeGateOK'); } catch (e) {}
+    try { (window.dataLayer = window.dataLayer || []).push({ event: 'EP_AgeGateOK' }); } catch (e) {}
+  });
+})();
+</script>

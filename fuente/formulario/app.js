@@ -206,6 +206,23 @@
     return row('standard', 'Estándar', 'Gratis', 'Llega en ' + days[0] + ' a ' + days[1] + ' días hábiles') +
       (ex ? row('priority', ex.title || 'Express', '+' + R.money(ex.price), ex.text || '') : '');
   };
+  /* forma de pago: contra entrega (por defecto), Bold y transferencia/llave Bancolombia */
+  R.logos = function (list) {
+    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-' + k[0] + '">' + k[1] + '</span>'; }).join('') + '</span>';
+  };
+  R.pay = function (cfg, opt, prepaidCity) {
+    var co = cfg.checkout, disc = prepaidCity ? 0 : (co.payDiscount || 0);
+    var save = disc ? '<span class="ep-ship-price ep-pay-save">Ahorras<br>' + R.money(disc) + '</span>' : '<span></span>';
+    var row = function (val, name, text, extra, right, off) {
+      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '"><input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
+        '<span class="ep-pack-dot" aria-hidden="true"></span><span class="ep-ship-main"><b>' + name + '</b><small>' + text + '</small>' + (extra || '') + '</span>' + right + '</label>';
+    };
+    return row('cod', 'Pagar al recibir', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', '<span></span>', prepaidCity) +
+      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Pago seguro con Bold. Tu pedido pasa directo a despacho.',
+        R.logos([['visa', 'VISA'], ['mc', 'Mastercard'], ['pse', 'PSE'], ['nequi', 'Nequi']]), save) : '') +
+      (co.payTransfer ? row('transfer', 'Transferencia o llave Bancolombia', 'Te damos los datos al terminar y nos envías el comprobante por WhatsApp.',
+        R.logos([['bc', 'Bancolombia']]), save) : '');
+  };
   R.bump = function (cfg, on) {
     var b = cfg.checkout.bump;
     if (!b) return '';
@@ -237,7 +254,8 @@
     var p = R.packOf(cfg, st.pack), d = R.derive(cfg, p), b = st.bump && cfg.checkout.bump ? cfg.checkout.bump : null;
     var ship = st.ship === 'priority' && cfg.checkout.express ? cfg.checkout.express.price : 0;
     var save = Math.max(0, d.save) + (b && b.compare > b.price ? b.compare - b.price : 0);
-    return { p: p, d: d, b: b, ship: ship, save: save, total: p.price + (b ? b.price : 0) + ship };
+    var base = p.price + (b ? b.price : 0) + ship, disc = Math.max(0, Math.min(st.disc || 0, p.price));
+    return { p: p, d: d, b: b, ship: ship, disc: disc, save: save + disc, total: base - disc };
   };
   R.summary = function (cfg, st, now) {
     var t = R.totals(cfg, st), line = function (name, val, cls) { return '<li' + (cls ? ' class="' + cls + '"' : '') + '><span>' + name + '</span><span>' + val + '</span></li>'; };
@@ -245,10 +263,13 @@
     t.p.gifts.forEach(function (g) { h += line(R.esc(g), 'Regalo', 'is-gift'); });
     if (t.b) h += line(R.esc(t.b.title), R.money(t.b.price));
     h += line('Envío' + (t.ship ? ' express' : ''), t.ship ? R.money(t.ship) : 'Gratis', t.ship ? '' : 'is-gift');
+    if (t.disc) h += line('Descuento pago anticipado', '−' + R.money(t.disc), 'is-gift');
+    var label = st.pay === 'transfer' ? 'Total a transferir' : st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir';
+    var eta = st.pay === 'transfer' ? ' Sale a despacho apenas verifiquemos tu transferencia.' : st.pay ? ' Ya pagado, sale directo a despacho.' : ' Pagas en efectivo cuando lo recibes.';
     return '<p class="ep-sum-title">Resumen de tu pedido</p><ul class="ep-sum-list">' + h + '</ul>' +
-      '<div class="ep-sum-total"><span>' + (st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir') + '</span><b>' + R.money(t.total) + '</b></div>' +
+      '<div class="ep-sum-total"><span>' + label + '</span><b>' + R.money(t.total) + '</b></div>' +
       (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + ' en este pedido</p>' : '') +
-      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>.' + (st.pay ? '' : ' Pagas en efectivo cuando lo recibes.') + '</span></p>';
+      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>.' + eta + '</span></p>';
   };
 
   R.fallback = function (cfg, slideIndex, label) {
@@ -642,7 +663,7 @@
 
   /* ---------------- pedido en la página (checkout-native) ---------------- */
   var Order = {
-    st: { bump: false, ship: 'standard', city: null, phoneMsg: '', phoneBlock: false, lastPhone: '' },
+    st: { bump: false, ship: 'standard', pay: 'cod', city: null, phoneMsg: '', phoneBlock: false, lastPhone: '' },
     form: null, done: false, sending: false, test: false, sid: '', cfgState: '', started: false, touched: {},
     init: function () {
       var f = qs('[data-ep-order]'); if (!f) return;
@@ -666,13 +687,24 @@
       renderInto('[data-ep-render="shipping"]', R.shipping(C, this.st.ship), 'x' + Math.random());
       var sb = qs('[data-ep-ship-block]'); if (sb) sb.hidden = !C.checkout.express;
       renderInto('[data-ep-render="bump"]', R.bump(C, this.st.bump), 'x' + Math.random());
+      this.paintPay();
       this.update();
+    },
+    payChoice: function () { return !C.checkout.payPrepaid && !!(C.checkout.payBold || C.checkout.payTransfer); },
+    paintPay: function () {
+      var on = this.payChoice(), c = this.st.city, pre = !!(c && c.prepaid);
+      var blk = qs('[data-ep-pay-block]'); if (blk) blk.hidden = !on;
+      if (on) renderInto('[data-ep-render="pay"]', R.pay(C, this.method(), pre), 'x' + Math.random());
+      var d = C.checkout.payDiscount || 0, hint = qs('[data-ep-pay-hint]');
+      if (hint) { hint.hidden = !on || !d; hint.innerHTML = 'Paga al recibir, o paga ahora y ahorra <b>' + R.money(d) + '</b>'; }
+      var lg = qs('[data-ep-pay-logos]'); if (lg) lg.hidden = !on;
     },
     update: function (source) {
       if (!this.form) return;
-      var t = R.totals(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship });
+      var m = this.method(), st = { pack: state.pack, bump: this.st.bump, ship: this.st.ship, disc: this.discount(), pay: m === 'cod' ? '' : m };
+      var t = R.totals(C, st);
       var n = qs('[data-ep-nudge]'); if (n) n.innerHTML = R.nudge(C, state.pack);
-      var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship, pay: this.payOnline() });
+      var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, st);
       qsa('[data-ep-bind="total"]').forEach(function (el) { el.textContent = R.money(t.total); });
       var x = R.extraGifts(t.p);
       qsa('[data-ep-bind="featured-name"]').forEach(function (el) { el.textContent = R.short(t.p) + (t.p.badge ? ' · ' + t.p.badge : ''); });
@@ -703,6 +735,10 @@
         C.checkout.online = !!c.online_payment;
         /* Bold solo para ciudades sin contra entrega (Chocó, Amazonas…): se paga aquí mismo */
         C.checkout.payPrepaid = !!(c.online_payment && c.online_payment.live && c.online_payment.prepaid_only);
+        /* pago anticipado con descuento para todo el país: Bold + transferencia (online_payment.prepaid_only = false) */
+        C.checkout.payBold = !!(c.online_payment && c.online_payment.live && !c.online_payment.prepaid_only);
+        C.checkout.payTransfer = !C.checkout.payPrepaid && !!c.transfer;
+        C.checkout.payDiscount = C.checkout.payBold ? (c.online_payment.discount || 0) : (c.transfer ? c.transfer.discount || 0 : 0);
         self.payMode();
         if (changed) {
           var sig = 'live' + Date.now();
@@ -844,9 +880,9 @@
       var box = qs('[data-ep-city-ok]', this.form), c = this.st.city;
       if (!box) return;
       var pay = this.payOnline();
-      box.innerHTML = c && (!c.prepaid || pay) ? R.ico('pin') + '<span>Enviamos a <b>' + R.esc(c.municipio) + '</b>' + (c.departamento !== c.municipio ? '<em> / ' + R.esc(c.departamento) + '</em>' : '') +
-        (pay ? '. Allí no hay pago contra entrega: <b>pagas en línea con Bold</b> (tarjeta, PSE o Nequi).' : '') + '</span>' : '';
-      box.hidden = !(c && (!c.prepaid || pay));
+      box.innerHTML = c && (!c.prepaid || pay || this.method() !== 'cod') ? R.ico('pin') + '<span>Enviamos a <b>' + R.esc(c.municipio) + '</b>' + (c.departamento !== c.municipio ? '<em> / ' + R.esc(c.departamento) + '</em>' : '') +
+        (c && c.prepaid && (pay || this.method() !== 'cod') ? '. Allí no hay pago contra entrega: ' + (this.payChoice() ? '<b>paga ahora</b> con Bold o transferencia.' : '<b>pagas en línea con Bold</b> (tarjeta, PSE o Nequi).') : '') + '</span>' : '';
+      box.hidden = !(c && (!c.prepaid || pay || this.method() !== 'cod'));
     },
     /* escribió la ciudad y no tocó la lista: se elige sola si hay una coincidencia clara */
     cityAuto: function () {
@@ -867,18 +903,30 @@
       return this.citySearchNow(inp.value).then(function () { self.cityAuto(); var list = qs('#ep-f-city-list'); if (list) { list.hidden = !!self.st.city || !(self.cityRows || []).length; inp.setAttribute('aria-expanded', list.hidden ? 'false' : 'true'); } });
     },
     cityProblem: function () {
-      var c = this.st.city; if (!c || !c.prepaid || this.payOnline()) return '';
+      var c = this.st.city; if (!c || !c.prepaid || this.method() !== 'cod') return '';
       return 'En ' + c.municipio + ' no tenemos pago contra entrega por ahora, así que no podemos enviarte este pedido.';
     },
     /* ---- pago en línea con Bold (solo ciudades sin contra entrega) ---- */
-    payOnline: function () { return !!(C.checkout.payPrepaid && this.st.city && this.st.city.prepaid); },
+    payOnline: function () { return this.method() === 'bold'; },
+    /* forma de pago real: en municipios sin contra entrega se pasa sola a Bold o transferencia */
+    method: function () {
+      var c = this.st.city, pre = !!(c && c.prepaid), co = C.checkout;
+      if (co.payPrepaid) return pre ? 'bold' : 'cod';
+      var m = this.st.pay || 'cod';
+      if ((m === 'bold' && !co.payBold) || (m === 'transfer' && !co.payTransfer)) m = 'cod';
+      if (pre && m === 'cod') m = co.payBold ? 'bold' : co.payTransfer ? 'transfer' : 'cod';
+      return m;
+    },
+    /* el descuento no aplica en municipios de solo pago anticipado (igual que el servidor) */
+    discount: function () { var c = this.st.city; return this.method() !== 'cod' && !(c && c.prepaid) ? (C.checkout.payDiscount || 0) : 0; },
     payMode: function () {
       if (!this.form) return;
       var on = this.payOnline(), row = qs('[data-ep-email-row]', this.form), em = this.el('email');
       if (row) row.hidden = !on;
       if (em) { if (on) em.setAttribute('required', ''); else { em.removeAttribute('required'); this.err('email', ''); } }
-      var sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = on ? 'Pago seguro en línea con Bold' : 'Pagas en efectivo al recibir';
-      if (this.payWas !== on) { this.payWas = on; this.update(); }
+      var m = this.method(), sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = m === 'bold' ? 'Pago seguro en línea con Bold' : m === 'transfer' ? 'Pagas por transferencia' : 'Pagas en efectivo al recibir';
+      var key = m + (this.st.city && this.st.city.prepaid ? '1' : '0');
+      if (this.payWas !== key) { this.payWas = key; this.paintPay(); this.update(); }
       if (!this.sending) this.busy(false);
     },
     loadBold: function () {
@@ -977,6 +1025,7 @@
       f.addEventListener('change', function (e) {
         var t = e.target;
         if (t.name === 'ep-ship') { self.st.ship = t.value; qsa('.ep-ship-opt', f).forEach(function (l) { l.classList.toggle('is-on', qs('input', l).checked); }); self.update(); }
+        if (t.name === 'ep-pay') { self.st.pay = t.value; Funnel.send('pay_select', { method: t.value }); track('PaySelect', { method: t.value }); self.payMode(); self.cityShow(); self.err('city', self.touched.city ? self.check('city') : ''); }
         if (t.name === 'ep-bump') { self.st.bump = t.checked; t.closest('.ep-bump').classList.toggle('is-on', t.checked); track('BumpToggle', { on: t.checked }); self.update(); self.queueCart(); }
       });
       f.addEventListener('click', function (e) {
@@ -1067,7 +1116,7 @@
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
-        payment_method: this.payOnline() ? 'bold' : 'cod', tracking: this.tracking()
+        payment_method: this.method(), tracking: this.tracking()
       };
       if (body.payment_method === 'bold') body.return_url = global.location.origin + global.location.pathname;
       if (this.test) body.dry_run = true;
@@ -1112,7 +1161,9 @@
         if (body.bump && C.checkout.bump) li += row(R.esc(C.checkout.bump.title), R.money(C.checkout.bump.price));
       }
       li += row('Envío' + (j.shipping_cop ? ' express' : ''), j.shipping_cop ? R.money(j.shipping_cop) : 'Gratis');
+      if (!j.paid && j.online_discount) li += row('Descuento pago anticipado', '−' + R.money(j.online_discount));
       var box = qs('[data-ep-thanks]');
+      if (j.transfer && body.payment_method === 'transfer') { this.thanksTransfer(box, j, li, total, city); return; }
       box.innerHTML = '<span class="ep-thanks-ico" aria-hidden="true">' + R.ico('check') + '</span>' +
         '<h3 class="ep-thanks-title">' + R.esc(C.checkout.thanksTitle) + '</h3>' +
         '<p class="ep-thanks-num">Pedido <b>' + R.esc(j.order_number || '') + '</b>' + (j.dry_run ? ' (prueba, no se creó)' : '') + '</p>' +
@@ -1120,6 +1171,37 @@
         (li ? '<ul class="ep-sum-list">' + li + '</ul>' : '') +
         '<div class="ep-sum-total"><span>' + (j.paid ? 'Pagado en línea' : 'Pagas al recibir') + '</span><b>' + R.money(total) + '</b></div>' +
         '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Llega a ' + R.esc(city) + ' <b>' + R.delivery(C) + '</b> en bolsa negra sellada.</span></p>';
+      this.showThanks(box);
+    },
+    /* gracias para transferencia: valor, llave y cuenta con Copiar, y comprobante por WhatsApp */
+    thanksTransfer: function (box, j, li, total, city) {
+      var t = j.transfer, wa = String(t.whatsapp || '').replace(/\D/g, ''), list = j.subtotal_cop + (j.shipping_cop || 0);
+      var msg = 'Hola, envío el comprobante de la transferencia del pedido ' + (j.order_number || '') + ' por ' + R.money(total) + '.';
+      var copy = function (label, val) {
+        return val ? '<div class="ep-tr-copy"><div><small>' + R.esc(label) + '</small><b>' + R.esc(val) + '</b></div><button type="button" class="ep-tr-btn" data-ep-copy="' + R.esc(val) + '">Copiar</button></div>' : '';
+      };
+      box.innerHTML = '<span class="ep-thanks-ico" aria-hidden="true">' + R.ico('check') + '</span>' +
+        '<h3 class="ep-thanks-title">¡Recibimos tu pedido!</h3>' +
+        '<p class="ep-thanks-num">Pedido <b>' + R.esc(j.order_number || '') + '</b>' + (j.dry_run ? ' (prueba, no se creó)' : '') + '</p>' +
+        '<p class="ep-tr-pill">Pago pendiente de comprobante</p>' +
+        '<div class="ep-tr-box"><p class="ep-tr-h">1. Transfiere este valor</p>' +
+          '<div class="ep-tr-amt"><small>Total con descuento por pago anticipado</small><strong>' + R.money(total) + '</strong>' + (list > total ? '<s>' + R.money(list) + '</s>' : '') + '</div>' +
+          copy(t.llave_label || 'Llave Bancolombia', t.llave) + copy(t.cuenta_label || 'Cuenta Bancolombia', t.cuenta) +
+          (t.titular ? '<p class="ep-tr-tit">Titular: <b>' + R.esc(t.titular) + '</b> · ' + R.esc(t.banco || 'Bancolombia') + '</p>' : '') + '</div>' +
+        '<div class="ep-tr-box"><p class="ep-tr-h">2. Envíanos el comprobante</p>' +
+          '<p class="ep-tr-p">Toma captura del pago y envíala por WhatsApp. Apenas la verifiquemos, tu pedido sale a despacho en bolsa negra sellada.</p>' +
+          (wa ? '<a class="ep-tr-wa" href="https://wa.me/' + wa + '?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">' + R.ico('chat') + 'Enviar comprobante por WhatsApp</a>' : '') +
+          '<p class="ep-tr-note">¿No pudiste pagar? Escríbenos y lo dejamos para pagar al recibir (sin el descuento).</p></div>' +
+        '<ul class="ep-sum-list">' + li + '</ul>' +
+        '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Llega a ' + R.esc(city) + ' <b>' + R.delivery(C) + '</b> después de verificar el pago.</span></p>';
+      box.addEventListener('click', function (e) {
+        var b = e.target.closest && e.target.closest('[data-ep-copy]'); if (!b) return;
+        var v = b.getAttribute('data-ep-copy'), ok = function () { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = 'Copiar'; }, 1800); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(ok, function () {}); else { var ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); ok(); } catch (x) {} ta.remove(); }
+      });
+      this.showThanks(box);
+    },
+    showThanks: function (box) {
       this.form.hidden = true; box.hidden = false;
       var sticky = qs('[data-ep-sticky]'); if (sticky) { sticky.classList.remove('is-visible'); sticky.setAttribute('aria-hidden', 'true'); }
       box.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });

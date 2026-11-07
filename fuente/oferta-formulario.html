@@ -63,6 +63,11 @@
         <div class="ep-ship" data-ep-render="shipping"></div>
       </fieldset>
 
+      <fieldset class="ep-of-block" data-ep-pay-block hidden>
+        <legend class="ep-of-legend">¿Cómo quieres pagar?</legend>
+        <div class="ep-ship" data-ep-render="pay"></div>
+      </fieldset>
+
       <div data-ep-render="bump"></div>
 
       <div class="ep-sum" data-ep-summary aria-live="polite"></div>
@@ -73,13 +78,20 @@
         <span class="ep-cta-label"><b>Hacer mi pedido</b><small data-ep-cta-sub>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
       </button>
 
+      <p class="ep-pay-hint" data-ep-pay-hint hidden></p>
+      <div class="ep-pay-accept" data-ep-pay-logos hidden>
+        <p>Medios de pago aceptados</p>
+        <span class="ep-pay-logos"><span class="ep-pay-logo is-visa">VISA</span><span class="ep-pay-logo is-mc">Mastercard</span><span class="ep-pay-logo is-amex">AMEX</span><span class="ep-pay-logo is-pse">PSE</span><span class="ep-pay-logo is-nequi">Nequi</span><span class="ep-pay-logo is-bc">Bancolombia</span><span class="ep-pay-logo is-cod">Contraentrega</span></span>
+        <small>Tarjeta, PSE y Nequi se pagan en la pasarela segura de Bold. No guardamos datos de tu tarjeta.</small>
+      </div>
+
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
       <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo</p>
       <!-- C-01: preguntas frecuentes debajo del botón (2026-11-06) -->
       <div class="eph-faq" id="eph-faq">
         <h3 class="eph-faq-title">Preguntas frecuentes</h3>
         <div class="ep-faq-list">
-          <details><summary>¿Cómo pago?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Pagas en efectivo cuando el pedido llega a tu casa. No pagas nada por adelantado. En algunos municipios solo se puede pagar en línea con Bold; si es tu caso, te avisamos al escribir tu ciudad.</p></div></details>
+          <details><summary>¿Cómo pago?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Puedes pagar en efectivo cuando el pedido llega a tu casa, sin pagar nada por adelantado. Si prefieres pagar ahora con tarjeta, PSE, Nequi (Bold) o transferencia Bancolombia, te descontamos $12.000 y tu pedido sale directo a despacho. En algunos municipios solo se puede pagar por adelantado; si es tu caso, te avisamos al escribir tu ciudad.</p></div></details>
           <details><summary>¿Cuándo me llega?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Llega en 3 a 4 días hábiles según tu ciudad. Antes de enviarlo te escribimos por WhatsApp para confirmar tus datos.</p></div></details>
           <details><summary>¿Cómo llega el paquete?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>En una bolsa negra sellada y con empaque discreto.</p></div></details>
           <details><summary>¿Cómo se usa?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Mastica una tableta de 5 a 15 minutos antes del encuentro y déjala disolver bajo la lengua. No necesitas agua. Una tableta por ocasión; no la tomes todos los días.</p></div></details>

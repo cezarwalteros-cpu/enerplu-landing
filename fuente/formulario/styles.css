@@ -626,3 +626,36 @@
 .ep-root .ep-thanks-num { font-size: 16px; }
 .ep-root .ep-thanks-text { color: var(--ep-muted); max-width: 42ch; }
 @media (max-width: 359px) { .ep-root .ep-of-grid { grid-template-columns: 1fr; } }
+
+/* ---- pago anticipado con descuento (Bold + transferencia), 2026-11-07 ---- */
+.ep-root .ep-pay-opt.is-off { opacity: .45; cursor: not-allowed; }
+.ep-root .ep-pay-save { color: var(--ep-ok); text-align: right; font-size: 14px; line-height: 1.25; white-space: nowrap; }
+.ep-root .ep-pay-logos { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+.ep-root .ep-pay-logo { font: 800 10.5px/1 var(--ep-body); padding: 5px 7px; border-radius: 5px; background: #FFFFFF; color: #1A1F71; border: 1px solid #DDDDDD; letter-spacing: .01em; }
+.ep-root .ep-pay-logo.is-mc { color: #EB001B; }
+.ep-root .ep-pay-logo.is-amex { color: #2E77BC; }
+.ep-root .ep-pay-logo.is-pse { color: #0A4FA3; }
+.ep-root .ep-pay-logo.is-nequi { background: #200020; color: #FFFFFF; border-color: #200020; }
+.ep-root .ep-pay-logo.is-bc { background: #FDDA24; color: #111111; border-color: #FDDA24; }
+.ep-root .ep-pay-logo.is-cod { color: #111111; }
+.ep-root .ep-pay-hint { text-align: center; font-size: 14px; color: var(--ep-muted); margin: 10px 0 0; }
+.ep-root .ep-pay-hint b { color: var(--ep-ok); }
+.ep-root .ep-pay-accept { margin-top: 14px; padding: 12px; border: 1px solid var(--ep-line); border-radius: 12px; background: var(--ep-surface); }
+.ep-root .ep-pay-accept p { margin: 0; font-weight: 700; font-size: 13px; }
+.ep-root .ep-pay-accept small { display: block; margin-top: 8px; font-size: 11.5px; color: var(--ep-muted); line-height: 1.4; }
+.ep-root .ep-tr-pill { display: inline-block; margin: 6px 0 12px; padding: 4px 10px; border-radius: 20px; font-size: 12.5px; font-weight: 700; background: rgba(250, 204, 21, .14); color: #FACC15; border: 1px solid rgba(250, 204, 21, .45); }
+.ep-root .ep-tr-box { border: 1px solid var(--ep-line); border-radius: 12px; padding: 14px; margin-top: 12px; text-align: left; }
+.ep-root .ep-tr-h { margin: 0 0 10px; font-weight: 800; font-size: 15px; }
+.ep-root .ep-tr-amt { background: var(--ep-bg-2); border-radius: 10px; padding: 12px; text-align: center; }
+.ep-root .ep-tr-amt small { display: block; color: var(--ep-muted); font-size: 12.5px; }
+.ep-root .ep-tr-amt strong { display: block; font: 800 30px/1.15 var(--ep-display); color: var(--ep-ok); font-variant-numeric: tabular-nums; }
+.ep-root .ep-tr-amt s { color: var(--ep-faint); font-size: 14px; }
+.ep-root .ep-tr-copy { display: flex; justify-content: space-between; align-items: center; gap: 10px; border: 1px solid var(--ep-line); border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+.ep-root .ep-tr-copy small { display: block; color: var(--ep-muted); font-size: 12px; }
+.ep-root .ep-tr-copy b { font-size: 17px; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.ep-root .ep-tr-btn { flex: none; border: 1.5px solid var(--ep-line-strong); background: transparent; color: var(--ep-text); border-radius: 8px; padding: 7px 12px; font: 700 13px var(--ep-body); cursor: pointer; }
+.ep-root .ep-tr-tit { margin: 10px 0 0; font-size: 14px; }
+.ep-root .ep-tr-p { margin: 0; font-size: 14.5px; }
+.ep-root .ep-tr-wa { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; padding: 14px; border-radius: 12px; background: #16A34A; color: #FFFFFF; font-weight: 800; text-decoration: none; }
+.ep-root .ep-tr-wa .ep-ico { width: 18px; height: 18px; }
+.ep-root .ep-tr-note { margin: 10px 0 0; font-size: 13px; color: var(--ep-muted); }

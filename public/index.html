@@ -1516,6 +1516,93 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-faq .ep-faq-list summary { font-size: 15px; padding: 14px 2px; min-height: 48px; }
 .ep-root .eph-faq .ep-faq-list details > div { font-size: 14px; padding-bottom: 14px; }
 
+/* HERO v2 (estilo ficha de producto): galería + título + calificación + beneficios + selector de planes + confianza.
+   Todo va dentro de #ep-hero-clean.hv para no chocar con los estilos de GemPages ni del formulario. */
+#ep-hero-clean.hv{--hv-bg:#000;--hv-card:#111;--hv-line:#2a2a2a;--hv-mute:#a3a3a3;--hv-red:#ea0000;--hv-gold:#e8b931;--hv-green:#22c55e;
+  background:var(--hv-bg);color:#fff;padding:14px 0 26px;margin:0;width:100%;box-sizing:border-box;font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+#ep-hero-clean.hv *{box-sizing:border-box}
+#ep-hero-clean .hv-in{max-width:1100px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "gal" "info";gap:12px}
+#ep-hero-clean .hv-head{grid-area:head;text-align:center}
+#ep-hero-clean .hv-gal{grid-area:gal}
+#ep-hero-clean .hv-info{grid-area:info}
+
+/* galería */
+#ep-hero-clean .hv-gal{position:relative;min-width:0}
+#ep-hero-clean .hv-main{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:16px;background:#0b0b0b;aspect-ratio:1/1}
+#ep-hero-clean .hv-main::-webkit-scrollbar{display:none}
+#ep-hero-clean .hv-main figure{flex:0 0 100%;margin:0;scroll-snap-align:center;aspect-ratio:1/1}
+#ep-hero-clean .hv-main img{width:100%;height:100%;object-fit:cover;display:block}
+#ep-hero-clean .hv-badges{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;gap:6px;pointer-events:none}
+#ep-hero-clean .hv-pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;letter-spacing:.02em;padding:6px 10px;border-radius:999px;line-height:1}
+#ep-hero-clean .hv-pill--gold{background:var(--hv-gold);color:#111}
+#ep-hero-clean .hv-pill--red{background:var(--hv-red);color:#fff}
+#ep-hero-clean .hv-thumbs{display:flex;gap:8px;margin-top:8px;overflow-x:auto;scrollbar-width:none}
+#ep-hero-clean .hv-thumbs::-webkit-scrollbar{display:none}
+#ep-hero-clean .hv-thumbs button{flex:0 0 54px;height:54px;padding:0;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#1a1a1a;cursor:pointer;opacity:.6}
+#ep-hero-clean .hv-thumbs button.is-on{border-color:var(--hv-gold);opacity:1}
+#ep-hero-clean .hv-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* texto */
+#ep-hero-clean .hv-brand{margin:2px 0 0;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--hv-gold)}
+#ep-hero-clean .hv-title{margin:4px 0 0;font-family:Archivo,Inter,sans-serif;font-size:29px;line-height:1.05;font-weight:800;letter-spacing:-.01em;text-transform:uppercase;color:#fff}
+#ep-hero-clean .hv-title span{color:var(--hv-red)}
+#ep-hero-clean .hv-sub{margin:2px 0 0;font-size:14.5px;line-height:1.45;color:#d4d4d4}
+#ep-hero-clean .hv-sub b{color:#fff}
+#ep-hero-clean .hv-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-size:13px;color:#e5e5e5}
+#ep-hero-clean a.hv-rating{display:inline-flex;align-items:center;gap:6px;color:inherit;text-decoration:none}
+#ep-hero-clean .hv-stars{color:var(--hv-gold);letter-spacing:1px;font-size:15px}
+#ep-hero-clean .hv-rating u{color:var(--hv-mute);text-decoration:underline}
+#ep-hero-clean .hv-meta i{width:1px;height:14px;background:#444}
+#ep-hero-clean .hv-ship{display:inline-flex;align-items:center;gap:5px;font-weight:700}
+
+/* beneficios */
+#ep-hero-clean .hv-bens{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 2px;padding:0;list-style:none}
+#ep-hero-clean .hv-bens li{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;font-size:11.5px;line-height:1.2;font-weight:600;color:#e5e5e5}
+#ep-hero-clean .hv-bens span{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#2b0606,#140303);border:1.5px solid #4a0d0d;color:#ff3b3b}
+#ep-hero-clean .hv-bens svg{width:24px;height:24px}
+
+/* planes */
+#ep-hero-clean .hv-plans-t{margin:16px 0 8px;font-size:16px;font-weight:800;color:#fff}
+#ep-hero-clean .hv-plans{display:grid;gap:10px;border:0;padding:0;margin:0}
+#ep-hero-clean .hv-plan{position:relative;display:grid;grid-template-columns:22px 58px minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px;border:1.5px solid var(--hv-line);border-radius:14px;background:var(--hv-card);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s,background .15s}
+#ep-hero-clean .hv-plan input{position:absolute;opacity:0;pointer-events:none}
+#ep-hero-clean .hv-dot{width:20px;height:20px;border-radius:50%;border:2px solid #555;display:grid;place-items:center}
+#ep-hero-clean .hv-dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--hv-gold);transform:scale(0);transition:transform .15s}
+#ep-hero-clean .hv-plan.is-on,#ep-hero-clean .hv-plan:has(input:checked){border-color:var(--hv-gold);background:linear-gradient(160deg,rgba(232,185,49,.12),rgba(232,185,49,.03)),#121212}
+#ep-hero-clean .hv-plan.is-on .hv-dot,#ep-hero-clean .hv-plan:has(input:checked) .hv-dot{border-color:var(--hv-gold)}
+#ep-hero-clean .hv-plan.is-on .hv-dot::after,#ep-hero-clean .hv-plan:has(input:checked) .hv-dot::after{transform:scale(1)}
+#ep-hero-clean .hv-plan:has(input:focus-visible){outline:2px solid var(--hv-gold);outline-offset:2px}
+#ep-hero-clean .hv-plan--rec{margin-top:8px;padding-top:16px}
+#ep-hero-clean .hv-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--hv-gold);color:#111;font-size:10.5px;font-weight:900;letter-spacing:.06em;padding:4px 10px;border-radius:999px;white-space:nowrap;text-transform:uppercase}
+#ep-hero-clean .hv-pimg{width:58px;height:58px;border-radius:10px;overflow:hidden;background:#fff}
+#ep-hero-clean .hv-pimg img{width:100%;height:100%;object-fit:cover;display:block}
+#ep-hero-clean .hv-pname{display:block;font-size:14.5px;font-weight:800;color:#fff;line-height:1.2}
+#ep-hero-clean .hv-pqty{display:block;font-size:12.5px;color:var(--hv-mute);margin-top:2px}
+#ep-hero-clean .hv-pinc{display:block;font-size:12.5px;font-weight:700;color:var(--hv-green);margin-top:3px}
+#ep-hero-clean .hv-pinc--best{color:var(--hv-gold)}
+#ep-hero-clean .hv-pr{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+#ep-hero-clean .hv-price{font-size:17px;font-weight:900;color:#fff;letter-spacing:-.01em}
+#ep-hero-clean .hv-was{font-size:12px;color:#8a8a8a;text-decoration:line-through}
+#ep-hero-clean .hv-off{font-size:11px;font-weight:900;color:#fff;background:var(--hv-red);border-radius:6px;padding:3px 6px}
+#ep-hero-clean .hv-unit{font-size:11px;color:var(--hv-mute)}
+
+/* botón + confianza */
+#ep-hero-clean a.hv-cta{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;margin-top:14px;padding:16px 14px;border-radius:14px;background:var(--hv-red);color:#fff;text-decoration:none;font-weight:900;font-size:16.5px;letter-spacing:.01em;text-transform:uppercase;box-shadow:0 10px 28px rgba(234,0,0,.35);text-align:center;line-height:1.15}
+#ep-hero-clean a.hv-cta small{display:block;font-size:11.5px;font-weight:600;text-transform:none;opacity:.9;margin-top:3px;letter-spacing:0}
+#ep-hero-clean .hv-trust{display:grid;grid-template-columns:repeat(3,1fr);margin-top:12px;border:1px solid #222;border-radius:12px;background:#0b0b0b}
+#ep-hero-clean .hv-trust div{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;padding:10px 6px;font-size:11px;line-height:1.2;color:#d4d4d4}
+#ep-hero-clean .hv-trust div+div{border-left:1px solid #222}
+#ep-hero-clean .hv-trust b{display:block;color:#fff;font-size:12px}
+#ep-hero-clean .hv-trust svg{flex:0 0 22px;width:22px;height:22px;color:var(--hv-gold)}
+
+@media (min-width:900px){
+  #ep-hero-clean.hv{padding:32px 0 40px}
+  #ep-hero-clean .hv-in{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"gal head" "gal info";grid-template-rows:auto 1fr;gap:12px 36px;align-items:start}
+  #ep-hero-clean .hv-head{text-align:left}
+  #ep-hero-clean .hv-gal{position:sticky;top:16px}
+  #ep-hero-clean .hv-title{font-size:40px}
+}
+
 </style>
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -1713,40 +1800,50 @@ fbq('track', 'PageView');
     <div data-id="gbBPOLv_0H" style="--bs:none;--bw:1px 1px 1px 1px;--bc:var(--g-c-line-3, line-3);--d:block;--d-mobile:block;--d-tablet:block;--op:100%;--pageType:GP_PRODUCT;--bblr:0px;--bbrr:0px;--btlr:0px;--btrr:0px;--ta:left;--bgc:#EA0000;--bgc-mobile:transparent;--bgi:url();--bgi-mobile:url();--bgp:50% 50%;--bgp-mobile:50% 50%;--bgs:cover;--bgs-mobile:cover;--bgr:no-repeat;--bgr-mobile:no-repeat;--bga:scroll;--bga-mobile:scroll" data-keep-class="true" class="gbBPOLv_0H gp-custom-code">
       <div>
     <!-- ENERPLU · HERO v3.1 (sin precio, texto bajo la foto) + barra fija · Encuentra las ofertas por #ep-offer-widget o .ep-plans · Reemplaza tu bloque del hero completo por este. -->
-<section id="ep-hero-clean" class="ep-hc">
-  <div class="ep-hc-inner">
-
-    <a href="#resenas" class="ep-hc-kicker" aria-label="Ver reseñas de clientes: 4.8 de 5">
-      <span class="ep-hc-stars" aria-hidden="true">★★★★★</span>
-      <span class="ep-hc-rating">4.9/5.0</span>
-      <span class="ep-hc-sep" aria-hidden="true">·</span>
-      <span class="ep-hc-count">+3500 hombres colombianos</span>
-    </a>
-
-    <h1 class="ep-hc-title">DE CERO A MÁXIMA<br>POTENCIA EN <span>5 MINUTOS EXACTOS.</span></h1>
-
-    <div class="ep-hc-img">
-      <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" alt="ENERPLU tabletas masticables con maca negra" width="1080" height="1080" fetchpriority="high">
+<!-- ENERPLU · HERO v2 (estilo ficha de producto). Mismo id que el hero anterior para que la barra fija siga funcionando. -->
+<section id="ep-hero-clean" class="hv">
+  <div class="hv-in">
+    <div class="hv-head">
+      <p class="hv-brand">ENERPLU · Tableta masticable con maca negra</p>
+      <h1 class="hv-title">De cero a máxima potencia en <span>5 minutos.</span></h1>
     </div>
 
-    <p class="ep-hc-sub">
-      Sin jarabes humillantes. Sin planear con una hora de anticipación.
-      La tableta masticable que inunda tu zona pélvica de sangre antes de que ella termine de desvestirse.
-      <strong>Más duro. Más firme. Más control.</strong>
-    </p>
-
-    <div class="ep-hc-note">💵 Pagas al recibir · 🚚 Envío gratis a toda Colombia</div>
-
-
-    <a href="#ep-offer-widget" class="ep-hc-btn">QUIERO POTENCIA INMEDIATA →</a>
-
-    <div class="ep-hc-points">
-      <span>📦 Envío 100% Discreto</span>
-      <span><b style="color:#22c55e">✓</b> Respaldo INVIMA</span>
+    <div class="hv-gal">
+      <div class="hv-main" aria-label="Fotos de ENERPLU"><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="ENERPLU tabletas masticables con maca negra" width="1080" height="1080" fetchpriority="high"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135585/enerplu-galeria-1-producto_ynanai.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135585/enerplu-galeria-1-producto_ynanai.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135585/enerplu-galeria-1-producto_ynanai.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Caja de ENERPLU con tabletas masticables" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Lo que recibes en ENERPLU" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Tableta de ENERPLU en la mano" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Cómo se usa ENERPLU en 3 pasos" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Tableta de ENERPLU y sus 5 ingredientes" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Así llega: bolsa negra sellada" width="1080" height="1080" loading="lazy" decoding="async"></figure></div>
+      <div class="hv-badges"><span class="hv-pill hv-pill--gold">✓ Registro INVIMA</span><span class="hv-pill hv-pill--red">🔥 Hoy hasta 55% OFF</span></div>
+      <div class="hv-thumbs"><button type="button" class="is-on" aria-label="Ver foto 1"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 2"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135585/enerplu-galeria-1-producto_ynanai.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 3"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 4"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 5"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 6"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 7"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp" alt="" loading="lazy" width="54" height="54"></button></div>
     </div>
 
+    <div class="hv-info">
+      <p class="hv-sub">Sin jarabes humillantes ni planear con una hora de anticipación. Se mastica, se disuelve bajo la lengua y actúa rápido. <b>Más duro. Más firme. Más control.</b></p>
+
+      <div class="hv-meta">
+        <a href="#resenas" class="hv-rating" aria-label="Ver reseñas: 4.9 de 5"><span class="hv-stars" aria-hidden="true">★★★★★</span><b>4.9</b><u>+3.500 hombres</u></a>
+        <i aria-hidden="true"></i>
+        <span class="hv-ship">🚚 Envío gratis</span>
+      </div>
+
+      <ul class="hv-bens">
+        <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Efecto en<br>5–15 min</li>
+        <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>Más duro<br>y firme</li>
+        <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M9 2h6"/></svg></span>Más<br>control</li>
+        <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg></span>Con maca<br>negra</li>
+      </ul>
+
+      <p class="hv-plans-t">Elige tu plan y ahorra</p>
+      <fieldset class="hv-plans" role="radiogroup" aria-label="Planes"><label class="hv-plan" data-pack="inicial"><input type="radio" name="ep-pack-hero" value="inicial"><span class="hv-dot" aria-hidden="true"></span><span class="hv-pimg"><img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=160" alt="Plan Básico ENERPLU" loading="lazy" width="58" height="58"></span><span><span class="hv-pname">Plan Básico</span><span class="hv-pqty">1 caja · 10 tabletas</span><span class="hv-pqty">Para probar</span></span><span class="hv-pr"><span class="hv-price">$89.900</span><span class="hv-unit">$8.990 c/tableta</span></span></label><label class="hv-plan hv-plan--rec is-on" data-pack="dominio"><input type="radio" name="ep-pack-hero" value="dominio" checked><span class="hv-tag">★ El más pedido</span><span class="hv-dot" aria-hidden="true"></span><span class="hv-pimg"><img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/DOMINIO.webp?v=1793468717&width=160" alt="Plan Dominio Total ENERPLU" loading="lazy" width="58" height="58"></span><span><span class="hv-pname">Plan Dominio Total</span><span class="hv-pqty">2 cajas · 20 tabletas</span><span class="hv-pinc">✓ Retardante gratis</span></span><span class="hv-pr"><span class="hv-price">$129.900</span><span class="hv-was">$179.800</span><span class="hv-off">27% OFF</span><span class="hv-unit">$6.495 c/tableta</span></span></label><label class="hv-plan" data-pack="elite"><input type="radio" name="ep-pack-hero" value="elite"><span class="hv-dot" aria-hidden="true"></span><span class="hv-pimg"><img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=160" alt="Plan Élite ENERPLU" loading="lazy" width="58" height="58"></span><span><span class="hv-pname">Plan Élite</span><span class="hv-pqty">4 cajas · 40 tabletas</span><span class="hv-pinc hv-pinc--best">✓ Retardante gratis</span></span><span class="hv-pr"><span class="hv-price">$159.900</span><span class="hv-was">$359.600</span><span class="hv-off">55% OFF</span><span class="hv-unit">$3.998 c/tableta</span></span></label></fieldset>
+
+      <a href="#ep-offer-widget" class="hv-cta" data-hv-cta>Quiero el Plan Dominio Total · $129.900 →<small>Pagas en efectivo al recibir · envío gratis</small></a>
+
+      <div class="hv-trust">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><span><b>Pagas al recibir</b>en efectivo</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><span><b>Envío gratis</b>todo el país</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg><span><b>Discreto</b>bolsa sellada</span></div>
+      </div>
+    </div>
   </div>
 </section>
+
 
 <style>
 #ep-hero-clean.ep-hc{background:#000!important;color:#fff!important;padding:18px 0 30px!important;margin:0!important;width:100%!important;box-sizing:border-box!important;font-family:inherit}
@@ -1794,7 +1891,7 @@ fbq('track', 'PageView');
   function ready(fn){ document.readyState !== "loading" ? fn() : document.addEventListener("DOMContentLoaded", fn); }
   ready(function(){
     // GemPages puede duplicar el bloque: usamos el que está visible
-    var heroBtn = Array.prototype.filter.call(document.querySelectorAll("#ep-hero-clean .ep-hc-btn"), function(b){ return b.offsetParent !== null; })[0];
+    var heroBtn = Array.prototype.filter.call(document.querySelectorAll("#ep-hero-clean .hv-cta"), function(b){ return b.offsetParent !== null; })[0];
     // Ofertas: sirve con el selector viejo (#ep-offer-widget) y con el carrusel nuevo (.ep-plans / .epv)
     var OFFERS_SEL = "#ep-offer-widget, .ep-plans, .epv";
     var offers = Array.prototype.filter.call(document.querySelectorAll(OFFERS_SEL), function(o){ return o.getBoundingClientRect().height > 0; })[0] || document.querySelector(OFFERS_SEL);
@@ -1812,7 +1909,7 @@ fbq('track', 'PageView');
     }
     bar.querySelector("a").addEventListener("click", goOffers);
     // El botón del hero también baja a las ofertas, exista o no el id #ep-offer-widget
-    Array.prototype.forEach.call(document.querySelectorAll("#ep-hero-clean .ep-hc-btn"), function(b){ b.addEventListener("click", goOffers); });
+    Array.prototype.forEach.call(document.querySelectorAll("#ep-hero-clean .hv-cta"), function(b){ b.addEventListener("click", goOffers); });
 
     if (!("IntersectionObserver" in window)) { bar.classList.add("ep-show"); return; }
     var heroVisible = true, offersVisible = false;
@@ -1827,7 +1924,7 @@ fbq('track', 'PageView');
 (function () {
   // Estrellas del hero → reseñas (#resenas); usa la copia visible si GemPages duplica el bloque
   document.addEventListener("click", function (e) {
-    var k = e.target.closest("#ep-hero-clean .ep-hc-kicker");
+    var k = e.target.closest("#ep-hero-clean .hv-rating");
     if (!k) return;
     var t = Array.prototype.filter.call(document.querySelectorAll("#resenas"), function (r) { return r.getBoundingClientRect().height > 0; })[0] || document.querySelector("#resenas");
     if (!t) return;
@@ -6058,6 +6155,59 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
   }, true);
 })();
 
+</script>
+<script>
+/* HERO v2: galería deslizable con miniaturas + selector de planes del hero.
+   Los radios se llaman ep-pack-hero: el formulario (app.js) ya los escucha y elige ese mismo plan abajo (setPack 'hero').
+   Precios: los de EP_CONFIG, que el formulario actualiza con los del checkout; aquí se repintan cuando cambian. */
+(function () {
+  var hero = document.getElementById("ep-hero-clean");
+  var C = window.EP_CONFIG, R = window.EP_RENDER;
+  if (!hero || !hero.classList.contains("hv") || !C || !R) return;
+
+  /* galería */
+  var main = hero.querySelector(".hv-main"), thumbs = hero.querySelectorAll(".hv-thumbs button");
+  function mark(i) { thumbs.forEach(function (b, j) { b.classList.toggle("is-on", i === j); }); }
+  thumbs.forEach(function (b, i) {
+    b.addEventListener("click", function () { main.scrollTo({ left: i * main.clientWidth, behavior: "smooth" }); mark(i); });
+  });
+  var tm;
+  main.addEventListener("scroll", function () {
+    clearTimeout(tm);
+    tm = setTimeout(function () { mark(Math.round(main.scrollLeft / Math.max(1, main.clientWidth))); }, 60);
+  }, { passive: true });
+
+  /* planes */
+  function pack(id) { var r = null; C.packs.forEach(function (p) { if (p.id === id) r = p; }); return r; }
+  function current() {
+    var on = document.querySelector("#ep-order .ep-sel-opt.is-on");
+    var chk = hero.querySelector('input[name="ep-pack-hero"]:checked');
+    return (on && on.getAttribute("data-pack")) || (chk && chk.value) || C.defaultPack;
+  }
+  var cta = hero.querySelector("[data-hv-cta]");
+  function paint() {
+    var sel = current();
+    hero.querySelectorAll(".hv-plan").forEach(function (el) {
+      var p = pack(el.getAttribute("data-pack")); if (!p) return;
+      var on = p.id === sel, inp = el.querySelector("input");
+      el.classList.toggle("is-on", on); if (inp) inp.checked = on;
+      var was = C.singleBoxPrice * p.boxes;
+      var q = function (s) { return el.querySelector(s); };
+      if (q(".hv-price")) q(".hv-price").textContent = R.money(p.price);
+      if (q(".hv-was")) q(".hv-was").textContent = R.money(was);
+      if (q(".hv-off")) q(".hv-off").textContent = Math.floor((1 - p.price / was) * 100) + "% OFF";
+      if (q(".hv-unit")) q(".hv-unit").textContent = R.money(p.price / p.tablets) + " c/tableta";
+    });
+    var p = pack(sel);
+    if (cta && p) cta.innerHTML = "Quiero el " + R.esc(p.name) + " · " + R.money(p.price) + " →<small>Pagas en efectivo al recibir · envío gratis</small>";
+  }
+  hero.addEventListener("change", function (e) { if (e.target && e.target.name === "ep-pack-hero") setTimeout(paint, 0); });
+  var list = document.querySelector('#ep-order [data-ep-render="selector"]');
+  if (list && "MutationObserver" in window) {
+    new MutationObserver(function () { paint(); }).observe(list, { subtree: true, childList: true, attributes: true, attributeFilter: ["class"] });
+  }
+  paint();
+})();
 </script>
 </body>
 </html>

@@ -43,6 +43,77 @@ secs[0] = must(secs[0], '  send("page_view");\n', """  send("page_view");
   document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") send("salida"); else latido(); });
 """)
 
+# 2 · HERO v2 (estilo ficha de producto: galería + calificación + beneficios + selector de planes + confianza).
+# Reemplaza solo el bloque #ep-hero-clean; se quedan la barra fija, el salto a reseñas y la imagen de resultados.
+# HERO_V2 = False vuelve al hero de texto de siempre.
+HERO_V2 = True
+hero_css = hero_js = ''
+if HERO_V2:
+    import subprocess
+    cfg = json.loads(subprocess.check_output(['node', '-e',
+        "global.window={};eval(require('fs').readFileSync(process.argv[1],'utf8'));process.stdout.write(JSON.stringify(window.EP_CONFIG))",
+        str(PDP / 'config.js')]))
+
+    def cdn(u, w):
+        return u.replace('/upload/', '/upload/w_%d/f_auto/q_auto/' % w) if 'res.cloudinary.com/' in u and '/upload/' in u else u
+
+    def esc(t):
+        return str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+    def money(n):
+        return '$' + format(int(round(n)), ',').replace(',', '.')
+
+    gal = [{'src': 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp',
+            'alt': 'ENERPLU tabletas masticables con maca negra'}] + [g for g in cfg['gallery'] if g.get('type') == 'img']
+    figs = ''.join('<figure><img src="%s" srcset="%s 540w, %s 1080w" sizes="(min-width:900px) 520px, 100vw" alt="%s" width="1080" height="1080" %s></figure>'
+                   % (cdn(g['src'], 720), cdn(g['src'], 540), cdn(g['src'], 1080), esc(g['alt']),
+                      'fetchpriority="high"' if i == 0 else 'loading="lazy" decoding="async"') for i, g in enumerate(gal))
+    ths = ''.join('<button type="button" class="%s" aria-label="Ver foto %d"><img src="%s" alt="" loading="lazy" width="54" height="54"></button>'
+                  % ('is-on' if i == 0 else '', i + 1, cdn(g['src'], 120)) for i, g in enumerate(gal))
+    SH = 'https://cdn.shopify.com/s/files/1/0748/9418/0397/files/'
+    LOOK = {'inicial': (SH + 'BASICO.webp?v=1793468688&width=160', '', 'Para probar', ''),
+            'dominio': (SH + 'DOMINIO.webp?v=1793468717&width=160', 'El más pedido', '✓ Retardante gratis', ''),
+            'elite': (SH + 'ELITE.webp?v=1793468748&width=160', '', '✓ Retardante gratis', ' hv-pinc--best')}
+    plans = ''
+    for pid in ['inicial', 'dominio', 'elite']:   # de menor a mayor, con el más pedido en el medio
+        pk = next(x for x in cfg['packs'] if x['id'] == pid)
+        img, tag, inc, inc_cls = LOOK[pid]
+        was = cfg['singleBoxPrice'] * pk['boxes']
+        on = pid == cfg['defaultPack']
+        off = int((1 - pk['price'] / was) * 100)
+        plans += ('<label class="hv-plan%s%s" data-pack="%s">' % (' hv-plan--rec' if tag else '', ' is-on' if on else '', pid) +
+                  '<input type="radio" name="ep-pack-hero" value="%s"%s>' % (pid, ' checked' if on else '') +
+                  ('<span class="hv-tag">★ %s</span>' % tag if tag else '') +
+                  '<span class="hv-dot" aria-hidden="true"></span>' +
+                  '<span class="hv-pimg"><img src="%s" alt="%s ENERPLU" loading="lazy" width="58" height="58"></span>' % (img, esc(pk['name'])) +
+                  '<span><span class="hv-pname">%s</span><span class="hv-pqty">%d %s · %d tabletas</span>' % (esc(pk['name']), pk['boxes'], 'cajas' if pk['boxes'] > 1 else 'caja', pk['tablets']) +
+                  ('<span class="hv-pinc%s">%s</span>' % (inc_cls, inc) if pid != 'inicial' else '<span class="hv-pqty">%s</span>' % inc) + '</span>' +
+                  '<span class="hv-pr"><span class="hv-price">%s</span>' % money(pk['price']) +
+                  ('<span class="hv-was">%s</span><span class="hv-off">%d%% OFF</span>' % (money(was), off) if off > 0 else '') +
+                  '<span class="hv-unit">%s c/tableta</span></span></label>' % money(pk['price'] / pk['tablets']))
+    dflt = next(x for x in cfg['packs'] if x['id'] == cfg['defaultPack'])
+    ico = lambda d: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'
+    hero_html = (ROOT / 'fuente' / 'hero-v2.html').read_text()
+    for k, v in {'{{FIGS}}': figs, '{{THUMBS}}': ths, '{{PLANS}}': plans, '{{PCT}}': str(max(int((1 - x['price'] / (cfg['singleBoxPrice'] * x['boxes'])) * 100) for x in cfg['packs'])),
+                 '{{CTA}}': 'Quiero el %s · %s →<small>Pagas en efectivo al recibir · envío gratis</small>' % (esc(dflt['name']), money(dflt['price'])),
+                 '{{I_BOLT}}': ico('<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>'),
+                 '{{I_UP}}': ico('<path d="M7 17 17 7"/><path d="M8 7h9v9"/>'),
+                 '{{I_TIME}}': ico('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M9 2h6"/>'),
+                 '{{I_LEAF}}': ico('<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/>'),
+                 '{{I_TRUCK}}': ico('<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>'),
+                 '{{I_CASH}}': ico('<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>'),
+                 '{{I_BOX}}': ico('<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/>')}.items():
+        hero_html = hero_html.replace(k, v)
+    a = secs[2].index('<section id="ep-hero-clean"')
+    b = secs[2].index('</section>', a) + len('</section>')
+    secs[2] = secs[2][:a] + hero_html + secs[2][b:]
+    # la barra fija y el salto a reseñas buscaban las clases del hero viejo
+    secs[2] = must(secs[2], 'document.querySelectorAll("#ep-hero-clean .ep-hc-btn"), function(b){ return b.offsetParent', 'document.querySelectorAll("#ep-hero-clean .hv-cta"), function(b){ return b.offsetParent')
+    secs[2] = must(secs[2], 'Array.prototype.forEach.call(document.querySelectorAll("#ep-hero-clean .ep-hc-btn")', 'Array.prototype.forEach.call(document.querySelectorAll("#ep-hero-clean .hv-cta")')
+    secs[2] = must(secs[2], 'e.target.closest("#ep-hero-clean .ep-hc-kicker")', 'e.target.closest("#ep-hero-clean .hv-rating")')
+    hero_css = (ROOT / 'fuente' / 'hero-v2.css').read_text()
+    hero_js = '<script>\n' + (ROOT / 'fuente' / 'hero-v2.js').read_text() + '</script>'
+
 # 11 · enlaces legales a la tienda
 secs[11] = secs[11].replace('href="/pages/', 'href="' + SHOP + '/pages/')
 
@@ -105,6 +176,7 @@ html = f"""<!doctype html>
 <style>
 {ep_css}
 {oferta_css}
+{hero_css}
 </style>
 {pixel}
 </head>
@@ -123,6 +195,7 @@ html = f"""<!doctype html>
 <script>
 {oferta_js}
 </script>
+{hero_js}
 </body>
 </html>
 """

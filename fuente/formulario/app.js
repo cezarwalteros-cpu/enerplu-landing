@@ -427,6 +427,19 @@
       } else if (pixelWait >= 10000) { clearInterval(pixelTimer); pixelTimer = 0; pixelQueue = []; }
     }, 250);
   }
+  /* TikTok: eventos estándar del pixel (solo si la página cargó ttq; sin pixel de TikTok no hace nada).
+     Mismo event_id que la Events API del servidor en la compra → TikTok la cuenta una vez. */
+  function ttTrack(name, data, eventId) {
+    if (!global.ttq || typeof global.ttq.track !== 'function') return;
+    try { global.ttq.track(name, data || {}, eventId ? { event_id: eventId } : undefined); } catch (e) {}
+  }
+  function ttData(p, value) { return { contents: [{ content_id: 'enerplu-' + p.id, content_type: 'product', content_name: p.name, quantity: 1, price: p.price }], content_type: 'product', value: value || p.price, currency: 'COP' }; }
+  function ttSha(v) {
+    if (!v || !global.crypto || !global.crypto.subtle || !global.TextEncoder) return Promise.resolve(null);
+    return global.crypto.subtle.digest('SHA-256', new TextEncoder().encode(v)).then(function (h) {
+      return Array.prototype.map.call(new Uint8Array(h), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+    }, function () { return null; });
+  }
   function payload(p) { return { plan: p.id, plan_name: p.name, value: p.price, currency: 'COP', num_items: p.boxes, content_ids: ['enerplu-' + p.id] }; }
 
   /* render en runtime solo si la config cambió desde el build (evita parpadeo/CLS) */
@@ -763,6 +776,7 @@
       var q = new URLSearchParams(global.location.search), t = {};
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'ttclid'].forEach(function (k) { var v = q.get(k); if (v) t[k] = v; });
       var ck = function (n) { var m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : null; };
+      t.ttp = ck('_ttp');
       t.fbp = ck('_fbp'); t.fbc = ck('_fbc') || (t.fbclid ? 'fb.1.' + this.t0 + '.' + t.fbclid : null);
       t.landing_url = global.location.href.slice(0, 300); t.user_agent = (navigator.userAgent || '').slice(0, 300);
       return t;
@@ -1017,6 +1031,7 @@
       var p = packById(state.pack);
       track('FormStart', payload(p), true);
       if (C.tracking.fireStandardEvents) sendPixel(['track', 'InitiateCheckout', payload(p)]);
+      ttTrack('InitiateCheckout', ttData(p));
       this.loadConfig();
     },
     bind: function () {
@@ -1122,6 +1137,7 @@
       if (this.test) body.dry_run = true;
       this.sending = true; this.busy(true);
       track('SubmitOrder', payload(p));
+      ttTrack('AddPaymentInfo', Object.assign(ttData(p), { payment_method: body.payment_method }));
       this.api('POST', '', body).then(function (r) {
         var j = r.j || {};
         if (r.ok && j.success && j.payment_required) { self.payOpen(j); return; }
@@ -1150,6 +1166,18 @@
         var data = { value: total, currency: 'COP', content_type: 'product', content_ids: ids.length ? ids : ['enerplu-' + p.id], contents: items.map(function (i) { return { id: i.catalog_product_id || ('enerplu-' + p.id), quantity: 1, item_price: i.price }; }), num_items: items.length || 1, order_id: j.order_number };
         sendPixel(['track', 'Purchase', data, { eventID: j.event_id || ('order_' + j.order_id) }]);   /* mismo event_id que CAPI → Meta lo cuenta una vez */
         try { (global.dataLayer = global.dataLayer || []).push(Object.assign({ event: 'ep_purchase', ep_event_id: j.event_id }, data)); } catch (e) {}
+        if (global.ttq) {   /* TikTok: PlaceAnOrder + CompletePayment con el mismo event_id que la Events API del servidor */
+          var ttEv = j.event_id || ('order_' + j.order_id), ph = this.phone();
+          var ttD = { contents: items.length ? items.map(function (i) { return { content_id: i.catalog_product_id || ('enerplu-' + p.id), content_type: 'product', content_name: i.name, quantity: 1, price: i.price }; }) : ttData(p).contents,
+                      content_type: 'product', value: total, currency: 'COP', order_id: j.order_number };
+          var fire = function () { ttTrack('PlaceAnOrder', ttD, ttEv); ttTrack('CompletePayment', ttD, ttEv); };
+          if (ph && typeof global.ttq.identify === 'function') {
+            Promise.all([ttSha('+57' + ph), ttSha('57' + ph)]).then(function (h) {
+              try { if (h[0]) global.ttq.identify({ phone_number: h[0], external_id: h[1] }); } catch (e) {}
+              fire();
+            });
+          } else fire();
+        }
       }
       track('OrderPlaced', Object.assign(payload(p), { value: total, order: j.order_number, test: !!j.dry_run }));
       var city = body.address.city, row = function (a, b) { return '<li><span>' + a + '</span><span>' + b + '</span></li>'; };
@@ -1425,6 +1453,7 @@
     track('ViewPDP', payload(packById(state.pack)), true);
     if (C.checkout.mode === 'inline') {
       if (C.tracking.fireStandardEvents) sendPixel(['track', 'ViewContent', payload(packById(state.pack))]);
+      ttTrack('ViewContent', ttData(packById(state.pack)));
       Order.init();
       Funnel.init();
       /* para selectores externos (p. ej. el carrusel de la página de Shopify copiada): elige el plan y baja al formulario */

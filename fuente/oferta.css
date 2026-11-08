@@ -105,8 +105,10 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-faq-title { font-size: 17px; font-weight: 800; margin: 0 0 6px; text-align: center; }
 .ep-root .eph-faq .ep-faq-list summary { font-size: 15px; padding: 14px 2px; min-height: 48px; }
 .ep-root .eph-faq .ep-faq-list details > div { font-size: 14px; padding-bottom: 14px; }
-/* Garantía Prueba Real (2026-11-08) */
-.ep-root .eph-garantia { display: block; margin: -4px 0 14px; padding: 10px 12px; border: 1.5px solid #d4af37; border-radius: 12px; background: #11100c; color: #e8e8e8; font-size: 13px; line-height: 1.4; text-decoration: none; text-align: left; }
-.ep-root .eph-garantia b { color: #d4af37; }
-.ep-root .eph-garantia u { color: #d4af37; white-space: nowrap; }
+/* Garantía Real (2026-11-08) */
+.ep-root .eph-garantia { display: flex; gap: 12px; align-items: center; margin: -4px 0 14px; padding: 10px 12px; border: 1.5px solid #d4af37; border-radius: 12px; background: #11100c; color: #e8e8e8; text-align: left; }
+.ep-root .eph-garantia img { flex: 0 0 64px; width: 64px; height: 64px; }
+.ep-root .eph-garantia b { display: block; color: #d4af37; font-size: 15.5px; line-height: 1.25; }
+.ep-root .eph-garantia .eph-bonus { display: block; font-size: 13px; line-height: 1.35; margin-top: 4px; color: #f2f2f2; }
+.ep-root .eph-garantia a { display: inline-block; font-size: 11px; color: #9a9a9a; margin-top: 4px; text-decoration: underline; }
 .ep-root .eph-trust a, .ep-root .eph-faq a { color: #d4af37; }

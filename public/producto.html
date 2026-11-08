@@ -1549,10 +1549,12 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-faq-title { font-size: 17px; font-weight: 800; margin: 0 0 6px; text-align: center; }
 .ep-root .eph-faq .ep-faq-list summary { font-size: 15px; padding: 14px 2px; min-height: 48px; }
 .ep-root .eph-faq .ep-faq-list details > div { font-size: 14px; padding-bottom: 14px; }
-/* Garantía Prueba Real (2026-11-08) */
-.ep-root .eph-garantia { display: block; margin: -4px 0 14px; padding: 10px 12px; border: 1.5px solid #d4af37; border-radius: 12px; background: #11100c; color: #e8e8e8; font-size: 13px; line-height: 1.4; text-decoration: none; text-align: left; }
-.ep-root .eph-garantia b { color: #d4af37; }
-.ep-root .eph-garantia u { color: #d4af37; white-space: nowrap; }
+/* Garantía Real (2026-11-08) */
+.ep-root .eph-garantia { display: flex; gap: 12px; align-items: center; margin: -4px 0 14px; padding: 10px 12px; border: 1.5px solid #d4af37; border-radius: 12px; background: #11100c; color: #e8e8e8; text-align: left; }
+.ep-root .eph-garantia img { flex: 0 0 64px; width: 64px; height: 64px; }
+.ep-root .eph-garantia b { display: block; color: #d4af37; font-size: 15.5px; line-height: 1.25; }
+.ep-root .eph-garantia .eph-bonus { display: block; font-size: 13px; line-height: 1.35; margin-top: 4px; color: #f2f2f2; }
+.ep-root .eph-garantia a { display: inline-block; font-size: 11px; color: #9a9a9a; margin-top: 4px; text-decoration: underline; }
 .ep-root .eph-trust a, .ep-root .eph-faq a { color: #d4af37; }
 
 </style>
@@ -3121,7 +3123,12 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
       <div class="eph ep-plans" id="ep-offer-widget">
         <h2 class="eph-title" id="eph-title">Tenemos 3 ofertas disponibles hoy</h2>
         <p class="eph-sub">🚚 Envío gratis · 💵 Pago al recibir · 📦 Discreto</p>
-        <a class="eph-garantia" href="/garantia" target="_blank" rel="noopener"><b>🛡️ Garantía Prueba Real</b> en Dominio y Élite: prueba la primera caja; si no te funciona, devuelves las selladas y te reembolsamos. <u>Ver condiciones</u></a>
+        <div class="eph-garantia">
+          <img src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Sello de garantía" width="64" height="64" loading="lazy">
+          <div><b>Garantía Real o te devolvemos tu dinero*</b>
+          <span class="eph-bonus">🎁 Con tu ENERPLU recibes gratis guías digitales para potenciar tus encuentros.</span>
+          <a href="/garantia" target="_blank" rel="noopener">*Aplican términos y condiciones</a></div>
+        </div>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
       </div>
 
@@ -3200,12 +3207,12 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
       </div>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
-      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo<br>🛡️ Dominio y Élite con <a href="/garantia" target="_blank" rel="noopener">Garantía Prueba Real</a></p>
+      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo<br>🛡️ Garantía Real o te devolvemos tu dinero <a href="/garantia" target="_blank" rel="noopener">*Aplican términos</a></p>
       <!-- C-01: preguntas frecuentes debajo del botón (2026-11-06) -->
       <div class="eph-faq" id="eph-faq">
         <h3 class="eph-faq-title">Preguntas frecuentes</h3>
         <div class="ep-faq-list">
-          <details><summary>¿Y si no me funciona?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Con los planes Dominio Total y Élite tienes la Garantía Prueba Real: usa la primera caja siguiendo la guía de uso; si no te funciona, escríbenos en los 15 días siguientes a la entrega, nos devuelves las cajas selladas y te reembolsamos su valor. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a>.</p></div></details>
+          <details><summary>¿Y si no me funciona?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Tienes Garantía Real o te devolvemos tu dinero en los planes Dominio Total y Élite: usa la primera caja siguiendo la guía de uso; si no te funciona, escríbenos en los 15 días siguientes a la entrega, nos devuelves las cajas selladas y te reembolsamos su valor. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a>.</p></div></details>
           <details><summary>¿Cómo pago?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Puedes pagar en efectivo cuando el pedido llega a tu casa, sin pagar nada por adelantado. Si prefieres pagar ahora con tarjeta, PSE, Nequi (Bold) o transferencia Bancolombia, te descontamos $12.000 y tu pedido sale directo a despacho. En algunos municipios solo se puede pagar por adelantado; si es tu caso, te avisamos al escribir tu ciudad.</p></div></details>
           <details><summary>¿Cuándo me llega?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Llega en 3 a 4 días hábiles según tu ciudad. Antes de enviarlo te escribimos por WhatsApp para confirmar tus datos.</p></div></details>
           <details><summary>¿Cómo llega el paquete?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>En una bolsa negra sellada y con empaque discreto.</p></div></details>

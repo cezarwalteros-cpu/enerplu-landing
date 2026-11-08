@@ -7,6 +7,7 @@ ROOT = pathlib.Path(__file__).parent
 PDP = ROOT / 'fuente' / 'formulario'
 OUT = ROOT / 'public'
 OUT.mkdir(exist_ok=True)
+GUIAS_TOKEN = 'mF2kt4dP8qpH'
 d = json.loads((ROOT / 'fuente' / 'shopify.json').read_text())
 PIXEL = '1248121626590977'
 # TikTok: pixel de ENERPLU (vacío = no se instala). La compra también va por la Events API desde checkout-native.
@@ -160,6 +161,8 @@ for a, b in CAMBIOS_TODAS:
     html = must(html, a, b)
 (OUT / 'index.html').write_text(html)
 (OUT / 'garantia.html').write_text((ROOT / 'fuente' / 'garantia.html').read_text())
+(OUT / 'guias' / GUIAS_TOKEN).mkdir(parents=True, exist_ok=True)   # PDFs de regalo: solo enlace secreto, sin Drive (cesar 2026-11-08)
+(OUT / 'guias' / GUIAS_TOKEN / 'index.html').write_text((ROOT / 'fuente' / 'guias.html').read_text())
 
 # /producto: la misma landing con aviso de restricción de edad (+18) a pantalla completa, para el tráfico de TikTok.
 # Lo ve todo el que abre esa URL, igual en celular y computador. La landing de Meta (/) no cambia.
@@ -213,6 +216,7 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
     "buildCommand": "",
     "outputDirectory": "public",
     "cleanUrls": True,
-    "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}]}]
+    "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}]},
+                {"source": "/guias/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}]}]
 }, indent=2))
 print('ok', len(html))

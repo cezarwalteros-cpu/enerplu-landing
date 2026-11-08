@@ -1558,6 +1558,35 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-garantia a { display: inline-block; font-size: 11px; color: #9a9a9a; margin-top: 4px; text-decoration: underline; }
 .ep-root .eph-trust a, .ep-root .eph-faq a { color: #d4af37; }
 
+/* E-03 · ventana de ofertas + pedido (variante B). Mismo look negro/dorado del formulario. */
+.ep-pop-lock, .ep-pop-lock body { overflow: hidden !important; }
+.ep-pop { position: fixed; inset: 0; z-index: 2147483100; background: rgba(0, 0, 0, .75); display: flex; justify-content: center; align-items: flex-start;
+  visibility: hidden; transform: translateY(105%); transition: transform .24s ease, visibility 0s .24s; }
+.ep-pop.is-open { visibility: visible; transform: none; transition: transform .24s ease; }
+.ep-pop-box { width: 100%; max-width: 560px; height: 100%; background: #000; display: flex; flex-direction: column; }
+@media (min-width: 600px) { .ep-pop { align-items: center; padding: 24px; } .ep-pop-box { height: auto; max-height: 100%; border-radius: 18px; border: 1px solid #2a2a2a; overflow: hidden; } }
+.ep-pop-head { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px 10px 16px; border-bottom: 1px solid #222; font-family: 'Inter', -apple-system, Roboto, Arial, sans-serif; }
+.ep-pop-head b { display: block; color: #fff; font-size: 19px; font-weight: 800; line-height: 1.2; }
+.ep-pop-head span { display: block; color: #bdbdbd; font-size: 12.5px; margin-top: 2px; }
+.ep-pop-x { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #333; background: #111; color: #fff; font-size: 17px; line-height: 1; cursor: pointer; }
+.ep-pop-body { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.ep-pop .ep-root .ep-order { padding-top: 6px !important; }
+.ep-pop .eph-title, .ep-pop .eph-sub { display: none; }
+/* con la ventana abierta no se muestran las barras fijas de la página */
+.ep-pop-lock .ep-hc-sticky, .ep-pop-lock [data-ep-sticky] { visibility: hidden !important; }
+
+/* tarjeta en la página, donde estaban las ofertas */
+.ep-pop-teaser { background: #000; }
+.ep-pop-teaser-in { max-width: 560px; margin: 0 auto; padding: 34px 16px 38px; text-align: center; font-family: 'Inter', -apple-system, Roboto, Arial, sans-serif; }
+.ep-pop-teaser h2 { color: #fff; font: 800 26px/1.15 Archivo, Inter, sans-serif; margin: 0 0 6px; }
+.ep-pop-teaser-sub { color: #cfcfcf; font-size: 14px; margin: 0 0 14px; }
+.ep-pop-teaser .eph-garantia, .ep-pop-teaser .eph-bonus { text-align: left; }
+.ep-pop-btn { display: block; width: 100%; margin-top: 16px; padding: 17px 16px 13px; border: 0 !important; border-radius: 10px !important; background: #e60000 !important; color: #fff !important; cursor: pointer;
+  font: 900 18px/1.2 Inter, -apple-system, Roboto, Arial, sans-serif !important; letter-spacing: .02em; box-shadow: 0 10px 26px rgba(230, 0, 0, .35) !important; animation: ep-pop-pulse 2.2s ease-in-out infinite; }
+.ep-pop-btn small { display: block; margin-top: 4px; font-size: 12.5px; font-weight: 600; letter-spacing: 0; opacity: .9; }
+@keyframes ep-pop-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
+@media (prefers-reduced-motion: reduce) { .ep-pop, .ep-pop.is-open { transition: none; } .ep-pop-btn { animation: none; } }
+
 </style>
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -6274,6 +6303,114 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     var box = document.getElementById("ep-offer-widget");
     if (box) window.scrollTo({ top: box.getBoundingClientRect().top + window.pageYOffset - 10, behavior: "smooth" });
   }, true);
+})();
+
+</script>
+<script>
+window.EP_POPUP_MODE = 'ab';
+/* E-03 · Ofertas + formulario solo en ventana emergente (popup), como Mg Collagen y el COD de Shopify. Prueba A/B 50/50 (2026-11-08).
+   Idea de cesar: quitar el formulario de la página y dejar solo el popup.
+   Variante B: la sección "ofertas + formulario" (#ep-order) sale de la página y vive en una ventana. En su lugar queda una
+   tarjeta corta con la garantía y el botón "VER OFERTAS DISPONIBLES". Todos los botones de compra de la página
+   ("PÍDELO YA", "VER OFERTAS", "QUIERO…") abren la ventana. Es el mismo <form>: mismos campos, validación, carrito y pedido.
+   Variante A: la página de siempre. Forzar: ?ab3=A o ?ab3=B. Solo participa la página "/" (no /producto).
+   Medición: funnel_events ab_assign {exp:'E03', v} por sesión, cruzado con checkout_attempts.session_id.
+   Con la ventana cerrada queda fuera de la pantalla (no display:none), así "vio las ofertas" (selector_view) y los
+   hitos ReachOffer/ReachForm solo cuentan cuando la persona abre la ventana. */
+(function () {
+  var MODE = window.EP_POPUP_MODE || 'off';   /* off | ab | all (lo pone build.py) */
+  if (MODE === 'off') return;
+  if (location.pathname !== '/' && location.pathname !== '/index.html' && !/\/public\/index\.html$/.test(location.pathname)) return;
+  var test = /[?&]ep_test=1(&|$)/.test(location.search);
+  var q = new URLSearchParams(location.search);
+  var v = (q.get('ab3') || '').toUpperCase();
+  if (v !== 'A' && v !== 'B') {
+    if (MODE === 'all') v = 'B';
+    else {
+      try { v = localStorage.getItem('ep_e03') || ''; } catch (e) {}
+      if (v !== 'A' && v !== 'B') { v = Math.random() < 0.5 ? 'A' : 'B'; try { localStorage.setItem('ep_e03', v); } catch (e) {} }
+    }
+  }
+  function send(ev, extra) {
+    if (test) return;
+    var sid = ''; try { sid = sessionStorage.getItem('ep_sid') || ''; } catch (e) {}
+    if (!sid) return;
+    var b = JSON.stringify({ sid: sid, ev: ev, page: (location.host + location.pathname).slice(0, 300), store: 'enerplu', utm_source: q.get('utm_source'), utm_campaign: q.get('utm_campaign'), utm_content: q.get('utm_content'), utm_term: q.get('utm_term'), extra: extra || null });
+    var U = 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
+    try { if (!(navigator.sendBeacon && navigator.sendBeacon(U, new Blob([b], { type: 'text/plain' })))) fetch(U, { method: 'POST', body: b, keepalive: true, headers: { 'Content-Type': 'text/plain' } }); } catch (e) {}
+  }
+  send('ab_assign', { exp: 'E03', v: v });
+  if (v !== 'B') return;
+
+  var order = document.getElementById('ep-order');
+  var block = order && order.closest('.ep-root');
+  if (!block) return;
+  document.documentElement.classList.add('ep-pop-on');
+
+  /* tarjeta que queda en la página, donde estaban las ofertas */
+  var gar = block.querySelector('.eph-garantia'), bonus = block.querySelector('.eph-bonus');
+  var teaser = document.createElement('div');
+  teaser.className = 'ep-root ep-pop-teaser';
+  teaser.setAttribute('data-ep-theme', 'negro');
+  teaser.innerHTML =
+    '<div class="ep-pop-teaser-in">' +
+      '<h2>Tenemos 3 ofertas disponibles hoy</h2>' +
+      '<p class="ep-pop-teaser-sub">🚚 Envío gratis · 💵 Pago al recibir · 📦 Discreto</p>' +
+      (gar ? gar.outerHTML : '') + (bonus ? bonus.outerHTML : '') +
+      '<button type="button" class="ep-pop-btn" data-pop-open="tarjeta">VER OFERTAS DISPONIBLES →<small>Pagas en efectivo al recibir</small></button>' +
+    '</div>';
+  block.parentNode.insertBefore(teaser, block);
+
+  /* ventana */
+  var pop = document.createElement('div');
+  pop.className = 'ep-pop';
+  pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-modal', 'true'); pop.setAttribute('aria-label', 'Elige tu oferta y haz tu pedido');
+  pop.setAttribute('aria-hidden', 'true');
+  pop.innerHTML =
+    '<div class="ep-pop-box">' +
+      '<div class="ep-pop-head"><div><b>Elige tu oferta</b><span>💵 Pagas al recibir · 🚚 Envío gratis</span></div>' +
+        '<button type="button" class="ep-pop-x" data-pop-close aria-label="Cerrar">✕</button></div>' +
+      '<div class="ep-pop-body"></div>' +
+    '</div>';
+  document.body.appendChild(pop);
+  var bodyEl = pop.querySelector('.ep-pop-body');
+  bodyEl.appendChild(block);
+
+  var isOpen = false;
+  function open(src) {
+    if (isOpen) return;
+    isOpen = true;
+    pop.classList.add('is-open'); pop.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.add('ep-pop-lock');
+    bodyEl.scrollTop = 0;
+    try { window.fbq && window.fbq('trackCustom', 'PopupOpen', { from: src }); } catch (e) {}
+  }
+  function close() {
+    if (!isOpen) return;
+    isOpen = false;
+    pop.classList.remove('is-open'); pop.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('ep-pop-lock');
+  }
+  window.EP_POPUP = { open: open, close: close };
+
+  /* Botones de compra de la página → abren la ventana. Se escucha en window (antes que los demás) sin cortar la
+     propagación, para que el embudo siga registrando cta_click; los scrolls que hagan los otros scripts quedan detrás. */
+  var CTA = /quiero|ofertas|elige|elegir|comprar|pedir|pídelo|pidelo|ordenar/i;
+  window.addEventListener('click', function (e) {
+    var t = e.target && e.target.closest ? e.target.closest('a, button, .gp-button, [role=button]') : null;
+    if (!t || t.closest('.ep-pop')) return;
+    var href = t.getAttribute('href') || '';
+    var hit = t.hasAttribute('data-pop-open') || t.hasAttribute('data-ep-go') || t.hasAttribute('data-ep-cta') ||
+      /#ep-(offer-widget|order|offer)\b/.test(href) || t.id === 'enerplu-review-cta' ||
+      ((!href || /^#|^javascript:/i.test(href) || /\/products\/enerplu/i.test(href)) && CTA.test(t.textContent || ''));
+    if (!hit) return;
+    e.preventDefault();
+    open(t.getAttribute('data-pop-open') || (t.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 30));
+  }, true);
+  pop.addEventListener('click', function (e) { if (e.target === pop || e.target.closest('[data-pop-close]')) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  /* regreso desde Bold (?bold-order-id=…): el resultado del pago se pinta en el gracias, que está dentro de la ventana */
+  if (q.get('bold-order-id')) open('bold');
 })();
 
 </script>

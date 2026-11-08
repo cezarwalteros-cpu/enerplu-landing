@@ -197,6 +197,7 @@
 .ep-root .ep-micro { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; font-size: 12.5px; color: var(--ep-muted); }
 .ep-root .ep-micro span { display: inline-flex; gap: 5px; align-items: center; }
 .ep-root .ep-micro .ep-ico { width: 14px; height: 14px; color: var(--ep-ok); }
+.ep-root .ep-pay-fallback { margin-top: 10px; width: 100%; min-height: 46px; border-radius: 10px; border: 0; background: var(--ep-cta); color: var(--ep-on-cta, #fff); font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; }
 .ep-root .ep-error { font-size: 13.5px; color: var(--ep-err); background: var(--ep-err-bg); border: 1px solid color-mix(in srgb, var(--ep-err) 35%, transparent); padding: 10px 12px; border-radius: 10px; }
 
 /* ---------- 02 confianza ---------- */

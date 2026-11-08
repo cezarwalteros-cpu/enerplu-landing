@@ -65,6 +65,7 @@
   document.body.appendChild(pop);
   var bodyEl = pop.querySelector('.ep-pop-body');
   bodyEl.appendChild(block);
+  block.setAttribute('data-ep-theme', 'claro');   /* cesar 2026-11-08: la ventana va en fondo blanco (tema claro base del formulario) */
 
   var isOpen = false;
   function open(src) {

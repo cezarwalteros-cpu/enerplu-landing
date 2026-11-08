@@ -1613,6 +1613,60 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 @keyframes ep-pop-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
 @media (prefers-reduced-motion: reduce) { .ep-pop, .ep-pop.is-open { transition: none; } .ep-pop-btn { animation: none; } }
 
+/* ---- Ventana en fondo blanco (cesar 2026-11-08). Tema claro base del formulario + ajustes de las tarjetas negras/doradas ---- */
+.ep-pop .ep-pop-box { background: #fff; }
+.ep-pop .ep-pop-head { border-bottom-color: #ececec; background: #fff; }
+.ep-pop .ep-pop-head b { color: #111; }
+.ep-pop .ep-pop-head span { color: #555; }
+.ep-pop .ep-pop-x { background: #f2f2f2; border-color: #e3e3e3; color: #111; }
+.ep-pop .ep-root .eph-order { background: #fff; }
+.ep-pop .ep-root .eph-list .eph-card { background: #fff; border-color: #e2e2e2; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.ep-pop .ep-root .eph-list .eph-card.is-on { background: #f3fbf5; border-color: #1fa64a; box-shadow: 0 0 0 3px rgba(31,166,74,.15); }
+.ep-pop .ep-root .eph-check { background: #fff; border-color: #c9c9c9; }
+.ep-pop .ep-root .eph-check::after { background: #1fa64a; }
+.ep-pop .ep-root .eph-card.is-on .eph-check { border-color: #1fa64a; }
+.ep-pop .ep-root .eph-tag { background: #f2f2f2; color: #555; border-color: #e2e2e2; }
+.ep-pop .ep-root .eph-card.rec .eph-tag { background: #1fa64a; color: #fff; border-color: #1fa64a; }
+.ep-pop .ep-root .eph-card[data-pack="elite"] .eph-tag { background: #ff7a00; color: #fff; border-color: #ff7a00; }
+.ep-pop .ep-root .eph-name { color: #111; }
+.ep-pop .ep-root .eph-qty { color: #555; }
+.ep-pop .ep-root .eph-c .eph-unit { color: #888; }
+.ep-pop .ep-root .eph-price { color: #138a3a; }
+.ep-pop .ep-root .eph-card.is-basic .eph-price { color: #111; }
+.ep-pop .ep-root .eph-was { color: #999; }
+.ep-pop .ep-root .eph-c-img { border: 1px solid #eee; }
+.ep-pop .ep-root .eph-c-gift { background: #fff7e6; color: #333; }
+.ep-pop .ep-root .eph-c-gift b { color: #b7791f; }
+.ep-pop .ep-root .eph-c-save { color: #138a3a; }
+.ep-pop .ep-root .eph-garantia { background: #fffaf0; border-color: #d4af37; color: #333; }
+.ep-pop .ep-root .eph-garantia b { color: #8a6d12; }
+.ep-pop .ep-root .eph-garantia a { color: #777; }
+.ep-pop .ep-root .eph-bonus { color: #333; border-color: #e5d39a; }
+.ep-pop .ep-root .eph-bonus b { color: #8a6d12; }
+.ep-pop .ep-root .eph-order .ep-of-block { background: #fafafa; border-color: #e6e6e6; }
+.ep-pop .ep-root .eph-order .ep-of-legend { color: #111; }
+.ep-pop .ep-root .eph-order .ep-f label { color: #222; }
+.ep-pop .ep-root .eph-order .ep-f-help { color: #666; }
+.ep-pop .ep-root .eph-order .ep-city-ok { color: #222; }
+.ep-pop .ep-root .eph-order .ep-ship-opt { border-color: #e2e2e2; background: #fff; }
+.ep-pop .ep-root .eph-order .ep-ship-opt.is-on { border-color: #1fa64a; background: #f3fbf5; }
+.ep-pop .ep-root .eph-order .ep-ship-opt.is-on .ep-pack-dot { border-color: #1fa64a; }
+.ep-pop .ep-root .eph-order .ep-ship-opt .ep-pack-dot::after { background: #1fa64a; }
+.ep-pop .ep-root .eph-order .ep-bump, .ep-pop .ep-root .eph-order .ep-bump-box { background: #fff; }
+.ep-pop .ep-root .eph-order .ep-bump-price b, .ep-pop .ep-root .eph-order .ep-sum-total b { color: #138a3a; }
+.ep-pop .ep-root .eph-order .ep-sum { background: #fafafa; border-color: #e6e6e6; }
+.ep-pop .ep-root .eph-order .ep-nudge-in { background: #fffaf0; border-color: #e5d39a; color: #333; }
+.ep-pop .ep-root .eph-order .ep-nudge-in b { color: #111; }
+.ep-pop .ep-root .eph-order .ep-nudge-btn { border-color: #b7791f !important; color: #8a6d12 !important; }
+.ep-pop .ep-root .eph-order .ep-nudge-in.is-strong .ep-nudge-btn { background: #d4af37 !important; color: #111 !important; }
+.ep-pop .ep-root .eph-order .ep-micro, .ep-pop .ep-root .eph-trust { color: #555; }
+.ep-pop .ep-root .eph-trust { border-color: #e6e6e6; }
+.ep-pop .ep-root .eph-trust a, .ep-pop .ep-root .eph-faq a { color: #8a6d12; }
+.ep-pop .ep-root .eph-faq, .ep-pop .ep-root .eph-faq-title { color: #111; }
+.ep-pop .ep-root, .ep-pop .ep-root .eph-order { --ep-bg: #FFFFFF; --ep-bg-2: #F6F5F3; --ep-surface: #FFFFFF; --ep-surface-2: #F1EFEC; --ep-line: #E6E2DD; --ep-line-strong: #CFC9C2;
+  --ep-text: #141414; --ep-muted: #55504B; --ep-faint: #8B857F; --ep-ok: #15803D; --ep-err: #B42318; --ep-err-bg: #FEF3F2; --ep-shadow: rgba(20, 20, 20, .10); color: #141414; }
+.ep-pop .ep-root .eph-order .ep-sum-save { color: #15803D; }
+
 </style>
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -6405,6 +6459,7 @@ window.EP_POPUP_MODE = 'ab';
   document.body.appendChild(pop);
   var bodyEl = pop.querySelector('.ep-pop-body');
   bodyEl.appendChild(block);
+  block.setAttribute('data-ep-theme', 'claro');   /* cesar 2026-11-08: la ventana va en fondo blanco (tema claro base del formulario) */
 
   var isOpen = false;
   function open(src) {

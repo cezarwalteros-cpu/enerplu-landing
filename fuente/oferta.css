@@ -139,3 +139,14 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 /* Cintas de color (cesar 2026-11-08): más pedido = verde, máximo ahorro = naranja */
 .ep-root .eph-card.rec .eph-tag { background: #1fa64a; color: #fff; border-color: #1fa64a; }
 .ep-root .eph-card[data-pack="elite"] .eph-tag { background: #ff7a00; color: #fff; border-color: #ff7a00; }
+
+/* Regalo con las 3 portadas de las guías (cesar 2026-11-08) */
+.ep-root .eph-bonus--libros { padding: 10px 12px 9px; }
+.ep-root .eph-libros { display: flex; justify-content: center; gap: 8px; margin-bottom: 7px; }
+.ep-root .eph-libros img { width: 66px; height: 86px; object-fit: cover; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.45); background: #222; }
+.ep-root .eph-libros img:nth-child(1) { transform: rotate(-5deg); }
+.ep-root .eph-libros img:nth-child(3) { transform: rotate(5deg); }
+.ep-root .eph-bonus--libros p { margin: 0; }
+.ep-root .eph-libro-txt { width: 66px; height: 86px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.45); background: radial-gradient(120% 90% at 50% 20%, #5a0f17, #1d0407); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 4px; box-sizing: border-box; }
+.ep-root .eph-libro-txt b { font: 700 10.5px/1.05 Georgia, 'Times New Roman', serif; color: #e2c48a; letter-spacing: .3px; }
+.ep-root .eph-libro-txt i { font: italic 7px/1.2 Georgia, serif; color: #c9a86a; margin-top: 4px; }

@@ -1584,6 +1584,17 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-card.rec .eph-tag { background: #1fa64a; color: #fff; border-color: #1fa64a; }
 .ep-root .eph-card[data-pack="elite"] .eph-tag { background: #ff7a00; color: #fff; border-color: #ff7a00; }
 
+/* Regalo con las 3 portadas de las guías (cesar 2026-11-08) */
+.ep-root .eph-bonus--libros { padding: 10px 12px 9px; }
+.ep-root .eph-libros { display: flex; justify-content: center; gap: 8px; margin-bottom: 7px; }
+.ep-root .eph-libros img { width: 66px; height: 86px; object-fit: cover; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.45); background: #222; }
+.ep-root .eph-libros img:nth-child(1) { transform: rotate(-5deg); }
+.ep-root .eph-libros img:nth-child(3) { transform: rotate(5deg); }
+.ep-root .eph-bonus--libros p { margin: 0; }
+.ep-root .eph-libro-txt { width: 66px; height: 86px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.45); background: radial-gradient(120% 90% at 50% 20%, #5a0f17, #1d0407); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 4px; box-sizing: border-box; }
+.ep-root .eph-libro-txt b { font: 700 10.5px/1.05 Georgia, 'Times New Roman', serif; color: #e2c48a; letter-spacing: .3px; }
+.ep-root .eph-libro-txt i { font: italic 7px/1.2 Georgia, serif; color: #c9a86a; margin-top: 4px; }
+
 /* E-03 · ventana de ofertas + pedido (variante B). Mismo look negro/dorado del formulario. */
 .ep-pop-lock, .ep-pop-lock body { overflow: hidden !important; }
 .ep-pop { position: fixed; inset: 0; z-index: 2147483100; background: rgba(0, 0, 0, .75); display: flex; justify-content: center; align-items: flex-start;
@@ -1606,7 +1617,7 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-pop-teaser-in { max-width: 560px; margin: 0 auto; padding: 34px 16px 38px; text-align: center; font-family: 'Inter', -apple-system, Roboto, Arial, sans-serif; }
 .ep-pop-teaser h2 { color: #fff; font: 800 26px/1.15 Archivo, Inter, sans-serif; margin: 0 0 6px; }
 .ep-pop-teaser-sub { color: #cfcfcf; font-size: 14px; margin: 0 0 14px; }
-.ep-pop-teaser .eph-garantia, .ep-pop-teaser .eph-bonus { text-align: left; }
+.ep-pop-teaser .eph-garantia { text-align: left; }
 .ep-pop-btn { display: block; width: 100%; margin-top: 16px; padding: 17px 16px 13px; border: 0 !important; border-radius: 10px !important; background: #e60000 !important; color: #fff !important; cursor: pointer;
   font: 900 18px/1.2 Inter, -apple-system, Roboto, Arial, sans-serif !important; letter-spacing: .02em; box-shadow: 0 10px 26px rgba(230, 0, 0, .35) !important; animation: ep-pop-pulse 2.2s ease-in-out infinite; }
 .ep-pop-btn small { display: block; margin-top: 4px; font-size: 12.5px; font-weight: 600; letter-spacing: 0; opacity: .9; }
@@ -3238,7 +3249,7 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
           <div><b>Garantía Real o te devolvemos tu dinero*</b>
           <a href="/garantia" target="_blank" rel="noopener">*Aplican términos y condiciones</a></div>
         </div>
-        <p class="eph-bonus">🎁 <b>Regalo:</b> con tu ENERPLU recibes gratis guías digitales para potenciar tus encuentros.</p>
+        <div class="eph-bonus eph-bonus--libros"><div class="eph-libros"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Guía Maestro del Orgasmo" width="66" height="86" loading="lazy"><span class="eph-libro-txt" role="img" aria-label="Guía Secretos Sexuales"><b>SECRETOS</b><b>SEXUALES</b><i>Edición de lujo</i></span><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Guía Genio del Sexo" width="66" height="86" loading="lazy"></div><p>🎁 <b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
       </div>
 

@@ -978,6 +978,7 @@ display: none;
 .ep-root .ep-micro { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; font-size: 12.5px; color: var(--ep-muted); }
 .ep-root .ep-micro span { display: inline-flex; gap: 5px; align-items: center; }
 .ep-root .ep-micro .ep-ico { width: 14px; height: 14px; color: var(--ep-ok); }
+.ep-root .ep-pay-fallback { margin-top: 10px; width: 100%; min-height: 46px; border-radius: 10px; border: 0; background: var(--ep-cta); color: var(--ep-on-cta, #fff); font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; }
 .ep-root .ep-error { font-size: 13.5px; color: var(--ep-err); background: var(--ep-err-bg); border: 1px solid color-mix(in srgb, var(--ep-err) 35%, transparent); padding: 10px 12px; border-radius: 10px; }
 
 /* ---------- 02 confianza ---------- */
@@ -1548,6 +1549,14 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-faq-title { font-size: 17px; font-weight: 800; margin: 0 0 6px; text-align: center; }
 .ep-root .eph-faq .ep-faq-list summary { font-size: 15px; padding: 14px 2px; min-height: 48px; }
 .ep-root .eph-faq .ep-faq-list details > div { font-size: 14px; padding-bottom: 14px; }
+/* Garantía Real (2026-11-08) */
+.ep-root .eph-garantia { display: flex; gap: 12px; align-items: center; margin: -4px 0 14px; padding: 10px 12px; border: 1.5px solid #d4af37; border-radius: 12px; background: #11100c; color: #e8e8e8; text-align: left; }
+.ep-root .eph-garantia img { flex: 0 0 64px; width: 64px; height: 64px; }
+.ep-root .eph-garantia b { display: block; color: #d4af37; font-size: 15.5px; line-height: 1.25; }
+.ep-root .eph-bonus { margin: -6px 0 14px; padding: 8px 12px; border: 1px dashed #3a3320; border-radius: 10px; font-size: 13px; line-height: 1.35; color: #f2f2f2; text-align: center; }
+.ep-root .eph-bonus b { color: #d4af37; }
+.ep-root .eph-garantia a { display: inline-block; font-size: 11px; color: #9a9a9a; margin-top: 4px; text-decoration: underline; }
+.ep-root .eph-trust a, .ep-root .eph-faq a { color: #d4af37; }
 
 </style>
 <script>
@@ -1729,7 +1738,7 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
       send("plan_click", { plan: m ? decodeURIComponent(m[1]) : null });
       return;
     }
-    if (a && /quiero|pedir|comprar|ofertas|elegir|elige/i.test(a.textContent || "")) send("cta_click", { txt: (a.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40) });
+    if (a && /quiero|pedir|pídelo|pidelo|comprar|ofertas|elegir|elige/i.test(a.textContent || "")) send("cta_click", { txt: (a.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40) });
   }, true);
 
   // 4) Profundidad de scroll
@@ -1809,7 +1818,7 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
       <span class="ep-hc-count">+3500 hombres colombianos</span>
     </a>
 
-    <h1 class="ep-hc-title">DE CERO A MÁXIMA<br>POTENCIA EN <span>5 MINUTOS EXACTOS.</span></h1>
+    <h1 class="ep-hc-title">DE CERO A MÁXIMA<br>POTENCIA EN <span>5 A 15 MINUTOS.</span></h1>
 
     <div class="ep-hc-img">
       <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" alt="ENERPLU tabletas sublinguales con maca negra" width="1080" height="1080" fetchpriority="high">
@@ -1824,7 +1833,7 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
     <div class="ep-hc-note">💵 Pagas al recibir · 🚚 Envío gratis a toda Colombia</div>
 
 
-    <a href="#ep-offer-widget" class="ep-hc-btn">QUIERO POTENCIA INMEDIATA →</a>
+    <a href="#ep-offer-widget" class="ep-hc-btn">PÍDELO YA · PAGAS AL RECIBIR →</a>
 
     <div class="ep-hc-points">
       <span>📦 Envío 100% Discreto</span>
@@ -2274,7 +2283,7 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
           <ul class="ep-compare-list ep-compare-list-right">
             <li><span class="ep-bullet-right">✓</span><span><strong>Sigilo Absoluto:</strong> La disuelves bajo la lengua como un caramelo de menta.</span></li>
             <li><span class="ep-bullet-right">✓</span><span><strong>Sin Agua:</strong> Cero pausas incómodas. En el carro, en el ascensor.</span></li>
-            <li><span class="ep-bullet-right">✓</span><span><strong>Acción en 5 Minutos:</strong> Estarás listo antes de llegar a la cama.</span></li>
+            <li><span class="ep-bullet-right">✓</span><span><strong>Acción en 5 a 15 minutos:</strong> Estarás listo antes de llegar a la cama.</span></li>
           </ul>
         </div>
       </div>
@@ -3115,6 +3124,12 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
       <div class="eph ep-plans" id="ep-offer-widget">
         <h2 class="eph-title" id="eph-title">Tenemos 3 ofertas disponibles hoy</h2>
         <p class="eph-sub">🚚 Envío gratis · 💵 Pago al recibir · 📦 Discreto</p>
+        <div class="eph-garantia">
+          <img src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Sello de garantía" width="64" height="64" loading="lazy">
+          <div><b>Garantía Real o te devolvemos tu dinero*</b>
+          <a href="/garantia" target="_blank" rel="noopener">*Aplican términos y condiciones</a></div>
+        </div>
+        <p class="eph-bonus">🎁 <b>Regalo:</b> con tu ENERPLU recibes gratis guías digitales para potenciar tus encuentros.</p>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
       </div>
 
@@ -3158,8 +3173,8 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
           <p class="ep-f-err" data-ep-err="address1" hidden></p>
         </div>
         <div class="ep-f">
-          <label for="ep-f-add">Barrio y detalles</label>
-          <input id="ep-f-add" name="additional" type="text" autocomplete="address-line2" maxlength="160" placeholder="Barrio, apto, casa o una referencia" required>
+          <label for="ep-f-add">Barrio y detalles <small style="font-weight:400;opacity:.75">(opcional)</small></label>
+          <input id="ep-f-add" name="additional" type="text" autocomplete="address-line2" maxlength="160" placeholder="Barrio, apto, casa o una referencia">
           <p class="ep-f-err" data-ep-err="additional" hidden></p>
         </div>
         <div class="ep-hp" aria-hidden="true"><label for="ep-f-web">No llenar</label><input id="ep-f-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
@@ -3182,7 +3197,7 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
       <p class="ep-error" data-ep-form-error hidden></p>
 
       <button type="submit" class="ep-cta ep-of-submit" data-ep-submit>
-        <span class="ep-cta-label"><b>Hacer mi pedido</b><small data-ep-cta-sub>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
+        <span class="ep-cta-label"><b>Confirmar mi pedido</b><small data-ep-cta-sub>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
       </button>
 
       <p class="ep-pay-hint" data-ep-pay-hint hidden></p>
@@ -3193,11 +3208,12 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
       </div>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
-      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo</p>
+      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo<br>🛡️ Garantía Real o te devolvemos tu dinero <a href="/garantia" target="_blank" rel="noopener">*Aplican términos</a></p>
       <!-- C-01: preguntas frecuentes debajo del botón (2026-11-06) -->
       <div class="eph-faq" id="eph-faq">
         <h3 class="eph-faq-title">Preguntas frecuentes</h3>
         <div class="ep-faq-list">
+          <details><summary>¿Y si no me funciona?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Tienes Garantía Real o te devolvemos tu dinero en los planes Dominio Total y Élite: usa la primera caja siguiendo la guía de uso; si no te funciona, escríbenos en los 15 días siguientes a la entrega, nos devuelves las cajas selladas y te reembolsamos su valor. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a>.</p></div></details>
           <details><summary>¿Cómo pago?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Puedes pagar en efectivo cuando el pedido llega a tu casa, sin pagar nada por adelantado. Si prefieres pagar ahora con tarjeta, PSE, Nequi (Bold) o transferencia Bancolombia, te descontamos $12.000 y tu pedido sale directo a despacho. En algunos municipios solo se puede pagar por adelantado; si es tu caso, te avisamos al escribir tu ciudad.</p></div></details>
           <details><summary>¿Cuándo me llega?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Llega en 3 a 4 días hábiles según tu ciudad. Antes de enviarlo te escribimos por WhatsApp para confirmar tus datos.</p></div></details>
           <details><summary>¿Cómo llega el paquete?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>En una bolsa negra sellada y con empaque discreto.</p></div></details>
@@ -3413,7 +3429,7 @@ html.ep-gate-on,html.ep-gate-on body{overflow:hidden}
     <ul class="enerplu-review-list" id="enerplu-review-list"></ul>
     <p class="enerplu-review-empty" id="enerplu-review-empty" hidden></p>
     <button type="button" class="enerplu-review-more" id="enerplu-review-more" hidden>Ver más reseñas</button>
-    <button type="button" class="lc-btn enerplu-review-cta" id="enerplu-review-cta">YO TAMBIÉN QUIERO PROBAR</button>
+    <button type="button" class="lc-btn enerplu-review-cta" id="enerplu-review-cta">QUIERO PROBARLO SIN RIESGO</button>
     <p class="enerplu-review-footer">Pagas al recibir · Bolsa negra sellada · Lubricante de regalo</p>
   </div>
   <dialog class="enerplu-review-dialog" aria-label="Foto de cliente de ENERPLU"><button type="button" class="enerplu-review-close" aria-label="Cerrar foto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button><img width="800" height="800" alt="Foto compartida por un cliente de ENERPLU"></dialog>`;
@@ -5695,6 +5711,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     payOpen: function (j) {
       var self = this;
       try { sessionStorage.setItem('ep_pay_ref', j.payment_ref); } catch (e) {}
+      this.draftSave();
       track('PaymentStart', { ref: j.payment_ref, value: j.total_cop });
       return this.loadBold().then(function () {
         var checkout = new global.BoldCheckout(j.payment);
@@ -5703,9 +5720,44 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         self.formError('No pudimos abrir el pago en línea. Revisa tu conexión y toca el botón otra vez.');
       });
     },
+    /* datos del formulario guardados antes de abrir Bold: si el pago se rechaza, el cliente no vuelve a escribir todo */
+    draftSave: function () {
+      var self = this, d = { pack: state.pack, bump: this.st.bump, ship: this.st.ship, city: this.st.city, cityLabel: this.cityLabel || '', v: {} };
+      this.fields.forEach(function (n) { var e = self.el(n); if (e && n !== 'city') d.v[n] = String(e.value || ''); });
+      try { sessionStorage.setItem('ep_pay_draft', JSON.stringify(d)); } catch (e) {}
+    },
+    draftLoad: function () {
+      var d = null; try { d = JSON.parse(sessionStorage.getItem('ep_pay_draft') || 'null'); } catch (e) {}
+      if (!d || !d.v) return false;
+      var self = this;
+      Object.keys(d.v).forEach(function (n) { var e = self.el(n); if (e && !String(e.value || '').trim()) e.value = d.v[n]; });
+      if (d.city && d.city.municipio) { this.st.city = d.city; this.cityLabel = d.cityLabel; var ci = this.el('city'); if (ci) ci.value = d.cityLabel; }
+      if (d.pack) setPack(d.pack, null);
+      this.st.bump = !!d.bump; if (d.ship) this.st.ship = d.ship;
+      this.paint(); this.cityShow(); this.payMode();
+      return true;
+    },
+    /* Bold rechazó el pago: un toque para pedir pagando al recibir, con los mismos datos */
+    payFallback: function () {
+      var self = this, box = qs('[data-ep-form-error]', this.form);
+      if (!box || (this.st.city && this.st.city.prepaid) || !this.st.city) return;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'ep-pay-fallback'; b.textContent = 'Pagar al recibir (Contraentrega)';
+      b.addEventListener('click', function () {
+        self.st.pay = 'cod';
+        var r = qs('input[name="ep-pay"][value="cod"]', self.form); if (r) r.checked = true;
+        self.payMode(); self.paintPay(); self.update();
+        Funnel.send('pay_fallback_cod', { plan: state.pack });
+        track('PayFallbackCOD', { plan: state.pack });
+        self.submit();
+      });
+      box.appendChild(document.createElement('br'));
+      box.appendChild(b);
+    },
     /* regreso de Bold: ?bold-order-id=…&bold-tx-status=…; el estado real lo confirma el servidor */
     payResume: function (ref, txStatus) {
       var self = this, tries = 0, sec = qs('#ep-order');
+      this.st.pay = 'bold'; this.draftLoad();
       if (sec) setTimeout(function () { scrollToEl(sec); }, 300);
       this.done = true; this.busy(true);
       var l = qs('[data-ep-submit] .ep-cta-label b', this.form); if (l) l.textContent = 'Confirmando tu pago…';
@@ -5714,7 +5766,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         self.api('POST', '', { action: 'payment_status', payment_ref: ref }).then(function (r) {
           var j = r.j || {};
           if (j.status === 'approved' && j.order_number) {
-            try { sessionStorage.removeItem('ep_pay_ref'); } catch (e) {}
+            try { sessionStorage.removeItem('ep_pay_ref'); sessionStorage.removeItem('ep_pay_draft'); } catch (e) {}
             self.success({ order_id: j.order_id, order_number: j.order_number, event_id: j.event_id, total_cop: j.total_cop, shipping_cop: j.shipping_cop, items: j.items || [], paid: true },
               { address: { city: (j.address || {}).city || '' }, bump: false });
             return;
@@ -5722,10 +5774,13 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
           var final = /^(rejected|failed|voided)$/.test(j.status || '');
           if (!final && tries < 12) { setTimeout(poll, tries < 4 ? 2500 : 5000); return; }
           self.done = false; self.busy(false);
-          self.formError(final || /rejected|failed/.test(txStatus || '')
-            ? 'El pago no se aprobó. Puedes intentarlo de nuevo con otro medio de pago.'
+          var rejected = final || /rejected|failed/.test(txStatus || '');
+          self.formError(rejected
+            ? 'El pago no se aprobó. Puedes intentarlo otra vez con otro medio de pago, o hacer tu pedido y pagar en efectivo cuando lo recibas:'
             : 'Aún no vemos tu pago confirmado. Si ya pagaste, te escribimos por WhatsApp apenas Bold lo apruebe.');
+          if (rejected) self.payFallback();
           track('PaymentResult', { ref: ref, status: j.status || txStatus || 'unknown' });
+          Funnel.send('pay_result', { status: j.status || txStatus || 'unknown' });
         }, function () { if (tries < 12) setTimeout(poll, 4000); });
       };
       poll();
@@ -5753,7 +5808,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       /* dirección flexible: veredas, fincas, oficinas de transportadora o direcciones sin nomenclatura pasan;
          sin número, el pedido queda marcado en las notas para confirmar el punto por WhatsApp */
       if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección o el punto de entrega' : '';
-      if (name === 'additional') return v('additional').length < 2 ? 'Escribe barrio, apto, casa o una referencia' : '';
+      if (name === 'additional') return '';   /* barrio opcional (2026-11-08): si viene vacío se confirma por WhatsApp */
       if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
       return '';
     },
@@ -5842,7 +5897,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     busy: function (on) {
       var b = qs('[data-ep-submit]', this.form); if (!b) return;
       if (on) b.setAttribute('aria-busy', 'true'); else b.removeAttribute('aria-busy');
-      var pay = this.payOnline(), l = qs('.ep-cta-label b', b); if (l) l.textContent = on ? (pay ? 'Abriendo el pago…' : 'Enviando tu pedido…') : (pay ? 'Pagar mi pedido' : 'Hacer mi pedido');
+      var pay = this.payOnline(), l = qs('.ep-cta-label b', b); if (l) l.textContent = on ? (pay ? 'Abriendo el pago…' : 'Enviando tu pedido…') : (pay ? 'Pagar mi pedido' : 'Confirmar mi pedido');
     },
     submit: function () {
       var self = this; if (this.sending || this.done) return;
@@ -5865,7 +5920,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
         customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
-        address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
+        address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') || 'Sin barrio: confirmar por WhatsApp', notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
         payment_method: this.method(), tracking: this.tracking()
@@ -6237,7 +6292,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
             (save > 0 ? '<span class="eph-por">Por solo</span>' : '') +
             '<span class="eph-prices"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
             (save > 0 ? '<span class="eph-save">Ahorras ' + R.money(save) + '</span>' : '') +
-            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por tableta</span>' : '') +   /* C-02: precio por uso */
+            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión' + (p.boxes > 1 ? ' · menos que una cerveza' : '') + '</span>' : '') +   /* C-02: precio por uso */
           '</span>' +
         '</span>' +
       '</label>';

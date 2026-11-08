@@ -1055,7 +1055,7 @@
       /* dirección flexible: veredas, fincas, oficinas de transportadora o direcciones sin nomenclatura pasan;
          sin número, el pedido queda marcado en las notas para confirmar el punto por WhatsApp */
       if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección o el punto de entrega' : '';
-      if (name === 'additional') return v('additional').length < 2 ? 'Escribe barrio, apto, casa o una referencia' : '';
+      if (name === 'additional') return '';   /* barrio opcional (2026-11-08): si viene vacío se confirma por WhatsApp */
       if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
       return '';
     },
@@ -1144,7 +1144,7 @@
     busy: function (on) {
       var b = qs('[data-ep-submit]', this.form); if (!b) return;
       if (on) b.setAttribute('aria-busy', 'true'); else b.removeAttribute('aria-busy');
-      var pay = this.payOnline(), l = qs('.ep-cta-label b', b); if (l) l.textContent = on ? (pay ? 'Abriendo el pago…' : 'Enviando tu pedido…') : (pay ? 'Pagar mi pedido' : 'Hacer mi pedido');
+      var pay = this.payOnline(), l = qs('.ep-cta-label b', b); if (l) l.textContent = on ? (pay ? 'Abriendo el pago…' : 'Enviando tu pedido…') : (pay ? 'Pagar mi pedido' : 'Confirmar mi pedido');
     },
     submit: function () {
       var self = this; if (this.sending || this.done) return;
@@ -1167,7 +1167,7 @@
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
         customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
-        address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional'), notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
+        address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') || 'Sin barrio: confirmar por WhatsApp', notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
         payment_method: this.method(), tracking: this.tracking()

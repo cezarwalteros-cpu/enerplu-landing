@@ -143,6 +143,7 @@ window.EP_CONFIG = {
     thanksTitle: '¡Pedido recibido!',
     thanksText: 'Te escribiremos por WhatsApp para confirmar tu pedido. Ten tu celular a la mano.',
     deliveryDays: [3, 4],
+    expressDays: [2, 3],   /* envío express: 2 a 3 días hábiles (despacho el mismo día si confirma antes de las 2:00 p. m.) */
     /* corregimientos, localidades y comunas que la gente escribe en vez del municipio: [lo que escribe, municipio, departamento] */
     cityAliases: [
       ['San Antonio de Prado', 'Medellín', 'Antioquia'], ['San Cristóbal (Medellín)', 'Medellín', 'Antioquia'], ['Santa Elena', 'Medellín', 'Antioquia'],

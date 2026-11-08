@@ -1558,6 +1558,29 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-garantia a { display: inline-block; font-size: 11px; color: #9a9a9a; margin-top: 4px; text-decoration: underline; }
 .ep-root .eph-trust a, .ep-root .eph-faq a { color: #d4af37; }
 
+/* Tarjetas compactas (cesar 2026-11-08: "más profesionales, compactas"): fila con radio · foto · nombre · precio a la derecha */
+.ep-root .eph-list { gap: 12px; }
+.ep-root .eph-list .eph-card.eph-c { padding: 12px 12px 10px; border-radius: 14px; border-color: #2c2c2c; }
+.ep-root .eph-list .eph-card.eph-c.is-on { padding: 11.5px 11.5px 9.5px; }
+.ep-root .eph-c .eph-tag { top: -9px; left: 12px; font-size: 10px; padding: 2px 8px; }
+.ep-root .eph-c-row { display: flex; align-items: center; gap: 10px; }
+.ep-root .eph-c .eph-check { position: static; flex: 0 0 22px; width: 22px; height: 22px; }
+.ep-root .eph-c .eph-check::after { width: 10px; height: 10px; }
+.ep-root .eph-c-img { flex: 0 0 64px; width: 64px; height: 64px; border-radius: 10px; overflow: hidden; background: #fff; }
+.ep-root .eph-c-img img { width: 100%; height: 100%; object-fit: cover; max-width: none; }
+.ep-root .eph-c-info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.ep-root .eph-c .eph-name { font-size: 15.5px; font-weight: 700; line-height: 1.2; margin: 0; }
+.ep-root .eph-c .eph-qty { font-size: 12.5px; margin: 0; line-height: 1.3; }
+.ep-root .eph-c .eph-unit { font-size: 11.5px; color: #9a9a9a; font-weight: 500; margin: 0; }
+.ep-root .eph-c-price { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; text-align: right; }
+.ep-root .eph-c .eph-price { font-size: 20px; font-weight: 800; line-height: 1.1; }
+.ep-root .eph-c .eph-was { font-size: 12px; }
+.ep-root .eph-pct { display: inline-block; margin-top: 2px; background: #e00000; color: #fff; font-size: 11px; font-weight: 800; padding: 2px 6px; border-radius: 6px; line-height: 1.2; }
+.ep-root .eph-c-gift { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 9px; padding: 6px 9px; border-radius: 8px; background: #16130a; font-size: 12px; color: #e6e6e6; line-height: 1.3; }
+.ep-root .eph-c-gift b { color: #d4af37; font-weight: 700; }
+.ep-root .eph-c-save { flex: none; color: #7fe08f; font-weight: 700; }
+@media (max-width: 360px) { .ep-root .eph-c-img { flex-basis: 52px; width: 52px; height: 52px; } .ep-root .eph-c .eph-price { font-size: 18px; } .ep-root .eph-c-gift { flex-direction: column; align-items: flex-start; gap: 2px; } }
+
 /* E-03 · ventana de ofertas + pedido (variante B). Mismo look negro/dorado del formulario. */
 .ep-pop-lock, .ep-pop-lock body { overflow: hidden !important; }
 .ep-pop { position: fixed; inset: 0; z-index: 2147483100; background: rgba(0, 0, 0, .75); display: flex; justify-content: center; align-items: flex-start;
@@ -6308,22 +6331,26 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
-      return '<label class="ep-sel-opt eph-card' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
+      var pct = was > 0 ? Math.round(save / was * 100) : 0;
+      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Retardante 30 ml + Velvet</span>' : '';
+      return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
         '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
         (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
-        '<span class="eph-check" aria-hidden="true"></span>' +
-        '<span class="eph-row">' +
-          '<span class="eph-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
-          '<span class="eph-info">' +
+        '<span class="eph-c-row">' +
+          '<span class="eph-check" aria-hidden="true"></span>' +
+          '<span class="eph-c-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
+          '<span class="eph-c-info">' +
             '<span class="eph-name">' + R.esc(p.name) + '</span>' +
             '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
-            (L.inc.length ? '<span class="eph-inc">' + L.inc.map(function (t) { return '<span><i>+</i><em>' + t + '</em></span>'; }).join('') + '</span>' : '') +
-            (save > 0 ? '<span class="eph-por">Por solo</span>' : '') +
-            '<span class="eph-prices"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
-            (save > 0 ? '<span class="eph-save">Ahorras ' + R.money(save) + '</span>' : '') +
-            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión' + (p.boxes > 1 ? ' · menos que una cerveza' : '') + '</span>' : '') +   /* C-02: precio por uso */
+            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión</span>' : '') +   /* C-02: precio por uso */
+          '</span>' +
+          '<span class="eph-c-price">' +
+            '<span class="eph-price">' + R.money(p.price) + '</span>' +
+            (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') +
+            (pct > 0 ? '<span class="eph-pct">-' + pct + '%</span>' : '') +
           '</span>' +
         '</span>' +
+        (gifts ? '<span class="eph-c-gift">' + gifts + (save > 0 ? '<span class="eph-c-save">Ahorras ' + R.money(save) + '</span>' : '') + '</span>' : '') +
       '</label>';
     }).join('');
   };

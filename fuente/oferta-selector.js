@@ -15,22 +15,26 @@
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
-      return '<label class="ep-sel-opt eph-card' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
+      var pct = was > 0 ? Math.round(save / was * 100) : 0;
+      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Retardante 30 ml + Velvet</span>' : '';
+      return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
         '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
         (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
-        '<span class="eph-check" aria-hidden="true"></span>' +
-        '<span class="eph-row">' +
-          '<span class="eph-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
-          '<span class="eph-info">' +
+        '<span class="eph-c-row">' +
+          '<span class="eph-check" aria-hidden="true"></span>' +
+          '<span class="eph-c-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
+          '<span class="eph-c-info">' +
             '<span class="eph-name">' + R.esc(p.name) + '</span>' +
             '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
-            (L.inc.length ? '<span class="eph-inc">' + L.inc.map(function (t) { return '<span><i>+</i><em>' + t + '</em></span>'; }).join('') + '</span>' : '') +
-            (save > 0 ? '<span class="eph-por">Por solo</span>' : '') +
-            '<span class="eph-prices"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
-            (save > 0 ? '<span class="eph-save">Ahorras ' + R.money(save) + '</span>' : '') +
-            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión' + (p.boxes > 1 ? ' · menos que una cerveza' : '') + '</span>' : '') +   /* C-02: precio por uso */
+            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión</span>' : '') +   /* C-02: precio por uso */
+          '</span>' +
+          '<span class="eph-c-price">' +
+            '<span class="eph-price">' + R.money(p.price) + '</span>' +
+            (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') +
+            (pct > 0 ? '<span class="eph-pct">-' + pct + '%</span>' : '') +
           '</span>' +
         '</span>' +
+        (gifts ? '<span class="eph-c-gift">' + gifts + (save > 0 ? '<span class="eph-c-save">Ahorras ' + R.money(save) + '</span>' : '') + '</span>' : '') +
       '</label>';
     }).join('');
   };

@@ -136,3 +136,6 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-c-gift b { color: #d4af37; font-weight: 700; }
 .ep-root .eph-c-save { flex: none; color: #7fe08f; font-weight: 700; }
 @media (max-width: 360px) { .ep-root .eph-c-img { flex-basis: 52px; width: 52px; height: 52px; } .ep-root .eph-c .eph-price { font-size: 18px; } .ep-root .eph-c-gift { flex-direction: column; align-items: flex-start; gap: 2px; } }
+/* Cintas de color (cesar 2026-11-08): más pedido = verde, máximo ahorro = naranja */
+.ep-root .eph-card.rec .eph-tag { background: #1fa64a; color: #fff; border-color: #1fa64a; }
+.ep-root .eph-card[data-pack="elite"] .eph-tag { background: #ff7a00; color: #fff; border-color: #ff7a00; }

@@ -620,7 +620,11 @@
 /* gracias */
 .ep-root .ep-thanks { margin-top: 24px; display: grid; gap: 14px; justify-items: center; text-align: center; padding: 28px 18px; border-radius: 18px; border: 2px solid var(--ep-ok); background: var(--ep-surface); box-shadow: 0 18px 40px var(--ep-shadow); }
 .ep-root .ep-thanks:focus { outline: none; }
-.ep-root .ep-thanks > .ep-sum-list, .ep-root .ep-thanks > .ep-sum-total, .ep-root .ep-thanks > .ep-sum-eta { width: 100%; text-align: left; }
+.ep-root .ep-thanks > .ep-sum-list, .ep-root .ep-thanks > .ep-sum-total, .ep-root .ep-thanks > .ep-sum-eta, .ep-root .ep-thanks > .ep-thanks-eta { width: 100%; text-align: left; }
+/* gracias: fecha del envío express (2026-11-08) */
+.ep-root .ep-thanks-eta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-radius: 12px; border: 2px solid var(--ep-accent); background: color-mix(in srgb, var(--ep-accent) 10%, var(--ep-surface)); font-size: 14.5px; line-height: 1.45; color: var(--ep-text); }
+.ep-root .ep-thanks-eta .ep-ico { width: 20px; height: 20px; color: var(--ep-accent); margin-top: 1px; }
+.ep-root .ep-thanks-eta small { display: block; margin-top: 4px; font-size: 13px; color: var(--ep-muted); }
 .ep-root .ep-thanks-ico { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--ep-ok); color: #fff; }
 .ep-root .ep-thanks-ico .ep-ico { width: 30px; height: 30px; stroke-width: 2.5; }
 .ep-root .ep-thanks-title { font-family: var(--ep-display); font-weight: 800; font-size: 28px; line-height: 1.1; }

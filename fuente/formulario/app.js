@@ -197,6 +197,12 @@
     return '<p class="ep-nudge-in' + (p.lite ? ' is-strong' : '') + '">' + R.ico(p.lite ? 'gift' : 'zap') + '<span>' + txt + '</span>' +
       '<button type="button" class="ep-nudge-btn" data-ep-upgrade="' + next.id + '">' + (p.lite ? 'Cambiar a ' : 'Pasar a ') + R.esc(R.short(next)) + '</button></p>';
   };
+  /* gracias: fecha según el envío elegido (aprobado por cesar 2026-11-08). Express = despacho el mismo día si se confirma antes de las 2:00 p. m. */
+  R.thanksEta = function (cfg, city, express, after) {
+    if (express) return '<div class="ep-thanks-eta is-express">' + R.ico('zap') + '<span><b>Envío EXPRESS asegurado</b> a ' + R.esc(city) + ': llega <b>' + R.delivery(cfg, null, true) + '</b>.' +
+      '<small>Sale con prioridad el mismo día que confirmas (antes de las 2:00 p. m.)' + (after ? ', ' + after : '') + '. En bolsa negra sellada.</small></span></div>';
+    return '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Envío estándar a ' + R.esc(city) + ': llega <b>' + R.delivery(cfg) + '</b> (3 a 4 días hábiles' + (after ? ', ' + after : '') + ') en bolsa negra sellada.</span></p>';
+  };
   R.shipping = function (cfg, opt) {
     var ex = cfg.checkout.express, days = cfg.checkout.deliveryDays || [3, 4];
     var row = function (val, name, price, text) {
@@ -232,8 +238,8 @@
       '<span class="ep-bump-price"><b>+' + R.money(b.price) + '</b>' + (b.compare > b.price ? '<s>' + R.money(b.compare) + '</s>' : '') + '</span>' +
       '<small>' + R.esc(b.text || '') + '</small></span></label>';
   };
-  R.dayList = function (cfg, now) {   /* fecha estimada: días hábiles (lun–vie, sin festivos) en hora de Colombia */
-    var hol = cfg.checkout.holidays || [], days = cfg.checkout.deliveryDays || [3, 4];
+  R.dayList = function (cfg, now, express) {   /* fecha estimada: días hábiles (lun–vie, sin festivos) en hora de Colombia; express = 2 a 3 */
+    var hol = cfg.checkout.holidays || [], days = express ? (cfg.checkout.expressDays || [2, 3]) : (cfg.checkout.deliveryDays || [3, 4]);
     var t = new Date((now || Date.now()) - 5 * 3600e3), d = new Date(Date.UTC(t.getUTCFullYear(), t.getUTCMonth(), t.getUTCDate())), out = [], n = 0;
     while (out.length < 2) {
       d = new Date(d.getTime() + 864e5);
@@ -244,9 +250,9 @@
     }
     return out;
   };
-  R.delivery = function (cfg, now) {
+  R.delivery = function (cfg, now, express) {
     var W = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'], M = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-    var ds = R.dayList(cfg, now), a = ds[0], b = ds[1];
+    var ds = R.dayList(cfg, now, express), a = ds[0], b = ds[1];
     var f = function (x, withMonth) { return W[x.getUTCDay()] + ' ' + x.getUTCDate() + (withMonth ? ' de ' + M[x.getUTCMonth()] : ''); };
     return 'entre el ' + f(a, a.getUTCMonth() !== b.getUTCMonth()) + ' y el ' + f(b, true);
   };
@@ -269,7 +275,7 @@
     return '<p class="ep-sum-title">Resumen de tu pedido</p><ul class="ep-sum-list">' + h + '</ul>' +
       '<div class="ep-sum-total"><span>' + label + '</span><b>' + R.money(t.total) + '</b></div>' +
       (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + ' en este pedido</p>' : '') +
-      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now) + '</b>.' + eta + '</span></p>';
+      '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Si pides hoy, llega <b>' + R.delivery(cfg, now, !!t.ship) + '</b>' + (t.ship ? ' con envío express' : '') + '.' + eta + '</span></p>';
   };
 
   R.fallback = function (cfg, slideIndex, label) {
@@ -1237,7 +1243,7 @@
         '<p class="ep-thanks-text">' + R.esc(C.checkout.thanksText) + '</p>' +
         (li ? '<ul class="ep-sum-list">' + li + '</ul>' : '') +
         '<div class="ep-sum-total"><span>' + (j.paid ? 'Pagado en línea' : 'Pagas al recibir') + '</span><b>' + R.money(total) + '</b></div>' +
-        '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Llega a ' + R.esc(city) + ' <b>' + R.delivery(C) + '</b> en bolsa negra sellada.</span></p>';
+        R.thanksEta(C, city, !!j.shipping_cop, '');
       this.showThanks(box);
     },
     /* gracias para transferencia: valor, llave y cuenta con Copiar, y comprobante por WhatsApp */
@@ -1260,7 +1266,7 @@
           (wa ? '<a class="ep-tr-wa" href="https://wa.me/' + wa + '?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">' + R.ico('chat') + 'Enviar comprobante por WhatsApp</a>' : '') +
           '<p class="ep-tr-note">¿No pudiste pagar? Escríbenos y lo dejamos para pagar al recibir (sin el descuento).</p></div>' +
         '<ul class="ep-sum-list">' + li + '</ul>' +
-        '<p class="ep-sum-eta">' + R.ico('truck') + '<span>Llega a ' + R.esc(city) + ' <b>' + R.delivery(C) + '</b> después de verificar el pago.</span></p>';
+        R.thanksEta(C, city, !!j.shipping_cop, 'después de verificar el pago');
       box.addEventListener('click', function (e) {
         var b = e.target.closest && e.target.closest('[data-ep-copy]'); if (!b) return;
         var v = b.getAttribute('data-ep-copy'), ok = function () { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = 'Copiar'; }, 1800); };

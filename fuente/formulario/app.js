@@ -958,6 +958,7 @@
     payOpen: function (j) {
       var self = this;
       try { sessionStorage.setItem('ep_pay_ref', j.payment_ref); } catch (e) {}
+      this.draftSave();
       track('PaymentStart', { ref: j.payment_ref, value: j.total_cop });
       return this.loadBold().then(function () {
         var checkout = new global.BoldCheckout(j.payment);
@@ -966,9 +967,44 @@
         self.formError('No pudimos abrir el pago en línea. Revisa tu conexión y toca el botón otra vez.');
       });
     },
+    /* datos del formulario guardados antes de abrir Bold: si el pago se rechaza, el cliente no vuelve a escribir todo */
+    draftSave: function () {
+      var self = this, d = { pack: state.pack, bump: this.st.bump, ship: this.st.ship, city: this.st.city, cityLabel: this.cityLabel || '', v: {} };
+      this.fields.forEach(function (n) { var e = self.el(n); if (e && n !== 'city') d.v[n] = String(e.value || ''); });
+      try { sessionStorage.setItem('ep_pay_draft', JSON.stringify(d)); } catch (e) {}
+    },
+    draftLoad: function () {
+      var d = null; try { d = JSON.parse(sessionStorage.getItem('ep_pay_draft') || 'null'); } catch (e) {}
+      if (!d || !d.v) return false;
+      var self = this;
+      Object.keys(d.v).forEach(function (n) { var e = self.el(n); if (e && !String(e.value || '').trim()) e.value = d.v[n]; });
+      if (d.city && d.city.municipio) { this.st.city = d.city; this.cityLabel = d.cityLabel; var ci = this.el('city'); if (ci) ci.value = d.cityLabel; }
+      if (d.pack) setPack(d.pack, null);
+      this.st.bump = !!d.bump; if (d.ship) this.st.ship = d.ship;
+      this.paint(); this.cityShow(); this.payMode();
+      return true;
+    },
+    /* Bold rechazó el pago: un toque para pedir pagando al recibir, con los mismos datos */
+    payFallback: function () {
+      var self = this, box = qs('[data-ep-form-error]', this.form);
+      if (!box || (this.st.city && this.st.city.prepaid) || !this.st.city) return;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'ep-pay-fallback'; b.textContent = 'Pagar al recibir (Contraentrega)';
+      b.addEventListener('click', function () {
+        self.st.pay = 'cod';
+        var r = qs('input[name="ep-pay"][value="cod"]', self.form); if (r) r.checked = true;
+        self.payMode(); self.paintPay(); self.update();
+        Funnel.send('pay_fallback_cod', { plan: state.pack });
+        track('PayFallbackCOD', { plan: state.pack });
+        self.submit();
+      });
+      box.appendChild(document.createElement('br'));
+      box.appendChild(b);
+    },
     /* regreso de Bold: ?bold-order-id=…&bold-tx-status=…; el estado real lo confirma el servidor */
     payResume: function (ref, txStatus) {
       var self = this, tries = 0, sec = qs('#ep-order');
+      this.st.pay = 'bold'; this.draftLoad();
       if (sec) setTimeout(function () { scrollToEl(sec); }, 300);
       this.done = true; this.busy(true);
       var l = qs('[data-ep-submit] .ep-cta-label b', this.form); if (l) l.textContent = 'Confirmando tu pago…';
@@ -977,7 +1013,7 @@
         self.api('POST', '', { action: 'payment_status', payment_ref: ref }).then(function (r) {
           var j = r.j || {};
           if (j.status === 'approved' && j.order_number) {
-            try { sessionStorage.removeItem('ep_pay_ref'); } catch (e) {}
+            try { sessionStorage.removeItem('ep_pay_ref'); sessionStorage.removeItem('ep_pay_draft'); } catch (e) {}
             self.success({ order_id: j.order_id, order_number: j.order_number, event_id: j.event_id, total_cop: j.total_cop, shipping_cop: j.shipping_cop, items: j.items || [], paid: true },
               { address: { city: (j.address || {}).city || '' }, bump: false });
             return;
@@ -985,10 +1021,13 @@
           var final = /^(rejected|failed|voided)$/.test(j.status || '');
           if (!final && tries < 12) { setTimeout(poll, tries < 4 ? 2500 : 5000); return; }
           self.done = false; self.busy(false);
-          self.formError(final || /rejected|failed/.test(txStatus || '')
-            ? 'El pago no se aprobó. Puedes intentarlo de nuevo con otro medio de pago.'
+          var rejected = final || /rejected|failed/.test(txStatus || '');
+          self.formError(rejected
+            ? 'El pago no se aprobó. Puedes intentarlo otra vez con otro medio de pago, o hacer tu pedido y pagar en efectivo cuando lo recibas:'
             : 'Aún no vemos tu pago confirmado. Si ya pagaste, te escribimos por WhatsApp apenas Bold lo apruebe.');
+          if (rejected) self.payFallback();
           track('PaymentResult', { ref: ref, status: j.status || txStatus || 'unknown' });
+          Funnel.send('pay_result', { status: j.status || txStatus || 'unknown' });
         }, function () { if (tries < 12) setTimeout(poll, 4000); });
       };
       poll();

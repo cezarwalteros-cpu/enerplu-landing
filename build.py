@@ -137,7 +137,19 @@ html = f"""<!doctype html>
 </body>
 </html>
 """
+# Textos de confianza y CTAs de contraentrega (2026-11-08, propuesta 'Garantía Prueba Real'). Cada par es (actual, nuevo).
+CAMBIOS_TODAS = [
+    ('POTENCIA EN <span>5 MINUTOS EXACTOS.</span>', 'POTENCIA EN <span>5 A 15 MINUTOS.</span>'),
+    ('class="ep-hc-btn">QUIERO POTENCIA INMEDIATA →</a>', 'class="ep-hc-btn">PÍDELO YA · PAGAS AL RECIBIR →</a>'),
+    ('<strong>Acción en 5 Minutos:</strong>', '<strong>Acción en 5 a 15 minutos:</strong>'),
+    ('id="enerplu-review-cta">YO TAMBIÉN QUIERO PROBAR</button>', 'id="enerplu-review-cta">QUIERO PROBARLO SIN RIESGO</button>'),
+    # el embudo del CRM sigue contando los botones nuevos como clic en botón
+    ('if (a && /quiero|pedir|comprar|ofertas|elegir|elige/i.test', 'if (a && /quiero|pedir|pídelo|pidelo|comprar|ofertas|elegir|elige/i.test'),
+]
+for a, b in CAMBIOS_TODAS:
+    html = must(html, a, b)
 (OUT / 'index.html').write_text(html)
+(OUT / 'garantia.html').write_text((ROOT / 'fuente' / 'garantia.html').read_text())
 
 # /producto: la misma landing con aviso de restricción de edad (+18) a pantalla completa, para el tráfico de TikTok.
 # Lo ve todo el que abre esa URL, igual en celular y computador. La landing de Meta (/) no cambia.

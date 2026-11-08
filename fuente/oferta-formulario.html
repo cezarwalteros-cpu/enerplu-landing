@@ -8,6 +8,7 @@
       <div class="eph ep-plans" id="ep-offer-widget">
         <h2 class="eph-title" id="eph-title">Tenemos 3 ofertas disponibles hoy</h2>
         <p class="eph-sub">🚚 Envío gratis · 💵 Pago al recibir · 📦 Discreto</p>
+        <a class="eph-garantia" href="/garantia" target="_blank" rel="noopener"><b>🛡️ Garantía Prueba Real</b> en Dominio y Élite: prueba la primera caja; si no te funciona, devuelves las selladas y te reembolsamos. <u>Ver condiciones</u></a>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
       </div>
 
@@ -51,8 +52,8 @@
           <p class="ep-f-err" data-ep-err="address1" hidden></p>
         </div>
         <div class="ep-f">
-          <label for="ep-f-add">Barrio y detalles</label>
-          <input id="ep-f-add" name="additional" type="text" autocomplete="address-line2" maxlength="160" placeholder="Barrio, apto, casa o una referencia" required>
+          <label for="ep-f-add">Barrio y detalles <small style="font-weight:400;opacity:.75">(opcional)</small></label>
+          <input id="ep-f-add" name="additional" type="text" autocomplete="address-line2" maxlength="160" placeholder="Barrio, apto, casa o una referencia">
           <p class="ep-f-err" data-ep-err="additional" hidden></p>
         </div>
         <div class="ep-hp" aria-hidden="true"><label for="ep-f-web">No llenar</label><input id="ep-f-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
@@ -75,7 +76,7 @@
       <p class="ep-error" data-ep-form-error hidden></p>
 
       <button type="submit" class="ep-cta ep-of-submit" data-ep-submit>
-        <span class="ep-cta-label"><b>Hacer mi pedido</b><small data-ep-cta-sub>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
+        <span class="ep-cta-label"><b>Confirmar mi pedido</b><small data-ep-cta-sub>Pagas en efectivo al recibir</small></span><span class="ep-cta-sep" aria-hidden="true"></span><span class="ep-cta-price" data-ep-bind="total">$129.900</span>
       </button>
 
       <p class="ep-pay-hint" data-ep-pay-hint hidden></p>
@@ -86,11 +87,12 @@
       </div>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
-      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo</p>
+      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo<br>🛡️ Dominio y Élite con <a href="/garantia" target="_blank" rel="noopener">Garantía Prueba Real</a></p>
       <!-- C-01: preguntas frecuentes debajo del botón (2026-11-06) -->
       <div class="eph-faq" id="eph-faq">
         <h3 class="eph-faq-title">Preguntas frecuentes</h3>
         <div class="ep-faq-list">
+          <details><summary>¿Y si no me funciona?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Con los planes Dominio Total y Élite tienes la Garantía Prueba Real: usa la primera caja siguiendo la guía de uso; si no te funciona, escríbenos en los 15 días siguientes a la entrega, nos devuelves las cajas selladas y te reembolsamos su valor. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a>.</p></div></details>
           <details><summary>¿Cómo pago?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Puedes pagar en efectivo cuando el pedido llega a tu casa, sin pagar nada por adelantado. Si prefieres pagar ahora con tarjeta, PSE, Nequi (Bold) o transferencia Bancolombia, te descontamos $12.000 y tu pedido sale directo a despacho. En algunos municipios solo se puede pagar por adelantado; si es tu caso, te avisamos al escribir tu ciudad.</p></div></details>
           <details><summary>¿Cuándo me llega?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Llega en 3 a 4 días hábiles según tu ciudad. Antes de enviarlo te escribimos por WhatsApp para confirmar tus datos.</p></div></details>
           <details><summary>¿Cómo llega el paquete?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>En una bolsa negra sellada y con empaque discreto.</p></div></details>

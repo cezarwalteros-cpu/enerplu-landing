@@ -28,7 +28,7 @@
             (save > 0 ? '<span class="eph-por">Por solo</span>' : '') +
             '<span class="eph-prices"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
             (save > 0 ? '<span class="eph-save">Ahorras ' + R.money(save) + '</span>' : '') +
-            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por tableta</span>' : '') +   /* C-02: precio por uso */
+            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión' + (p.boxes > 1 ? ' · menos que una cerveza' : '') + '</span>' : '') +   /* C-02: precio por uso */
           '</span>' +
         '</span>' +
       '</label>';

@@ -55,7 +55,7 @@ oferta_css = (ROOT / 'fuente' / 'oferta.css').read_text()
 oferta_js = (ROOT / 'fuente' / 'oferta-selector.js').read_text()
 # E-03 · ofertas + formulario solo en ventana emergente, como Mg Collagen (A/B, 2026-11-08).
 # 'off' = sin prueba, 'ab' = 50/50 solo en "/", 'all' = todos ven la ventana.
-POPUP_MODE = 'ab'
+POPUP_MODE = 'off'
 popup_js = (ROOT / 'fuente' / 'popup-pedido.js').read_text()
 popup_css = (ROOT / 'fuente' / 'popup-pedido.css').read_text()
 

@@ -1,0 +1,40 @@
+/* E-02 · ventana de pedido (variante B). Mismo look negro/dorado del formulario. */
+.ep-hoja-open, .ep-hoja-open body { overflow: hidden !important; }
+.ep-hoja[hidden] { display: none !important; }
+.ep-hoja { position: fixed; inset: 0; z-index: 2147483000; }
+.ep-hoja-back { position: absolute; inset: 0; background: rgba(0, 0, 0, .72); }
+.ep-root .ep-hoja-panel { position: absolute; left: 0; right: 0; bottom: 0; top: 0; margin: 0 auto; max-width: 520px; background: #000; display: flex; flex-direction: column; padding: 0 !important; animation: ep-hoja-in .22s ease-out; }
+@media (min-width: 560px) { .ep-root .ep-hoja-panel { top: 24px; bottom: 24px; border-radius: 18px; border: 1px solid #2a2a2a; overflow: hidden; } }
+@keyframes ep-hoja-in { from { transform: translateY(40px); opacity: .4; } to { transform: none; opacity: 1; } }
+.ep-hoja-top { flex: 0 0 auto; position: relative; padding: 14px 52px 10px 16px; border-bottom: 1px solid #222; background: #000; font-family: 'Inter', -apple-system, Roboto, Arial, sans-serif; }
+.ep-hoja-top b { display: block; color: #fff; font-size: 18px; font-weight: 700; line-height: 1.25; }
+.ep-hoja-top span { display: block; color: #bdbdbd; font-size: 12.5px; margin-top: 2px; }
+.ep-hoja-x { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; border-radius: 50%; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
+.ep-root .ep-hoja-body { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 10px 14px 0 !important; }
+
+/* dentro de la ventana: ofertas en filas compactas (se puede cambiar de plan) */
+.ep-hoja .eph-title, .ep-hoja .eph-sub { display: none; }
+.ep-hoja .eph-list { gap: 8px; padding-top: 2px; }
+.ep-hoja .eph-list .eph-card { padding: 10px 12px !important; border-radius: 12px; }
+.ep-hoja .eph-list .eph-card.is-on { padding: 9.5px 11.5px !important; }
+.ep-hoja .eph-tag, .ep-hoja .eph-img, .ep-hoja .eph-inc, .ep-hoja .eph-por, .ep-hoja .eph-was, .ep-hoja .eph-save, .ep-hoja .eph-unit { display: none !important; }
+.ep-hoja .eph-row { margin-top: 0; }
+.ep-hoja .eph-info { display: grid !important; grid-template-columns: 1fr auto; align-items: center; column-gap: 8px; padding-right: 30px; }
+.ep-hoja .eph-info > span { grid-column: 1; }
+.ep-hoja .eph-name { font-size: 15.5px; margin: 0; }
+.ep-hoja .eph-qty { font-size: 12px; margin: 0; }
+.ep-hoja .eph-prices { grid-column: 2 !important; grid-row: 1 / span 2; }
+.ep-hoja .eph-price { font-size: 19px; }
+.ep-hoja .eph-check { top: 50%; transform: translateY(-50%); width: 22px; height: 22px; }
+.ep-hoja .ep-nudge { display: none !important; }
+.ep-hoja .ep-of-block { margin-top: 12px; }
+.ep-hoja .eph-faq, .ep-hoja .eph-guarantee { display: none !important; }
+.ep-hoja .eph-trust { margin-bottom: 18px; }
+/* botón de pedir siempre a la vista */
+.ep-hoja .ep-of-submit { position: sticky; bottom: 10px; z-index: 5; margin-top: 14px; box-shadow: 0 -12px 22px 6px #000, 0 10px 24px rgba(0, 0, 0, .4); }
+
+/* barra fija mientras las ofertas están en pantalla */
+.ep-hoja-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 2147482000; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.85) 30%); transform: translateY(120%); transition: transform .22s ease; pointer-events: none; }
+.ep-hoja-bar.is-on { transform: none; pointer-events: auto; }
+.ep-root .ep-hoja-bar-btn { max-width: 520px; margin: 0 auto; border: 0; cursor: pointer; font-family: 'Inter', -apple-system, Roboto, Arial, sans-serif; }
+.ep-hoja-bar.is-on ~ .ep-root [data-ep-sticky], html:has(.ep-hoja-bar.is-on) [data-ep-sticky] { visibility: hidden; }

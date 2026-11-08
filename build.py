@@ -52,6 +52,10 @@ secs[11] = secs[11].replace('href="/pages/', 'href="' + SHOP + '/pages/')
 order_block = (ROOT / 'fuente' / 'oferta-formulario.html').read_text()
 oferta_css = (ROOT / 'fuente' / 'oferta.css').read_text()
 oferta_js = (ROOT / 'fuente' / 'oferta-selector.js').read_text()
+# E-02 · formulario en ventana (A/B, 2026-11-08). 'off' = sin prueba, 'ab' = 50/50 solo en "/", 'all' = todos ven la ventana.
+HOJA_MODE = 'ab'
+hoja_js = (ROOT / 'fuente' / 'hoja-pedido.js').read_text()
+hoja_css = (ROOT / 'fuente' / 'hoja-pedido.css').read_text()
 
 # barra de oferta (reemplaza la franja desplazante de Shopify, que sin su script queda como lista quieta)
 # descuento = Plan Élite frente a 4 cajas sueltas (precios de fuente/formulario/config.js)
@@ -116,6 +120,7 @@ html = f"""<!doctype html>
 <style>
 {ep_css}
 {oferta_css}
+{hoja_css}
 </style>
 {pixel}
 </head>
@@ -133,6 +138,10 @@ html = f"""<!doctype html>
 </script>
 <script>
 {oferta_js}
+</script>
+<script>
+window.EP_HOJA_MODE = '{HOJA_MODE}';
+{hoja_js}
 </script>
 </body>
 </html>

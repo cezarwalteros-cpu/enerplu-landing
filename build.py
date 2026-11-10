@@ -293,11 +293,11 @@ if POPUP5 and AB_E04:
 # Vista previa del upsell del spray (solo Plan Básico) + bump de estrechante con texto nuevo. NO está en vivo: solo esta página lo activa.
 UPSELL_PREVIEW = {
     'upsell': {'key': 'retardante', 'only': 'inicial', 'price': 24900, 'compare': 49900, 'title': 'Spray Retardante 30 ml',
-               'eyebrow': 'Espera, antes de confirmar', 'headline': 'Tu plan no trae el Spray Retardante. Llévalo hoy a mitad de precio',
-               'text': 'Es el mismo spray que viene en los planes Dominio y Élite. ENERPLU te da la firmeza, el spray te ayuda a aguantar más.',
+               'eyebrow': 'Espera, antes de confirmar', 'headline': 'Firme ya vas a estar. Ahora dura hasta que ella termine primero',
+               'text': 'ENERPLU te pone firme. El Spray Retardante hace que aguantes: terminas cuando tú decides, no antes. Tu plan no lo trae; hoy lo llevas a mitad de precio.',
                'bullets': ['Llega en el mismo paquete discreto', 'Sin costo de envío adicional', 'Este precio solo aparece en este pedido']},
-    'bump': {'tag': 'Solo en este pedido', 'title': 'Estrechante Premium para ella',
-             'text': 'Gel íntimo que le da una sensación más ajustada: más roce y más placer para los dos. Hoy $19.900, después $29.900. Llega en el mismo paquete discreto.'},
+    'bump': {'tag': 'Solo en este pedido', 'title': 'Estrechante Premium: que se sienta como la primera vez',
+             'text': 'Ella siente más, tú la sientes más ajustada. El encuentro que los dos van a querer repetir. Hoy $19.900, después $29.900. Llega en el mismo paquete discreto.'},
 }
 if (OUT / 'b.html').exists():
     _h = (OUT / 'b.html').read_text().replace(AB_HEAD, '')

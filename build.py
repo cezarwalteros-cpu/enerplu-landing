@@ -283,6 +283,13 @@ elif not HERO_V2 and (OUT / 'b.html').exists():
     (OUT / 'b.html').unlink()
 if HERO_V2:
     sys.exit(0)   # en modo hero v2 solo hace falta el index (insumo de /b)
+# Vistas de prueba del popup (no dependen de parámetros en el enlace): siempre en modo prueba y con la versión forzada
+for _f in OUT.glob('prueba-popup-*.html'): _f.unlink()
+if POPUP5 and AB_E04:
+    for _n, _v, _src in (('no-te-vayas', 'A', 'b.html'), ('primera-compra', 'B', 'b.html'), ('pagina-a', 'B', 'index.html')):
+        _h = (OUT / _src).read_text().replace(AB_HEAD, '')
+        _h = must(_h, '<head>', "<head>\n<meta name=\"robots\" content=\"noindex\">\n<script>try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=%s')}catch(e){}</script>" % _v)
+        (OUT / ('prueba-popup-%s.html' % _n)).write_text(_h)
 (OUT / 'garantia.html').write_text((ROOT / 'fuente' / 'garantia.html').read_text())
 (OUT / 'guias' / GUIAS_TOKEN).mkdir(parents=True, exist_ok=True)   # PDFs de regalo: solo enlace secreto, sin Drive (cesar 2026-11-08)
 (OUT / 'guias' / GUIAS_TOKEN / 'index.html').write_text((ROOT / 'fuente' / 'guias.html').read_text())

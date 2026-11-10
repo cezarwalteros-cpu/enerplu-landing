@@ -103,10 +103,12 @@
     if (seen) { bar(); return; }
 
     if (v === 'A') {
-      /* 1) Botón "atrás": se arma cuando ya mostró interés (bajó en la página o lleva 15 s) */
-      var armed = false;
-      var arm = function () {
-        if (armed || seen) return; armed = true; preload();
+      /* 1) Botón "atrás": se arma cuando ya mostró interés (bajó en la página o lleva 15 s).
+            Chrome en celular ignora el "atrás" si la persona nunca tocó la página, así que el estado se guarda al primer toque. */
+      var armed = false, ready = false, pushed = false;
+      var active = function () { try { return !navigator.userActivation || navigator.userActivation.hasBeenActive; } catch (e) { return true; } };
+      var push = function () {
+        if (pushed || !ready || seen || !active()) return; pushed = true;
         try { history.pushState({ eppop: 1 }, ''); } catch (e) { return; }
         addEventListener('popstate', function onPop(e) {
           if (e.state && e.state.eppop) return;
@@ -114,8 +116,19 @@
           show('atras');
         });
       };
+      var arm = function () { if (armed) return; armed = true; ready = true; preload(); push(); };
+      ['pointerdown', 'touchend', 'keydown'].forEach(function (ev) { addEventListener(ev, function () { setTimeout(push, 0); }, { passive: true }); });
       setTimeout(arm, 15000);
-      addEventListener('scroll', function onS() { var d = document.documentElement; if ((scrollY + innerHeight) / d.scrollHeight > 0.3) { removeEventListener('scroll', onS); arm(); } }, { passive: true });
+      var maxY = 0, lastY = 0, lastT = 0, upFrom = 0;
+      addEventListener('scroll', function () {
+        var d = document.documentElement, y = scrollY, now = Date.now();
+        if ((y + innerHeight) / d.scrollHeight > 0.3) arm();
+        /* 1b) Celular: venía leyendo abajo y sube rápido hacia el inicio (gesto típico antes de salir) */
+        if (y > maxY) maxY = y;
+        if (y < lastY) { if (!upFrom || now - lastT > 400) upFrom = lastY; if (armed && maxY > innerHeight * 1.5 && upFrom - y > innerHeight * 1.2 && !typing()) show('sube'); }
+        else upFrom = 0;
+        lastY = y; lastT = now;
+      }, { passive: true });
       /* 2) Se fue a otra app o pestaña y volvió (5 s o más por fuera) */
       var away = 0;
       document.addEventListener('visibilitychange', function () {

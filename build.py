@@ -296,8 +296,9 @@ UPSELL_PREVIEW = {
                'eyebrow': 'Espera, antes de confirmar', 'headline': 'Firme ya vas a estar. Ahora dura hasta que ella termine primero',
                'text': 'ENERPLU te pone firme. El Spray Retardante hace que aguantes: terminas cuando tú decides, no antes. Tu plan no lo trae; hoy lo llevas a mitad de precio.',
                'bullets': ['Llega en el mismo paquete discreto', 'Sin costo de envío adicional', 'Este precio solo aparece en este pedido']},
-    'bump': {'tag': 'Solo en este pedido', 'title': 'Estrechante Premium: que se sienta como la primera vez',
-             'text': 'Ella siente más, tú la sientes más ajustada. El encuentro que los dos van a querer repetir. Hoy $19.900, después $29.900. Llega en el mismo paquete discreto.'},
+    # texto e imagen dados por cesar (10-nov 4:08 pm)
+    'bump': {'title': 'Gel Estrechante Virgyflower (30 ml)', 'contain': True,'image': 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1794344899/ESTRECHANTE_tg6at5.webp',
+             'text': 'Efecto astringente y lubricante inmediato: mayor fricción y sensación más intensa para ambos. Fórmula suave en frasco de 30 ml. Se despacha en el mismo paquete 100% discreto.'},
 }
 if (OUT / 'b.html').exists():
     _h = (OUT / 'b.html').read_text().replace(AB_HEAD, '')

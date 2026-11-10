@@ -233,7 +233,7 @@
     var b = cfg.checkout.bump;
     if (!b) return '';
     return '<label class="ep-bump' + (on ? ' is-on' : '') + '"><input type="checkbox" name="ep-bump"' + (on ? ' checked' : '') + '>' +
-      (b.image ? '<span class="ep-bump-img"><img src="' + R.esc(R.cdn(cfg, b.image, 200)) + '" alt="" loading="lazy" decoding="async"></span>' : '') +
+      (b.image ? '<span class="ep-bump-img' + (b.contain ? ' is-contain' : '') + '"><img src="' + R.esc(R.cdn(cfg, b.image, 200)) + '" alt="" loading="lazy" decoding="async"></span>' : '') +
       '<span class="ep-bump-main">' + (b.tag ? '<span class="ep-bump-tag">' + R.esc(b.tag) + '</span>' : '') + '<span class="ep-bump-head"><span class="ep-bump-box" aria-hidden="true">' + R.ico('check') + '</span><b>Sí, agregar ' + R.esc(b.title) + '</b></span>' +
       '<span class="ep-bump-price"><b>+' + R.money(b.price) + '</b>' + (b.compare > b.price ? '<s>' + R.money(b.compare) + '</s>' : '') + '</span>' +
       '<small>' + R.esc(b.text || '') + '</small></span></label>';
@@ -755,7 +755,7 @@
         });
         if (c.order_bump) {
           var b = C.checkout.bump || {};
-          b.price = c.order_bump.price; b.compare = c.order_bump.compare_at_price || 0; if (c.order_bump.image_url) b.image = c.order_bump.image_url;
+          b.price = c.order_bump.price; b.compare = c.order_bump.compare_at_price || 0; if (c.order_bump.image_url && !(global.EP_PREVIEW_UPSELL && (global.EP_PREVIEW_UPSELL.bump || {}).image)) b.image = c.order_bump.image_url;
           C.checkout.bump = b;
         } else C.checkout.bump = null;
         if (c.priority_shipping) C.checkout.express = { price: c.priority_shipping.price, title: c.priority_shipping.title || 'Express', text: c.priority_shipping.description || '' };

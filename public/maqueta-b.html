@@ -6745,7 +6745,8 @@ window.EP_POPUP_MODE = 'off';
     var req=qsa('input[required]',f).filter(function(i){return i.offsetParent!==null});
     var miss=req.filter(function(i){return !i.value.trim()||(i.name==='phone'&&i.value.replace(/\D/g,'').length<10)});
     var b=f.querySelector('[data-ep-submit] .ep-cta-label b');
-    if(b){var t=miss.length?('Faltan '+miss.length+(miss.length>1?' datos':' dato')+' ↓'):'Confirmar mi pedido'; if(b.textContent!==t)b.textContent=t;}
+    var pm=f.querySelector('input[name="ep-pay"]:checked'),pv=pm?pm.value:'cod';
+    if(b){var t=miss.length?('Faltan '+miss.length+(miss.length>1?' datos':' dato')+' ↓'):(pv==='cod'?'Confirmar mi pedido':'Pagar ahora'); if(b.textContent!==t)b.textContent=t;}
     var tot=document.querySelector('[data-ep-bind="total"]'), sp=document.querySelector('[data-sb-price]'); if(tot&&sp)sp.textContent=tot.textContent;
     var ck=document.querySelector('input[name="ep-pack-hero"]:checked'), sn=document.querySelector('[data-sb-name]');
     var sel=document.querySelector('.eph-list [aria-checked="true"] .ep-sel-name, .eph-list .is-on .ep-sel-name, .eph-list input:checked ~ * .ep-sel-name');

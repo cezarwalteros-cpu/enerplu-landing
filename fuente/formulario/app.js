@@ -758,6 +758,11 @@
           b.price = c.order_bump.price; b.compare = c.order_bump.compare_at_price || 0; if (c.order_bump.image_url && !(global.EP_PREVIEW_UPSELL && (global.EP_PREVIEW_UPSELL.bump || {}).image)) b.image = c.order_bump.image_url;
           C.checkout.bump = b;
         } else C.checkout.bump = null;
+        /* upsell: solo se ofrece si el CRM lo tiene configurado, y al precio del CRM (lo que de verdad se cobra) */
+        if (C.checkout.upsell) {
+          if (c.upsell && c.upsell.price) { C.checkout.upsell.price = c.upsell.price; if (c.upsell.compare_at_price) C.checkout.upsell.compare = c.upsell.compare_at_price; }
+          else C.checkout.upsell = null;
+        }
         if (c.priority_shipping) C.checkout.express = { price: c.priority_shipping.price, title: c.priority_shipping.title || 'Express', text: c.priority_shipping.description || '' };
         else { C.checkout.express = null; self.st.ship = 'standard'; }
         if (c.thank_you_title) C.checkout.thanksTitle = c.thank_you_title;
@@ -1243,7 +1248,7 @@
         (up.image ? '<span class="ep-ups-img"><img src="' + R.esc(up.image) + '" alt="' + R.esc(up.title) + '" decoding="async"></span>' : '') +
         '<ul class="ep-ups-list">' + (up.bullets || []).map(function (b) { return '<li>' + R.ico('check') + '<span>' + R.esc(b) + '</span></li>'; }).join('') + '</ul>' +
         '<p class="ep-ups-price"><s>' + R.money(up.compare) + '</s><b>' + R.money(up.price) + '</b><span>Ahorras ' + R.money(up.compare - up.price) + '</span></p>' +
-        '<button type="button" class="ep-ups-yes" data-ep-ups="yes"><b>Sí, agregarlo por ' + R.money(up.price) + '</b><small>Llega en el mismo paquete · pagas al recibir</small></button>' +
+        '<button type="button" class="ep-ups-yes" data-ep-ups="yes"><b>Sí, agregarlo por ' + R.money(up.price) + '</b><small>' + (self.payOnline() ? 'Llega en el mismo paquete 100% discreto' : 'Llega en el mismo paquete · pagas al recibir') + '</small></button>' +
         '<button type="button" class="ep-ups-no" data-ep-ups="no">No, gracias. Confirmar sin el spray</button></div>';
       root.appendChild(d);
       Funnel.send('upsell_view', { item: up.key || 'retardante' });
@@ -1259,7 +1264,6 @@
       this.done = true; clearTimeout(this.cartTimer);
       var p = packById(state.pack), items = j.items || [];
       var total = j.total_cop || R.totals(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship }).total;
-      if (body.upsell && C.checkout.upsell && j.dry_run) total += C.checkout.upsell.price;   /* vista previa: el servidor aún no suma el upsell */
       if (!this.test && !j.dry_run) {
         var ids = items.map(function (i) { return i.catalog_product_id; }).filter(Boolean);
         var data = { value: total, currency: 'COP', content_type: 'product', content_ids: ids.length ? ids : ['enerplu-' + p.id], contents: items.map(function (i) { return { id: i.catalog_product_id || ('enerplu-' + p.id), quantity: 1, item_price: i.price }; }), num_items: items.length || 1, order_id: j.order_number };
@@ -1290,6 +1294,11 @@
       }
       li += row('Envío' + (j.shipping_cop ? ' express' : ''), j.shipping_cop ? R.money(j.shipping_cop) : 'Gratis');
       if (!j.paid && j.online_discount) li += row('Descuento pago anticipado', '−' + R.money(j.online_discount));
+      /* ahorro real del pedido: precio de lista del plan y adicionales menos lo que paga, más cupón y descuento por pago en línea */
+      var cpS = this.coupon(), mS = this.method();
+      var ahorro = R.totals(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship, disc: this.discount(), pay: mS === 'cod' ? '' : mS, cup: cpS ? cpS.pct : 0 }).save;
+      if (body.upsell && C.checkout.upsell && C.checkout.upsell.compare > C.checkout.upsell.price) ahorro += C.checkout.upsell.compare - C.checkout.upsell.price;
+      var ahorroHtml = ahorro > 0 ? '<p class="ep-thanks-save">' + R.ico('check') + '<span>Te ahorraste <b>' + R.money(ahorro) + '</b> en este pedido</span></p>' : '';
       var box = qs('[data-ep-thanks]');
       if (j.transfer && body.payment_method === 'transfer') { this.thanksTransfer(box, j, li, total, city); return; }
       box.innerHTML = '<span class="ep-thanks-ico" aria-hidden="true">' + R.ico('check') + '</span>' +
@@ -1297,7 +1306,7 @@
         '<p class="ep-thanks-num">Pedido <b>' + R.esc(j.order_number || '') + '</b>' + (j.dry_run ? ' (prueba, no se creó)' : '') + '</p>' +
         '<p class="ep-thanks-text">' + R.esc(C.checkout.thanksText) + '</p>' +
         (li ? '<ul class="ep-sum-list">' + li + '</ul>' : '') +
-        '<div class="ep-sum-total"><span>' + (j.paid ? 'Pagado en línea' : 'Pagas al recibir') + '</span><b>' + R.money(total) + '</b></div>' +
+        '<div class="ep-sum-total"><span>' + (j.paid ? 'Pagado en línea' : 'Pagas al recibir') + '</span><b>' + R.money(total) + '</b></div>' + ahorroHtml +
         R.thanksEta(C, city, !!j.shipping_cop, '');
       this.showThanks(box);
     },

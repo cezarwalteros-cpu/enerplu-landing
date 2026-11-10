@@ -1895,6 +1895,12 @@ html.epp-lock{overflow:hidden}
 .bold-kit #bold-kit{max-width:320px;width:100%;display:flex;justify-content:center}
 
 #ep-offer-widget{display:none!important}
+.ep-root input.mb-miss{border-color:#ef4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.35)!important}
+.tp-pick{display:grid;gap:8px;margin:-6px 0 14px;padding:12px;background:#0d0d0d;border:1px solid #d4af37;border-radius:14px}
+.tp-pick small{color:#a3a3a3;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.tp-pick button{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px;padding:10px 12px;border-radius:10px;border:1px solid #2a2a2a;background:#151515;color:#fff;text-align:left;cursor:pointer;font:inherit}
+.tp-pick button.is-on{border-color:#d4af37;background:#1c1806}
+.tp-pick button b{display:block;font-size:15px}.tp-pick button i{font-style:normal;font-size:12px;color:#a3a3a3}.tp-pick button em{font-style:normal;font-weight:900;font-size:16px;white-space:nowrap}
 .ep-hc-sticky.mb-hide{transform:translateY(110%)!important}
 .mqb{background:#d4af37;color:#111;font:700 11px/1.3 Inter,system-ui,sans-serif;text-align:center;padding:5px 8px;letter-spacing:.02em}
 </style>
@@ -7006,13 +7012,17 @@ window.EP_POPUP_MODE = 'off';
 <script>
 (function(){
   function qsa(a,b){return Array.prototype.slice.call((b||document).querySelectorAll(a))}
+  var NOM={first_name:'nombre',last_name:'apellido',phone:'celular (10 números)',city:'ciudad',address1:'dirección',email:'correo'};
+  function missing(f){return qsa('input[required]',f).filter(function(i){return i.offsetParent!==null&&(!i.value.trim()||(i.name==='phone'&&i.value.replace(/\D/g,'').length<10))});}
   function tick(){
     var f=document.querySelector('[data-ep-order]'); if(!f) return;
-    var req=qsa('input[required]',f).filter(function(i){return i.offsetParent!==null});
-    var miss=req.filter(function(i){return !i.value.trim()||(i.name==='phone'&&i.value.replace(/\D/g,'').length<10)});
+    var miss=missing(f);
+    if(!qsa('input[required]',f).some(function(i){return i.value.trim()})) miss=[];   // formulario sin empezar: el botón dice qué hace, no qué falta
     var b=f.querySelector('[data-ep-submit] .ep-cta-label b');
     var pm=f.querySelector('input[name="ep-pay"]:checked'),pv=pm?pm.value:'cod';
-    if(b){var t=miss.length?('Faltan '+miss.length+(miss.length>1?' datos':' dato')+' ↓'):(pv==='cod'?'Confirmar mi pedido':'Pagar ahora'); if(b.textContent!==t)b.textContent=t;}
+    // el botón dice CUÁL dato falta (cesar 10-nov: "decía que faltaba un dato y no veía cuál")
+    if(b){var t=miss.length?('Falta tu '+(NOM[miss[0].name]||'dato')+(miss.length>1?' y '+(miss.length-1)+' más':'')):(pv==='cod'?'Confirmar mi pedido':'Pagar ahora'); if(b.textContent!==t)b.textContent=t;}
+    qsa('.mb-miss',f).forEach(function(i){if(miss.indexOf(i)<0)i.classList.remove('mb-miss')});
     var tot=document.querySelector('[data-ep-bind="total"]'), sp=document.querySelector('[data-sb-price]'); if(tot&&sp)sp.textContent=tot.textContent;
     var ck=document.querySelector('input[name="ep-pack-hero"]:checked'), sn=document.querySelector('[data-sb-name]');
     var sel=document.querySelector('.eph-list [aria-checked="true"] .ep-sel-name, .eph-list .is-on .ep-sel-name, .eph-list input:checked ~ * .ep-sel-name');
@@ -7022,8 +7032,8 @@ window.EP_POPUP_MODE = 'off';
   setInterval(tick,700);
   document.addEventListener('click',function(e){
     var btn=e.target.closest&&e.target.closest('[data-ep-submit]'); if(!btn) return;
-    var f=btn.form; var m=qsa('input[required]',f).filter(function(i){return i.offsetParent!==null&&!i.value.trim()});
-    if(m.length){e.preventDefault();e.stopPropagation();m[0].scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){m[0].focus()},400);}
+    var f=btn.form; var m=missing(f);
+    if(m.length){e.preventDefault();e.stopPropagation();m.forEach(function(i){i.classList.add('mb-miss')});m[0].scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){m[0].focus()},400);}
   },true);
 })();
 </script>
@@ -7035,8 +7045,17 @@ window.EP_POPUP_MODE = 'off';
     // tocar un plan solo lo elige; el botón rojo (que muestra el plan y precio) es el que lleva al pago
   // botón del hero y barra fija también llevan al pago
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('#ep-hero-clean .hv-cta, .ep-hc-sticky a');if(!a)return;e.preventDefault();e.stopImmediatePropagation();go();},true);
-  // "Cambiar" sube a los planes del hero (las ofertas solo están arriba)
-  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-tp-change]');if(!a)return;e.preventDefault();var l=document.querySelector('#ep-hero-clean .hv-plans-t')||document.querySelector('#ep-hero-clean .hv-plans');if(l)scrollTo({top:l.getBoundingClientRect().top+pageYOffset-10,behavior:'smooth'});},true);
+  // "Cambiar" abre los 3 planes ahí mismo, sin devolverse arriba (cesar 10-nov: "me tocó devolverme dos veces a las ofertas")
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('[data-tp-change]');
+    if(a){e.preventDefault();var C=window.EP_CONFIG,R=window.EP_RENDER,card=document.getElementById('tp-card'),old=document.getElementById('tp-pick');
+      if(old){old.remove();return;} if(!C||!card)return;
+      var m=R?R.money:function(n){return '$'+n},ck=document.querySelector('input[name="ep-pack-hero"]:checked'),cur=ck?ck.value:C.defaultPack,d=document.createElement('div');d.id='tp-pick';d.className='tp-pick';
+      d.innerHTML='<small>Elige tu plan</small>'+C.packs.map(function(p){return '<button type="button" data-tp-pick="'+p.id+'"'+(p.id===cur?' class="is-on"':'')+'><span><b>'+p.name+'</b><i>'+p.boxes+(p.boxes>1?' cajas':' caja')+' · '+p.tablets+' tabletas'+(p.gifts&&p.gifts.length>1?' + retardante':'')+'</i></span><em>'+m(p.price)+'</em></button>'}).join('');
+      card.parentNode.insertBefore(d,card.nextSibling);return;}
+    var b=e.target.closest&&e.target.closest('[data-tp-pick]');
+    if(b){e.preventDefault();var hk=document.querySelector('input[name="ep-pack-hero"][value="'+b.getAttribute('data-tp-pick')+'"]');if(hk){hk.click();hk.dispatchEvent(new Event('change',{bubbles:true}));}var pk=document.getElementById('tp-pick');if(pk)pk.remove();setTimeout(paint,80);}
+  },true);
   // barra fija: solo cuando no se ven ni los planes/botón del hero ni el formulario
   var vis={hero:true,form:false};
   function sb(){var b=document.querySelector('.ep-hc-sticky');if(b)b.classList.toggle('mb-hide',vis.hero||vis.form);}

@@ -1707,6 +1707,57 @@ fbq('track', 'PageView');
   ttq.page();
 }(window, document, 'ttq');
 </script>
+<style>/* Popup de 5% (prueba A/B popup5). Estilo ENERPLU: negro y dorado. */
+.epp{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:flex-end;justify-content:center;padding:10px;background:rgba(0,0,0,.74);opacity:0;transition:opacity .25s;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.epp.on{opacity:1}
+.epp[data-v="B"]{align-items:center}
+.epp *{box-sizing:border-box}
+.epp-card{position:relative;width:100%;max-width:400px;max-height:calc(100dvh - 20px);overflow:auto;border-radius:22px;background:#0b0b0b;color:#f5f5f5;box-shadow:0 18px 44px rgba(0,0,0,.6);border:1px solid rgba(232,185,49,.32);transform:translateY(22px);transition:transform .3s ease-out}
+.epp.on .epp-card{transform:none}
+.epp-hero{position:relative;height:200px;background:#141414 center 38%/cover no-repeat}
+.epp-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,11,.15) 0%,rgba(11,11,11,0) 40%,rgba(11,11,11,.75) 84%,#0b0b0b 100%)}
+.epp-mark{position:absolute;left:18px;top:16px;z-index:1;font:800 11px/1 Archivo,Inter,sans-serif;letter-spacing:.22em;color:#f5f5f5;display:flex;align-items:center;gap:8px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.epp-mark i{width:18px;height:2px;background:#e8b931;display:block}
+.epp-x{position:absolute;top:8px;right:8px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid rgba(245,245,245,.3);background:rgba(11,11,11,.55);color:#f5f5f5;display:grid;place-items:center;cursor:pointer;padding:0}
+.epp-x svg{width:14px;height:14px}
+.epp-body{padding:0 20px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:13px;margin-top:-14px;position:relative;z-index:1}
+.epp-eye{font:700 10.5px/1.2 Inter,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#e8b931;margin:0}
+.epp-t{font-family:Archivo,Inter,sans-serif;font-weight:800;font-size:26px;line-height:1.1;margin:0;letter-spacing:-.01em;color:#fff;text-wrap:balance}
+.epp-t em{font-style:normal;color:#e8b931}
+.epp-p{margin:0;font-size:14px;line-height:1.5;color:#b5b5b5}
+.epp-p b{color:#f5f5f5;font-weight:600}
+.epp-cup{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;border:1px solid rgba(232,185,49,.45);border-radius:14px;padding:11px 14px;background:linear-gradient(135deg,rgba(232,185,49,.16),rgba(232,185,49,.03))}
+.epp-pct{font-family:Archivo,Inter,sans-serif;font-weight:800;font-size:34px;line-height:1;color:#e8b931;letter-spacing:-.02em}
+.epp-pct sup{font-size:.5em;vertical-align:.7em;margin-left:1px}
+.epp-mid{border-left:1px dashed rgba(232,185,49,.5);padding-left:14px}
+.epp-mid small{display:block;font-size:10px;color:#8a8a8a;letter-spacing:.14em;text-transform:uppercase}
+.epp-mid b{font:700 15px/1.3 Inter,system-ui,sans-serif;letter-spacing:.14em;color:#f5f5f5}
+.epp-tm{font:600 12.5px/1 Inter,system-ui,sans-serif;color:#f5f5f5;font-variant-numeric:tabular-nums;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.epp-tm svg{width:13px;height:13px;stroke:#e8b931}
+.epp-tm.s{font-weight:500;font-size:11px;color:#8a8a8a;letter-spacing:.06em;text-transform:uppercase}
+.epp-go{border:0;border-radius:12px;background:linear-gradient(180deg,#f3cd55,#e8b931);color:#0b0b0b;font:800 15px/1 Archivo,Inter,sans-serif;padding:17px 16px;cursor:pointer;width:100%;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 18px rgba(232,185,49,.28)}
+.epp-go svg{width:16px;height:16px}
+.epp-go:disabled{opacity:.7}
+.epp-tr{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:10.5px;color:#8a8a8a;margin:0;padding:0;list-style:none}
+.epp-tr li{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.epp-tr svg{width:12px;height:12px;stroke:#e8b931}
+.epp-no{border:0;background:none;color:#8a8a8a;font:500 13px/1 Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;justify-self:center;padding:8px}
+.epp-x:focus-visible,.epp-go:focus-visible,.epp-no:focus-visible,.epp-bar:focus-visible{outline:2px solid #e8b931;outline-offset:2px}
+html.epp-lock{overflow:hidden}
+/* Barra de la versión B: queda arriba después de ver el popup */
+.epp-bar{display:block;width:100%;border:0;cursor:pointer;background:#0b0b0b;color:#f5f5f5;font:600 11.5px/1.2 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;text-align:center;border-bottom:1px solid rgba(232,185,49,.35)}
+.epp-bar b{color:#e8b931;font-weight:700}
+/* Aviso de cupón aplicado encima del formulario */
+.epp-ok{display:flex;align-items:center;gap:10px;background:#0b0b0b;color:#f5f5f5;border:1px solid rgba(232,185,49,.55);border-radius:12px;padding:11px 13px;margin:0 0 12px;font-family:Inter,system-ui,sans-serif;scroll-margin-top:12px}
+.epp-ok>svg{width:20px;height:20px;flex:none;stroke:#e8b931}
+.epp-ok b{display:block;font-size:14px;line-height:1.25;color:#e8b931;font-weight:700}
+.epp-ok small{display:block;font-size:11.5px;line-height:1.3;color:#b5b5b5}
+.epp-ok .epp-tm{margin-left:auto}
+/* Línea del cupón en el resumen del formulario */
+.ep-sum-list li.is-cup span:last-child{color:#1a8f4c;font-weight:700}
+.ep-sum-list li.is-cup small{letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){.epp,.epp-card{transition:none}}
+</style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
 <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1248121626590977&ev=PageView&noscript=1"></noscript>
@@ -5105,8 +5156,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     var p = R.packOf(cfg, st.pack), d = R.derive(cfg, p), b = st.bump && cfg.checkout.bump ? cfg.checkout.bump : null;
     var ship = st.ship === 'priority' && cfg.checkout.express ? cfg.checkout.express.price : 0;
     var save = Math.max(0, d.save) + (b && b.compare > b.price ? b.compare - b.price : 0);
-    var base = p.price + (b ? b.price : 0) + ship, disc = Math.max(0, Math.min(st.disc || 0, p.price));
-    return { p: p, d: d, b: b, ship: ship, disc: disc, save: save + disc, total: base - disc };
+    var sub = p.price + (b ? b.price : 0), cup = st.cup ? Math.min(sub, Math.round(sub * st.cup / 100)) : 0;
+    var base = sub + ship, disc = Math.max(0, Math.min(st.disc || 0, p.price, sub - cup));
+    return { p: p, d: d, b: b, ship: ship, disc: disc, cup: cup, save: save + disc + cup, total: base - disc - cup };
   };
   R.summary = function (cfg, st, now) {
     var t = R.totals(cfg, st), line = function (name, val, cls) { return '<li' + (cls ? ' class="' + cls + '"' : '') + '><span>' + name + '</span><span>' + val + '</span></li>'; };
@@ -5114,6 +5166,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     t.p.gifts.forEach(function (g) { h += line(R.esc(g), 'Regalo', 'is-gift'); });
     if (t.b) h += line(R.esc(t.b.title), R.money(t.b.price));
     h += line('Envío' + (t.ship ? ' express' : ''), t.ship ? R.money(t.ship) : 'Gratis', t.ship ? '' : 'is-gift');
+    if (t.cup) h += line('Descuento primera compra ' + st.cup + '%' + (st.cupCode ? ' <small>' + R.esc(st.cupCode) + '</small>' : ''), '−' + R.money(t.cup), 'is-gift is-cup');
     if (t.disc) h += line('Descuento pago anticipado', '−' + R.money(t.disc), 'is-gift');
     var label = st.pay === 'transfer' ? 'Total a transferir' : st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir';
     var eta = st.pay === 'transfer' ? ' Sale a despacho apenas verifiquemos tu transferencia.' : st.pay ? ' Ya pagado, sale directo a despacho.' : ' Pagas en efectivo cuando lo recibes.';
@@ -5568,7 +5621,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     },
     update: function (source) {
       if (!this.form) return;
-      var m = this.method(), st = { pack: state.pack, bump: this.st.bump, ship: this.st.ship, disc: this.discount(), pay: m === 'cod' ? '' : m };
+      var m = this.method(), cp = this.coupon(), st = { pack: state.pack, bump: this.st.bump, ship: this.st.ship, disc: this.discount(), pay: m === 'cod' ? '' : m, cup: cp ? cp.pct : 0, cupCode: cp ? cp.code : '' };
       var t = R.totals(C, st);
       var n = qs('[data-ep-nudge]'); if (n) n.innerHTML = R.nudge(C, state.pack);
       var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, st);
@@ -5799,6 +5852,8 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       return m;
     },
     /* el descuento no aplica en municipios de solo pago anticipado (igual que el servidor) */
+    /* cupón del popup de 5% (fuente/popup5.js): lo valida y lo aplica el CRM; aquí solo se muestra y se manda el código */
+    coupon: function () { var c = this.st.coupon; if (c && c.exp && c.exp < Date.now()) { this.st.coupon = c = null; } return c || null; },
     discount: function () { var c = this.st.city; return this.method() !== 'cod' && !(c && c.prepaid) ? (C.checkout.payDiscount || 0) : 0; },
     payMode: function () {
       if (!this.form) return;
@@ -6039,6 +6094,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
         payment_method: this.method(), tracking: this.tracking()
       };
+      var cp = this.coupon(); if (cp && !cp.demo) body.coupon_code = cp.code;
       if (body.payment_method === 'bold') body.return_url = global.location.origin + global.location.pathname;
       if (this.test) body.dry_run = true;
       this.sending = true; this.busy(true);
@@ -6362,6 +6418,13 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       ttTrack('ViewContent', ttData(packById(state.pack)));
       Order.init();
       Funnel.init();
+      global.EP_POP = {
+        test: Order.test, funnel: function (ev, x) { Funnel.send(ev, x); }, api: function (b) { b.slug = C.checkout.slug; return Order.api('POST', '', b); },
+        selKey: function () { return packById(state.pack).offerKey; }, bump: function () { return !!Order.st.bump; }, ordered: function () { return !!Order.done; },
+        applyCoupon: function (c) { Order.st.coupon = c; Order.update(); },
+        goForm: function () { var box = qs('.epp-ok') || qs('#tp-card') || qs('#ep-order'); if (box) scrollToEl(box); }
+      };
+      try { global.dispatchEvent(new Event('ep:pop-ready')); } catch (e) {}
       /* para selectores externos (p. ej. el carrusel de la página de Shopify copiada): elige el plan y baja al formulario */
       global.EP_SELECT_PLAN = function (offerKey, source) {
         var p = null; C.packs.forEach(function (x) { if (x.offerKey === offerKey || x.id === offerKey) p = x; });
@@ -6551,6 +6614,140 @@ window.EP_POPUP_MODE = 'off';
 
 </script>
 
+<script>/* Popup de 5% en la primera compra (cesar 2026-11-10: "quiero hacer esto mismo en ENERPLU", igual que Mg Collagen).
+   Prueba A/B "popup5", independiente de la prueba de página E-04 (sale por igual en "/" y en "/b"):
+   A = "No te vayas": aparece al intentar salir (botón atrás, volver a la pestaña, cursor que sale por arriba). Cupón con reloj de 15 min.
+   B = "Primera compra": aparece a los 20 s y deja una barra arriba.
+   El descuento lo valida y lo aplica el CRM (discount_codes, checkout-native action "coupon"); aquí solo se muestra.
+   Solo se ve en el resumen del formulario; se suma al descuento de pago anticipado. ?pop=A|B fuerza, ?pop=0 lo apaga. */
+(function () {
+  var CODE = 'ENERPLU5', PCT = 5, MIN_A = 15, SEG_B = 20, IMG = 'https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_800/v1793135585/enerplu-galeria-1-producto_ynanai.webp';
+  var I = {
+    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    clk: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    chk: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+    truck: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="17.5" cy="17.5" r="1.5"/></svg>',
+    box: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
+    arr: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+  };
+  var ls = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  var ss = { get: function (k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} } };
+  var mmss = function (ms) { var s = Math.max(0, Math.round(ms / 1000)); return ('0' + Math.floor(s / 60)).slice(-2) + ':' + ('0' + (s % 60)).slice(-2); };
+
+  function init(h) {
+    var qs = new URLSearchParams(location.search), f = (qs.get('pop') || '').toUpperCase();
+    var forced = f === 'A' || f === 'B' ? f : null;
+    if (qs.get('pop') === '0') return;
+    var v = forced || ls.get('ep_pop_v');
+    if (v !== 'A' && v !== 'B') { v = Math.random() < 0.5 ? 'A' : 'B'; ls.set('ep_pop_v', v); }
+    if (!ss.get('ep_pop_as')) { ss.set('ep_pop_as', '1'); h.funnel('ab_assign', { exp: 'popup5', v: v }); }
+
+    /* cupón ya aceptado en esta sesión: se conserva al recargar */
+    try { var c0 = JSON.parse(ss.get('ep_cup') || 'null'); if (c0 && (!c0.exp || c0.exp > Date.now())) var c0ok = c0; } catch (e) {}
+
+    /* aviso de cupón aplicado, justo donde aterriza la persona (encima de "Tu pedido" o del formulario) */
+    var note = null, ntick = null;
+    function apply(c) {
+      h.applyCoupon(c); clearInterval(ntick); if (note) { note.remove(); note = null; }
+      if (!c) return;
+      var at = document.querySelector('#tp-card') || document.querySelector('#ep-order form') || document.querySelector('#ep-order');
+      if (!at) return;
+      note = document.createElement('div'); note.className = 'epp-ok';
+      note.innerHTML = I.chk + '<div><b>' + c.pct + '% de descuento aplicado</b><small>Código ' + c.code + ' · ya está en el total de tu pedido</small></div>' + (c.exp ? '<span class="epp-tm">' + I.clk + '<span data-tm></span></span>' : '');
+      at.parentNode.insertBefore(note, at);
+      if (c.exp) { var f = function () { var left = c.exp - Date.now(); if (left <= 0) { ss.set('ep_cup', 'null'); apply(null); return; } note.querySelector('[data-tm]').textContent = mmss(left); }; f(); ntick = setInterval(f, 1000); }
+    }
+    var seen = !forced && ls.get('ep_pop_seen') === '1', open = false, el = null, tick = null, expA = 0, pre = false;
+    var typing = function () { var a = document.activeElement; return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)); };
+    if (typeof c0ok !== 'undefined') apply(c0ok);
+    function preload() { if (pre) return; pre = true; new Image().src = IMG; }
+
+    function bar() {
+      if (v !== 'B' || bar.d) return; bar.d = 1;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'epp-bar';
+      b.innerHTML = 'Primera compra · <b>' + PCT + '% con ' + CODE + '</b>';
+      b.addEventListener('click', function () { accept('bar'); });
+      document.body.insertBefore(b, document.body.firstChild);
+    }
+    function close(how) {
+      if (!open) return; open = false; clearInterval(tick);
+      document.documentElement.classList.remove('epp-lock');
+      el.classList.remove('on'); var e = el; setTimeout(function () { e.remove(); }, 260);
+      if (how) h.funnel('popup_close', { v: v, how: how });
+      bar();
+    }
+    function accept(from) {
+      h.funnel('popup_accept', { v: v, from: from });
+      /* se aplica de una vez para no hacer esperar; el CRM lo valida en segundo plano y de nuevo al crear el pedido */
+      var c = { code: CODE, pct: PCT, exp: v === 'A' ? (expA || Date.now() + MIN_A * 60000) : null, demo: !!h.test };
+      ss.set('ep_cup', JSON.stringify(c)); apply(c);
+      close(); h.goForm();
+      if (h.test) return; /* vista de prueba: se muestra aunque el código aún no exista (no se manda al pedido) */
+      h.api({ action: 'coupon', code: CODE, offer_key: h.selKey(), bump: h.bump() }).then(function (r) {
+        if (r && r.status && r.status < 500 && !(r.j && r.j.success)) { ss.set('ep_cup', 'null'); apply(null); h.funnel('form_error', { server: 1, cupon: CODE }); }
+      }, function () {});
+    }
+    function show(trig) {
+      if (seen || open || h.ordered()) return false;
+      seen = true; open = true; if (!forced) ls.set('ep_pop_seen', '1');
+      preload();
+      var A = v === 'A'; if (A) expA = Date.now() + MIN_A * 60000;
+      el = document.createElement('div'); el.className = 'epp'; el.setAttribute('data-v', v);
+      el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', PCT + '% de descuento en tu primera compra');
+      el.innerHTML =
+        '<div class="epp-card"><div class="epp-hero" style="background-image:url(' + IMG + ')"><span class="epp-mark"><i></i>ENERPLU</span><button type="button" class="epp-x" aria-label="Cerrar">' + I.x + '</button></div>' +
+        '<div class="epp-body"><p class="epp-eye">' + (A ? 'Antes de irte' : 'Primera compra') + '</p>' +
+        (A ? '<p class="epp-t">Pruébalo hoy con <em>' + PCT + '% de descuento</em></p><p class="epp-p">Tu primer pedido sale con <b>' + PCT + '% menos</b>. Lo pides ahora, llega en paquete discreto y <b>pagas al recibir</b>.</p>'
+           : '<p class="epp-t">En tu primera compra, <em>' + PCT + '% de descuento</em></p><p class="epp-p">El descuento se aplica solo en tu pedido, <b>no tienes que escribir nada</b>. Si pagas ahora, se suma al descuento de pago anticipado.</p>') +
+        '<div class="epp-cup"><span class="epp-pct">' + PCT + '<sup>%</sup></span><div class="epp-mid"><small>Tu código</small><b>' + CODE + '</b></div>' +
+        (A ? '<span class="epp-tm">' + I.clk + '<span data-tm>' + mmss(MIN_A * 60000) + '</span></span>' : '<span class="epp-tm s">1.ª compra</span>') + '</div>' +
+        '<button type="button" class="epp-go">' + (A ? 'Usar mi 5% ahora' : 'Aplicar mi 5%') + I.arr + '</button>' +
+        '<ul class="epp-tr"><li>' + I.truck + 'Envío gratis</li><li>' + I.box + 'Paquete discreto</li><li>' + I.chk + 'Pagas al recibir</li></ul>' +
+        '<button type="button" class="epp-no">' + (A ? 'No, gracias' : 'Seguir viendo') + '</button></div></div>';
+      document.body.appendChild(el);
+      document.documentElement.classList.add('epp-lock');
+      requestAnimationFrame(function () { el.classList.add('on'); });
+      el.querySelector('.epp-x').addEventListener('click', function () { close('x'); });
+      el.querySelector('.epp-no').addEventListener('click', function () { close('no'); });
+      el.querySelector('.epp-go').addEventListener('click', function () { accept('popup'); });
+      el.addEventListener('click', function (e) { if (e.target === el) close('fuera'); });
+      if (A) tick = setInterval(function () { var t = el.querySelector('[data-tm]'); if (t) t.textContent = mmss(expA - Date.now()); }, 1000);
+      h.funnel('popup_view', { v: v, trig: trig });
+      return true;
+    }
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) close('esc'); });
+    if (seen) { bar(); return; }
+
+    if (v === 'A') {
+      /* 1) Botón "atrás": se arma cuando ya mostró interés (bajó en la página o lleva 15 s) */
+      var armed = false;
+      var arm = function () {
+        if (armed || seen) return; armed = true; preload();
+        try { history.pushState({ eppop: 1 }, ''); } catch (e) { return; }
+        addEventListener('popstate', function onPop(e) {
+          if (e.state && e.state.eppop) return;
+          removeEventListener('popstate', onPop);
+          show('atras');
+        });
+      };
+      setTimeout(arm, 15000);
+      addEventListener('scroll', function onS() { var d = document.documentElement; if ((scrollY + innerHeight) / d.scrollHeight > 0.3) { removeEventListener('scroll', onS); arm(); } }, { passive: true });
+      /* 2) Se fue a otra app o pestaña y volvió (5 s o más por fuera) */
+      var away = 0;
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) { away = Date.now(); return; }
+        if (armed && away && Date.now() - away >= 5000 && !typing()) show('vuelve');
+      });
+      /* 3) Computador: el cursor sale por arriba */
+      document.addEventListener('mouseout', function (e) { if (!e.relatedTarget && e.clientY <= 0 && !typing()) show('cursor'); });
+    } else {
+      setTimeout(preload, (SEG_B - 6) * 1000);
+      setTimeout(function go() { if (typing()) { setTimeout(go, 4000); return; } show('tiempo'); }, SEG_B * 1000);
+    }
+  }
+  if (window.EP_POP) init(window.EP_POP); else addEventListener('ep:pop-ready', function () { init(window.EP_POP); }, { once: true });
+})();
+</script>
 <script>
 (function(){
   var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;

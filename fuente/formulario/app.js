@@ -260,8 +260,9 @@
     var p = R.packOf(cfg, st.pack), d = R.derive(cfg, p), b = st.bump && cfg.checkout.bump ? cfg.checkout.bump : null;
     var ship = st.ship === 'priority' && cfg.checkout.express ? cfg.checkout.express.price : 0;
     var save = Math.max(0, d.save) + (b && b.compare > b.price ? b.compare - b.price : 0);
-    var base = p.price + (b ? b.price : 0) + ship, disc = Math.max(0, Math.min(st.disc || 0, p.price));
-    return { p: p, d: d, b: b, ship: ship, disc: disc, save: save + disc, total: base - disc };
+    var sub = p.price + (b ? b.price : 0), cup = st.cup ? Math.min(sub, Math.round(sub * st.cup / 100)) : 0;
+    var base = sub + ship, disc = Math.max(0, Math.min(st.disc || 0, p.price, sub - cup));
+    return { p: p, d: d, b: b, ship: ship, disc: disc, cup: cup, save: save + disc + cup, total: base - disc - cup };
   };
   R.summary = function (cfg, st, now) {
     var t = R.totals(cfg, st), line = function (name, val, cls) { return '<li' + (cls ? ' class="' + cls + '"' : '') + '><span>' + name + '</span><span>' + val + '</span></li>'; };
@@ -269,6 +270,7 @@
     t.p.gifts.forEach(function (g) { h += line(R.esc(g), 'Regalo', 'is-gift'); });
     if (t.b) h += line(R.esc(t.b.title), R.money(t.b.price));
     h += line('Envío' + (t.ship ? ' express' : ''), t.ship ? R.money(t.ship) : 'Gratis', t.ship ? '' : 'is-gift');
+    if (t.cup) h += line('Descuento primera compra ' + st.cup + '%' + (st.cupCode ? ' <small>' + R.esc(st.cupCode) + '</small>' : ''), '−' + R.money(t.cup), 'is-gift is-cup');
     if (t.disc) h += line('Descuento pago anticipado', '−' + R.money(t.disc), 'is-gift');
     var label = st.pay === 'transfer' ? 'Total a transferir' : st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir';
     var eta = st.pay === 'transfer' ? ' Sale a despacho apenas verifiquemos tu transferencia.' : st.pay ? ' Ya pagado, sale directo a despacho.' : ' Pagas en efectivo cuando lo recibes.';
@@ -723,7 +725,7 @@
     },
     update: function (source) {
       if (!this.form) return;
-      var m = this.method(), st = { pack: state.pack, bump: this.st.bump, ship: this.st.ship, disc: this.discount(), pay: m === 'cod' ? '' : m };
+      var m = this.method(), cp = this.coupon(), st = { pack: state.pack, bump: this.st.bump, ship: this.st.ship, disc: this.discount(), pay: m === 'cod' ? '' : m, cup: cp ? cp.pct : 0, cupCode: cp ? cp.code : '' };
       var t = R.totals(C, st);
       var n = qs('[data-ep-nudge]'); if (n) n.innerHTML = R.nudge(C, state.pack);
       var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, st);
@@ -954,6 +956,8 @@
       return m;
     },
     /* el descuento no aplica en municipios de solo pago anticipado (igual que el servidor) */
+    /* cupón del popup de 5% (fuente/popup5.js): lo valida y lo aplica el CRM; aquí solo se muestra y se manda el código */
+    coupon: function () { var c = this.st.coupon; if (c && c.exp && c.exp < Date.now()) { this.st.coupon = c = null; } return c || null; },
     discount: function () { var c = this.st.city; return this.method() !== 'cod' && !(c && c.prepaid) ? (C.checkout.payDiscount || 0) : 0; },
     payMode: function () {
       if (!this.form) return;
@@ -1194,6 +1198,7 @@
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
         payment_method: this.method(), tracking: this.tracking()
       };
+      var cp = this.coupon(); if (cp && !cp.demo) body.coupon_code = cp.code;
       if (body.payment_method === 'bold') body.return_url = global.location.origin + global.location.pathname;
       if (this.test) body.dry_run = true;
       this.sending = true; this.busy(true);
@@ -1517,6 +1522,13 @@
       ttTrack('ViewContent', ttData(packById(state.pack)));
       Order.init();
       Funnel.init();
+      global.EP_POP = {
+        test: Order.test, funnel: function (ev, x) { Funnel.send(ev, x); }, api: function (b) { b.slug = C.checkout.slug; return Order.api('POST', '', b); },
+        selKey: function () { return packById(state.pack).offerKey; }, bump: function () { return !!Order.st.bump; }, ordered: function () { return !!Order.done; },
+        applyCoupon: function (c) { Order.st.coupon = c; Order.update(); },
+        goForm: function () { var box = qs('.epp-ok') || qs('#tp-card') || qs('#ep-order'); if (box) scrollToEl(box); }
+      };
+      try { global.dispatchEvent(new Event('ep:pop-ready')); } catch (e) {}
       /* para selectores externos (p. ej. el carrusel de la página de Shopify copiada): elige el plan y baja al formulario */
       global.EP_SELECT_PLAN = function (offerKey, source) {
         var p = null; C.packs.forEach(function (x) { if (x.offerKey === offerKey || x.id === offerKey) p = x; });

@@ -1,0 +1,50 @@
+/* Popup de 5% (prueba A/B popup5). Estilo ENERPLU: negro y dorado. */
+.epp{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:flex-end;justify-content:center;padding:10px;background:rgba(0,0,0,.74);opacity:0;transition:opacity .25s;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.epp.on{opacity:1}
+.epp[data-v="B"]{align-items:center}
+.epp *{box-sizing:border-box}
+.epp-card{position:relative;width:100%;max-width:400px;max-height:calc(100dvh - 20px);overflow:auto;border-radius:22px;background:#0b0b0b;color:#f5f5f5;box-shadow:0 18px 44px rgba(0,0,0,.6);border:1px solid rgba(232,185,49,.32);transform:translateY(22px);transition:transform .3s ease-out}
+.epp.on .epp-card{transform:none}
+.epp-hero{position:relative;height:200px;background:#141414 center 38%/cover no-repeat}
+.epp-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,11,.15) 0%,rgba(11,11,11,0) 40%,rgba(11,11,11,.75) 84%,#0b0b0b 100%)}
+.epp-mark{position:absolute;left:18px;top:16px;z-index:1;font:800 11px/1 Archivo,Inter,sans-serif;letter-spacing:.22em;color:#f5f5f5;display:flex;align-items:center;gap:8px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.epp-mark i{width:18px;height:2px;background:#e8b931;display:block}
+.epp-x{position:absolute;top:8px;right:8px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid rgba(245,245,245,.3);background:rgba(11,11,11,.55);color:#f5f5f5;display:grid;place-items:center;cursor:pointer;padding:0}
+.epp-x svg{width:14px;height:14px}
+.epp-body{padding:0 20px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:13px;margin-top:-14px;position:relative;z-index:1}
+.epp-eye{font:700 10.5px/1.2 Inter,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#e8b931;margin:0}
+.epp-t{font-family:Archivo,Inter,sans-serif;font-weight:800;font-size:26px;line-height:1.1;margin:0;letter-spacing:-.01em;color:#fff;text-wrap:balance}
+.epp-t em{font-style:normal;color:#e8b931}
+.epp-p{margin:0;font-size:14px;line-height:1.5;color:#b5b5b5}
+.epp-p b{color:#f5f5f5;font-weight:600}
+.epp-cup{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;border:1px solid rgba(232,185,49,.45);border-radius:14px;padding:11px 14px;background:linear-gradient(135deg,rgba(232,185,49,.16),rgba(232,185,49,.03))}
+.epp-pct{font-family:Archivo,Inter,sans-serif;font-weight:800;font-size:34px;line-height:1;color:#e8b931;letter-spacing:-.02em}
+.epp-pct sup{font-size:.5em;vertical-align:.7em;margin-left:1px}
+.epp-mid{border-left:1px dashed rgba(232,185,49,.5);padding-left:14px}
+.epp-mid small{display:block;font-size:10px;color:#8a8a8a;letter-spacing:.14em;text-transform:uppercase}
+.epp-mid b{font:700 15px/1.3 Inter,system-ui,sans-serif;letter-spacing:.14em;color:#f5f5f5}
+.epp-tm{font:600 12.5px/1 Inter,system-ui,sans-serif;color:#f5f5f5;font-variant-numeric:tabular-nums;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.epp-tm svg{width:13px;height:13px;stroke:#e8b931}
+.epp-tm.s{font-weight:500;font-size:11px;color:#8a8a8a;letter-spacing:.06em;text-transform:uppercase}
+.epp-go{border:0;border-radius:12px;background:linear-gradient(180deg,#f3cd55,#e8b931);color:#0b0b0b;font:800 15px/1 Archivo,Inter,sans-serif;padding:17px 16px;cursor:pointer;width:100%;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 18px rgba(232,185,49,.28)}
+.epp-go svg{width:16px;height:16px}
+.epp-go:disabled{opacity:.7}
+.epp-tr{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:10.5px;color:#8a8a8a;margin:0;padding:0;list-style:none}
+.epp-tr li{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.epp-tr svg{width:12px;height:12px;stroke:#e8b931}
+.epp-no{border:0;background:none;color:#8a8a8a;font:500 13px/1 Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;justify-self:center;padding:8px}
+.epp-x:focus-visible,.epp-go:focus-visible,.epp-no:focus-visible,.epp-bar:focus-visible{outline:2px solid #e8b931;outline-offset:2px}
+html.epp-lock{overflow:hidden}
+/* Barra de la versión B: queda arriba después de ver el popup */
+.epp-bar{display:block;width:100%;border:0;cursor:pointer;background:#0b0b0b;color:#f5f5f5;font:600 11.5px/1.2 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;text-align:center;border-bottom:1px solid rgba(232,185,49,.35)}
+.epp-bar b{color:#e8b931;font-weight:700}
+/* Aviso de cupón aplicado encima del formulario */
+.epp-ok{display:flex;align-items:center;gap:10px;background:#0b0b0b;color:#f5f5f5;border:1px solid rgba(232,185,49,.55);border-radius:12px;padding:11px 13px;margin:0 0 12px;font-family:Inter,system-ui,sans-serif;scroll-margin-top:12px}
+.epp-ok>svg{width:20px;height:20px;flex:none;stroke:#e8b931}
+.epp-ok b{display:block;font-size:14px;line-height:1.25;color:#e8b931;font-weight:700}
+.epp-ok small{display:block;font-size:11.5px;line-height:1.3;color:#b5b5b5}
+.epp-ok .epp-tm{margin-left:auto}
+/* Línea del cupón en el resumen del formulario */
+.ep-sum-list li.is-cup span:last-child{color:#1a8f4c;font-weight:700}
+.ep-sum-list li.is-cup small{letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){.epp,.epp-card{transition:none}}

@@ -262,6 +262,12 @@ def ab_send(v):
   })();
 })();
 </script>""" % v
+# Popup de 5% en la primera compra (fuente/popup5.js, prueba "popup5" A vs B, código ENERPLU5 en el CRM). Sale en "/" y en "/b".
+# POPUP5 = False lo apaga. Necesita discount_codes ENERPLU5 + checkout_pages.show_coupon en el CRM.
+POPUP5 = True
+if POPUP5:
+    html = must(html, '</head>', '<style>' + (ROOT / 'fuente' / 'popup5.css').read_text() + '</style>\n</head>')
+    html = must(html, '</body>', '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n</body>')
 index_html = html
 if AB_E04 and not HERO_V2:
     index_html = must(index_html, '<head>', '<head>\n' + AB_HEAD)

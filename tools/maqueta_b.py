@@ -2,6 +2,7 @@
 Uso: python3 tools/maqueta_b.py <index_con_hero_v2.html> public/maqueta-b.html"""
 import re, sys, urllib.parse
 src, out = sys.argv[1], sys.argv[2]
+REAL = '--real' in sys.argv   # página B en vivo: sin modo prueba forzado ni franja de vista previa
 s = open(src, encoding='utf-8').read()
 
 def must(s, a, b, n=1):
@@ -13,7 +14,8 @@ HEAD = """<meta name="robots" content="noindex,nofollow">
 (function(){if(!/[?&]ep_test=1(&|$)/.test(location.search)){var q=location.search?location.search+'&ep_test=1':'?ep_test=1';history.replaceState(null,'',location.pathname+q+location.hash);}
 var c;Object.defineProperty(window,'EP_CONFIG',{configurable:true,get:function(){return c},set:function(v){c=v;if(v){v.checkout=v.checkout||{};v.checkout.forceTest=true;}}});})();
 </script>"""
-s = s.replace('<head>', '<head>\n' + HEAD, 1)
+if not REAL:
+    s = s.replace('<head>', '<head>\n' + HEAD, 1)
 
 # 2) Emojis -> íconos de línea (máscara CSS, sirven también dentro de textos de JS)
 P = {
@@ -109,7 +111,8 @@ EXTRA_CSS = '\n'.join(css) + """
 .mqb{background:#d4af37;color:#111;font:700 11px/1.3 Inter,system-ui,sans-serif;text-align:center;padding:5px 8px;letter-spacing:.02em}
 """
 s = s.replace('</head>', '<style>' + EXTRA_CSS + '</style>\n</head>', 1)
-s = re.sub(r'(<body[^>]*>)', r'\1\n<div class="mqb">VISTA PREVIA · PÁGINA B · no crea pedidos</div>', s, count=1)
+if not REAL:
+    s = re.sub(r'(<body[^>]*>)', r'\1\n<div class="mqb">VISTA PREVIA · PÁGINA B · no crea pedidos</div>', s, count=1)
 
 # 6) "Faltan N datos" en el botón y precio en la barra fija
 JS = r"""<script>

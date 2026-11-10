@@ -1,11 +1,11 @@
 # Arma la copia de la landing de Shopify (/products/enerplu, GemPages) para Vercel.
 # Una sola sección de oferta + formulario contra entrega (fuente/oferta-formulario.html), justo antes de las reseñas con fotos.
 # Fuente: fuente/shopify.json (secciones tal cual las sirve Shopify) + fuente/formulario (lógica del formulario de pedido.enerplu.com).
-import json, re, pathlib
+import json, os, re, pathlib, subprocess, sys, tempfile
 
 ROOT = pathlib.Path(__file__).parent
 PDP = ROOT / 'fuente' / 'formulario'
-OUT = ROOT / 'public'
+OUT = pathlib.Path(os.environ['EP_OUT']) if os.environ.get('EP_OUT') else ROOT / 'public'
 OUT.mkdir(exist_ok=True)
 GUIAS_TOKEN = 'mF2kt4dP8qpH'
 d = json.loads((ROOT / 'fuente' / 'shopify.json').read_text())
@@ -45,6 +45,76 @@ secs[0] = must(secs[0], '  send("page_view");\n', """  send("page_view");
   setInterval(latido, 30000);
   document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") send("salida"); else latido(); });
 """)
+
+# 2 · HERO v2 (estilo ficha de producto: galería + calificación + beneficios + selector de planes + confianza).
+# Reemplaza solo el bloque #ep-hero-clean; se quedan la barra fija, el salto a reseñas y la imagen de resultados.
+# HERO_V2 = False vuelve al hero de texto de siempre.
+HERO_V2 = os.environ.get('EP_HERO_V2') == '1'   # el hero v2 solo se usa para armar la página B (/b) de la prueba E-04
+hero_css = hero_js = ''
+if HERO_V2:
+    cfg = json.loads(subprocess.check_output(['node', '-e',
+        "global.window={};eval(require('fs').readFileSync(process.argv[1],'utf8'));process.stdout.write(JSON.stringify(window.EP_CONFIG))",
+        str(PDP / 'config.js')]))
+
+    def cdn(u, w):
+        return u.replace('/upload/', '/upload/w_%d/f_auto/q_auto/' % w) if 'res.cloudinary.com/' in u and '/upload/' in u else u
+
+    def esc(t):
+        return str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+    def money(n):
+        return '$' + format(int(round(n)), ',').replace(',', '.')
+
+    gal = [{'src': 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp',
+            'alt': 'ENERPLU tabletas masticables con maca negra'}] + [g for g in cfg['gallery'] if g.get('type') == 'img']
+    figs = ''.join('<figure><img src="%s" srcset="%s 540w, %s 1080w" sizes="(min-width:900px) 520px, 100vw" alt="%s" width="1080" height="1080" %s></figure>'
+                   % (cdn(g['src'], 720), cdn(g['src'], 540), cdn(g['src'], 1080), esc(g['alt']),
+                      'fetchpriority="high"' if i == 0 else 'loading="lazy" decoding="async"') for i, g in enumerate(gal))
+    ths = ''.join('<button type="button" class="%s" aria-label="Ver foto %d"><img src="%s" alt="" loading="lazy" width="54" height="54"></button>'
+                  % ('is-on' if i == 0 else '', i + 1, cdn(g['src'], 120)) for i, g in enumerate(gal))
+    SH = 'https://cdn.shopify.com/s/files/1/0748/9418/0397/files/'
+    LOOK = {'inicial': (SH + 'BASICO.webp?v=1793468688&width=160', '', 'Para probar', ''),
+            'dominio': (SH + 'DOMINIO.webp?v=1793468717&width=160', 'El más pedido', '✓ Retardante gratis', ''),
+            'elite': (SH + 'ELITE.webp?v=1793468748&width=160', '', '✓ Retardante gratis', ' hv-pinc--best')}
+    plans = ''
+    for pid in ['inicial', 'dominio', 'elite']:   # de menor a mayor, con el más pedido en el medio
+        pk = next(x for x in cfg['packs'] if x['id'] == pid)
+        img, tag, inc, inc_cls = LOOK[pid]
+        was = cfg['singleBoxPrice'] * pk['boxes']
+        on = pid == cfg['defaultPack']
+        off = int((1 - pk['price'] / was) * 100)
+        plans += ('<label class="hv-plan%s%s" data-pack="%s">' % (' hv-plan--rec' if tag else '', ' is-on' if on else '', pid) +
+                  '<input type="radio" name="ep-pack-hero" value="%s"%s>' % (pid, ' checked' if on else '') +
+                  ('<span class="hv-tag">★ %s</span>' % tag if tag else '') +
+                  '<span class="hv-dot" aria-hidden="true"></span>' +
+                  '<span class="hv-pimg"><img src="%s" alt="%s ENERPLU" loading="lazy" width="58" height="58"></span>' % (img, esc(pk['name'])) +
+                  '<span><span class="hv-pname">%s</span><span class="hv-pqty">%d %s · %d tabletas</span>' % (esc(pk['name']), pk['boxes'], 'cajas' if pk['boxes'] > 1 else 'caja', pk['tablets']) +
+                  ('<span class="hv-pinc%s">%s</span>' % (inc_cls, inc) if pid != 'inicial' else '<span class="hv-pqty">%s</span>' % inc) + '</span>' +
+                  '<span class="hv-pr"><span class="hv-price">%s</span>' % money(pk['price']) +
+                  ('<span class="hv-was">%s</span><span class="hv-off">%d%% OFF</span>' % (money(was), off) if off > 0 else '') +
+                  '<span class="hv-unit">%s c/tableta</span></span></label>' % money(pk['price'] / pk['tablets']))
+    dflt = next(x for x in cfg['packs'] if x['id'] == cfg['defaultPack'])
+    ico = lambda d: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'
+    hero_html = (ROOT / 'fuente' / 'hero-v2.html').read_text()
+    for k, v in {'{{FIGS}}': figs, '{{THUMBS}}': ths, '{{PLANS}}': plans, '{{PCT}}': str(max(int((1 - x['price'] / (cfg['singleBoxPrice'] * x['boxes'])) * 100) for x in cfg['packs'])),
+                 '{{CTA}}': 'Quiero el %s · %s →<small>Pagas en efectivo al recibir · envío gratis</small>' % (esc(dflt['name']), money(dflt['price'])),
+                 '{{I_BOLT}}': ico('<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>'),
+                 '{{I_UP}}': ico('<path d="M7 17 17 7"/><path d="M8 7h9v9"/>'),
+                 '{{I_TIME}}': ico('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M9 2h6"/>'),
+                 '{{I_LEAF}}': ico('<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/>'),
+                 '{{I_TRUCK}}': ico('<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>'),
+                 '{{I_CASH}}': ico('<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>'),
+                 '{{I_BOX}}': ico('<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/>')}.items():
+        hero_html = hero_html.replace(k, v)
+    a = secs[2].index('<section id="ep-hero-clean"')
+    b = secs[2].index('</section>', a) + len('</section>')
+    secs[2] = secs[2][:a] + hero_html + secs[2][b:]
+    # la barra fija y el salto a reseñas buscaban las clases del hero viejo
+    secs[2] = must(secs[2], 'document.querySelectorAll("#ep-hero-clean .ep-hc-btn"), function(b){ return b.offsetParent', 'document.querySelectorAll("#ep-hero-clean .hv-cta"), function(b){ return b.offsetParent')
+    secs[2] = must(secs[2], 'Array.prototype.forEach.call(document.querySelectorAll("#ep-hero-clean .ep-hc-btn")', 'Array.prototype.forEach.call(document.querySelectorAll("#ep-hero-clean .hv-cta")')
+    secs[2] = must(secs[2], 'e.target.closest("#ep-hero-clean .ep-hc-kicker")', 'e.target.closest("#ep-hero-clean .hv-rating")')
+    hero_css = (ROOT / 'fuente' / 'hero-v2.css').read_text()
+    hero_js = '<script>\n' + (ROOT / 'fuente' / 'hero-v2.js').read_text() + '</script>'
 
 # 11 · enlaces legales a la tienda
 secs[11] = secs[11].replace('href="/pages/', 'href="' + SHOP + '/pages/')
@@ -123,6 +193,7 @@ html = f"""<!doctype html>
 {ep_css}
 {oferta_css}
 {popup_css}
+{hero_css}
 </style>
 {pixel}
 </head>
@@ -145,6 +216,7 @@ html = f"""<!doctype html>
 window.EP_POPUP_MODE = '{POPUP_MODE}';
 {popup_js}
 </script>
+{hero_js}
 </body>
 </html>
 """
@@ -158,8 +230,53 @@ CAMBIOS_TODAS = [
     ('if (a && /quiero|pedir|comprar|ofertas|elegir|elige/i.test', 'if (a && /quiero|pedir|pídelo|pidelo|comprar|ofertas|elegir|elige/i.test'),
 ]
 for a, b in CAMBIOS_TODAS:
+    if HERO_V2 and 'ep-hc' in a + b or HERO_V2 and 'POTENCIA EN <span>' in a:
+        continue   # el hero v2 ya trae su propio título y botón
     html = must(html, a, b)
-(OUT / 'index.html').write_text(html)
+
+# E-04 (cesar 2026-11-10, "probemos esa versión"): prueba A/B 50/50 en "/".
+# A = esta página tal cual. B = /b: hero v2 con planes y precio arriba, ofertas solo arriba, formulario 1 Pago · 2 Dirección · 3 Envío,
+# "Faltan N datos", pagar ahora destacado (-$12.000) y sello Bold. Se arma con tools/maqueta_b.py --real.
+# Asignación: localStorage ep_e04 (50/50, se queda fija por navegador); ?ab4=A|B fuerza la variante.
+# Medición: funnel_events ab_assign {exp:'E04', v} por sesión + checkout_attempts.session_id. AB_E04 = False apaga la prueba (todos ven A).
+AB_E04 = True
+AB_HEAD = """<script>
+(function(){try{
+  var p=location.pathname; if(p!=='/'&&p!=='/index'&&p!=='/index.html') return;
+  var q=location.search, f=(q.match(/[?&]ab4=([AB])/)||[])[1], v=f;
+  if(!v){try{v=localStorage.getItem('ep_e04')}catch(e){}}
+  if(v!=='A'&&v!=='B'){v=Math.random()<0.5?'A':'B'}
+  try{localStorage.setItem('ep_e04',v)}catch(e){}
+  if(v==='B'){location.replace('/b'+q+location.hash);}
+}catch(e){}})();
+</script>"""
+def ab_send(v):
+    return """<script>
+(function(){
+  var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;
+  var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}
+    if(!sid){if(n++<20)setTimeout(go,300);return;}
+    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E04',v:'%s'}});
+    var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
+    try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}
+  })();
+})();
+</script>""" % v
+index_html = html
+if AB_E04 and not HERO_V2:
+    index_html = must(index_html, '<head>', '<head>\n' + AB_HEAD)
+    index_html = must(index_html, '</body>', ab_send('A') + '\n</body>')
+(OUT / 'index.html').write_text(index_html)
+if AB_E04 and not HERO_V2:
+    with tempfile.TemporaryDirectory() as tmp:
+        subprocess.run([sys.executable, str(ROOT / 'build.py')], check=True, env=dict(os.environ, EP_HERO_V2='1', EP_OUT=tmp), stdout=subprocess.DEVNULL)
+        subprocess.run([sys.executable, str(ROOT / 'tools' / 'maqueta_b.py'), tmp + '/index.html', str(OUT / 'b.html'), '--real'], check=True)
+    b_html = (OUT / 'b.html').read_text()
+    (OUT / 'b.html').write_text(must(b_html, '</body>', ab_send('B') + '\n</body>'))
+elif not HERO_V2 and (OUT / 'b.html').exists():
+    (OUT / 'b.html').unlink()
+if HERO_V2:
+    sys.exit(0)   # en modo hero v2 solo hace falta el index (insumo de /b)
 (OUT / 'garantia.html').write_text((ROOT / 'fuente' / 'garantia.html').read_text())
 (OUT / 'guias' / GUIAS_TOKEN).mkdir(parents=True, exist_ok=True)   # PDFs de regalo: solo enlace secreto, sin Drive (cesar 2026-11-08)
 (OUT / 'guias' / GUIAS_TOKEN / 'index.html').write_text((ROOT / 'fuente' / 'guias.html').read_text())

@@ -1826,6 +1826,9 @@ fbq('track', 'PageView');
 .ep-root .eph-order .ep-pay-save::before{content:"Ahorras";font-size:10px;font-weight:800}
 .bold-kit{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:12px;color:#8a8a8a;font-size:11px}
 .bold-kit #bold-kit{max-width:320px;width:100%;display:flex;justify-content:center}
+
+#ep-offer-widget{display:none!important}
+.ep-hc-sticky.mb-hide{transform:translateY(110%)!important}
 .mqb{background:#d4af37;color:#111;font:700 11px/1.3 Inter,system-ui,sans-serif;text-align:center;padding:5px 8px;letter-spacing:.02em}
 </style>
 </head>
@@ -6767,11 +6770,22 @@ window.EP_POPUP_MODE = 'off';
   function payTarget(){var p=document.getElementById('tp-card');return p||document.querySelector('[data-ep-order]');}
   function go(){var t=payTarget();if(!t)return;var y=t.getBoundingClientRect().top+pageYOffset-10;scrollTo({top:y,behavior:'smooth'});}
   // elegir plan arriba = te lleva directo al pago
-  document.addEventListener('change',function(e){if(e.target&&e.target.name==='ep-pack-hero')setTimeout(go,180);},true);
+  document.addEventListener('change',function(e){if(e.target&&e.target.name==='ep-pack-hero')setTimeout(go,350);},true);
   // botón del hero y barra fija también llevan al pago
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('#ep-hero-clean .hv-cta, .ep-hc-sticky a');if(!a)return;e.preventDefault();e.stopImmediatePropagation();go();},true);
-  // "Cambiar" sube a las 3 ofertas
-  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-tp-change]');if(!a)return;e.preventDefault();var l=document.getElementById('ep-offer-widget');if(l)scrollTo({top:l.getBoundingClientRect().top+pageYOffset-10,behavior:'smooth'});},true);
+  // "Cambiar" sube a los planes del hero (las ofertas solo están arriba)
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-tp-change]');if(!a)return;e.preventDefault();var l=document.querySelector('#ep-hero-clean .hv-plans-t')||document.querySelector('#ep-hero-clean .hv-plans');if(l)scrollTo({top:l.getBoundingClientRect().top+pageYOffset-10,behavior:'smooth'});},true);
+  // barra fija: solo cuando no se ven ni los planes/botón del hero ni el formulario
+  var vis={hero:true,form:false};
+  function sb(){var b=document.querySelector('.ep-hc-sticky');if(b)b.classList.toggle('mb-hide',vis.hero||vis.form);}
+  function watch(){
+    var h=document.querySelector('#ep-hero-clean .hv-info'),f=document.querySelector('#ep-order [data-ep-order]');
+    if(!h||!f||!('IntersectionObserver' in window))return;
+    new IntersectionObserver(function(es){es.forEach(function(x){vis[x.target===h?'hero':'form']=x.isIntersecting});sb();}).observe(h);
+    new IntersectionObserver(function(es){es.forEach(function(x){vis.form=x.isIntersecting});sb();}).observe(f);
+    setInterval(sb,500);
+  }
+  document.readyState!=='loading'?watch():document.addEventListener('DOMContentLoaded',watch);
   function paint(){
     var C=window.EP_CONFIG;if(!C)return;
     var on=document.querySelector('#ep-order .ep-sel-opt.is-on'),ck=document.querySelector('input[name="ep-pack-hero"]:checked');

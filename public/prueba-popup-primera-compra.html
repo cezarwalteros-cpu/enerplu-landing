@@ -6800,7 +6800,7 @@ window.EP_POPUP_MODE = 'off';
 })();
 </script>
 <script>/* Popup de 5% en la primera compra (cesar 2026-11-10: "quiero hacer esto mismo en ENERPLU", igual que Mg Collagen).
-   Prueba A/B "popup5", independiente de la prueba de página E-04 (sale por igual en "/" y en "/b"):
+   Prueba "popup5" (N sin popup 20%, A 40%, B 40%), independiente de la prueba de página E-04 (sale por igual en "/" y en "/b"):
    A = "No te vayas": aparece al intentar salir (botón atrás, volver a la pestaña, cursor que sale por arriba). Cupón con reloj de 15 min.
    B = "Primera compra": aparece a los 8 s y deja una barra arriba.
    El descuento lo valida y lo aplica el CRM (discount_codes, checkout-native action "coupon"); aquí solo se muestra.
@@ -6821,11 +6821,13 @@ window.EP_POPUP_MODE = 'off';
 
   function init(h) {
     var qs = new URLSearchParams(location.search), f = (qs.get('pop') || '').toUpperCase();
-    var forced = f === 'A' || f === 'B' ? f : null;
+    var forced = f === 'A' || f === 'B' || f === 'N' ? f : null;
     if (qs.get('pop') === '0') return;
+    /* N = grupo sin popup (20%), para saber si el 5% de verdad sube pedidos; A y B 40% cada uno */
     var v = forced || ls.get('ep_pop_v');
-    if (v !== 'A' && v !== 'B') { v = Math.random() < 0.5 ? 'A' : 'B'; ls.set('ep_pop_v', v); }
+    if (v !== 'A' && v !== 'B' && v !== 'N') { var r = Math.random(); v = r < 0.2 ? 'N' : r < 0.6 ? 'A' : 'B'; ls.set('ep_pop_v', v); }
     if (!ss.get('ep_pop_as')) { ss.set('ep_pop_as', '1'); h.funnel('ab_assign', { exp: 'popup5', v: v }); }
+    if (v === 'N') return;
 
     /* cupón ya aceptado en esta sesión: se conserva al recargar */
     try { var c0 = JSON.parse(ss.get('ep_cup') || 'null'); if (c0 && (!c0.exp || c0.exp > Date.now())) var c0ok = c0; } catch (e) {}

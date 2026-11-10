@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ENERPLU · Maqueta B</title>
+<style>
+:root{--ink:#111;--mut:#666;--line:#e6e6e6;--red:#d0021b;--red2:#a80016;--ok:#0a8a3a;--bg:#fff;--soft:#f6f6f6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);padding-bottom:80px}
+.wrap{max-width:480px;margin:0 auto}
+.mq{background:#fff3c4;color:#5a4500;font-size:12px;text-align:center;padding:6px 10px;border-bottom:1px solid #f0d77a}
+.mq b{font-weight:800}
+.nuevo{display:inline-block;background:#ffe14d;color:#3a2d00;font-size:10px;font-weight:800;letter-spacing:.04em;padding:2px 6px;border-radius:4px;vertical-align:middle;margin-left:6px}
+.bar{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:8px;font-weight:600}
+.bar span{color:#ffcf33}
+/* galería */
+.gal{position:relative;background:var(--soft)}
+.gal-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.gal-track::-webkit-scrollbar{display:none}
+.gal-track img{flex:0 0 100%;width:100%;aspect-ratio:1/1;object-fit:cover;scroll-snap-align:center;display:block}
+.dots{position:absolute;bottom:10px;left:0;right:0;display:flex;gap:6px;justify-content:center}
+.dots i{width:7px;height:7px;border-radius:50%;background:#0003}.dots i.on{background:var(--ink)}
+.pad{padding:16px}
+.stars{font-size:14px;color:var(--mut)}.stars b{color:#f5a623;letter-spacing:1px}
+h1{font-size:25px;line-height:1.1;margin:8px 0 6px;font-weight:900;text-transform:uppercase}
+.sub{font-size:15px;color:#333;margin:0 0 12px;line-height:1.35}
+.price-line{display:flex;align-items:baseline;gap:10px;margin:4px 0 12px}
+.price-line .now{font-size:30px;font-weight:900}
+.price-line .old{color:var(--mut);text-decoration:line-through;font-size:16px}
+.price-line .off{background:var(--red);color:#fff;font-size:12px;font-weight:800;padding:3px 7px;border-radius:4px}
+/* planes */
+.plans{display:grid;gap:10px;margin:6px 0 14px}
+.plan{position:relative;border:2px solid var(--line);border-radius:12px;padding:12px 12px 12px 44px;cursor:pointer;background:#fff}
+.plan input{position:absolute;opacity:0}
+.plan:before{content:"";position:absolute;left:14px;top:50%;margin-top:-10px;width:20px;height:20px;border-radius:50%;border:2px solid #bbb;background:#fff}
+.plan.on{border-color:var(--ink);background:#fafafa}
+.plan.on:before{border-color:var(--ink);box-shadow:inset 0 0 0 4px #fff;background:var(--ink)}
+.plan .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.plan .nm{font-weight:800;font-size:15px}
+.plan .pr{font-weight:900;font-size:17px;white-space:nowrap}
+.plan .ds{font-size:13px;color:#444;margin-top:3px}
+.plan .pt{font-size:12px;color:var(--ok);font-weight:700;margin-top:3px}
+.plan .miss{font-size:12px;color:var(--mut)}
+.plan .tag{position:absolute;top:-10px;right:10px;background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:3px 8px;border-radius:20px}
+.plan .tag.alt{background:var(--ink)}
+.cta{display:block;width:100%;border:0;border-radius:10px;background:var(--red);color:#fff;font-size:18px;font-weight:900;padding:17px 12px;cursor:pointer;letter-spacing:.02em;box-shadow:0 4px 0 var(--red2)}
+.cta:active{transform:translateY(2px);box-shadow:0 2px 0 var(--red2)}
+.cta small{display:block;font-size:12px;font-weight:600;opacity:.9;margin-top:2px}
+.cta.grey{background:#333;box-shadow:0 4px 0 #000}
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 0;font-size:13px}
+.trust div{background:var(--soft);border-radius:8px;padding:9px 10px;font-weight:600}
+.gift{margin:12px 0 0;font-size:13px;background:#fff7e0;border:1px dashed #e0b84a;border-radius:8px;padding:10px}
+/* formulario */
+#pedido{display:none;border-top:8px solid var(--soft)}
+#pedido.open{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.sum{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.sum img{width:64px;height:64px;border-radius:8px;object-fit:cover;background:var(--soft)}
+.sum .t{flex:1;font-size:13px;color:#444}.sum .t b{display:block;font-size:15px;color:var(--ink)}
+.sum .p{font-weight:900;font-size:17px;text-align:right}
+.sum a{display:block;font-size:12px;color:var(--red);font-weight:700;text-decoration:underline;cursor:pointer;margin-top:4px}
+.step{margin:0 0 18px}
+.step h3{font-size:16px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.step h3 .n{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;display:inline-flex;align-items:center;justify-content:center}
+.step h3 .n.ok{background:var(--ok)}
+.opt{border:2px solid var(--line);border-radius:10px;padding:12px 12px 12px 42px;margin-bottom:8px;position:relative;cursor:pointer;font-size:14px}
+.opt:before{content:"";position:absolute;left:13px;top:14px;width:18px;height:18px;border-radius:50%;border:2px solid #bbb}
+.opt.on{border-color:var(--ink)}.opt.on:before{border-color:var(--ink);background:var(--ink);box-shadow:inset 0 0 0 3px #fff}
+.opt b{display:flex;justify-content:space-between;gap:8px}
+.opt span{display:block;color:var(--mut);font-size:12px;margin-top:2px}
+.opt .badge{background:var(--ok);color:#fff;font-size:11px;padding:2px 6px;border-radius:4px;font-weight:800;white-space:nowrap}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.f .full{grid-column:1/-1}
+.f label{display:block;font-size:12px;font-weight:700;margin-bottom:3px}
+.f input{width:100%;font-size:16px;padding:12px;border:1.5px solid #ccc;border-radius:8px;background:#fff}
+.f input.okf{border-color:var(--ok)}
+.f input.err{border-color:var(--red);background:#fff5f5}
+.f .hint{font-size:11px;color:var(--mut);margin-top:3px}
+.tot{background:var(--soft);border-radius:10px;padding:12px;font-size:14px;margin:4px 0 12px}
+.tot div{display:flex;justify-content:space-between;margin:3px 0}
+.tot .disc{color:var(--ok);font-weight:700}
+.tot .big{font-size:18px;font-weight:900;border-top:1px solid #ddd;padding-top:8px;margin-top:8px}
+.after{font-size:12px;color:#444;text-align:center;margin-top:10px;line-height:1.5}
+/* sticky */
+.sticky{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 14px #0001;padding:10px 12px;transform:translateY(110%);transition:transform .25s;z-index:20}
+.sticky.show{transform:none}
+.sticky .in{max-width:480px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.sticky .in div{flex:1;font-size:12px;color:var(--mut);line-height:1.2}
+.sticky .in div b{display:block;color:var(--ink);font-size:16px}
+.sticky .cta{width:auto;font-size:15px;padding:12px 18px}
+.rest{border-top:8px solid var(--soft);color:#444;font-size:14px}
+.rest ul{padding-left:18px;margin:8px 0}
+.rest a{color:var(--red);font-weight:700}
+/* gracias */
+#gracias{display:none;text-align:center}
+#gracias.open{display:block}
+#gracias .ck{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;font-size:36px;line-height:64px;margin:20px auto 10px}
+.notes{background:#f0f6ff;border:1px solid #c8dcff;border-radius:10px;padding:12px;font-size:13px;line-height:1.45;color:#1d3557}
+.notes b{color:#0b2545}
+</style>
+</head>
+<body>
+<div class="mq"><b>MAQUETA · Página B (prueba A/B)</b> · no crea pedidos · lo amarillo <span class="nuevo">NUEVO</span> es lo que cambia</div>
+<div class="bar">Oferta hasta <span>55 % de descuento</span> · 💵 Pagas al recibir · 🚚 Envío gratis</div>
+
+<div class="wrap" id="top">
+  <div class="gal">
+    <div class="gal-track" id="gal"></div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <div class="pad">
+    <div class="stars"><b>★★★★★</b> 4.9/5.0 · +3500 hombres colombianos</div>
+    <h1>De cero a máxima potencia en 5 a 15 minutos.</h1>
+    <p class="sub">La tableta masticable, sin agua y sin jarabes. Más duro. Más firme. Más control.</p>
+
+    <div class="price-line"><span class="now" id="hPrice">$129.900</span><span class="old" id="hOld">$179.800</span><span class="off" id="hOff">−28 %</span><span class="nuevo">NUEVO</span></div>
+
+    <div style="font-size:13px;font-weight:800;margin-bottom:6px">Elige tu plan <span class="nuevo">NUEVO arriba</span></div>
+    <div class="plans" id="plans"></div>
+
+    <button class="cta" id="ctaMain" onclick="abrir()">PEDIR AHORA · <span class="ctaP">$129.900</span><small>Pagas al recibir · Envío gratis</small></button>
+
+    <div class="trust">
+      <div>💵 Pagas al recibir</div><div>🚚 Envío gratis</div>
+      <div>📦 Empaque 100% discreto</div><div>✅ INVIMA NSA-2314-2025</div>
+    </div>
+    <div class="gift">🎁 <b>Regalo:</b> 3 guías digitales "Secretos sexuales" (te llegan por WhatsApp cuando recibes tu pedido).</div>
+  </div>
+
+  <!-- FORMULARIO EN LA MISMA PÁGINA -->
+  <section id="pedido" class="pad">
+    <h2 style="font-size:20px;margin:4px 0 12px">Completa tu pedido <span class="nuevo">NUEVO</span></h2>
+    <div class="sum">
+      <img id="sImg" alt="">
+      <div class="t"><b id="sName">Plan Dominio Total</b><span id="sDesc"></span></div>
+      <div class="p"><span id="sPrice">$129.900</span><a onclick="cambiar()">Cambiar</a></div>
+    </div>
+
+    <div class="step">
+      <h3><span class="n ok" id="n1">1</span>¿Cómo quieres pagar?</h3>
+      <div class="opt on" data-pay="cod" onclick="pagar(this)"><b>Pagar al recibir (contraentrega)</b><span>Pagas en efectivo cuando llega a tu casa.</span></div>
+      <div class="opt" data-pay="bold" onclick="pagar(this)"><b>Pagar ahora con tarjeta, PSE o Nequi <span class="badge">−$12.000</span></b><span>Pago seguro con Bold. Ahorras $12.000 hoy.</span></div>
+    </div>
+
+    <div class="step">
+      <h3><span class="n" id="n2">2</span>¿A dónde te lo enviamos?</h3>
+      <div class="f">
+        <div><label>Nombre</label><input data-req placeholder="Juan"></div>
+        <div><label>Apellido</label><input data-req placeholder="Pérez"></div>
+        <div class="full"><label>Celular (WhatsApp)</label><input data-req data-tel inputmode="numeric" placeholder="300 123 4567"><div class="hint">Por aquí te confirmamos el pedido antes de enviarlo.</div></div>
+        <div class="full"><label>Ciudad o municipio</label><input data-req placeholder="Medellín, Antioquia"></div>
+        <div class="full"><label>Dirección</label><input data-req placeholder="Calle 10 # 20-30"></div>
+        <div class="full"><label>Barrio y detalles (opcional)</label><input placeholder="Barrio, apto, torre"></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <h3><span class="n ok" id="n3">3</span>Envío</h3>
+      <div class="opt on" data-ship="0" onclick="envio(this)"><b>Envío gratis <span>$0</span></b><span>Llega en 3 a 4 días hábiles.</span></div>
+      <div class="opt" data-ship="5000" onclick="envio(this)"><b>Express asegurado <span>+$5.000</span></b><span>Despacho el mismo día si confirmas antes de las 2:00 p. m.</span></div>
+    </div>
+
+    <div class="tot">
+      <div><span id="tName">Plan Dominio Total</span><span id="tSub">$129.900</span></div>
+      <div id="tDiscRow" class="disc" style="display:none"><span>Descuento pago anticipado</span><span>−$12.000</span></div>
+      <div><span>Envío</span><span id="tShip">Gratis</span></div>
+      <div class="big"><span>Total</span><span id="tTot">$129.900</span></div>
+    </div>
+
+    <button class="cta grey" id="ctaForm" onclick="enviar()">Faltan 5 datos ↓</button>
+    <div class="after">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo<br>🛡️ Garantía Real en Dominio Total y Élite (15 días tras la entrega) · <u>Ver condiciones</u></div>
+  </section>
+
+  <section id="gracias" class="pad">
+    <div class="ck">✓</div>
+    <h2 style="margin:0 0 6px">¡Pedido recibido! (maqueta)</h2>
+    <p style="color:#444;font-size:14px;margin:0 0 14px">Aquí sigue la página de gracias actual, sin cambios: resumen, fecha estimada y botón de WhatsApp.</p>
+    <button class="cta grey" onclick="location.reload()">Ver la maqueta otra vez</button>
+  </section>
+
+  <section class="pad rest">
+    <b>Debajo sigue igual la página actual</b> (no se toca):
+    <ul>
+      <li>"¿Hay algo más patético que te vea tomando un jarabe?" · Bebidas vs Masticables</li>
+      <li>La Matriz de Infusión Sublingual™ · INVIMA · cero taquicardia</li>
+      <li>Las 3 opciones · Garantía · Preguntas frecuentes</li>
+    </ul>
+    Cada botón de abajo sube al formulario ya abierto con el plan elegido.<br>
+    <a href="/?ep_test=1">Ver la página actual (A) →</a>
+    <div class="notes" style="margin-top:14px">
+      <b>Qué cambia frente a la página actual</b><br>
+      1. Precio, los 3 planes y el botón en la primera pantalla (hoy el 57% nunca llega a ver las ofertas).<br>
+      2. Barra fija abajo con plan y precio, siempre a un toque.<br>
+      3. El botón abre el formulario ahí mismo, con la tarjeta "Tu pedido · Cambiar".<br>
+      4. Pasos numerados: pago (contraentrega primero, pago ahora −$12.000), dirección, envío (gratis o express +$5.000).<br>
+      5. El botón cuenta "Faltan N datos" y lleva al campo vacío.<br>
+      Precios, regalos, garantía y textos son los reales de hoy.
+    </div>
+  </section>
+</div>
+
+<div class="sticky" id="sticky"><div class="in">
+  <div>ENERPLU · <span id="stName">Plan Dominio Total</span><b id="stPrice">$129.900</b></div>
+  <button class="cta" onclick="abrir()">PEDIR AHORA</button>
+</div></div>
+
+<script>
+var IMG='https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_720/';
+var GAL=['v1793135585/enerplu-galeria-1-producto_ynanai.webp','v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp','v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp','v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp','v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp','v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp'];
+var SINGLE=89900;
+var PLANS=[
+ {id:'dominio',name:'Plan Dominio Total',boxes:2,tab:20,price:129900,gifts:'Spray retardante 30 ml + sobre de lubricante',tag:'Más vendido'},
+ {id:'elite',name:'Plan Élite',boxes:4,tab:40,price:159900,gifts:'Spray retardante 30 ml + sobre de lubricante',tag:'Mejor precio',alt:1},
+ {id:'inicial',name:'Plan Básico ENERPLU',boxes:1,tab:10,price:89900,gifts:'Sobre de lubricante',miss:'Sin spray retardante'}
+];
+var st={plan:'dominio',pay:'cod',ship:0,open:false};
+function m(n){return '$'+n.toLocaleString('es-CO').replace(/,/g,'.')}
+function P(){return PLANS.filter(function(p){return p.id===st.plan})[0]}
+// galería
+var g=document.getElementById('gal'),d=document.getElementById('dots');
+GAL.forEach(function(s,i){g.insertAdjacentHTML('beforeend','<img loading="'+(i?'lazy':'eager')+'" src="'+IMG+s+'" alt="ENERPLU">');d.insertAdjacentHTML('beforeend','<i'+(i?'':' class="on"')+'></i>')});
+g.addEventListener('scroll',function(){var i=Math.round(g.scrollLeft/g.clientWidth);[].forEach.call(d.children,function(e,k){e.className=k===i?'on':''})});
+// planes
+var pl=document.getElementById('plans');
+PLANS.forEach(function(p){
+ var per=Math.round(p.price/p.tab/10)*10, old=SINGLE*p.boxes, off=Math.round((1-p.price/old)*100);
+ pl.insertAdjacentHTML('beforeend','<label class="plan" data-id="'+p.id+'">'+(p.tag?'<span class="tag'+(p.alt?' alt':'')+'">'+p.tag+'</span>':'')+
+ '<input type="radio" name="plan"><div class="row"><span class="nm">'+p.name+'</span><span class="pr">'+m(p.price)+'</span></div>'+
+ '<div class="ds">'+p.boxes+(p.boxes>1?' cajas':' caja')+' ('+p.tab+' tabletas) · '+p.gifts+'</div>'+
+ (p.miss?'<div class="miss">'+p.miss+'</div>':'<div class="pt">'+m(per)+' por tableta · ahorras '+off+' %</div>')+'</label>');
+});
+[].forEach.call(pl.children,function(el){el.onclick=function(){st.plan=el.dataset.id;render()}});
+function render(){
+ var p=P(),old=SINGLE*p.boxes,off=Math.round((1-p.price/old)*100);
+ [].forEach.call(pl.children,function(el){el.classList.toggle('on',el.dataset.id===st.plan)});
+ document.getElementById('hPrice').textContent=m(p.price);
+ document.getElementById('hOld').style.display=off>0?'':'none';document.getElementById('hOff').style.display=off>0?'':'none';
+ document.getElementById('hOld').textContent=m(old);document.getElementById('hOff').textContent='−'+off+' %';
+ [].forEach.call(document.querySelectorAll('.ctaP'),function(e){e.textContent=m(p.price)});
+ document.getElementById('stName').textContent=p.name;document.getElementById('stPrice').textContent=m(p.price);
+ document.getElementById('sName').textContent=p.name;document.getElementById('sDesc').textContent=p.boxes+(p.boxes>1?' cajas':' caja')+' ('+p.tab+' tabletas) + '+p.gifts.toLowerCase();
+ document.getElementById('sPrice').textContent=m(p.price);document.getElementById('sImg').src=IMG+GAL[0];
+ var disc=st.pay==='bold'?12000:0,tot=p.price-disc+st.ship;
+ document.getElementById('tName').textContent=p.name;document.getElementById('tSub').textContent=m(p.price);
+ document.getElementById('tDiscRow').style.display=disc?'':'none';
+ document.getElementById('tShip').textContent=st.ship?'+'+m(st.ship):'Gratis';
+ document.getElementById('tTot').textContent=m(tot);
+ faltan();
+}
+function abrir(){var f=document.getElementById('pedido');f.classList.add('open');st.open=true;f.scrollIntoView({behavior:'smooth'});}
+function cambiar(){document.getElementById('plans').scrollIntoView({behavior:'smooth',block:'center'})}
+function pagar(el){st.pay=el.dataset.pay;sel(el);render()}
+function envio(el){st.ship=+el.dataset.ship;sel(el);render()}
+function sel(el){[].forEach.call(el.parentNode.querySelectorAll('.opt'),function(o){o.classList.toggle('on',o===el)})}
+function valid(i){var v=i.value.trim();if(i.hasAttribute('data-tel'))return /^3\d{9}$/.test(v.replace(/\D/g,''));return v.length>=2}
+function faltan(){
+ var req=[].slice.call(document.querySelectorAll('[data-req]')),miss=req.filter(function(i){return !valid(i)});
+ req.forEach(function(i){i.classList.toggle('okf',valid(i))});
+ document.getElementById('n2').classList.toggle('ok',!miss.length);
+ var b=document.getElementById('ctaForm'),p=P(),tot=p.price-(st.pay==='bold'?12000:0)+st.ship;
+ if(miss.length){b.className='cta grey';b.innerHTML='Faltan '+miss.length+(miss.length>1?' datos':' dato')+' ↓'}
+ else{b.className='cta';b.innerHTML='CONFIRMAR MI PEDIDO · '+m(tot)+'<small>'+(st.pay==='bold'?'Pagas ahora con Bold':'Pagas al recibir')+'</small>'}
+ return miss;
+}
+document.querySelectorAll('[data-req]').forEach(function(i){i.addEventListener('input',function(){i.classList.remove('err');faltan()})});
+function enviar(){
+ var miss=faltan();
+ if(miss.length){miss[0].classList.add('err');miss[0].scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){miss[0].focus()},350);return}
+ document.getElementById('pedido').style.display='none';var g2=document.getElementById('gracias');g2.classList.add('open');g2.scrollIntoView({behavior:'smooth'});
+}
+// barra fija: aparece al pasar el botón principal
+var ctaMain=document.getElementById('ctaMain'),sticky=document.getElementById('sticky');
+new IntersectionObserver(function(e){var f=document.getElementById('pedido').getBoundingClientRect();var inForm=st.open&&f.top<innerHeight&&f.bottom>0;sticky.classList.toggle('show',!e[0].isIntersecting&&e[0].boundingClientRect.top<0&&!inForm)}).observe(ctaMain);
+addEventListener('scroll',function(){if(!st.open)return;var f=document.getElementById('pedido').getBoundingClientRect();if(f.top<innerHeight&&f.bottom>0)sticky.classList.remove('show');else if(ctaMain.getBoundingClientRect().bottom<0)sticky.classList.add('show')},{passive:true});
+render();
+</script>
+</body>
+</html>

@@ -292,10 +292,12 @@ if POPUP5 and AB_E04:
         (OUT / ('prueba-popup-%s.html' % _n)).write_text(_h)
 # Vista previa del upsell del spray (solo Plan Básico) + bump de estrechante con texto nuevo. NO está en vivo: solo esta página lo activa.
 UPSELL_PREVIEW = {
-    'upsell': {'key': 'retardante', 'only': 'inicial', 'price': 24900, 'compare': 49900, 'title': 'Spray Retardante 30 ml',
-               'eyebrow': 'Espera, antes de confirmar', 'headline': 'Firme ya vas a estar. Ahora dura hasta que ella termine primero',
-               'text': 'ENERPLU te pone firme. El Spray Retardante hace que aguantes: terminas cuando tú decides, no antes. Tu plan no lo trae; hoy lo llevas a mitad de precio.',
-               'bullets': ['Llega en el mismo paquete discreto', 'Sin costo de envío adicional', 'Este precio solo aparece en este pedido']},
+    # especificación completa dada por cesar (10-nov 4:32 pm): textos, colores e imagen
+    'upsell': {'key': 'retardante', 'only': 'inicial', 'price': 24900, 'compare': 49900, 'title': 'Spray Retardante Club Velvet 30 ml',
+               'image': 'https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_500/v1794346291/Botella_Club_Velvet_Retardante_Premium_qj3ihr.webp',
+               'eyebrow': 'Espera, antes de confirmar', 'headline': 'Lleva la experiencia al nivel de control absoluto',
+               'text': 'Ya tienes la firmeza y resistencia con tu pedido por dentro; el spray Velvet te da el control exacto del reloj por fuera. El combo de blindaje definitivo.',
+               'bullets': ['Olvídate de la tensión mental de tener que aguantar', 'Disfruta del ritmo intenso sin miedo a terminar antes', 'Llega en el mismo paquete 100% discreto y sin costo de envío adicional']},
     # texto e imagen dados por cesar (10-nov 4:08 pm)
     'bump': {'title': 'Gel Estrechante Virgyflower (30 ml)', 'contain': True,'image': 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1794344899/ESTRECHANTE_tg6at5.webp',
              'text': 'Efecto astringente y lubricante inmediato: mayor fricción y sensación más intensa para ambos. Fórmula suave en frasco de 30 ml. Se despacha en el mismo paquete 100% discreto.'},

@@ -233,8 +233,8 @@
     var b = cfg.checkout.bump;
     if (!b) return '';
     return '<label class="ep-bump' + (on ? ' is-on' : '') + '"><input type="checkbox" name="ep-bump"' + (on ? ' checked' : '') + '>' +
-      (b.image ? '<span class="ep-bump-img"><img src="' + R.esc(R.cdn(cfg, b.image, 200)) + '" alt="" loading="lazy" decoding="async"></span>' : '') +
-      '<span class="ep-bump-main"><span class="ep-bump-head"><span class="ep-bump-box" aria-hidden="true">' + R.ico('check') + '</span><b>Sí, agregar ' + R.esc(b.title) + '</b></span>' +
+      (b.image ? '<span class="ep-bump-img' + (b.contain ? ' is-contain' : '') + '"><img src="' + R.esc(R.cdn(cfg, b.image, 200)) + '" alt="" loading="lazy" decoding="async"></span>' : '') +
+      '<span class="ep-bump-main">' + (b.tag ? '<span class="ep-bump-tag">' + R.esc(b.tag) + '</span>' : '') + '<span class="ep-bump-head"><span class="ep-bump-box" aria-hidden="true">' + R.ico('check') + '</span><b>Sí, agregar ' + R.esc(b.title) + '</b></span>' +
       '<span class="ep-bump-price"><b>+' + R.money(b.price) + '</b>' + (b.compare > b.price ? '<s>' + R.money(b.compare) + '</s>' : '') + '</span>' +
       '<small>' + R.esc(b.text || '') + '</small></span></label>';
   };
@@ -690,6 +690,12 @@
       var f = qs('[data-ep-order]'); if (!f) return;
       this.form = f;
       this.test = /[?&]ep_test=1(&|$)/.test(global.location.search) || !!C.checkout.forceTest;
+      /* VISTA PREVIA (no está en vivo): upsell del spray solo para un plan + texto nuevo del bump. Solo se activa en la página de prueba. */
+      if (global.EP_PREVIEW_UPSELL) {
+        this.test = true;
+        C.checkout.upsell = global.EP_PREVIEW_UPSELL.upsell || null;
+        if (C.checkout.bump && global.EP_PREVIEW_UPSELL.bump) Object.assign(C.checkout.bump, global.EP_PREVIEW_UPSELL.bump);
+      }
       var tb = qs('[data-ep-test]'); if (tb) tb.hidden = !this.test;
       /* referidos: ?ref=CODIGO (se guarda 30 días por si vuelve sin el enlace) */
       this.ref = this.refCode();
@@ -749,7 +755,7 @@
         });
         if (c.order_bump) {
           var b = C.checkout.bump || {};
-          b.price = c.order_bump.price; b.compare = c.order_bump.compare_at_price || 0; if (c.order_bump.image_url) b.image = c.order_bump.image_url;
+          b.price = c.order_bump.price; b.compare = c.order_bump.compare_at_price || 0; if (c.order_bump.image_url && !(global.EP_PREVIEW_UPSELL && (global.EP_PREVIEW_UPSELL.bump || {}).image)) b.image = c.order_bump.image_url;
           C.checkout.bump = b;
         } else C.checkout.bump = null;
         if (c.priority_shipping) C.checkout.express = { price: c.priority_shipping.price, title: c.priority_shipping.title || 'Express', text: c.priority_shipping.description || '' };
@@ -1189,12 +1195,14 @@
         var first = this.el(bad[0]); if (first) { first.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); setTimeout(function () { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, reduce ? 0 : 350); }
         return;
       }
+      var up = C.checkout.upsell;
+      if (up && p.id === up.only && !this.upsellAsked) { this.upsellAsked = true; this.upsellOpen(up); return; }
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
         customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') || 'Sin barrio: confirmar por WhatsApp', notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
-        offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
+        offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: !!(up && this.st.upsell && p.id === up.only),
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
         payment_method: this.method(), tracking: this.tracking()
       };
@@ -1223,10 +1231,34 @@
         track('OrderError', { status: 0 });
       }).then(function () { self.sending = false; if (!self.done) self.busy(false); });
     },
+    /* upsell antes de confirmar: hoja con un sí / no; al responder se envía el pedido */
+    upsellOpen: function (up) {
+      var self = this, root = qs('.ep-root') || document.body, d = document.createElement('div');
+      d.className = 'ep-ups'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true'); d.setAttribute('aria-label', up.title);
+      d.innerHTML = '<div class="ep-ups-sheet">' +
+        '<p class="ep-ups-eyebrow">' + R.ico('timer') + ' ' + R.esc(up.eyebrow || 'Antes de confirmar tu pedido') + '</p>' +
+        '<h3 class="ep-ups-title">' + R.esc(up.headline || up.title) + '</h3>' +
+        (up.image ? '<span class="ep-ups-img"><img src="' + R.esc(R.cdn(C, up.image, 400)) + '" alt="' + R.esc(up.title) + '" decoding="async"></span>' : '') +
+        '<p class="ep-ups-text">' + R.esc(up.text || '') + '</p>' +
+        '<ul class="ep-ups-list">' + (up.bullets || []).map(function (b) { return '<li>' + R.ico('check') + '<span>' + R.esc(b) + '</span></li>'; }).join('') + '</ul>' +
+        '<p class="ep-ups-price"><s>' + R.money(up.compare) + '</s><b>' + R.money(up.price) + '</b><span>Ahorras ' + R.money(up.compare - up.price) + '</span></p>' +
+        '<button type="button" class="ep-cta" data-ep-ups="yes"><span class="ep-cta-label"><b>Sí, agregarlo por ' + R.money(up.price) + '</b><small>Llega en el mismo paquete · pagas al recibir</small></span></button>' +
+        '<button type="button" class="ep-ups-no" data-ep-ups="no">No, gracias. Confirmar sin el spray</button></div>';
+      root.appendChild(d);
+      Funnel.send('upsell_view', { item: up.key || 'retardante' });
+      d.addEventListener('click', function (e) {
+        var t = e.target.closest('[data-ep-ups]'); if (!t) return;
+        self.st.upsell = t.getAttribute('data-ep-ups') === 'yes';
+        Funnel.send(self.st.upsell ? 'upsell_accept' : 'upsell_decline', { item: up.key || 'retardante' });
+        d.remove(); self.submit();
+      });
+      var y = qs('[data-ep-ups="yes"]', d); if (y) try { y.focus({ preventScroll: true }); } catch (e) {}
+    },
     success: function (j, body) {
       this.done = true; clearTimeout(this.cartTimer);
       var p = packById(state.pack), items = j.items || [];
       var total = j.total_cop || R.totals(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship }).total;
+      if (body.upsell && C.checkout.upsell && j.dry_run) total += C.checkout.upsell.price;   /* vista previa: el servidor aún no suma el upsell */
       if (!this.test && !j.dry_run) {
         var ids = items.map(function (i) { return i.catalog_product_id; }).filter(Boolean);
         var data = { value: total, currency: 'COP', content_type: 'product', content_ids: ids.length ? ids : ['enerplu-' + p.id], contents: items.map(function (i) { return { id: i.catalog_product_id || ('enerplu-' + p.id), quantity: 1, item_price: i.price }; }), num_items: items.length || 1, order_id: j.order_number };
@@ -1253,6 +1285,7 @@
         li = row(R.esc(p.name) + ' <small>' + p.tablets + ' tabletas</small>', R.money(p.price));
         p.gifts.forEach(function (g) { li += row(R.esc(g), 'Regalo'); });
         if (body.bump && C.checkout.bump) li += row(R.esc(C.checkout.bump.title), R.money(C.checkout.bump.price));
+        if (body.upsell && C.checkout.upsell) li += row(R.esc(C.checkout.upsell.title), R.money(C.checkout.upsell.price));
       }
       li += row('Envío' + (j.shipping_cop ? ' express' : ''), j.shipping_cop ? R.money(j.shipping_cop) : 'Gratis');
       if (!j.paid && j.online_discount) li += row('Descuento pago anticipado', '−' + R.money(j.online_discount));

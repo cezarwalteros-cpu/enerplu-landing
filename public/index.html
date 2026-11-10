@@ -1385,23 +1385,37 @@ display: none;
 .ep-root .ep-bump-main small { font-size: 12.5px; color: var(--ep-muted); line-height: 1.4; }
 .ep-root .ep-bump-tag { justify-self: start; padding: 2px 8px; border-radius: 999px; background: var(--ep-accent); color: var(--ep-on-accent); font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 /* upsell antes de confirmar (vista previa) */
-.ep-root .ep-ups { position: fixed; inset: 0; z-index: 9999; display: grid; align-items: end; background: rgba(0,0,0,.72); backdrop-filter: blur(3px); }
-.ep-root .ep-ups-sheet { width: 100%; max-width: 520px; margin: 0 auto; max-height: 92vh; overflow: auto; display: grid; gap: 12px; padding: 22px 18px calc(18px + env(safe-area-inset-bottom, 0px)); border-radius: 18px 18px 0 0; background: var(--ep-surface); border-top: 2px solid var(--ep-accent); text-align: center; }
-.ep-root .ep-ups-eyebrow { display: inline-flex; gap: 6px; align-items: center; justify-content: center; margin: 0; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ep-accent); }
+.ep-root .ep-ups { position: fixed; inset: 0; z-index: 9999; display: grid; align-items: center; padding: 12px; background: rgba(0,0,0,.78); backdrop-filter: blur(3px); overflow: auto; }
+.ep-root .ep-ups-sheet { width: 100%; max-width: 440px; margin: 0 auto; max-height: calc(100dvh - 24px); overflow: auto; display: grid; gap: 12px; padding: 20px; border-radius: 18px; background: #0D0E12; border: 1.5px solid #E5202C; text-align: center; color: #F5F5F7; }
+.ep-root .ep-ups-eyebrow { display: inline-flex; gap: 6px; align-items: center; justify-content: center; margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #FF3B30; }
 .ep-root .ep-ups-eyebrow .ep-ico { width: 15px; height: 15px; }
-.ep-root .ep-ups-title { margin: 0; font-size: 22px; line-height: 1.2; }
-.ep-root .ep-ups-img { width: 132px; height: 132px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: var(--ep-surface-2); }
-.ep-root .ep-ups-img img { width: 100%; height: 100%; object-fit: cover; }
-.ep-root .ep-ups-text { margin: 0; font-size: 14.5px; line-height: 1.45; color: var(--ep-muted); }
-.ep-root .ep-ups-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; text-align: left; font-size: 14px; }
+.ep-root .ep-ups-title { margin: 0; font-size: 23px; line-height: 1.15; font-weight: 800; text-transform: uppercase; color: #FFFFFF; }
+.ep-root .ep-ups-text { margin: 0; font-size: 14.5px; line-height: 1.4; color: #C4C8D3; }
+.ep-root .ep-ups-img { position: relative; display: grid; place-items: center; width: 100%; height: 190px; margin: 0 auto; }
+.ep-root .ep-ups-img::before { content: ""; position: absolute; width: 170px; height: 170px; border-radius: 50%; background: radial-gradient(circle, rgba(229,32,44,.42) 0%, rgba(140,40,200,.22) 45%, transparent 70%); filter: blur(10px); }
+.ep-root .ep-ups-img img { position: relative; height: auto; max-height: 190px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 14px 14px rgba(0,0,0,.6)); }
+.ep-root .ep-ups-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; text-align: left; font-size: 14px; font-weight: 500; color: #F5F5F7; }
 .ep-root .ep-ups-list li { display: flex; gap: 8px; align-items: flex-start; }
-.ep-root .ep-ups-list .ep-ico { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 2px; color: var(--ep-accent); stroke-width: 3; }
-.ep-root .ep-ups-price { margin: 0; display: flex; gap: 10px; align-items: baseline; justify-content: center; font-variant-numeric: tabular-nums; }
-.ep-root .ep-ups-price s { color: var(--ep-faint); font-size: 16px; }
-.ep-root .ep-ups-price b { color: var(--ep-accent); font-size: 30px; }
-.ep-root .ep-ups-price span { padding: 2px 8px; border-radius: 999px; border: 1px solid var(--ep-accent); color: var(--ep-accent); font-size: 12px; font-weight: 700; }
-.ep-root .ep-ups-no { min-height: 44px; background: none; border: 0; color: var(--ep-muted); font-size: 14px; text-decoration: underline; cursor: pointer; }
-@media (min-width: 640px) { .ep-root .ep-ups { align-items: center; } .ep-root .ep-ups-sheet { border-radius: 18px; border: 2px solid var(--ep-accent); } }
+.ep-root .ep-ups-list .ep-ico { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 2px; color: #E5202C; stroke-width: 3; }
+.ep-root .ep-ups-price { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }
+.ep-root .ep-ups-price s { color: #7E8494; font-size: 20px; }
+.ep-root .ep-ups-price b { color: #E5202C; font-size: 34px; font-weight: 800; line-height: 1; }
+.ep-root .ep-ups-price span { padding: 4px 10px; border-radius: 20px; border: 1px solid #E5202C; background: rgba(229,32,44,.08); color: #E5202C; font-size: 12.5px; font-weight: 700; }
+.ep-root .ep-ups-yes { width: 100%; min-height: 60px; display: grid; gap: 3px; justify-items: center; padding: 12px 16px; border: 0; border-radius: 13px; background: linear-gradient(180deg, #E5202C 0%, #B8141F 100%); color: #FFFFFF; cursor: pointer; box-shadow: 0 10px 24px rgba(229,32,44,.3); }
+.ep-root .ep-ups-yes b { font-size: 17.5px; font-weight: 700; }
+.ep-root .ep-ups-yes small { font-size: 12px; opacity: .85; }
+.ep-root .ep-ups-yes:active { transform: translateY(1px); }
+.ep-root .ep-ups-no { min-height: 44px; margin-top: 2px; background: none; border: 0; color: #9AA0A6; font-size: 13px; text-decoration: underline; cursor: pointer; }
+@media (min-width: 760px) {
+  .ep-root .ep-ups-sheet { padding: 32px; border-radius: 20px; }
+  .ep-root .ep-ups-sheet.has-img { max-width: 780px; grid-template-columns: 1fr 250px; column-gap: 28px; text-align: left; }
+  .ep-root .ep-ups-sheet.has-img > * { grid-column: 1; }
+  .ep-root .ep-ups-sheet.has-img .ep-ups-img { grid-column: 2; grid-row: 1 / span 7; height: 100%; min-height: 380px; align-self: center; }
+  .ep-root .ep-ups-sheet.has-img .ep-ups-img img { max-height: 420px; }
+  .ep-root .ep-ups-sheet.has-img .ep-ups-eyebrow { justify-content: flex-start; }
+  .ep-root .ep-ups-title { font-size: 30px; }
+  .ep-root .ep-ups-text { font-size: 15px; }
+}
 
 /* resumen */
 .ep-root .ep-sum { border-radius: 16px; padding: 16px 14px; background: var(--ep-bg-2); border: 1px solid var(--ep-line); display: grid; gap: 10px; }
@@ -6142,14 +6156,15 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     upsellOpen: function (up) {
       var self = this, root = qs('.ep-root') || document.body, d = document.createElement('div');
       d.className = 'ep-ups'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true'); d.setAttribute('aria-label', up.title);
-      d.innerHTML = '<div class="ep-ups-sheet">' +
-        '<p class="ep-ups-eyebrow">' + R.ico('timer') + ' ' + R.esc(up.eyebrow || 'Antes de confirmar tu pedido') + '</p>' +
+      var HG = '<svg class="ep-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12M6 22h12M7 2v4.5a5 5 0 0 0 2 4L12 12l3-1.5a5 5 0 0 0 2-4V2M7 22v-4.5a5 5 0 0 1 2-4L12 12l3 1.5a5 5 0 0 1 2 4V22"/></svg>';
+      d.innerHTML = '<div class="ep-ups-sheet' + (up.image ? ' has-img' : '') + '">' +
+        '<p class="ep-ups-eyebrow">' + HG + ' ' + R.esc(up.eyebrow || 'Espera, antes de confirmar') + '</p>' +
         '<h3 class="ep-ups-title">' + R.esc(up.headline || up.title) + '</h3>' +
-        (up.image ? '<span class="ep-ups-img"><img src="' + R.esc(R.cdn(C, up.image, 400)) + '" alt="' + R.esc(up.title) + '" decoding="async"></span>' : '') +
         '<p class="ep-ups-text">' + R.esc(up.text || '') + '</p>' +
+        (up.image ? '<span class="ep-ups-img"><img src="' + R.esc(up.image) + '" alt="' + R.esc(up.title) + '" decoding="async"></span>' : '') +
         '<ul class="ep-ups-list">' + (up.bullets || []).map(function (b) { return '<li>' + R.ico('check') + '<span>' + R.esc(b) + '</span></li>'; }).join('') + '</ul>' +
         '<p class="ep-ups-price"><s>' + R.money(up.compare) + '</s><b>' + R.money(up.price) + '</b><span>Ahorras ' + R.money(up.compare - up.price) + '</span></p>' +
-        '<button type="button" class="ep-cta" data-ep-ups="yes"><span class="ep-cta-label"><b>Sí, agregarlo por ' + R.money(up.price) + '</b><small>Llega en el mismo paquete · pagas al recibir</small></span></button>' +
+        '<button type="button" class="ep-ups-yes" data-ep-ups="yes"><b>Sí, agregarlo por ' + R.money(up.price) + '</b><small>Llega en el mismo paquete · pagas al recibir</small></button>' +
         '<button type="button" class="ep-ups-no" data-ep-ups="no">No, gracias. Confirmar sin el spray</button></div>';
       root.appendChild(d);
       Funnel.send('upsell_view', { item: up.key || 'retardante' });

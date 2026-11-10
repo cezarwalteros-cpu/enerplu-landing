@@ -1235,14 +1235,15 @@
     upsellOpen: function (up) {
       var self = this, root = qs('.ep-root') || document.body, d = document.createElement('div');
       d.className = 'ep-ups'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true'); d.setAttribute('aria-label', up.title);
-      d.innerHTML = '<div class="ep-ups-sheet">' +
-        '<p class="ep-ups-eyebrow">' + R.ico('timer') + ' ' + R.esc(up.eyebrow || 'Antes de confirmar tu pedido') + '</p>' +
+      var HG = '<svg class="ep-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12M6 22h12M7 2v4.5a5 5 0 0 0 2 4L12 12l3-1.5a5 5 0 0 0 2-4V2M7 22v-4.5a5 5 0 0 1 2-4L12 12l3 1.5a5 5 0 0 1 2 4V22"/></svg>';
+      d.innerHTML = '<div class="ep-ups-sheet' + (up.image ? ' has-img' : '') + '">' +
+        '<p class="ep-ups-eyebrow">' + HG + ' ' + R.esc(up.eyebrow || 'Espera, antes de confirmar') + '</p>' +
         '<h3 class="ep-ups-title">' + R.esc(up.headline || up.title) + '</h3>' +
-        (up.image ? '<span class="ep-ups-img"><img src="' + R.esc(R.cdn(C, up.image, 400)) + '" alt="' + R.esc(up.title) + '" decoding="async"></span>' : '') +
         '<p class="ep-ups-text">' + R.esc(up.text || '') + '</p>' +
+        (up.image ? '<span class="ep-ups-img"><img src="' + R.esc(up.image) + '" alt="' + R.esc(up.title) + '" decoding="async"></span>' : '') +
         '<ul class="ep-ups-list">' + (up.bullets || []).map(function (b) { return '<li>' + R.ico('check') + '<span>' + R.esc(b) + '</span></li>'; }).join('') + '</ul>' +
         '<p class="ep-ups-price"><s>' + R.money(up.compare) + '</s><b>' + R.money(up.price) + '</b><span>Ahorras ' + R.money(up.compare - up.price) + '</span></p>' +
-        '<button type="button" class="ep-cta" data-ep-ups="yes"><span class="ep-cta-label"><b>Sí, agregarlo por ' + R.money(up.price) + '</b><small>Llega en el mismo paquete · pagas al recibir</small></span></button>' +
+        '<button type="button" class="ep-ups-yes" data-ep-ups="yes"><b>Sí, agregarlo por ' + R.money(up.price) + '</b><small>Llega en el mismo paquete · pagas al recibir</small></button>' +
         '<button type="button" class="ep-ups-no" data-ep-ups="no">No, gracias. Confirmar sin el spray</button></div>';
       root.appendChild(d);
       Funnel.send('upsell_view', { item: up.key || 'retardante' });

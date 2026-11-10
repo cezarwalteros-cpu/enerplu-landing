@@ -1,11 +1,11 @@
 /* Popup de 5% en la primera compra (cesar 2026-11-10: "quiero hacer esto mismo en ENERPLU", igual que Mg Collagen).
    Prueba A/B "popup5", independiente de la prueba de página E-04 (sale por igual en "/" y en "/b"):
    A = "No te vayas": aparece al intentar salir (botón atrás, volver a la pestaña, cursor que sale por arriba). Cupón con reloj de 15 min.
-   B = "Primera compra": aparece a los 20 s y deja una barra arriba.
+   B = "Primera compra": aparece a los 8 s y deja una barra arriba.
    El descuento lo valida y lo aplica el CRM (discount_codes, checkout-native action "coupon"); aquí solo se muestra.
    Solo se ve en el resumen del formulario; se suma al descuento de pago anticipado. ?pop=A|B fuerza, ?pop=0 lo apaga. */
 (function () {
-  var CODE = 'ENERPLU5', PCT = 5, MIN_A = 15, SEG_B = 20, IMG = 'https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_800/v1793135585/enerplu-galeria-1-producto_ynanai.webp';
+  var CODE = 'ENERPLU5', PCT = 5, MIN_A = 15, SEG_B = 8, IMG = 'https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_800/v1793135585/enerplu-galeria-1-producto_ynanai.webp';
   var I = {
     x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
     clk: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
@@ -119,26 +119,29 @@
       var arm = function () { if (armed) return; armed = true; ready = true; preload(); push(); };
       ['pointerdown', 'touchend', 'keydown'].forEach(function (ev) { addEventListener(ev, function () { setTimeout(push, 0); }, { passive: true }); });
       setTimeout(arm, 15000);
-      var maxY = 0, lastY = 0, lastT = 0, upFrom = 0;
+      var t0 = Date.now(), maxY = 0, lastY = 0, lastT = 0, upFrom = -1;
       addEventListener('scroll', function () {
         var d = document.documentElement, y = scrollY, now = Date.now();
         if ((y + innerHeight) / d.scrollHeight > 0.3) arm();
-        /* 1b) Celular: venía leyendo abajo y sube rápido hacia el inicio (gesto típico antes de salir) */
+        /* 1b) Celular: venía leyendo abajo y sube rápido (gesto típico antes de salir). Mismas medidas que Mg:
+               racha hacia arriba de más del 60% del alto de pantalla, habiendo bajado más de 1,2 pantallas y con 6 s en la página */
         if (y > maxY) maxY = y;
-        if (y < lastY) { if (!upFrom || now - lastT > 400) upFrom = lastY; if (armed && maxY > innerHeight * 1.5 && upFrom - y > innerHeight * 1.2 && !typing()) show('sube'); }
-        else upFrom = 0;
+        if (y < lastY) {
+          if (upFrom < 0 || now - lastT > 300) upFrom = lastY;
+          if (now - t0 > 6000 && maxY > innerHeight * 1.2 && upFrom - y > innerHeight * 0.6 && !typing()) show('sube');
+        } else upFrom = -1;
         lastY = y; lastT = now;
       }, { passive: true });
-      /* 2) Se fue a otra app o pestaña y volvió (5 s o más por fuera) */
+      /* 2) Se fue a otra app o pestaña y volvió (2 s o más por fuera) */
       var away = 0;
       document.addEventListener('visibilitychange', function () {
         if (document.hidden) { away = Date.now(); return; }
-        if (armed && away && Date.now() - away >= 5000 && !typing()) show('vuelve');
+        if (away && Date.now() - away >= 2000 && !typing()) show('vuelve');
       });
       /* 3) Computador: el cursor sale por arriba */
       document.addEventListener('mouseout', function (e) { if (!e.relatedTarget && e.clientY <= 0 && !typing()) show('cursor'); });
     } else {
-      setTimeout(preload, (SEG_B - 6) * 1000);
+      setTimeout(preload, 2000);
       setTimeout(function go() { if (typing()) { setTimeout(go, 4000); return; } show('tiempo'); }, SEG_B * 1000);
     }
   }

@@ -600,6 +600,25 @@
 .ep-root .ep-bump-price b { color: var(--ep-accent); font-size: 16px; }
 .ep-root .ep-bump-price s { color: var(--ep-faint); font-size: 13px; }
 .ep-root .ep-bump-main small { font-size: 12.5px; color: var(--ep-muted); line-height: 1.4; }
+.ep-root .ep-bump-tag { justify-self: start; padding: 2px 8px; border-radius: 999px; background: var(--ep-accent); color: var(--ep-on-accent); font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+/* upsell antes de confirmar (vista previa) */
+.ep-root .ep-ups { position: fixed; inset: 0; z-index: 9999; display: grid; align-items: end; background: rgba(0,0,0,.72); backdrop-filter: blur(3px); }
+.ep-root .ep-ups-sheet { width: 100%; max-width: 520px; margin: 0 auto; max-height: 92vh; overflow: auto; display: grid; gap: 12px; padding: 22px 18px calc(18px + env(safe-area-inset-bottom, 0px)); border-radius: 18px 18px 0 0; background: var(--ep-surface); border-top: 2px solid var(--ep-accent); text-align: center; }
+.ep-root .ep-ups-eyebrow { display: inline-flex; gap: 6px; align-items: center; justify-content: center; margin: 0; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ep-accent); }
+.ep-root .ep-ups-eyebrow .ep-ico { width: 15px; height: 15px; }
+.ep-root .ep-ups-title { margin: 0; font-size: 22px; line-height: 1.2; }
+.ep-root .ep-ups-img { width: 132px; height: 132px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: var(--ep-surface-2); }
+.ep-root .ep-ups-img img { width: 100%; height: 100%; object-fit: cover; }
+.ep-root .ep-ups-text { margin: 0; font-size: 14.5px; line-height: 1.45; color: var(--ep-muted); }
+.ep-root .ep-ups-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; text-align: left; font-size: 14px; }
+.ep-root .ep-ups-list li { display: flex; gap: 8px; align-items: flex-start; }
+.ep-root .ep-ups-list .ep-ico { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 2px; color: var(--ep-accent); stroke-width: 3; }
+.ep-root .ep-ups-price { margin: 0; display: flex; gap: 10px; align-items: baseline; justify-content: center; font-variant-numeric: tabular-nums; }
+.ep-root .ep-ups-price s { color: var(--ep-faint); font-size: 16px; }
+.ep-root .ep-ups-price b { color: var(--ep-accent); font-size: 30px; }
+.ep-root .ep-ups-price span { padding: 2px 8px; border-radius: 999px; border: 1px solid var(--ep-accent); color: var(--ep-accent); font-size: 12px; font-weight: 700; }
+.ep-root .ep-ups-no { min-height: 44px; background: none; border: 0; color: var(--ep-muted); font-size: 14px; text-decoration: underline; cursor: pointer; }
+@media (min-width: 640px) { .ep-root .ep-ups { align-items: center; } .ep-root .ep-ups-sheet { border-radius: 18px; border: 2px solid var(--ep-accent); } }
 
 /* resumen */
 .ep-root .ep-sum { border-radius: 16px; padding: 16px 14px; background: var(--ep-bg-2); border: 1px solid var(--ep-line); display: grid; gap: 10px; }

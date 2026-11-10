@@ -290,6 +290,19 @@ if POPUP5 and AB_E04:
         _h = (OUT / _src).read_text().replace(AB_HEAD, '')
         _h = must(_h, '<head>', "<head>\n<meta name=\"robots\" content=\"noindex\">\n<script>try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=%s')}catch(e){}</script>" % _v)
         (OUT / ('prueba-popup-%s.html' % _n)).write_text(_h)
+# Vista previa del upsell del spray (solo Plan Básico) + bump de estrechante con texto nuevo. NO está en vivo: solo esta página lo activa.
+UPSELL_PREVIEW = {
+    'upsell': {'key': 'retardante', 'only': 'inicial', 'price': 24900, 'compare': 49900, 'title': 'Spray Retardante 30 ml',
+               'eyebrow': 'Espera, antes de confirmar', 'headline': 'Tu plan no trae el Spray Retardante. Llévalo hoy a mitad de precio',
+               'text': 'Es el mismo spray que viene en los planes Dominio y Élite. ENERPLU te da la firmeza, el spray te ayuda a aguantar más.',
+               'bullets': ['Llega en el mismo paquete discreto', 'Sin costo de envío adicional', 'Este precio solo aparece en este pedido']},
+    'bump': {'tag': 'Solo en este pedido', 'title': 'Estrechante Premium para ella',
+             'text': 'Gel íntimo que le da una sensación más ajustada: más roce y más placer para los dos. Hoy $19.900, después $29.900. Llega en el mismo paquete discreto.'},
+}
+if (OUT / 'b.html').exists():
+    _h = (OUT / 'b.html').read_text().replace(AB_HEAD, '')
+    _h = must(_h, '<head>', "<head>\n<meta name=\"robots\" content=\"noindex\">\n<script>window.EP_PREVIEW_UPSELL=%s;try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=N')}catch(e){}</script>" % json.dumps(UPSELL_PREVIEW, ensure_ascii=False))
+    (OUT / 'prueba-upsell-spray.html').write_text(_h)
 (OUT / 'garantia.html').write_text((ROOT / 'fuente' / 'garantia.html').read_text())
 (OUT / 'guias' / GUIAS_TOKEN).mkdir(parents=True, exist_ok=True)   # PDFs de regalo: solo enlace secreto, sin Drive (cesar 2026-11-08)
 (OUT / 'guias' / GUIAS_TOKEN / 'index.html').write_text((ROOT / 'fuente' / 'guias.html').read_text())

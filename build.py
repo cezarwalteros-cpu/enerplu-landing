@@ -239,7 +239,7 @@ for a, b in CAMBIOS_TODAS:
 # "Faltan N datos", pagar ahora destacado (-$12.000) y sello Bold. Se arma con tools/maqueta_b.py --real.
 # Asignación: localStorage ep_e04 (50/50, se queda fija por navegador); ?ab4=A|B fuerza la variante.
 # Medición: funnel_events ab_assign {exp:'E04', v} por sesión + checkout_attempts.session_id. AB_E04 = False apaga la prueba (todos ven A).
-AB_E04 = True
+AB_E04 = False   # 10-nov 4:18 pm: cesar apagó la página B (confusa de diligenciar); todos ven A
 AB_HEAD = """<script>
 (function(){try{
   var p=location.pathname; if(p!=='/'&&p!=='/index'&&p!=='/index.html') return;
@@ -300,8 +300,8 @@ UPSELL_PREVIEW = {
     'bump': {'title': 'Gel Estrechante Virgyflower (30 ml)', 'contain': True,'image': 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1794344899/ESTRECHANTE_tg6at5.webp',
              'text': 'Efecto astringente y lubricante inmediato: mayor fricción y sensación más intensa para ambos. Fórmula suave en frasco de 30 ml. Se despacha en el mismo paquete 100% discreto.'},
 }
-if (OUT / 'b.html').exists():
-    _h = (OUT / 'b.html').read_text().replace(AB_HEAD, '')
+if True:
+    _h = (OUT / ('b.html' if (OUT / 'b.html').exists() else 'index.html')).read_text().replace(AB_HEAD, '')
     _h = must(_h, '<head>', "<head>\n<meta name=\"robots\" content=\"noindex\">\n<script>window.EP_PREVIEW_UPSELL=%s;try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=N')}catch(e){}</script>" % json.dumps(UPSELL_PREVIEW, ensure_ascii=False))
     (OUT / 'prueba-upsell-spray.html').write_text(_h)
 (OUT / 'garantia.html').write_text((ROOT / 'fuente' / 'garantia.html').read_text())
@@ -360,6 +360,8 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
     "buildCommand": "",
     "outputDirectory": "public",
     "cleanUrls": True,
+    # con la prueba E-04 apagada, quien llegue a /b vuelve a la página principal (conserva los parámetros del anuncio)
+    "redirects": ([] if AB_E04 else [{"source": "/b", "destination": "/", "permanent": False}]),
     "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}]},
                 {"source": "/guias/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}]}]
 }, indent=2))

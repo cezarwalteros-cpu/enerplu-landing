@@ -1706,92 +1706,6 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
   --ep-text: #141414; --ep-muted: #55504B; --ep-faint: #8B857F; --ep-ok: #15803D; --ep-err: #B42318; --ep-err-bg: #FEF3F2; --ep-shadow: rgba(20, 20, 20, .10); color: #141414; }
 .ep-pop .ep-root .eph-order .ep-sum-save { color: #15803D; }
 
-/* HERO v2 (estilo ficha de producto): galería + título + calificación + beneficios + selector de planes + confianza.
-   Todo va dentro de #ep-hero-clean.hv para no chocar con los estilos de GemPages ni del formulario. */
-#ep-hero-clean.hv{--hv-bg:#000;--hv-card:#111;--hv-line:#2a2a2a;--hv-mute:#a3a3a3;--hv-red:#ea0000;--hv-gold:#e8b931;--hv-green:#22c55e;
-  background:var(--hv-bg);color:#fff;padding:14px 0 26px;margin:0;width:100%;box-sizing:border-box;font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
-#ep-hero-clean.hv *{box-sizing:border-box}
-#ep-hero-clean .hv-in{max-width:1100px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "gal" "info";gap:12px}
-#ep-hero-clean .hv-head{grid-area:head;text-align:center}
-#ep-hero-clean .hv-gal{grid-area:gal}
-#ep-hero-clean .hv-info{grid-area:info}
-
-/* galería */
-#ep-hero-clean .hv-gal{position:relative;min-width:0}
-#ep-hero-clean .hv-main{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:16px;background:#0b0b0b;aspect-ratio:1/1}
-#ep-hero-clean .hv-main::-webkit-scrollbar{display:none}
-#ep-hero-clean .hv-main figure{flex:0 0 100%;margin:0;scroll-snap-align:center;aspect-ratio:1/1}
-#ep-hero-clean .hv-main img{width:100%;height:100%;object-fit:cover;display:block}
-#ep-hero-clean .hv-badges{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;gap:6px;pointer-events:none}
-#ep-hero-clean .hv-pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;letter-spacing:.02em;padding:6px 10px;border-radius:999px;line-height:1}
-#ep-hero-clean .hv-pill--gold{background:var(--hv-gold);color:#111}
-#ep-hero-clean .hv-pill--red{background:var(--hv-red);color:#fff}
-#ep-hero-clean .hv-thumbs{display:flex;gap:8px;margin-top:8px;overflow-x:auto;scrollbar-width:none}
-#ep-hero-clean .hv-thumbs::-webkit-scrollbar{display:none}
-#ep-hero-clean .hv-thumbs button{flex:0 0 54px;height:54px;padding:0;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#1a1a1a;cursor:pointer;opacity:.6}
-#ep-hero-clean .hv-thumbs button.is-on{border-color:var(--hv-gold);opacity:1}
-#ep-hero-clean .hv-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
-
-/* texto */
-#ep-hero-clean .hv-brand{margin:2px 0 0;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--hv-gold)}
-#ep-hero-clean .hv-title{margin:4px 0 0;font-family:Archivo,Inter,sans-serif;font-size:29px;line-height:1.05;font-weight:800;letter-spacing:-.01em;text-transform:uppercase;color:#fff}
-#ep-hero-clean .hv-title span{color:var(--hv-red)}
-#ep-hero-clean .hv-sub{margin:2px 0 0;font-size:14.5px;line-height:1.45;color:#d4d4d4}
-#ep-hero-clean .hv-sub b{color:#fff}
-#ep-hero-clean .hv-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-size:13px;color:#e5e5e5}
-#ep-hero-clean a.hv-rating{display:inline-flex;align-items:center;gap:6px;color:inherit;text-decoration:none}
-#ep-hero-clean .hv-stars{color:var(--hv-gold);letter-spacing:1px;font-size:15px}
-#ep-hero-clean .hv-rating u{color:var(--hv-mute);text-decoration:underline}
-#ep-hero-clean .hv-meta i{width:1px;height:14px;background:#444}
-#ep-hero-clean .hv-ship{display:inline-flex;align-items:center;gap:5px;font-weight:700}
-
-/* beneficios */
-#ep-hero-clean .hv-bens{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 2px;padding:0;list-style:none}
-#ep-hero-clean .hv-bens li{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;font-size:11.5px;line-height:1.2;font-weight:600;color:#e5e5e5}
-#ep-hero-clean .hv-bens span{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#2b0606,#140303);border:1.5px solid #4a0d0d;color:#ff3b3b}
-#ep-hero-clean .hv-bens svg{width:24px;height:24px}
-
-/* planes */
-#ep-hero-clean .hv-plans-t{margin:16px 0 8px;font-size:16px;font-weight:800;color:#fff}
-#ep-hero-clean .hv-plans{display:grid;gap:10px;border:0;padding:0;margin:0}
-#ep-hero-clean .hv-plan{position:relative;display:grid;grid-template-columns:22px 58px minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px;border:1.5px solid var(--hv-line);border-radius:14px;background:var(--hv-card);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s,background .15s}
-#ep-hero-clean .hv-plan input{position:absolute;opacity:0;pointer-events:none}
-#ep-hero-clean .hv-dot{width:20px;height:20px;border-radius:50%;border:2px solid #555;display:grid;place-items:center}
-#ep-hero-clean .hv-dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--hv-gold);transform:scale(0);transition:transform .15s}
-#ep-hero-clean .hv-plan.is-on,#ep-hero-clean .hv-plan:has(input:checked){border-color:var(--hv-gold);background:linear-gradient(160deg,rgba(232,185,49,.12),rgba(232,185,49,.03)),#121212}
-#ep-hero-clean .hv-plan.is-on .hv-dot,#ep-hero-clean .hv-plan:has(input:checked) .hv-dot{border-color:var(--hv-gold)}
-#ep-hero-clean .hv-plan.is-on .hv-dot::after,#ep-hero-clean .hv-plan:has(input:checked) .hv-dot::after{transform:scale(1)}
-#ep-hero-clean .hv-plan:has(input:focus-visible){outline:2px solid var(--hv-gold);outline-offset:2px}
-#ep-hero-clean .hv-plan--rec{margin-top:8px;padding-top:16px}
-#ep-hero-clean .hv-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--hv-gold);color:#111;font-size:10.5px;font-weight:900;letter-spacing:.06em;padding:4px 10px;border-radius:999px;white-space:nowrap;text-transform:uppercase}
-#ep-hero-clean .hv-pimg{width:58px;height:58px;border-radius:10px;overflow:hidden;background:#fff}
-#ep-hero-clean .hv-pimg img{width:100%;height:100%;object-fit:cover;display:block}
-#ep-hero-clean .hv-pname{display:block;font-size:14.5px;font-weight:800;color:#fff;line-height:1.2}
-#ep-hero-clean .hv-pqty{display:block;font-size:12.5px;color:var(--hv-mute);margin-top:2px}
-#ep-hero-clean .hv-pinc{display:block;font-size:12.5px;font-weight:700;color:var(--hv-green);margin-top:3px}
-#ep-hero-clean .hv-pinc--best{color:var(--hv-gold)}
-#ep-hero-clean .hv-pr{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-#ep-hero-clean .hv-price{font-size:17px;font-weight:900;color:#fff;letter-spacing:-.01em}
-#ep-hero-clean .hv-was{font-size:12px;color:#8a8a8a;text-decoration:line-through}
-#ep-hero-clean .hv-off{font-size:11px;font-weight:900;color:#fff;background:var(--hv-red);border-radius:6px;padding:3px 6px}
-#ep-hero-clean .hv-unit{font-size:11px;color:var(--hv-mute)}
-
-/* botón + confianza */
-#ep-hero-clean a.hv-cta{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;margin-top:14px;padding:16px 14px;border-radius:14px;background:var(--hv-red);color:#fff;text-decoration:none;font-weight:900;font-size:16.5px;letter-spacing:.01em;text-transform:uppercase;box-shadow:0 10px 28px rgba(234,0,0,.35);text-align:center;line-height:1.15}
-#ep-hero-clean a.hv-cta small{display:block;font-size:11.5px;font-weight:600;text-transform:none;opacity:.9;margin-top:3px;letter-spacing:0}
-#ep-hero-clean .hv-trust{display:grid;grid-template-columns:repeat(3,1fr);margin-top:12px;border:1px solid #222;border-radius:12px;background:#0b0b0b}
-#ep-hero-clean .hv-trust div{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;padding:10px 6px;font-size:11px;line-height:1.2;color:#d4d4d4}
-#ep-hero-clean .hv-trust div+div{border-left:1px solid #222}
-#ep-hero-clean .hv-trust b{display:block;color:#fff;font-size:12px}
-#ep-hero-clean .hv-trust svg{flex:0 0 22px;width:22px;height:22px;color:var(--hv-gold)}
-
-@media (min-width:900px){
-  #ep-hero-clean.hv{padding:32px 0 40px}
-  #ep-hero-clean .hv-in{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"gal head" "gal info";grid-template-rows:auto 1fr;gap:12px 36px;align-items:start}
-  #ep-hero-clean .hv-head{text-align:left}
-  #ep-hero-clean .hv-gal{position:sticky;top:16px}
-  #ep-hero-clean .hv-title{font-size:40px}
-}
 
 </style>
 <script>
@@ -1856,55 +1770,6 @@ html.epp-lock{overflow:hidden}
 .ep-sum-list li.is-cup span:last-child{color:#1a8f4c;font-weight:700}
 .ep-sum-list li.is-cup small{letter-spacing:.06em}
 @media (prefers-reduced-motion:reduce){.epp,.epp-card{transition:none}}
-</style>
-<style>.epi{display:inline-block;width:1.05em;height:1.05em;vertical-align:-.17em;margin-right:.3em;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;color:#d4af37}
-.epi-truck{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%207h11v9H3z%22/%3E%3Cpath%20d%3D%22M14%2010h4l3%203v3h-7%22/%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2218%22%20r%3D%221.6%22/%3E%3Ccircle%20cx%3D%2217%22%20cy%3D%2218%22%20r%3D%221.6%22/%3E%3C/svg%3E")}
-.epi-cash{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%222%22%20y%3D%226%22%20width%3D%2220%22%20height%3D%2212%22%20rx%3D%222%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%222.5%22/%3E%3Cpath%20d%3D%22M6%2012h.01M18%2012h.01%22/%3E%3C/svg%3E")}
-.epi-flame{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8.5%2014.5A2.5%202.5%200%200%200%2011%2012c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05%202-6%20.5%202.5%202%204.9%204%206.5%202%201.6%203%203.5%203%205.5a7%207%200%201%201-14%200c0-1.15.43-2.29%201-3a2.5%202.5%200%200%200%202.5%202.5z%22/%3E%3C/svg%3E")}
-.epi-gift{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%228%22%20width%3D%2218%22%20height%3D%224%22%20rx%3D%221%22/%3E%3Cpath%20d%3D%22M12%208v13%22/%3E%3Cpath%20d%3D%22M19%2012v7a2%202%200%200%201-2%202H7a2%202%200%200%201-2-2v-7%22/%3E%3Cpath%20d%3D%22M7.5%208a2.5%202.5%200%200%201%200-5C10%203%2012%208%2012%208s2-5%204.5-5a2.5%202.5%200%200%201%200%205%22/%3E%3C/svg%3E")}
-.epi-box{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M21%208%2012%203%203%208v8l9%205%209-5z%22/%3E%3Cpath%20d%3D%22m3%208%209%205%209-5%22/%3E%3Cpath%20d%3D%22M12%2013v8%22/%3E%3C/svg%3E")}
-.epi-flask{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M9%203h6%22/%3E%3Cpath%20d%3D%22M10%203v6L4.5%2019A1.5%201.5%200%200%200%205.8%2021h12.4a1.5%201.5%200%200%200%201.3-2L14%209V3%22/%3E%3Cpath%20d%3D%22M7%2015h10%22/%3E%3C/svg%3E")}
-.epi-alert{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M10.3%203.9%201.8%2018a2%202%200%200%200%201.7%203h17a2%202%200%200%200%201.7-3L13.7%203.9a2%202%200%200%200-3.4%200z%22/%3E%3Cpath%20d%3D%22M12%209v4%22/%3E%3Cpath%20d%3D%22M12%2017h.01%22/%3E%3C/svg%3E")}
-.epi-zap{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M13%202%204%2014h7l-1%208%209-12h-7z%22/%3E%3C/svg%3E")}
-.epi-chat{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M21%2011.5a8.4%208.4%200%200%201-12.4%207.4L3%2021l2.1-5.6A8.4%208.4%200%201%201%2021%2011.5z%22/%3E%3C/svg%3E")}
-.epi-shield{--m:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2022s8-4%208-10V5l-8-3-8%203v7c0%206%208%2010%208%2010z%22/%3E%3Cpath%20d%3D%22m9%2012%202%202%204-4%22/%3E%3C/svg%3E")}
-.bk-row{display:flex;justify-content:center;gap:14px;perspective:700px;margin:6px 0 10px}
-.bk{position:relative;display:block;width:78px;aspect-ratio:3/4.2;transform:rotateY(-22deg);transform-style:preserve-3d;border-radius:2px 5px 5px 2px;box-shadow:10px 12px 18px rgba(0,0,0,.55),2px 2px 0 #c9c9c9,4px 4px 0 #9a9a9a}
-.bk img{width:100%;height:100%;object-fit:cover;display:block;border-radius:2px 5px 5px 2px}
-.bk:after{content:"";position:absolute;inset:0;border-radius:2px 5px 5px 2px;background:linear-gradient(90deg,rgba(0,0,0,.45) 0,rgba(255,255,255,.25) 4%,rgba(0,0,0,.15) 7%,transparent 12%,transparent 80%,rgba(255,255,255,.12));pointer-events:none}
-.bk-hero .bk{width:84px}
-.hv-gift{margin-top:14px;border:1px solid #3a3320;background:linear-gradient(160deg,rgba(212,175,55,.10),rgba(212,175,55,.02)),#0b0b0b;border-radius:14px;padding:14px 12px 12px;text-align:center}
-.hv-gift p{margin:6px 0 0;font-size:13px;line-height:1.4;color:#d4d4d4}.hv-gift b{color:#d4af37}
-.ep-root .eph-order .ep-of-n,.ep-of-n{display:inline-flex;align-items:center;justify-content:center;flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#d4af37;color:#111;font-size:14px;font-weight:900;margin-right:2px}
-.ep-hc-sticky-txt small b{color:#fff}
-
-.bk-photo{display:block;width:100%;height:auto;border-radius:12px;margin:0 auto 8px}
-.hv-gift{padding:0 0 12px;overflow:hidden}.hv-gift p{padding:0 12px}
-.eph-bonus--libros .bk-photo{max-width:340px}
-.tp-card{display:flex;align-items:center;gap:12px;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:14px;padding:12px;margin:0 0 14px;scroll-margin-top:12px}
-.tp-img{width:56px;height:56px;border-radius:10px;background:#fff center/cover no-repeat;flex:0 0 56px}
-.tp-txt{flex:1;min-width:0;color:#fff;line-height:1.25}.tp-txt small{display:block;color:#a3a3a3;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
-.tp-txt b{display:block;font-size:15px}.tp-txt span{font-size:12px;color:#a3a3a3}
-.tp-pr{text-align:right}.tp-pr b{display:block;color:#fff;font-size:17px;font-weight:900}.tp-pr a{color:#d4af37;font-size:12px;font-weight:700;text-decoration:underline}
-.ep-root .eph-order label.ep-pay-opt:has(input[value="bold"]){position:relative;border:2px solid #22c55e!important;background:linear-gradient(160deg,rgba(34,197,94,.14),rgba(34,197,94,.03)),#0d0d0d!important;margin-top:16px;padding-top:20px}
-.ep-root .eph-order label.ep-pay-opt:has(input[value="bold"])::before{content:"AHORRA $12.000 PAGANDO AHORA";position:absolute;top:-12px;left:12px;background:#22c55e;color:#04140a;font:900 11px/1 Inter,system-ui,sans-serif;letter-spacing:.05em;padding:6px 10px;border-radius:999px}
-.ep-root .eph-order label.ep-pay-opt:has(input[value="bold"]) .ep-pay-logos{display:none}
-.ep-root .eph-order .ep-pay-save{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;background:#22c55e;color:#04140a!important;border-radius:10px;padding:8px 10px;font-size:11px!important;font-weight:800;line-height:1.1!important;text-transform:uppercase}
-.ep-root .eph-order .ep-pay-save{font-size:0!important}
-.ep-root .eph-order .ep-pay-save::after{content:"−$12.000";font-size:18px;font-weight:900;letter-spacing:-.01em}
-.ep-root .eph-order .ep-pay-save::before{content:"Ahorras";font-size:10px;font-weight:800}
-.bold-kit{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:12px;color:#8a8a8a;font-size:11px}
-.bold-kit #bold-kit{max-width:320px;width:100%;display:flex;justify-content:center}
-
-#ep-offer-widget{display:none!important}
-.ep-root input.mb-miss{border-color:#ef4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.35)!important}
-.tp-pick{display:grid;gap:8px;margin:-6px 0 14px;padding:12px;background:#0d0d0d;border:1px solid #d4af37;border-radius:14px}
-.tp-pick small{color:#a3a3a3;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
-.tp-pick button{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px;padding:10px 12px;border-radius:10px;border:1px solid #2a2a2a;background:#151515;color:#fff;text-align:left;cursor:pointer;font:inherit}
-.tp-pick button.is-on{border-color:#d4af37;background:#1c1806}
-.tp-pick button b{display:block;font-size:15px}.tp-pick button i{font-style:normal;font-size:12px;color:#a3a3a3}.tp-pick button em{font-style:normal;font-weight:900;font-size:16px;white-space:nowrap}
-.ep-hc-sticky.mb-hide{transform:translateY(110%)!important}
-.mqb{background:#d4af37;color:#111;font:700 11px/1.3 Inter,system-ui,sans-serif;text-align:center;padding:5px 8px;letter-spacing:.02em}
 </style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
@@ -2057,7 +1922,7 @@ html.epp-lock{overflow:hidden}
 <div class="epb" role="region" aria-label="Oferta">
   <p class="epb-sr">Oferta hasta 55 % de descuento. Pagas al recibir. Envío gratis.</p>
   <div class="epb-track" aria-hidden="true">
-    <span class="epb-item"><i><i class="epi epi-flame"></i></i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-cash"></i>Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-truck"></i>Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i><i class="epi epi-flame"></i></i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-cash"></i>Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-truck"></i>Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i><i class="epi epi-flame"></i></i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-cash"></i>Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-truck"></i>Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-dup" style="display:contents"><span class="epb-item"><i><i class="epi epi-flame"></i></i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-cash"></i>Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-truck"></i>Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i><i class="epi epi-flame"></i></i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-cash"></i>Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-truck"></i>Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i><i class="epi epi-flame"></i></i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-cash"></i>Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i class="epi epi-truck"></i>Envío gratis</span><span class="epb-item epb-dot">★</span></span>
+    <span class="epb-item"><i>🔥</i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item">💵 Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item">🚚 Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i>🔥</i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item">💵 Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item">🚚 Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i>🔥</i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item">💵 Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item">🚚 Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-dup" style="display:contents"><span class="epb-item"><i>🔥</i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item">💵 Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item">🚚 Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i>🔥</i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item">💵 Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item">🚚 Envío gratis</span><span class="epb-item epb-dot">★</span><span class="epb-item"><i>🔥</i>Oferta hasta <b>55 % de descuento</b></span><span class="epb-item epb-dot">★</span><span class="epb-item">💵 Pagas al recibir</span><span class="epb-item epb-dot">★</span><span class="epb-item">🚚 Envío gratis</span><span class="epb-item epb-dot">★</span></span>
   </div>
 </div>
 <style>
@@ -2097,51 +1962,40 @@ html.epp-lock{overflow:hidden}
     <div data-id="gbBPOLv_0H" style="--bs:none;--bw:1px 1px 1px 1px;--bc:var(--g-c-line-3, line-3);--d:block;--d-mobile:block;--d-tablet:block;--op:100%;--pageType:GP_PRODUCT;--bblr:0px;--bbrr:0px;--btlr:0px;--btrr:0px;--ta:left;--bgc:#EA0000;--bgc-mobile:transparent;--bgi:url();--bgi-mobile:url();--bgp:50% 50%;--bgp-mobile:50% 50%;--bgs:cover;--bgs-mobile:cover;--bgr:no-repeat;--bgr-mobile:no-repeat;--bga:scroll;--bga-mobile:scroll" data-keep-class="true" class="gbBPOLv_0H gp-custom-code">
       <div>
     <!-- ENERPLU · HERO v3.1 (sin precio, texto bajo la foto) + barra fija · Encuentra las ofertas por #ep-offer-widget o .ep-plans · Reemplaza tu bloque del hero completo por este. -->
-<!-- ENERPLU · HERO v2 (estilo ficha de producto). Mismo id que el hero anterior para que la barra fija siga funcionando. -->
-<section id="ep-hero-clean" class="hv">
-  <div class="hv-in">
-    <div class="hv-head">
-      <p class="hv-brand">ENERPLU · Tableta masticable con maca negra</p>
-      <h1 class="hv-title">De cero a máxima potencia en <span>5 a 15 minutos.</span></h1>
+<section id="ep-hero-clean" class="ep-hc">
+  <div class="ep-hc-inner">
+
+    <a href="#resenas" class="ep-hc-kicker" aria-label="Ver reseñas de clientes: 4.8 de 5">
+      <span class="ep-hc-stars" aria-hidden="true">★★★★★</span>
+      <span class="ep-hc-rating">4.9/5.0</span>
+      <span class="ep-hc-sep" aria-hidden="true">·</span>
+      <span class="ep-hc-count">+3500 hombres colombianos</span>
+    </a>
+
+    <h1 class="ep-hc-title">DE CERO A MÁXIMA<br>POTENCIA EN <span>5 A 15 MINUTOS.</span></h1>
+
+    <div class="ep-hc-img">
+      <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" alt="ENERPLU tabletas masticables con maca negra" width="1080" height="1080" fetchpriority="high">
     </div>
 
-    <div class="hv-gal">
-      <div class="hv-main" aria-label="Fotos de ENERPLU"><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="ENERPLU tabletas masticables con maca negra" width="1080" height="1080" fetchpriority="high"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135585/enerplu-galeria-1-producto_ynanai.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135585/enerplu-galeria-1-producto_ynanai.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135585/enerplu-galeria-1-producto_ynanai.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Caja de ENERPLU con tabletas masticables" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Lo que recibes en ENERPLU" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Tableta de ENERPLU en la mano" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Cómo se usa ENERPLU en 3 pasos" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Tableta de ENERPLU y sus 5 ingredientes" width="1080" height="1080" loading="lazy" decoding="async"></figure><figure><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_720/f_auto/q_auto/v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp" srcset="https://res.cloudinary.com/dzlys7ftg/image/upload/w_540/f_auto/q_auto/v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp 540w, https://res.cloudinary.com/dzlys7ftg/image/upload/w_1080/f_auto/q_auto/v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp 1080w" sizes="(min-width:900px) 520px, 100vw" alt="Así llega: bolsa negra sellada" width="1080" height="1080" loading="lazy" decoding="async"></figure></div>
-      <div class="hv-badges"><span class="hv-pill hv-pill--gold">✓ Registro INVIMA</span><span class="hv-pill hv-pill--red"><i class="epi epi-flame"></i>Hoy hasta 55% OFF</span></div>
-      <div class="hv-thumbs"><button type="button" class="is-on" aria-label="Ver foto 1"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 2"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135585/enerplu-galeria-1-producto_ynanai.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 3"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135585/enerplu-galeria-3-tableta-mano_zvzebz.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 4"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793136240/enerplu-galeria-3-tableta-mano.webp_ldiboe.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 5"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 6"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp" alt="" loading="lazy" width="54" height="54"></button><button type="button" class="" aria-label="Ver foto 7"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120/f_auto/q_auto/v1793135586/enerplu-galeria-6-asi-llega_ygbfax.webp" alt="" loading="lazy" width="54" height="54"></button></div>
+    <p class="ep-hc-sub">
+      Sin jarabes humillantes. Sin planear con una hora de anticipación.
+      La tableta masticable que inunda tu zona pélvica de sangre antes de que ella termine de desvestirse.
+      <strong>Más duro. Más firme. Más control.</strong>
+    </p>
+
+    <div class="ep-hc-note">💵 Pagas al recibir · 🚚 Envío gratis a toda Colombia</div>
+
+
+    <a href="#ep-offer-widget" class="ep-hc-btn">PÍDELO YA · PAGAS AL RECIBIR →</a>
+
+    <div class="ep-hc-points">
+      <span>📦 Envío 100% Discreto</span>
+      <span><b style="color:#22c55e">✓</b> Respaldo INVIMA</span>
     </div>
 
-    <div class="hv-info">
-      <p class="hv-sub">Sin jarabes humillantes ni planear con una hora de anticipación. Se mastica, se disuelve bajo la lengua y actúa rápido. <b>Más duro. Más firme. Más control.</b></p>
-
-      <div class="hv-meta">
-        <a href="#resenas" class="hv-rating" aria-label="Ver reseñas: 4.9 de 5"><span class="hv-stars" aria-hidden="true">★★★★★</span><b>4.9</b><u>+3.500 hombres</u></a>
-        <i aria-hidden="true"></i>
-        <span class="hv-ship"><i class="epi epi-truck"></i>Envío gratis</span>
-      </div>
-
-      <ul class="hv-bens">
-        <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Efecto en<br>5–15 min</li>
-        <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>Más duro<br>y firme</li>
-        <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M9 2h6"/></svg></span>Más<br>control</li>
-        <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg></span>Con maca<br>negra</li>
-      </ul>
-
-      <p class="hv-plans-t">Elige tu plan y ahorra</p>
-      <fieldset class="hv-plans" role="radiogroup" aria-label="Planes"><label class="hv-plan" data-pack="inicial"><input type="radio" name="ep-pack-hero" value="inicial"><span class="hv-dot" aria-hidden="true"></span><span class="hv-pimg"><img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=160" alt="Plan Básico ENERPLU" loading="lazy" width="58" height="58"></span><span><span class="hv-pname">Plan Básico</span><span class="hv-pqty">1 caja · 10 tabletas</span><span class="hv-pqty">Para probar</span></span><span class="hv-pr"><span class="hv-price">$89.900</span><span class="hv-unit">$8.990 c/tableta</span></span></label><label class="hv-plan hv-plan--rec is-on" data-pack="dominio"><input type="radio" name="ep-pack-hero" value="dominio" checked><span class="hv-tag">★ El más pedido</span><span class="hv-dot" aria-hidden="true"></span><span class="hv-pimg"><img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/DOMINIO.webp?v=1793468717&width=160" alt="Plan Dominio Total ENERPLU" loading="lazy" width="58" height="58"></span><span><span class="hv-pname">Plan Dominio Total</span><span class="hv-pqty">2 cajas · 20 tabletas</span><span class="hv-pinc">✓ Retardante gratis</span></span><span class="hv-pr"><span class="hv-price">$129.900</span><span class="hv-was">$179.800</span><span class="hv-off">27% OFF</span><span class="hv-unit">$6.495 c/tableta</span></span></label><label class="hv-plan" data-pack="elite"><input type="radio" name="ep-pack-hero" value="elite"><span class="hv-dot" aria-hidden="true"></span><span class="hv-pimg"><img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=160" alt="Plan Élite ENERPLU" loading="lazy" width="58" height="58"></span><span><span class="hv-pname">Plan Élite</span><span class="hv-pqty">4 cajas · 40 tabletas</span><span class="hv-pinc hv-pinc--best">✓ Retardante gratis</span></span><span class="hv-pr"><span class="hv-price">$159.900</span><span class="hv-was">$359.600</span><span class="hv-off">55% OFF</span><span class="hv-unit">$3.998 c/tableta</span></span></label></fieldset>
-
-      <a href="#ep-offer-widget" class="hv-cta" data-hv-cta>Quiero el Plan Dominio Total · $129.900 →<small>Pagas en efectivo al recibir · envío gratis</small></a>
-
-      <div class="hv-trust">
-        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><span><b>Pagas al recibir</b>en efectivo</span></div>
-        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><span><b>Envío gratis</b>todo el país</span></div>
-        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg><span><b>Discreto</b>bolsa sellada</span></div>
-      </div>
-      <div class="hv-gift"><img class="bk-photo bk-hero" src="/img/guias-libros.webp" alt="3 guías digitales de regalo: Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" loading="lazy" width="1200" height="800"><p><b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
-    </div>
   </div>
 </section>
-
 
 <style>
 #ep-hero-clean.ep-hc{background:#000!important;color:#fff!important;padding:18px 0 30px!important;margin:0!important;width:100%!important;box-sizing:border-box!important;font-family:inherit}
@@ -2189,7 +2043,7 @@ html.epp-lock{overflow:hidden}
   function ready(fn){ document.readyState !== "loading" ? fn() : document.addEventListener("DOMContentLoaded", fn); }
   ready(function(){
     // GemPages puede duplicar el bloque: usamos el que está visible
-    var heroBtn = Array.prototype.filter.call(document.querySelectorAll("#ep-hero-clean .hv-cta"), function(b){ return b.offsetParent !== null; })[0];
+    var heroBtn = Array.prototype.filter.call(document.querySelectorAll("#ep-hero-clean .ep-hc-btn"), function(b){ return b.offsetParent !== null; })[0];
     // Ofertas: sirve con el selector viejo (#ep-offer-widget) y con el carrusel nuevo (.ep-plans / .epv)
     var OFFERS_SEL = "#ep-offer-widget, .ep-plans, .epv";
     var offers = Array.prototype.filter.call(document.querySelectorAll(OFFERS_SEL), function(o){ return o.getBoundingClientRect().height > 0; })[0] || document.querySelector(OFFERS_SEL);
@@ -2197,7 +2051,7 @@ html.epp-lock{overflow:hidden}
 
     var bar = document.createElement("div");
     bar.className = "ep-hc-sticky";
-    bar.innerHTML = '<div class="ep-hc-sticky-in"><div class="ep-hc-sticky-txt">ENERPLU · <span data-sb-name>Plan Dominio Total</span><small><b data-sb-price>$129.900</b> · Pagas al recibir</small></div><a href="#ep-offer-widget">PEDIR AHORA</a></div>';
+    bar.innerHTML = '<div class="ep-hc-sticky-in"><div class="ep-hc-sticky-txt">🎁 Regalo en todos los pedidos<small>Pagas al recibir · Envío discreto</small></div><a href="#ep-offer-widget">VER OFERTAS</a></div>';
     document.body.appendChild(bar);
 
     function goOffers(e){
@@ -2207,7 +2061,7 @@ html.epp-lock{overflow:hidden}
     }
     bar.querySelector("a").addEventListener("click", goOffers);
     // El botón del hero también baja a las ofertas, exista o no el id #ep-offer-widget
-    Array.prototype.forEach.call(document.querySelectorAll("#ep-hero-clean .hv-cta"), function(b){ b.addEventListener("click", goOffers); });
+    Array.prototype.forEach.call(document.querySelectorAll("#ep-hero-clean .ep-hc-btn"), function(b){ b.addEventListener("click", goOffers); });
 
     if (!("IntersectionObserver" in window)) { bar.classList.add("ep-show"); return; }
     var heroVisible = true, offersVisible = false;
@@ -2222,7 +2076,7 @@ html.epp-lock{overflow:hidden}
 (function () {
   // Estrellas del hero → reseñas (#resenas); usa la copia visible si GemPages duplica el bloque
   document.addEventListener("click", function (e) {
-    var k = e.target.closest("#ep-hero-clean .hv-rating");
+    var k = e.target.closest("#ep-hero-clean .ep-hc-kicker");
     if (!k) return;
     var t = Array.prototype.filter.call(document.querySelectorAll("#resenas"), function (r) { return r.getBoundingClientRect().height > 0; })[0] || document.querySelector("#resenas");
     if (!t) return;
@@ -2882,7 +2736,7 @@ html.epp-lock{overflow:hidden}
       <div class="ep-mech-v2-box">
 
         <div class="ep-mech-v2-box-title">
-          <i class="epi epi-flask"></i>El Resultado Biológico:
+          🧪 El Resultado Biológico:
         </div>
 
         <ul class="ep-mech-v2-list">
@@ -3263,7 +3117,7 @@ html.epp-lock{overflow:hidden}
       </div>
 
       <div class="ep-decision-item">
-        <div class="ep-decision-icon ep-decision-icon-red"><i class="epi epi-alert"></i></div>
+        <div class="ep-decision-icon ep-decision-icon-red">⚠</div>
         <div class="ep-decision-text">
           <strong>OPCIÓN 2: Seguir con lo mismo.</strong>
           Gastar dinero en jarabes vergonzosos o cápsulas que no te funcionan.
@@ -3271,7 +3125,7 @@ html.epp-lock{overflow:hidden}
       </div>
 
       <div class="ep-decision-item">
-        <div class="ep-decision-icon ep-decision-icon-yellow"><i class="epi epi-zap"></i></div>
+        <div class="ep-decision-icon ep-decision-icon-yellow">⚡</div>
         <div class="ep-decision-text">
           <strong>OPCIÓN 3: Tomar el control absoluto.</strong>
           Invertir en Enerplu hoy mismo, recibirlo en empaque 100% discreto y tener una alternativa práctica cuando la necesites.
@@ -3419,29 +3273,23 @@ html.epp-lock{overflow:hidden}
 <section class="ep-order eph-order" id="ep-order" aria-labelledby="eph-title">
   <div class="ep-wrap ep-wrap--form">
     <p class="ep-of-test" data-ep-test hidden>Modo prueba: el formulario valida todo pero no crea pedidos ni dispara la compra en el pixel.</p>
-    <p class="ep-of-ref" data-ep-ref hidden><i class="epi epi-gift"></i>Vienes invitado por un amigo: tienes <b>$10.000 de descuento</b> en tu primer pedido contra entrega. Se descuenta cuando confirmamos tu pedido.</p>
+    <p class="ep-of-ref" data-ep-ref hidden>🎁 Vienes invitado por un amigo: tienes <b>$10.000 de descuento</b> en tu primer pedido contra entrega. Se descuenta cuando confirmamos tu pedido.</p>
 
     <form class="ep-of" data-ep-order novalidate autocomplete="on">
       <div class="eph ep-plans" id="ep-offer-widget">
         <h2 class="eph-title" id="eph-title">Tenemos 3 ofertas disponibles hoy</h2>
-        <p class="eph-sub"><i class="epi epi-truck"></i>Envío gratis · <i class="epi epi-cash"></i>Pago al recibir · <i class="epi epi-box"></i>Discreto</p>
+        <p class="eph-sub">🚚 Envío gratis · 💵 Pago al recibir · 📦 Discreto</p>
         <div class="eph-garantia">
           <img src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Sello de garantía" width="64" height="64" loading="lazy">
           <div><b>Garantía Real o te devolvemos tu dinero*</b>
           <a href="/garantia" target="_blank" rel="noopener">*Aplican términos y condiciones</a></div>
         </div>
-        <div class="eph-bonus eph-bonus--libros"><img class="bk-photo bk-form" src="/img/guias-libros.webp" alt="3 guías digitales de regalo: Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" loading="lazy" width="1200" height="800"><p><i class="epi epi-gift"></i><b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
+        <div class="eph-bonus eph-bonus--libros"><div class="eph-libros"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Guía Maestro del Orgasmo" width="66" height="86" loading="lazy"><span class="eph-libro-txt" role="img" aria-label="Guía Secretos Sexuales"><b>SECRETOS</b><b>SEXUALES</b><i>Edición de lujo</i></span><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Guía Genio del Sexo" width="66" height="86" loading="lazy"></div><p>🎁 <b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
       </div>
 
-
-      <div class="tp-card" id="tp-card"><div class="tp-img"></div><div class="tp-txt"><small>Tu pedido</small><b data-tp-name>Plan Dominio Total</b><span data-tp-qty>2 cajas · 20 tabletas</span></div><div class="tp-pr"><b data-tp-price>$129.900</b><a href="#ep-offer-widget" data-tp-change>Cambiar</a></div></div>
-      <fieldset class="ep-of-block" data-ep-pay-block hidden>
-        <legend class="ep-of-legend"><span class="ep-of-n">1</span>¿Cómo quieres pagar?</legend>
-        <div class="ep-ship" data-ep-render="pay"></div><div class="bold-kit"><span>Pagos procesados por</span><div id="bold-kit"></div></div>
-      </fieldset>
       <fieldset class="ep-of-block">
-        <legend class="ep-of-legend"><span class="ep-of-n">2</span>¿A dónde te lo enviamos?</legend>
+        <legend class="ep-of-legend">¿A dónde te lo enviamos?</legend>
         <div class="ep-of-grid">
           <div class="ep-f">
             <label for="ep-f-first">Nombre</label>
@@ -3488,8 +3336,13 @@ html.epp-lock{overflow:hidden}
       </fieldset>
 
       <fieldset class="ep-of-block" data-ep-ship-block>
-        <legend class="ep-of-legend"><span class="ep-of-n">3</span>Envío</legend>
+        <legend class="ep-of-legend">Envío</legend>
         <div class="ep-ship" data-ep-render="shipping"></div>
+      </fieldset>
+
+      <fieldset class="ep-of-block" data-ep-pay-block hidden>
+        <legend class="ep-of-legend">¿Cómo quieres pagar?</legend>
+        <div class="ep-ship" data-ep-render="pay"></div>
       </fieldset>
 
       <div data-ep-render="bump"></div>
@@ -3510,7 +3363,7 @@ html.epp-lock{overflow:hidden}
       </div>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
-      <p class="eph-trust"><i class="epi epi-chat"></i>Te confirmamos tu pedido por WhatsApp antes de enviarlo<br><i class="epi epi-shield"></i>Garantía Real o te devolvemos tu dinero <a href="/garantia" target="_blank" rel="noopener">*Aplican términos</a></p>
+      <p class="eph-trust">💬 Te confirmamos tu pedido por WhatsApp antes de enviarlo<br>🛡️ Garantía Real o te devolvemos tu dinero <a href="/garantia" target="_blank" rel="noopener">*Aplican términos</a></p>
       <!-- C-01: preguntas frecuentes debajo del botón (2026-11-06) -->
       <div class="eph-faq" id="eph-faq">
         <h3 class="eph-faq-title">Preguntas frecuentes</h3>
@@ -6650,7 +6503,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
       var pct = was > 0 ? Math.round(save / was * 100) : 0;
-      var gifts = L.inc.length ? '<span><i class="epi epi-gift"></i><b>Gratis:</b> Retardante 30 ml + Velvet</span>' : '';
+      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Retardante 30 ml + Velvet</span>' : '';
       return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
         '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
         (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
@@ -6746,7 +6599,7 @@ window.EP_POPUP_MODE = 'off';
   teaser.innerHTML =
     '<div class="ep-pop-teaser-in">' +
       '<h2>Tenemos 3 ofertas disponibles hoy</h2>' +
-      '<p class="ep-pop-teaser-sub"><i class="epi epi-truck"></i>Envío gratis · <i class="epi epi-cash"></i>Pago al recibir · <i class="epi epi-box"></i>Discreto</p>' +
+      '<p class="ep-pop-teaser-sub">🚚 Envío gratis · 💵 Pago al recibir · 📦 Discreto</p>' +
       (gar ? gar.outerHTML : '') + (bonus ? bonus.outerHTML : '') +
       '<button type="button" class="ep-pop-btn" data-pop-open="tarjeta">VER OFERTAS DISPONIBLES →<small>Pagas en efectivo al recibir</small></button>' +
     '</div>';
@@ -6759,7 +6612,7 @@ window.EP_POPUP_MODE = 'off';
   pop.setAttribute('aria-hidden', 'true');
   pop.innerHTML =
     '<div class="ep-pop-box">' +
-      '<div class="ep-pop-head"><div><b>Elige tu oferta</b><span><i class="epi epi-cash"></i>Pagas al recibir · <i class="epi epi-truck"></i>Envío gratis</span></div>' +
+      '<div class="ep-pop-head"><div><b>Elige tu oferta</b><span>💵 Pagas al recibir · 🚚 Envío gratis</span></div>' +
         '<button type="button" class="ep-pop-x" data-pop-close aria-label="Cerrar">✕</button></div>' +
       '<div class="ep-pop-body"></div>' +
     '</div>';
@@ -6806,59 +6659,7 @@ window.EP_POPUP_MODE = 'off';
 })();
 
 </script>
-<script>
-/* HERO v2: galería deslizable con miniaturas + selector de planes del hero.
-   Los radios se llaman ep-pack-hero: el formulario (app.js) ya los escucha y elige ese mismo plan abajo (setPack 'hero').
-   Precios: los de EP_CONFIG, que el formulario actualiza con los del checkout; aquí se repintan cuando cambian. */
-(function () {
-  var hero = document.getElementById("ep-hero-clean");
-  var C = window.EP_CONFIG, R = window.EP_RENDER;
-  if (!hero || !hero.classList.contains("hv") || !C || !R) return;
 
-  /* galería */
-  var main = hero.querySelector(".hv-main"), thumbs = hero.querySelectorAll(".hv-thumbs button");
-  function mark(i) { thumbs.forEach(function (b, j) { b.classList.toggle("is-on", i === j); }); }
-  thumbs.forEach(function (b, i) {
-    b.addEventListener("click", function () { main.scrollTo({ left: i * main.clientWidth, behavior: "smooth" }); mark(i); });
-  });
-  var tm;
-  main.addEventListener("scroll", function () {
-    clearTimeout(tm);
-    tm = setTimeout(function () { mark(Math.round(main.scrollLeft / Math.max(1, main.clientWidth))); }, 60);
-  }, { passive: true });
-
-  /* planes */
-  function pack(id) { var r = null; C.packs.forEach(function (p) { if (p.id === id) r = p; }); return r; }
-  function current() {
-    var on = document.querySelector("#ep-order .ep-sel-opt.is-on");
-    var chk = hero.querySelector('input[name="ep-pack-hero"]:checked');
-    return (on && on.getAttribute("data-pack")) || (chk && chk.value) || C.defaultPack;
-  }
-  var cta = hero.querySelector("[data-hv-cta]");
-  function paint() {
-    var sel = current();
-    hero.querySelectorAll(".hv-plan").forEach(function (el) {
-      var p = pack(el.getAttribute("data-pack")); if (!p) return;
-      var on = p.id === sel, inp = el.querySelector("input");
-      el.classList.toggle("is-on", on); if (inp) inp.checked = on;
-      var was = C.singleBoxPrice * p.boxes;
-      var q = function (s) { return el.querySelector(s); };
-      if (q(".hv-price")) q(".hv-price").textContent = R.money(p.price);
-      if (q(".hv-was")) q(".hv-was").textContent = R.money(was);
-      if (q(".hv-off")) q(".hv-off").textContent = Math.floor((1 - p.price / was) * 100) + "% OFF";
-      if (q(".hv-unit")) q(".hv-unit").textContent = R.money(p.price / p.tablets) + " c/tableta";
-    });
-    var p = pack(sel);
-    if (cta && p) cta.innerHTML = "Quiero el " + R.esc(p.name) + " · " + R.money(p.price) + " →<small>Pagas en efectivo al recibir · envío gratis</small>";
-  }
-  hero.addEventListener("change", function (e) { if (e.target && e.target.name === "ep-pack-hero") setTimeout(paint, 0); });
-  var list = document.querySelector('#ep-order [data-ep-render="selector"]');
-  if (list && "MutationObserver" in window) {
-    new MutationObserver(function () { paint(); }).observe(list, { subtree: true, childList: true, attributes: true, attributeFilter: ["class"] });
-  }
-  paint();
-})();
-</script>
 <script>/* Popup de 5% en la primera compra (cesar 2026-11-10: "quiero hacer esto mismo en ENERPLU", igual que Mg Collagen).
    Prueba "popup5" (N sin popup 20%, A 40%, B 40%), independiente de la prueba de página E-04 (sale por igual en "/" y en "/b"):
    A = "No te vayas": aparece al intentar salir (botón atrás, volver a la pestaña, cursor que sale por arriba). Cupón con reloj de 15 min.
@@ -7009,88 +6810,6 @@ window.EP_POPUP_MODE = 'off';
     }
   }
   if (window.EP_POP) init(window.EP_POP); else addEventListener('ep:pop-ready', function () { init(window.EP_POP); }, { once: true });
-})();
-</script>
-<script>
-(function(){
-  function qsa(a,b){return Array.prototype.slice.call((b||document).querySelectorAll(a))}
-  var NOM={first_name:'nombre',last_name:'apellido',phone:'celular (10 números)',city:'ciudad',address1:'dirección',email:'correo'};
-  function missing(f){return qsa('input[required]',f).filter(function(i){return i.offsetParent!==null&&(!i.value.trim()||(i.name==='phone'&&i.value.replace(/\D/g,'').length<10))});}
-  function tick(){
-    var f=document.querySelector('[data-ep-order]'); if(!f) return;
-    var miss=missing(f);
-    if(!qsa('input[required]',f).some(function(i){return i.value.trim()})) miss=[];   // formulario sin empezar: el botón dice qué hace, no qué falta
-    var b=f.querySelector('[data-ep-submit] .ep-cta-label b');
-    var pm=f.querySelector('input[name="ep-pay"]:checked'),pv=pm?pm.value:'cod';
-    // el botón dice CUÁL dato falta (cesar 10-nov: "decía que faltaba un dato y no veía cuál")
-    if(b){var t=miss.length?('Falta tu '+(NOM[miss[0].name]||'dato')+(miss.length>1?' y '+(miss.length-1)+' más':'')):(pv==='cod'?'Confirmar mi pedido':'Pagar ahora'); if(b.textContent!==t)b.textContent=t;}
-    qsa('.mb-miss',f).forEach(function(i){if(miss.indexOf(i)<0)i.classList.remove('mb-miss')});
-    var tot=document.querySelector('[data-ep-bind="total"]'), sp=document.querySelector('[data-sb-price]'); if(tot&&sp)sp.textContent=tot.textContent;
-    var ck=document.querySelector('input[name="ep-pack-hero"]:checked'), sn=document.querySelector('[data-sb-name]');
-    var sel=document.querySelector('.eph-list [aria-checked="true"] .ep-sel-name, .eph-list .is-on .ep-sel-name, .eph-list input:checked ~ * .ep-sel-name');
-    if(sn){var n=sel?sel.textContent.trim():(ck?ck.closest('label').querySelector('.hv-pname').textContent:'');if(n&&sn.textContent!==n)sn.textContent=n;}
-  }
-  document.addEventListener('input',tick,true);document.addEventListener('change',tick,true);document.addEventListener('click',function(){setTimeout(tick,60)},true);
-  setInterval(tick,700);
-  document.addEventListener('click',function(e){
-    var btn=e.target.closest&&e.target.closest('[data-ep-submit]'); if(!btn) return;
-    var f=btn.form; var m=missing(f);
-    if(m.length){e.preventDefault();e.stopPropagation();m.forEach(function(i){i.classList.add('mb-miss')});m[0].scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){m[0].focus()},400);}
-  },true);
-})();
-</script>
-<script src="https://bold.co/library/ui-kit.js?theme=dark&target=bold-kit" async></script>
-<script>
-(function(){
-  function payTarget(){var p=document.getElementById('tp-card');return p||document.querySelector('[data-ep-order]');}
-  function go(){var t=payTarget();if(!t)return;var y=t.getBoundingClientRect().top+pageYOffset-10;scrollTo({top:y,behavior:'smooth'});}
-    // tocar un plan solo lo elige; el botón rojo (que muestra el plan y precio) es el que lleva al pago
-  // botón del hero y barra fija también llevan al pago
-  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('#ep-hero-clean .hv-cta, .ep-hc-sticky a');if(!a)return;e.preventDefault();e.stopImmediatePropagation();go();},true);
-  // "Cambiar" abre los 3 planes ahí mismo, sin devolverse arriba (cesar 10-nov: "me tocó devolverme dos veces a las ofertas")
-  document.addEventListener('click',function(e){
-    var a=e.target.closest&&e.target.closest('[data-tp-change]');
-    if(a){e.preventDefault();var C=window.EP_CONFIG,R=window.EP_RENDER,card=document.getElementById('tp-card'),old=document.getElementById('tp-pick');
-      if(old){old.remove();return;} if(!C||!card)return;
-      var m=R?R.money:function(n){return '$'+n},ck=document.querySelector('input[name="ep-pack-hero"]:checked'),cur=ck?ck.value:C.defaultPack,d=document.createElement('div');d.id='tp-pick';d.className='tp-pick';
-      d.innerHTML='<small>Elige tu plan</small>'+C.packs.map(function(p){return '<button type="button" data-tp-pick="'+p.id+'"'+(p.id===cur?' class="is-on"':'')+'><span><b>'+p.name+'</b><i>'+p.boxes+(p.boxes>1?' cajas':' caja')+' · '+p.tablets+' tabletas'+(p.gifts&&p.gifts.length>1?' + retardante':'')+'</i></span><em>'+m(p.price)+'</em></button>'}).join('');
-      card.parentNode.insertBefore(d,card.nextSibling);return;}
-    var b=e.target.closest&&e.target.closest('[data-tp-pick]');
-    if(b){e.preventDefault();var hk=document.querySelector('input[name="ep-pack-hero"][value="'+b.getAttribute('data-tp-pick')+'"]');if(hk){hk.click();hk.dispatchEvent(new Event('change',{bubbles:true}));}var pk=document.getElementById('tp-pick');if(pk)pk.remove();setTimeout(paint,80);}
-  },true);
-  // barra fija: solo cuando no se ven ni los planes/botón del hero ni el formulario
-  var vis={hero:true,form:false};
-  function sb(){var b=document.querySelector('.ep-hc-sticky');if(b)b.classList.toggle('mb-hide',vis.hero||vis.form);}
-  function watch(){
-    var h=document.querySelector('#ep-hero-clean .hv-info'),f=document.querySelector('#ep-order [data-ep-order]');
-    if(!h||!f||!('IntersectionObserver' in window))return;
-    new IntersectionObserver(function(es){es.forEach(function(x){vis[x.target===h?'hero':'form']=x.isIntersecting});sb();}).observe(h);
-    new IntersectionObserver(function(es){es.forEach(function(x){vis.form=x.isIntersecting});sb();}).observe(f);
-    setInterval(sb,500);
-  }
-  document.readyState!=='loading'?watch():document.addEventListener('DOMContentLoaded',watch);
-  function paint(){
-    var C=window.EP_CONFIG;if(!C)return;
-    var on=document.querySelector('#ep-order .ep-sel-opt.is-on'),ck=document.querySelector('input[name="ep-pack-hero"]:checked');
-    var id=(on&&on.getAttribute('data-pack'))||(ck&&ck.value)||C.defaultPack,p=null;C.packs.forEach(function(x){if(x.id===id)p=x});if(!p)return;
-    var R=window.EP_RENDER,m=R?R.money:function(n){return '$'+n};
-    var set=function(sel,t){var el=document.querySelector(sel);if(el&&el.textContent!==t)el.textContent=t};
-    set('[data-tp-name]',p.name);set('[data-tp-qty]',p.boxes+(p.boxes>1?' cajas':' caja')+' · '+p.tablets+' tabletas'+(p.gifts&&p.gifts.length>1?' + retardante':''));set('[data-tp-price]',m(p.price));
-    var img=document.querySelector('#ep-hero-clean .hv-plan[data-pack="'+id+'"] .hv-pimg img'),ti=document.querySelector('.tp-img');if(img&&ti)ti.style.backgroundImage='url("'+img.src+'")';
-    var hk=document.querySelector('input[name="ep-pack-hero"][value="'+id+'"]');
-  }
-  setInterval(paint,600);document.addEventListener('click',function(){setTimeout(paint,80)},true);
-})();
-</script>
-<script>
-(function(){
-  var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;
-  var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}
-    if(!sid){if(n++<20)setTimeout(go,300);return;}
-    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E04',v:'B'}});
-    var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
-    try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}
-  })();
 })();
 </script>
 </body>

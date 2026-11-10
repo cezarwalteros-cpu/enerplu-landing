@@ -5746,6 +5746,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         var j = r.j || {};
         self.st.phoneBlock = !!(j.blocked || j.cod_allowed === false);
         self.st.phoneMsg = self.st.phoneBlock ? (j.message || 'No podemos tomar pedidos contra entrega con este número.') : '';
+        self.st.recent = j.recent_order ? { n: j.order_number || '', wa: j.whatsapp || '' } : null;
         self.err('phone', self.st.phoneMsg);
         if (self.st.phoneBlock) track('PhoneBlocked', { recent: !!j.recent_order }); else self.queueCart();
       }, function () {});
@@ -5982,6 +5983,14 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         if (msg && name === 'phone' && this.st.phoneBlock && C.checkout.online && /línea/.test(msg)) {
           var a2 = document.createElement('a'); a2.href = withParams(C.checkout.url, packById(state.pack)); a2.textContent = ' Pagar en línea'; box.appendChild(a2);
         }
+        /* pedido repetido (24 h): botón de WhatsApp para aclarar o cambiar algo del pedido que ya existe */
+        var rw = msg && name === 'phone' && this.st.phoneBlock && this.st.recent ? String(this.st.recent.wa || '').replace(/\D/g, '') : '';
+        if (rw) {
+          var w = document.createElement('a'); w.className = 'ep-tr-wa ep-dup-wa'; w.target = '_blank'; w.rel = 'noopener';
+          w.href = 'https://wa.me/' + rw + '?text=' + encodeURIComponent('Hola, ya hice mi pedido' + (this.st.recent.n ? ' ' + this.st.recent.n : '') + ' y quiero aclarar algo.');
+          w.innerHTML = R.ico('chat') + 'Escribir por WhatsApp'; box.appendChild(w);
+          track('DupWhatsappShown', {});
+        }
       }
       if (inp && inp.setAttribute) { if (msg) inp.setAttribute('aria-invalid', 'true'); else inp.removeAttribute('aria-invalid'); }
     },
@@ -6029,7 +6038,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         var t = e.target;
         if (t.name === 'phone') {
           var ph = self.phone(); if (t.value !== ph) t.value = ph;
-          if (ph !== self.st.lastPhone) { self.st.phoneBlock = false; self.st.phoneMsg = ''; }
+          if (ph !== self.st.lastPhone) { self.st.phoneBlock = false; self.st.phoneMsg = ''; self.st.recent = null; }
           if (self.validPhone(ph)) { self.err('phone', ''); self.checkPhone(); }
           else if (self.touched.phone) self.err('phone', ph.length >= 10 ? 'El celular debe empezar por 3' : '');
         } else if (t.name === 'city') {
@@ -6128,7 +6137,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
           var key = k === 'full_name' ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
           if (self.fields.indexOf(key) >= 0) { self.err(key, map[k]); shown = true; }
         });
-        if (j.recent_order || j.blocked) { self.st.phoneBlock = true; self.st.phoneMsg = j.error || map.phone || ''; self.err('phone', self.st.phoneMsg); shown = true; }
+        if (j.recent_order || j.blocked) { self.st.recent = j.recent_order ? { n: j.order_number || '', wa: j.whatsapp || '' } : null; self.st.phoneBlock = true; self.st.phoneMsg = j.error || map.phone || ''; self.err('phone', self.st.phoneMsg); shown = true; }
         self.formError(shown ? 'Revisa los datos marcados en rojo.' : (j.error || 'No pudimos registrar tu pedido. Intenta de nuevo.'));
         track('OrderError', { status: r.status, fields: Object.keys(map).join(',') });
         var firstBad = qs('[aria-invalid="true"]', self.form) || qs('[data-ep-form-error]', self.form);

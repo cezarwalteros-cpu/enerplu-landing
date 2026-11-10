@@ -1808,6 +1808,24 @@ fbq('track', 'PageView');
 .hv-gift p{margin:6px 0 0;font-size:13px;line-height:1.4;color:#d4d4d4}.hv-gift b{color:#d4af37}
 .ep-root .eph-order .ep-of-n,.ep-of-n{display:inline-flex;align-items:center;justify-content:center;flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#d4af37;color:#111;font-size:14px;font-weight:900;margin-right:2px}
 .ep-hc-sticky-txt small b{color:#fff}
+
+.bk-photo{display:block;width:100%;height:auto;border-radius:12px;margin:0 auto 8px}
+.hv-gift{padding:0 0 12px;overflow:hidden}.hv-gift p{padding:0 12px}
+.eph-bonus--libros .bk-photo{max-width:340px}
+.tp-card{display:flex;align-items:center;gap:12px;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:14px;padding:12px;margin:0 0 14px;scroll-margin-top:12px}
+.tp-img{width:56px;height:56px;border-radius:10px;background:#fff center/cover no-repeat;flex:0 0 56px}
+.tp-txt{flex:1;min-width:0;color:#fff;line-height:1.25}.tp-txt small{display:block;color:#a3a3a3;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.tp-txt b{display:block;font-size:15px}.tp-txt span{font-size:12px;color:#a3a3a3}
+.tp-pr{text-align:right}.tp-pr b{display:block;color:#fff;font-size:17px;font-weight:900}.tp-pr a{color:#d4af37;font-size:12px;font-weight:700;text-decoration:underline}
+.ep-root .eph-order label.ep-pay-opt:has(input[value="bold"]){position:relative;border:2px solid #22c55e!important;background:linear-gradient(160deg,rgba(34,197,94,.14),rgba(34,197,94,.03)),#0d0d0d!important;margin-top:16px;padding-top:20px}
+.ep-root .eph-order label.ep-pay-opt:has(input[value="bold"])::before{content:"AHORRA $12.000 PAGANDO AHORA";position:absolute;top:-12px;left:12px;background:#22c55e;color:#04140a;font:900 11px/1 Inter,system-ui,sans-serif;letter-spacing:.05em;padding:6px 10px;border-radius:999px}
+.ep-root .eph-order label.ep-pay-opt:has(input[value="bold"]) .ep-pay-logos{display:none}
+.ep-root .eph-order .ep-pay-save{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;background:#22c55e;color:#04140a!important;border-radius:10px;padding:8px 10px;font-size:11px!important;font-weight:800;line-height:1.1!important;text-transform:uppercase}
+.ep-root .eph-order .ep-pay-save{font-size:0!important}
+.ep-root .eph-order .ep-pay-save::after{content:"−$12.000";font-size:18px;font-weight:900;letter-spacing:-.01em}
+.ep-root .eph-order .ep-pay-save::before{content:"Ahorras";font-size:10px;font-weight:800}
+.bold-kit{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:12px;color:#8a8a8a;font-size:11px}
+.bold-kit #bold-kit{max-width:320px;width:100%;display:flex;justify-content:center}
 .mqb{background:#d4af37;color:#111;font:700 11px/1.3 Inter,system-ui,sans-serif;text-align:center;padding:5px 8px;letter-spacing:.02em}
 </style>
 </head>
@@ -2042,7 +2060,7 @@ fbq('track', 'PageView');
         <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><span><b>Envío gratis</b>todo el país</span></div>
         <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg><span><b>Discreto</b>bolsa sellada</span></div>
       </div>
-      <div class="hv-gift"><div class="bk-row bk-hero"><span class="bk"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_260,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Guía Maestro del Orgasmo" loading="lazy"></span><span class="bk"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_260,f_auto,q_auto/v1794151422/Portada_Secretos_sexuales__edici%C3%B3n_de_lujo_tnnyoz.webp" alt="Guía Secretos Sexuales" loading="lazy"></span><span class="bk"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_260,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Guía Genio del Sexo" loading="lazy"></span></div><p><b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
+      <div class="hv-gift"><img class="bk-photo bk-hero" src="/img/guias-libros.webp" alt="3 guías digitales de regalo: Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" loading="lazy" width="1200" height="800"><p><b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
     </div>
   </div>
 </section>
@@ -3335,14 +3353,15 @@ fbq('track', 'PageView');
           <div><b>Garantía Real o te devolvemos tu dinero*</b>
           <a href="/garantia" target="_blank" rel="noopener">*Aplican términos y condiciones</a></div>
         </div>
-        <div class="eph-bonus eph-bonus--libros"><div class="bk-row bk-form"><span class="bk"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_260,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Guía Maestro del Orgasmo" loading="lazy"></span><span class="bk"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_260,f_auto,q_auto/v1794151422/Portada_Secretos_sexuales__edici%C3%B3n_de_lujo_tnnyoz.webp" alt="Guía Secretos Sexuales" loading="lazy"></span><span class="bk"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_260,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Guía Genio del Sexo" loading="lazy"></span></div><p><i class="epi epi-gift"></i><b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
+        <div class="eph-bonus eph-bonus--libros"><img class="bk-photo bk-form" src="/img/guias-libros.webp" alt="3 guías digitales de regalo: Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" loading="lazy" width="1200" height="800"><p><i class="epi epi-gift"></i><b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
       </div>
 
 
+      <div class="tp-card" id="tp-card"><div class="tp-img"></div><div class="tp-txt"><small>Tu pedido</small><b data-tp-name>Plan Dominio Total</b><span data-tp-qty>2 cajas · 20 tabletas</span></div><div class="tp-pr"><b data-tp-price>$129.900</b><a href="#ep-offer-widget" data-tp-change>Cambiar</a></div></div>
       <fieldset class="ep-of-block" data-ep-pay-block hidden>
         <legend class="ep-of-legend"><span class="ep-of-n">1</span>¿Cómo quieres pagar?</legend>
-        <div class="ep-ship" data-ep-render="pay"></div>
+        <div class="ep-ship" data-ep-render="pay"></div><div class="bold-kit"><span>Pagos procesados por</span><div id="bold-kit"></div></div>
       </fieldset>
       <fieldset class="ep-of-block">
         <legend class="ep-of-legend"><span class="ep-of-n">2</span>¿A dónde te lo enviamos?</legend>
@@ -6739,6 +6758,30 @@ window.EP_POPUP_MODE = 'off';
     var f=btn.form; var m=qsa('input[required]',f).filter(function(i){return i.offsetParent!==null&&!i.value.trim()});
     if(m.length){e.preventDefault();e.stopPropagation();m[0].scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){m[0].focus()},400);}
   },true);
+})();
+</script>
+<script src="https://bold.co/library/ui-kit.js?theme=dark&target=bold-kit" async></script>
+<script>
+(function(){
+  function payTarget(){var p=document.getElementById('tp-card');return p||document.querySelector('[data-ep-order]');}
+  function go(){var t=payTarget();if(!t)return;var y=t.getBoundingClientRect().top+pageYOffset-10;scrollTo({top:y,behavior:'smooth'});}
+  // elegir plan arriba = te lleva directo al pago
+  document.addEventListener('change',function(e){if(e.target&&e.target.name==='ep-pack-hero')setTimeout(go,180);},true);
+  // botón del hero y barra fija también llevan al pago
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('#ep-hero-clean .hv-cta, .ep-hc-sticky a');if(!a)return;e.preventDefault();e.stopImmediatePropagation();go();},true);
+  // "Cambiar" sube a las 3 ofertas
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-tp-change]');if(!a)return;e.preventDefault();var l=document.getElementById('ep-offer-widget');if(l)scrollTo({top:l.getBoundingClientRect().top+pageYOffset-10,behavior:'smooth'});},true);
+  function paint(){
+    var C=window.EP_CONFIG;if(!C)return;
+    var on=document.querySelector('#ep-order .ep-sel-opt.is-on'),ck=document.querySelector('input[name="ep-pack-hero"]:checked');
+    var id=(on&&on.getAttribute('data-pack'))||(ck&&ck.value)||C.defaultPack,p=null;C.packs.forEach(function(x){if(x.id===id)p=x});if(!p)return;
+    var R=window.EP_RENDER,m=R?R.money:function(n){return '$'+n};
+    var set=function(sel,t){var el=document.querySelector(sel);if(el&&el.textContent!==t)el.textContent=t};
+    set('[data-tp-name]',p.name);set('[data-tp-qty]',p.boxes+(p.boxes>1?' cajas':' caja')+' · '+p.tablets+' tabletas'+(p.gifts&&p.gifts.length>1?' + retardante':''));set('[data-tp-price]',m(p.price));
+    var img=document.querySelector('#ep-hero-clean .hv-plan[data-pack="'+id+'"] .hv-pimg img'),ti=document.querySelector('.tp-img');if(img&&ti)ti.style.backgroundImage='url("'+img.src+'")';
+    var hk=document.querySelector('input[name="ep-pack-hero"][value="'+id+'"]');
+  }
+  setInterval(paint,600);document.addEventListener('click',function(){setTimeout(paint,80)},true);
 })();
 </script>
 </body>

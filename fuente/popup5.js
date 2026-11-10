@@ -5,7 +5,7 @@
    El descuento lo valida y lo aplica el CRM (discount_codes, checkout-native action "coupon"); aquí solo se muestra.
    Solo se ve en el resumen del formulario; se suma al descuento de pago anticipado. ?pop=A|B fuerza, ?pop=0 lo apaga. */
 (function () {
-  var CODE = 'ENERPLU5', PCT = 5, MIN_A = 15, SEG_B = 8, IMG = 'https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_800/v1793135585/enerplu-galeria-1-producto_ynanai.webp';
+  var CODE = 'ENERPLU5', PCT = 5, MIN_A = 15, SEG_B = 8, IMG = '/img/popup-enerplu.webp';
   var I = {
     x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
     clk: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',

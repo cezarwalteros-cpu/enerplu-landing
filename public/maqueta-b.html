@@ -6769,8 +6769,7 @@ window.EP_POPUP_MODE = 'off';
 (function(){
   function payTarget(){var p=document.getElementById('tp-card');return p||document.querySelector('[data-ep-order]');}
   function go(){var t=payTarget();if(!t)return;var y=t.getBoundingClientRect().top+pageYOffset-10;scrollTo({top:y,behavior:'smooth'});}
-  // elegir plan arriba = te lleva directo al pago
-  document.addEventListener('change',function(e){if(e.target&&e.target.name==='ep-pack-hero')setTimeout(go,350);},true);
+    // tocar un plan solo lo elige; el botón rojo (que muestra el plan y precio) es el que lleva al pago
   // botón del hero y barra fija también llevan al pago
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('#ep-hero-clean .hv-cta, .ep-hc-sticky a');if(!a)return;e.preventDefault();e.stopImmediatePropagation();go();},true);
   // "Cambiar" sube a los planes del hero (las ofertas solo están arriba)

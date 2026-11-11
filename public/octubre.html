@@ -8595,5 +8595,16 @@ window.EP_POPUP_MODE = 'off';
   if (q.get('bold-order-id')) open('bold');
 })();
 </script>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;
+  var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}
+    if(!sid){if(n++<20)setTimeout(go,300);return;}
+    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E05',v:'B'}});
+    var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
+    try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}
+  })();
+})();
+</script>
 </body>
 </html>

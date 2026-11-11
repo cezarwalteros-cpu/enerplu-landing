@@ -75,7 +75,7 @@ html body .ep-navbar-fixed-btn, html body .ep-hero-clean-btn, html body a.ep-wa-
   box-shadow: 0 8px 22px rgba(230, 0, 0, .32) !important; cursor: pointer; text-decoration: none !important; font-style: normal !important; }
 html body .ep-hero-clean-btn, html body a.ep-wa-ss-cta, html body .lc-btn.enerplu-review-cta, html body .oc-sticky-btn {
   display: flex !important; align-items: center; justify-content: center; text-align: center; min-height: 56px; padding: 14px 22px !important; font-size: 17px !important; line-height: 1.2 !important; }
-html body .ep-navbar-fixed-btn { font-size: 14px !important; }
+
 html body #ep-offer-widget #ep-checkout-btn { padding: 16px 14px !important; }
 html body #ep-offer-widget #ep-checkout-btn .ep-btn-main { font-style: normal !important; }
 .oc-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 99990; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));
@@ -88,3 +88,10 @@ html body #resenas.enerplu-reviews .lc-btn.enerplu-review-cta {
   background: #e60000 !important; color: #fff !important; border: 0 !important; border-radius: 10px !important; font-size: 17px !important; font-weight: 900 !important;
   min-height: 56px; padding: 14px 22px !important; text-transform: uppercase; letter-spacing: .02em; box-shadow: 0 8px 22px rgba(230, 0, 0, .32) !important; width: 100%; max-width: 560px; }
 html body #resenas.enerplu-reviews .lc-btn.enerplu-review-cta:hover { background: #c90000 !important; }
+
+/* logos de pago: solo el kit oficial de Bold, dentro del bloque de pago */
+.oc-pop .ep-pay-accept { margin: 10px 0 0; text-align: center; }
+.oc-pop .ep-pay-accept > p { margin: 0 0 6px; font-weight: 700; color: #333; font-size: 13px; }
+.oc-pop .oc-bold-kit { max-width: 320px; margin: 0 auto 6px; display: flex; justify-content: center; }
+/* sin botón "COMPRAR AHORA" en la barra de arriba (cesar 2026-11-10): solo el logo */
+html body .ep-navbar-fixed-btn { display: none !important; }

@@ -186,11 +186,16 @@
   window.addEventListener('resize', stick);
   setInterval(stick, 500);
 
-  /* ---- sello de Bold (kit oficial) bajo los métodos de pago ---- */
-  var payBlock = $('[data-ep-pay-block]', form);
-  if (payBlock) {
-    var bk = document.createElement('div'); bk.className = 'oc-bold'; bk.innerHTML = '<span>Pagos procesados por</span><div id="bold-kit"></div>';
-    payBlock.appendChild(bk);
+  /* ---- logos de medios de pago: una sola vez, dentro de "3- Método de pago" y solo cuando se paga en línea ----
+     Antes salían dos veces (las etiquetas de texto debajo del botón + el sello); ahora se usa solo el kit oficial de Bold y
+     el bloque conserva la lógica de la página: aparece cuando el cliente elige pagar en línea (o la ciudad es solo prepago). */
+  var payBlock = $('[data-ep-pay-block]', form), logos = $('[data-ep-pay-logos]', form);
+  if (payBlock && logos) {
+    var pills = $('.ep-pay-logos', logos); if (pills) pills.remove();
+    var cap = $('p', logos); if (cap) cap.textContent = 'Medios de pago aceptados';
+    var kit = document.createElement('div'); kit.id = 'bold-kit'; kit.className = 'oc-bold-kit';
+    logos.insertBefore(kit, $('small', logos));
+    payBlock.appendChild(logos);   /* del final del formulario al bloque de pago */
     var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?theme=light&target=bold-kit';
     document.head.appendChild(sc);
   }

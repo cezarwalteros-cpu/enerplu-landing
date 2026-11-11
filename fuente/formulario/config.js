@@ -131,6 +131,7 @@ window.EP_CONFIG = {
     anchor: '#ep-checkout',
     /* modo 'inline' (versión con formulario en la misma página): envía el pedido directo al backend del checkout */
     api: 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-native',
+    upsellApi: 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-upsell',
     slug: 'enerplu',
     funnelApi: 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track',
     /* municipios mal escritos ("guaican" → Güicán): función pública de solo lectura sobre el catálogo de municipios */

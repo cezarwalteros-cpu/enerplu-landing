@@ -6351,6 +6351,7 @@ window.EP_CONFIG = {
     anchor: '#ep-checkout',
     /* modo 'inline' (versión con formulario en la misma página): envía el pedido directo al backend del checkout */
     api: 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-native',
+    upsellApi: 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-upsell',
     slug: 'enerplu',
     funnelApi: 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track',
     /* municipios mal escritos ("guaican" → Güicán): función pública de solo lectura sobre el catálogo de municipios */
@@ -7197,6 +7198,13 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         self.paint();
       }, function () { self.cfgState = ''; });
     },
+    /* upsell después del pedido: función aparte del CRM (checkout-upsell) */
+    upApi: function (body, keep) {
+      var url = C.checkout.upsellApi || String(C.checkout.api || '').replace(/checkout-native$/, 'checkout-upsell');
+      return fetch(url, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' }, keepalive: !!keep }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (j) { return { status: res.status, ok: res.ok, j: j || {} }; });
+      });
+    },
     api: function (method, qsPart, body, keep) {
       var ctrl = global.AbortController ? new AbortController() : null, timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 20000) : 0;
       var opt = { method: method, signal: ctrl ? ctrl.signal : undefined };
@@ -7628,7 +7636,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
         customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') || 'Sin barrio: confirmar por WhatsApp', notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
-        offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false, upsell_after: upAfter,
+        offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
         payment_method: this.method(), tracking: this.tracking()
       };
@@ -7641,7 +7649,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       this.api('POST', '', body).then(function (r) {
         var j = r.j || {};
         if (r.ok && j.success && j.payment_required) { self.payOpen(j); return; }
-        if (r.ok && j.success) { self.success(j, body); if (j.upsell_pending && j.order_id && up) self.upsellOpen(up, j, body); return; }
+        if (r.ok && j.success) { self.success(j, body); if (upAfter && j.order_id && !j.duplicate && !j.dry_run) self.upsellOpen(up, j, body); return; }
         var map = j.fields || {}, shown = false;
         Object.keys(map).forEach(function (k) {
           var key = k === 'full_name' ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
@@ -7677,9 +7685,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         var t = e.target.closest('[data-ep-ups]'); if (!t) return;
         var yes = t.getAttribute('data-ep-ups') === 'yes';
         Funnel.send(yes ? 'upsell_accept' : 'upsell_decline', { item: up.key || 'retardante' });
-        if (!yes) { d.remove(); self.api('POST', '', { action: 'upsell', slug: C.checkout.slug, session_id: self.sid, order_id: j.order_id, accept: false }, true).catch(function () {}); return; }
+        if (!yes) { d.remove(); self.upApi({ slug: C.checkout.slug, session_id: self.sid, order_id: j.order_id, accept: false }, true).catch(function () {}); return; }
         if (self.upSending) return; self.upSending = true; t.disabled = true;
-        self.api('POST', '', { action: 'upsell', slug: C.checkout.slug, session_id: self.sid, order_id: j.order_id, accept: true }).then(function (r) {
+        self.upApi({ slug: C.checkout.slug, session_id: self.sid, order_id: j.order_id, accept: true }).then(function (r) {
           var k = r.j || {};
           if (r.ok && k.success && k.added) { self.st.upsell = true; body.upsell = true; self.success(Object.assign({}, j, { total_cop: k.total_cop, items: k.items || j.items }), body, true); }
         }, function () {}).then(function () { d.remove(); self.upSending = false; });

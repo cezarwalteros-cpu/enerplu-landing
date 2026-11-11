@@ -1902,6 +1902,11 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 
 /* las opciones de pago no llevan etiquetas de texto (VISA, PSE...): los logos oficiales salen en el bloque de Bold, después del botón */
 .oc-pop [data-ep-render="pay"] .ep-pay-logos { display: none !important; }
+
+.oc-pop .ep-pay-save { text-align: right; }
+.oc-pop .oc-pay-total { display: block; margin-top: 6px; color: #111; font-size: 15px; font-weight: 900; white-space: nowrap; }
+
+.oc-pop .oc-bold-slider{margin-top:8px;max-width:260px;overflow:hidden}
 </style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
@@ -8502,6 +8507,33 @@ window.EP_POPUP_MODE = 'off';
   window.addEventListener('scroll', stick, { passive: true });
   window.addEventListener('resize', stick);
   setInterval(stick, 500);
+
+  /* ---- bajo "Ahorras $12.000": "Pagas $X" = el precio de la oferta elegida ya con el descuento (cesar 2026-11-10) ---- */
+  var payR = window.EP_RENDER;
+  function num(t) { return parseInt(String(t || '').replace(/[^\d]/g, ''), 10) || 0; }
+  function payTotals() {
+    var tot = $('.oc-sel [data-ep-bind="total"]', form); if (!tot || !payR) return;
+    var on = $('input[name="ep-pay"]:checked', form), online = on && on.value !== 'cod';
+    form.querySelectorAll('.ep-pay-save').forEach(function (sv) {
+      var disc = num((sv.textContent || '').replace(/Pagas.*$/, ''));
+      if (!disc) return;
+      var total = num(tot.textContent), pay = online ? total : total - disc;
+      var el = sv.querySelector('.oc-pay-total');
+      var txt = 'Pagas ' + payR.money(pay);
+      if (!el) { el = document.createElement('b'); el.className = 'oc-pay-total'; sv.appendChild(document.createElement('br')); sv.appendChild(el); }
+      if (el.textContent !== txt) el.textContent = txt;
+    });
+  }
+  /* logos oficiales dentro de la tarjeta de Bold: slider oficial (cesar 2026-11-10) */
+  function boldSlider() {
+    var inp = form.querySelector('input[name="ep-pay"][value="bold"]'); if (!inp) return;
+    var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-bold-slider')) return;
+    var box = document.createElement('div'); box.className = 'oc-bold-slider';
+    var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?type=slider';
+    box.appendChild(sc); (row.querySelector('.ep-pay-txt') || row).appendChild(box);
+  }
+  setInterval(function () { payTotals(); boldSlider(); }, 350);
+  document.addEventListener('change', function () { setTimeout(payTotals, 60); });
 
   /* ---- logos de medios de pago: una sola vez, después del botón y solo cuando se paga en línea ----
      Antes salían dos veces (las etiquetas de texto debajo del botón + el sello); ahora se usa solo el kit oficial de Bold y

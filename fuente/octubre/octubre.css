@@ -98,3 +98,8 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 
 /* las opciones de pago no llevan etiquetas de texto (VISA, PSE...): los logos oficiales salen en el bloque de Bold, después del botón */
 .oc-pop [data-ep-render="pay"] .ep-pay-logos { display: none !important; }
+
+.oc-pop .ep-pay-save { text-align: right; }
+.oc-pop .oc-pay-total { display: block; margin-top: 6px; color: #111; font-size: 15px; font-weight: 900; white-space: nowrap; }
+
+.oc-pop .oc-bold-slider{margin-top:8px;max-width:260px;overflow:hidden}

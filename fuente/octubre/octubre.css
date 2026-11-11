@@ -95,3 +95,6 @@ html body #resenas.enerplu-reviews .lc-btn.enerplu-review-cta:hover { background
 .oc-pop .oc-bold-kit { max-width: 320px; margin: 0 auto 6px; display: flex; justify-content: center; }
 /* sin botón "COMPRAR AHORA" en la barra de arriba (cesar 2026-11-10): solo el logo */
 html body .ep-navbar-fixed-btn { display: none !important; }
+
+/* las opciones de pago no llevan etiquetas de texto (VISA, PSE...): los logos oficiales salen en el bloque de Bold, después del botón */
+.oc-pop [data-ep-render="pay"] .ep-pay-logos { display: none !important; }

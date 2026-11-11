@@ -186,7 +186,7 @@
   window.addEventListener('resize', stick);
   setInterval(stick, 500);
 
-  /* ---- logos de medios de pago: una sola vez, dentro de "3- Método de pago" y solo cuando se paga en línea ----
+  /* ---- logos de medios de pago: una sola vez, después del botón y solo cuando se paga en línea ----
      Antes salían dos veces (las etiquetas de texto debajo del botón + el sello); ahora se usa solo el kit oficial de Bold y
      el bloque conserva la lógica de la página: aparece cuando el cliente elige pagar en línea (o la ciudad es solo prepago). */
   var payBlock = $('[data-ep-pay-block]', form), logos = $('[data-ep-pay-logos]', form);
@@ -195,7 +195,7 @@
     var cap = $('p', logos); if (cap) cap.textContent = 'Medios de pago aceptados';
     var kit = document.createElement('div'); kit.id = 'bold-kit'; kit.className = 'oc-bold-kit';
     logos.insertBefore(kit, $('small', logos));
-    payBlock.appendChild(logos);   /* del final del formulario al bloque de pago */
+    /* queda donde estaba: justo después del botón (cesar 2026-11-10) */
     var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?theme=light&target=bold-kit';
     document.head.appendChild(sc);
   }

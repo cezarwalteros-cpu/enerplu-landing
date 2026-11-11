@@ -250,28 +250,71 @@ AB_HEAD = """<script>
   if(v==='B'){location.replace('/b'+q+location.hash);}
 }catch(e){}})();
 </script>"""
-def ab_send(v):
+def ab_send(v, exp='E04'):
     return """<script>
 (function(){
   var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;
   var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}
     if(!sid){if(n++<20)setTimeout(go,300);return;}
-    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E04',v:'%s'}});
+    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'%s',v:'%s'}});
     var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
     try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}
   })();
 })();
-</script>""" % v
+</script>""" % (exp, v)
+# E-05 (cesar 2026-11-10 10:47 pm, "Test A/B 50/50"): página actual (A, "/") contra la réplica de octubre (B, "/octubre").
+# Asignación: localStorage ep_e05 (50/50, fija por navegador); ?ab5=A|B fuerza la variante. B se redirige antes de cargar el píxel.
+# Medición: funnel_events ab_assign {exp:'E05', v} por sesión + checkout_attempts.session_id. AB_E05 = False apaga la prueba (todos ven A).
+AB_E05 = True
+AB5_HEAD = """<script>
+(function(){try{
+  var p=location.pathname; if(p!=='/'&&p!=='/index'&&p!=='/index.html') return;
+  var q=location.search; if(/[?&]ep_test=1(&|$)/.test(q)) return;
+  var f=(q.match(/[?&]ab5=([AB])/)||[])[1], v=f;
+  if(!v){try{v=localStorage.getItem('ep_e05')}catch(e){}}
+  if(v!=='A'&&v!=='B'){v=Math.random()<0.5?'A':'B'}
+  try{localStorage.setItem('ep_e05',v)}catch(e){}
+  if(v==='B'){location.replace('/octubre'+q+location.hash);}
+}catch(e){}})();
+</script>"""
 # Popup de 5% en la primera compra (fuente/popup5.js, prueba "popup5" A vs B, código ENERPLU5 en el CRM). Sale en "/" y en "/b".
 # POPUP5 = False lo apaga. Necesita discount_codes ENERPLU5 + checkout_pages.show_coupon en el CRM.
 POPUP5 = True
 if POPUP5:
     html = must(html, '</head>', '<style>' + (ROOT / 'fuente' / 'popup5.css').read_text() + '</style>\n</head>')
     html = must(html, '</body>', '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n</body>')
+
+# /octubre · réplica de la página de octubre (pedido de cesar 2026-11-10): textos y botones de entonces, testimonios de WhatsApp,
+# selector de planes en la página y el formulario en una ventana (estilo Releasit), con el mismo checkout de hoy.
+# Vista previa, noindex. No cambia la página principal.
+if not HERO_V2:
+    _oc = html
+    for _a, _b in CAMBIOS_TODAS:
+        _oc = must(_oc, _b, _a)
+    _pg = json.loads((ROOT / 'fuente' / 'octubre' / 'pagina.json').read_text())   # secciones de la página guardada de Shopify (tools/octubre_extraer.py)
+    _ORDER_OCT = ['e', 'p0', 'p1', 'oferta', 'p5']
+    _body_oc = '\n'.join({'e': secs[0], 'oferta': order_block, 'p0': _pg['sections'][0], 'p1': _pg['sections'][1], 'p5': _pg['sections'][2]}[k] for k in _ORDER_OCT)
+    # textos del selector (cesar 2026-11-10): ya hay pago anticipado, así que no se dice "sin tarjeta / sin pagos por adelantado"; es un paquete, no una caja
+    _body_oc = must(_body_oc, '<div class="ep-trust-line">🔒 Sin tarjeta · Sin pagos por adelantado</div>', '')
+    _body_oc = must(_body_oc, '📦 Caja neutra: nadie sabe qué contiene', '📦 Paquete neutro: nadie sabe qué contiene')
+    # los botones del hero y de los testimonios apuntaban a la página de Shopify: aquí bajan a las ofertas sin salir de la página
+    _body_oc = re.sub(r'https://enerplu\.lat/pages/html\?[^"#]*#ep-offer-widget', '#ep-offer-widget', _body_oc)
+    assert _oc.count(body) == 1, 'octubre: no encuentro el cuerpo'
+    _oc = _oc.replace(body, _body_oc)
+    assert _oc.count(head_styles) == 1, 'octubre: no encuentro los estilos'
+    _oc = _oc.replace(head_styles, _pg['headStyles'])
+    _oc = must(_oc, '</head>', '<style>' + (ROOT / 'fuente' / 'octubre' / 'octubre.css').read_text() + '</style>\n</head>')
+    _oc = must(_oc, '</body>', '<script>' + (ROOT / 'fuente' / 'octubre' / 'octubre.js').read_text() + '</script>\n</body>')
+    if AB_E05:
+        _oc = must(_oc, '</body>', ab_send('B', 'E05') + '\n</body>')
+    (OUT / 'octubre.html').write_text(_oc)
 index_html = html
 if AB_E04 and not HERO_V2:
     index_html = must(index_html, '<head>', '<head>\n' + AB_HEAD)
     index_html = must(index_html, '</body>', ab_send('A') + '\n</body>')
+if AB_E05 and not HERO_V2:
+    index_html = must(index_html, '<head>', '<head>\n' + AB5_HEAD)
+    index_html = must(index_html, '</body>', ab_send('A', 'E05') + '\n</body>')
 (OUT / 'index.html').write_text(index_html)
 if AB_E04 and not HERO_V2:
     with tempfile.TemporaryDirectory() as tmp:
@@ -287,7 +330,7 @@ if HERO_V2:
 for _f in OUT.glob('prueba-popup-*.html'): _f.unlink()
 if POPUP5 and AB_E04:
     for _n, _v, _src in (('no-te-vayas', 'A', 'b.html'), ('primera-compra', 'B', 'b.html'), ('pagina-a', 'B', 'index.html')):
-        _h = (OUT / _src).read_text().replace(AB_HEAD, '')
+        _h = (OUT / _src).read_text().replace(AB_HEAD, '').replace(AB5_HEAD, '')
         _h = must(_h, '<head>', "<head>\n<meta name=\"robots\" content=\"noindex\">\n<script>try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=%s')}catch(e){}</script>" % _v)
         (OUT / ('prueba-popup-%s.html' % _n)).write_text(_h)
 # Vista previa del upsell del spray (solo Plan Básico) + bump de estrechante con texto nuevo. NO está en vivo: solo esta página lo activa.
@@ -303,7 +346,7 @@ UPSELL_PREVIEW = {
              'text': 'Efecto astringente y lubricante inmediato: mayor fricción y sensación más intensa para ambos. Fórmula suave en frasco de 30 ml. Se despacha en el mismo paquete 100% discreto.'},
 }
 if True:
-    _h = (OUT / ('b.html' if (OUT / 'b.html').exists() else 'index.html')).read_text().replace(AB_HEAD, '')
+    _h = (OUT / ('b.html' if (OUT / 'b.html').exists() else 'index.html')).read_text().replace(AB_HEAD, '').replace(AB5_HEAD, '')
     _h = must(_h, '<head>', "<head>\n<meta name=\"robots\" content=\"noindex\">\n<script>window.EP_PREVIEW_UPSELL=%s;try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=N')}catch(e){}</script>" % json.dumps(UPSELL_PREVIEW, ensure_ascii=False))
     (OUT / 'prueba-upsell-spray.html').write_text(_h)
 (OUT / 'garantia.html').write_text((ROOT / 'fuente' / 'garantia.html').read_text())

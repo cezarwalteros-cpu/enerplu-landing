@@ -276,11 +276,13 @@ if not HERO_V2:
     _oc = html
     for _a, _b in CAMBIOS_TODAS:
         _oc = must(_oc, _b, _a)
-    _sel = (ROOT / 'fuente' / 'octubre' / 'selector.html').read_text()
-    _ORDER_OCT = [0, 1, 2, 4, 5, 6, 7, 'selector', 'oferta', 10, 11]
-    _body_oc = '\n'.join({'oferta': order_block, 'selector': _sel}.get(k) if isinstance(k, str) else secs[k] for k in _ORDER_OCT)
+    _pg = json.loads((ROOT / 'fuente' / 'octubre' / 'pagina.json').read_text())   # secciones de la página guardada de Shopify (tools/octubre_extraer.py)
+    _ORDER_OCT = ['p0', 'p1', 'oferta', 'p5']
+    _body_oc = '\n'.join({'oferta': order_block, 'p0': _pg['sections'][0], 'p1': _pg['sections'][1], 'p5': _pg['sections'][2]}[k] for k in _ORDER_OCT)
     assert _oc.count(body) == 1, 'octubre: no encuentro el cuerpo'
     _oc = _oc.replace(body, _body_oc)
+    assert _oc.count(head_styles) == 1, 'octubre: no encuentro los estilos'
+    _oc = _oc.replace(head_styles, _pg['headStyles'])
     _oc = must(_oc, '</head>', '<style>' + (ROOT / 'fuente' / 'octubre' / 'octubre.css').read_text() + '</style>\n</head>')
     _oc = must(_oc, '</body>', '<script>' + (ROOT / 'fuente' / 'octubre' / 'octubre.js').read_text() + '</script>\n</body>')
     (OUT / 'octubre.html').write_text(_oc)

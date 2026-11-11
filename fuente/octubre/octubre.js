@@ -139,10 +139,34 @@
   window.EP_POPUP = { open: open, close: close };
   pop.addEventListener('click', function (e) { if (e.target === pop || e.target.closest('[data-pop-close]')) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  /* ---- selector de ofertas de la página de Shopify (v7): elegir tarjeta = elegir plan; el botón abre la ventana ---- */
+  var IDS = ['inicial', 'dominio', 'elite'];
+  var CTAS = ['PEDIR EL PLAN BÁSICO', 'PEDIR MI PLAN DOMINIO TOTAL', 'PEDIR MI PLAN ÉLITE'];
+  function pick(i) {
+    var cards = document.querySelectorAll('#ep-offers .ep-card');
+    cards.forEach(function (c, k) { c.classList.toggle('selected', k === i); });
+    var c = cards[i], pr = c && c.querySelector('.ep-price');
+    var b = document.getElementById('ep-btn-cta'); if (b) b.textContent = CTAS[i];
+    var bp = document.getElementById('ep-btn-price'); if (bp && pr) bp.textContent = pr.textContent;
+    var r = $('input[name="ep-pack-order"][value="' + IDS[i] + '"]', form);
+    if (r && !r.checked) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }
+    setTimeout(function () { thumb(); ship(); }, 40);
+  }
   document.addEventListener('click', function (e) {
-    var t = e.target && e.target.closest ? e.target.closest('[data-pop-open]') : null;
-    if (!t || t.closest('.ep-pop')) return;
-    e.preventDefault(); open(t.getAttribute('data-pop-open'));
+    var t = e.target; if (!t || !t.closest || t.closest('.ep-pop')) return;
+    var card = t.closest('#ep-offers .ep-card');
+    if (card) { pick([].indexOf.call(document.querySelectorAll('#ep-offers .ep-card'), card)); return; }
+    if (t.closest('#ep-checkout-btn')) { e.preventDefault(); open('selector'); return; }
+    /* botones de la página (barra de arriba, hero, testimonios): bajan a las ofertas */
+    var btn = t.closest('a, button, .gp-button, [role=button]');
+    if (btn && /^(go-plan-dominio|go-plan-dominio-nav)$/.test(btn.id || '') || (btn && /quiero|comprar ahora|pedir/i.test(btn.textContent || '') && !btn.closest('#ep-offer-widget') && !btn.closest('.ep-root'))) {
+      var href = btn.getAttribute('href') || '';
+      if (href && !/^#|^javascript:/i.test(href)) return;
+      e.preventDefault(); e.stopPropagation();
+      var box = document.getElementById('ep-offer-widget'), nav = document.getElementById('ep-navbar-fixed');
+      if (box) window.scrollTo({ top: box.getBoundingClientRect().top + window.pageYOffset - ((nav && nav.offsetHeight) || 70) - 10, behavior: 'smooth' });
+    }
   }, true);
+  pick(1);
   if (q.get('bold-order-id')) open('bold');
 })();

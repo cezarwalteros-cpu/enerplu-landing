@@ -17,7 +17,9 @@
 .oc-pop .ep-pop-head img { display: block; height: 78px; width: auto; }
 .oc-pop .ep-pop-x { position: absolute; right: 10px; top: 10px; }
 .oc-pop .ep-pop-body { padding: 0 16px 24px; background: #fff; color: #111; font-family: 'Inter', -apple-system, Roboto, Arial, sans-serif; }
-.oc-pop .ep-plans, .oc-pop .eph-faq, .oc-pop .eph-guarantee, .oc-pop .eph-trust, .oc-pop .ep-of-legend, .oc-pop .ep-f-help { display: none !important; }
+.oc-pop .ep-plans, .oc-pop .eph-faq, .oc-pop .eph-guarantee, .oc-pop .eph-trust, .oc-pop .ep-f-help { display: none !important; }
+.oc-pop .ep-of-legend { display: none; }
+.oc-pop [data-ep-ship-block] .ep-of-legend, .oc-pop [data-ep-pay-block] .ep-of-legend { display: block; float: none; width: 100%; padding: 0; margin: 4px 0 12px; text-align: left; font: 800 21px/1.2 Inter, Arial, sans-serif; color: #111; }
 .oc-pop .ep-root .ep-order, .oc-pop .ep-root .eph-order { padding: 0 !important; background: #fff !important; }
 .oc-pop .ep-wrap--form { padding: 0 !important; max-width: none !important; }
 .oc-pop .ep-of { background: transparent; border: 0; box-shadow: none; padding: 0; margin: 0; }
@@ -62,3 +64,6 @@
 .oc-quotes p { margin: 4px 0 0; font-size: 17px; }
 .oc-seal { display: block; width: 150px; margin: 14px auto 0; }
 @media (max-width: 380px) { .oc-sel h3 { font-size: 22px; } }
+
+/* sin franja en blanco arriba en celular: la barra fija de arriba está oculta ahí, pero la página guardada deja 66px de relleno */
+@media (max-width: 767px) { body { padding-top: 0 !important; margin-top: 0 !important; } }

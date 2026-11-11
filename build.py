@@ -277,8 +277,11 @@ if not HERO_V2:
     for _a, _b in CAMBIOS_TODAS:
         _oc = must(_oc, _b, _a)
     _pg = json.loads((ROOT / 'fuente' / 'octubre' / 'pagina.json').read_text())   # secciones de la página guardada de Shopify (tools/octubre_extraer.py)
-    _ORDER_OCT = ['p0', 'p1', 'oferta', 'p5']
-    _body_oc = '\n'.join({'oferta': order_block, 'p0': _pg['sections'][0], 'p1': _pg['sections'][1], 'p5': _pg['sections'][2]}[k] for k in _ORDER_OCT)
+    _ORDER_OCT = ['e', 'p0', 'p1', 'oferta', 'p5']
+    _body_oc = '\n'.join({'e': secs[0], 'oferta': order_block, 'p0': _pg['sections'][0], 'p1': _pg['sections'][1], 'p5': _pg['sections'][2]}[k] for k in _ORDER_OCT)
+    # textos del selector (cesar 2026-11-10): ya hay pago anticipado, así que no se dice "sin tarjeta / sin pagos por adelantado"; es un paquete, no una caja
+    _body_oc = must(_body_oc, '<div class="ep-trust-line">🔒 Sin tarjeta · Sin pagos por adelantado</div>', '')
+    _body_oc = must(_body_oc, '📦 Caja neutra: nadie sabe qué contiene', '📦 Paquete neutro: nadie sabe qué contiene')
     assert _oc.count(body) == 1, 'octubre: no encuentro el cuerpo'
     _oc = _oc.replace(body, _body_oc)
     assert _oc.count(head_styles) == 1, 'octubre: no encuentro los estilos'

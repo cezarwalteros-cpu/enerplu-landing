@@ -97,6 +97,11 @@
     if (el) el.style.order = r[1];
   });
 
+  /* ---- títulos numerados como en Releasit ---- */
+  var lg1 = $('[data-ep-ship-block] .ep-of-legend', form), lg2 = $('[data-ep-pay-block] .ep-of-legend', form);
+  if (lg1) lg1.textContent = '2- Método de envío';
+  if (lg2) lg2.textContent = '3- Método de pago';
+
   /* ---- botón verde: REALIZAR PEDIDO - Por $X / Pago Contra-Entrega ---- */
   var btn = $('[data-ep-submit]', form), lab = btn && $('.ep-cta-label b', btn);
   if (lab) {

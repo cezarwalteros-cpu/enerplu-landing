@@ -268,6 +268,22 @@ POPUP5 = True
 if POPUP5:
     html = must(html, '</head>', '<style>' + (ROOT / 'fuente' / 'popup5.css').read_text() + '</style>\n</head>')
     html = must(html, '</body>', '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n</body>')
+
+# /octubre · réplica de la página de octubre (pedido de cesar 2026-11-10): textos y botones de entonces, testimonios de WhatsApp,
+# selector de planes en la página y el formulario en una ventana (estilo Releasit), con el mismo checkout de hoy.
+# Vista previa, noindex. No cambia la página principal.
+if not HERO_V2:
+    _oc = html
+    for _a, _b in CAMBIOS_TODAS:
+        _oc = must(_oc, _b, _a)
+    _sel = (ROOT / 'fuente' / 'octubre' / 'selector.html').read_text()
+    _ORDER_OCT = [0, 1, 2, 4, 5, 6, 7, 'selector', 'oferta', 10, 11]
+    _body_oc = '\n'.join({'oferta': order_block, 'selector': _sel}.get(k) if isinstance(k, str) else secs[k] for k in _ORDER_OCT)
+    assert _oc.count(body) == 1, 'octubre: no encuentro el cuerpo'
+    _oc = _oc.replace(body, _body_oc)
+    _oc = must(_oc, '</head>', '<style>' + (ROOT / 'fuente' / 'octubre' / 'octubre.css').read_text() + '</style>\n</head>')
+    _oc = must(_oc, '</body>', '<script>' + (ROOT / 'fuente' / 'octubre' / 'octubre.js').read_text() + '</script>\n</body>')
+    (OUT / 'octubre.html').write_text(_oc)
 index_html = html
 if AB_E04 and not HERO_V2:
     index_html = must(index_html, '<head>', '<head>\n' + AB_HEAD)

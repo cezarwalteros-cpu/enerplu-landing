@@ -61,27 +61,10 @@
   document.addEventListener('change', function () { setTimeout(function () { thumb(); ship(); inc(); }, 30); });
   setTimeout(thumb, 400); setTimeout(thumb, 1500);
 
-  /* ---- un solo campo "Nombre y apellido" (se reparte en los dos campos que usa el pedido) ---- */
+  /* ---- nombre y apellidos en campos separados (cesar 2026-11-10) ---- */
   var fFirst = $('#ep-f-first'), fLast = $('#ep-f-last');
   var grid = $('.ep-of-grid', fs);
-  var one = document.createElement('div');
-  one.className = 'ep-f oc-name-f';
-  one.innerHTML = '<label for="ep-oc-name">Nombre Y Apellido Completos</label><div class="oc-ig"><span class="oc-ic">' + ICON.user + '</span>' +
-    '<input id="ep-oc-name" type="text" autocomplete="name" autocapitalize="words" maxlength="120" placeholder="Nombre y Apellido Completo"></div>';
-  grid.parentNode.insertBefore(one, grid);
-  var e1 = $('[data-ep-err="first_name"]', grid), e2 = $('[data-ep-err="last_name"]', grid);
-  if (e1) one.appendChild(e1); if (e2) one.appendChild(e2);
-  var oneIn = $('#ep-oc-name', one);
-  function setVal(el, v) { el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
-  function splitName() {
-    var v = oneIn.value.replace(/\s+/g, ' ').trim(), i = v.indexOf(' ');
-    setVal(fFirst, i < 0 ? v : v.slice(0, i)); setVal(fLast, i < 0 ? '' : v.slice(i + 1));
-  }
-  oneIn.addEventListener('input', splitName);
-  oneIn.addEventListener('blur', splitName);
-  function joinName() { if (!oneIn.value && (fFirst.value || fLast.value)) oneIn.value = (fFirst.value + ' ' + fLast.value).trim(); }
-  setTimeout(joinName, 300);
-  fFirst.removeAttribute('required'); fLast.removeAttribute('required');
+  grid.classList.add('oc-grid2');
 
   /* ---- etiquetas, textos de ejemplo e iconos del formulario de octubre ---- */
   function field(id) { return document.getElementById(id); }
@@ -96,13 +79,15 @@
     l.innerHTML = txt + (req ? '<span class="oc-req">*</span>' : '');
   }
   var phone = field('ep-f-phone'), addr = field('ep-f-addr'), add = field('ep-f-add'), city = field('ep-f-city');
-  label('ep-oc-name', 'Nombre Y Apellido Completos', true);
+  label('ep-f-first', 'Nombre', true); label('ep-f-last', 'Apellidos', true);
+  if (fFirst) { fFirst.placeholder = 'Tu nombre'; wrapIcon(fFirst, ICON.user); }
+  if (fLast) { fLast.placeholder = 'Tus apellidos'; wrapIcon(fLast, ICON.user); }
   label('ep-f-phone', 'Teléfono', true); if (phone) { phone.placeholder = 'Teléfono con WhatsApp'; var pw = phone.parentNode; pw.classList.remove('ep-f-phone'); pw.classList.add('oc-ig'); var ps = document.createElement('span'); ps.className = 'oc-ic'; ps.innerHTML = ICON.wa; pw.insertBefore(ps, pw.firstChild); var old = $('span[aria-hidden]', pw); if (old && old !== ps) old.remove(); }
   label('ep-f-addr', 'Dirección Completa', true); if (addr) { addr.placeholder = 'ejemplo: CARRERA 12 # 34 - 56 SUR'; wrapIcon(addr, ICON.pin); }
   label('ep-f-add', 'Referencia, Barrio o Observaciones <span style="font-weight:700">(opcional)</span>'); if (add) { add.placeholder = 'Barrio/Unidad/Conjunto/Edificio/torre'; wrapIcon(add, ICON.pin); }
   label('ep-f-city', 'Ciudad o Municipio / Departamento', true); if (city) city.placeholder = 'Escribe tu ciudad o municipio';
   var order_ = { 'oc-name-f': 1 };
-  [['.oc-name-f', 1], ['#ep-f-phone', 2], ['#ep-f-addr', 3], ['#ep-f-add', 4], ['.ep-f--city', 5], ['[data-ep-email-row]', 6]].forEach(function (r) {
+  [['.oc-grid2', 1], ['#ep-f-phone', 2], ['#ep-f-addr', 3], ['#ep-f-add', 4], ['.ep-f--city', 5], ['[data-ep-email-row]', 6]].forEach(function (r) {
     var el = r[0].charAt(0) === '#' ? (field(r[0].slice(1)) && field(r[0].slice(1)).closest('.ep-f')) : $(r[0], fs);
     if (el) el.style.order = r[1];
   });
@@ -143,7 +128,7 @@
     if (isOpen) return; isOpen = true;
     pop.classList.add('is-open'); pop.setAttribute('aria-hidden', 'false');
     document.documentElement.classList.add('ep-pop-lock');
-    bodyEl.scrollTop = 0; thumb(); joinName();
+    bodyEl.scrollTop = 0; thumb();
     try { window.fbq && window.fbq('trackCustom', 'PopupOpen', { from: src }); } catch (e) {}
   }
   function close() {

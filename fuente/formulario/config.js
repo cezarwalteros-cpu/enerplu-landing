@@ -141,10 +141,10 @@ window.EP_CONFIG = {
     bump: { price: 19900, compare: 29900, title: 'Gel Estrechante Virgyflower (30 ml)', contain: true,
             text: 'Efecto astringente y lubricante inmediato: mayor fricción y sensación más intensa para ambos. Fórmula suave en frasco de 30 ml. Se despacha en el mismo paquete 100% discreto.',
             image: 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1794344899/ESTRECHANTE_tg6at5.webp' },
-    /* upsell antes de confirmar, solo Plan Básico (cesar 10-nov). El precio real lo cobra el CRM: checkout_pages.upsell */
+    /* upsell DESPUÉS de guardar el pedido (cesar 11-nov), solo Plan Básico contra entrega. El precio real lo cobra el CRM: checkout_pages.upsell */
     upsell: { key: 'retardante', only: 'inicial', price: 24900, compare: 49900, title: 'Spray Retardante Club Velvet 30 ml',
               image: 'https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_500/v1794346291/Botella_Club_Velvet_Retardante_Premium_qj3ihr.webp',
-              eyebrow: 'Espera, antes de confirmar', headline: 'Lleva la experiencia al nivel de control absoluto',
+              eyebrow: 'Tu pedido ya quedó registrado · oferta solo ahora', headline: 'Lleva la experiencia al nivel de control absoluto',
               text: 'Ya tienes la firmeza y resistencia con tu pedido por dentro; el spray Velvet te da el control exacto del reloj por fuera. El combo de blindaje definitivo.',
               bullets: ['Olvídate de la tensión mental de tener que aguantar', 'Disfruta del ritmo intenso sin miedo a terminar antes', 'Llega en el mismo paquete 100% discreto y sin costo de envío adicional'] },
     express: { price: 5000, title: 'Express', text: 'Despacho con prioridad y envío asegurado' },

@@ -1829,7 +1829,7 @@ html.epp-lock{overflow:hidden}
 .oc-pop .ep-of { background: transparent; border: 0; box-shadow: none; padding: 0; margin: 0; }
 .oc-pop .ep-of-block { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; }
 .oc-pop .ep-of-block .ep-f { margin: 0 0 14px; }
-.oc-pop .ep-of-block .ep-of-grid { display: block; margin: 0; }
+.oc-pop .ep-of-block .ep-of-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; margin: 0; }
 .oc-pop .oc-grid2 .ep-f { margin: 0 0 14px; }
 .oc-sel h3 { margin: 6px 0 12px; text-align: center; font: 800 25px/1.2 Inter, Arial, sans-serif; letter-spacing: .01em; color: #111; }
 .oc-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #d7d7d7; border-bottom: 1px solid #d7d7d7; }
@@ -1915,7 +1915,7 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 .oc-incl { display: block; font: 500 13px/1.4 Inter, Arial, sans-serif; color: #555; }
 .oc-guias { font-size: 13px; opacity: .9; }
 .oc-pop .oc-bold-slider { width: 100%; min-width: 200px; min-height: 36px; }
-.oc-pop .oc-grid2 .ep-f{margin:0 0 14px!important}.oc-pop .oc-grid2{display:flex;flex-direction:column}
+.oc-pop .oc-grid2 .ep-f{margin:0 0 14px!important}.oc-pop .oc-grid2 .oc-ic{width:34px}.oc-pop .oc-grid2 input{min-width:0;padding-left:10px;padding-right:6px}
 html body #ep-navbar-fixed, html body .ep-navbar-fixed-btn { display: none !important; }
 html body { padding-top: 0 !important; margin-top: 0 !important; }
 </style>
@@ -8413,8 +8413,8 @@ window.EP_POPUP_MODE = 'off';
   }
   var phone = field('ep-f-phone'), addr = field('ep-f-addr'), add = field('ep-f-add'), city = field('ep-f-city');
   label('ep-f-first', 'Nombre', true); label('ep-f-last', 'Apellidos', true);
-  if (fFirst) { fFirst.placeholder = 'Tu nombre'; wrapIcon(fFirst, ICON.user); }
-  if (fLast) { fLast.placeholder = 'Tus apellidos'; wrapIcon(fLast, ICON.user); }
+  if (fFirst) { fFirst.placeholder = 'Nombre'; wrapIcon(fFirst, ICON.user); }
+  if (fLast) { fLast.placeholder = 'Apellidos'; wrapIcon(fLast, ICON.user); }
   label('ep-f-phone', 'Teléfono', true); if (phone) { phone.placeholder = 'Teléfono con WhatsApp'; var pw = phone.parentNode; pw.classList.remove('ep-f-phone'); pw.classList.add('oc-ig'); var ps = document.createElement('span'); ps.className = 'oc-ic'; ps.innerHTML = ICON.wa; pw.insertBefore(ps, pw.firstChild); var old = $('span[aria-hidden]', pw); if (old && old !== ps) old.remove(); }
   label('ep-f-addr', 'Dirección Completa', true); if (addr) { addr.placeholder = 'ejemplo: CARRERA 12 # 34 - 56 SUR'; wrapIcon(addr, ICON.pin); }
   label('ep-f-add', 'Referencia, Barrio o Observaciones <span style="font-weight:700">(opcional)</span>'); if (add) { add.placeholder = 'Barrio/Unidad/Conjunto/Edificio/torre'; wrapIcon(add, ICON.pin); }

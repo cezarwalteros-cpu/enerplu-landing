@@ -80,8 +80,8 @@
   }
   var phone = field('ep-f-phone'), addr = field('ep-f-addr'), add = field('ep-f-add'), city = field('ep-f-city');
   label('ep-f-first', 'Nombre', true); label('ep-f-last', 'Apellidos', true);
-  if (fFirst) { fFirst.placeholder = 'Tu nombre'; wrapIcon(fFirst, ICON.user); }
-  if (fLast) { fLast.placeholder = 'Tus apellidos'; wrapIcon(fLast, ICON.user); }
+  if (fFirst) { fFirst.placeholder = 'Nombre'; wrapIcon(fFirst, ICON.user); }
+  if (fLast) { fLast.placeholder = 'Apellidos'; wrapIcon(fLast, ICON.user); }
   label('ep-f-phone', 'Teléfono', true); if (phone) { phone.placeholder = 'Teléfono con WhatsApp'; var pw = phone.parentNode; pw.classList.remove('ep-f-phone'); pw.classList.add('oc-ig'); var ps = document.createElement('span'); ps.className = 'oc-ic'; ps.innerHTML = ICON.wa; pw.insertBefore(ps, pw.firstChild); var old = $('span[aria-hidden]', pw); if (old && old !== ps) old.remove(); }
   label('ep-f-addr', 'Dirección Completa', true); if (addr) { addr.placeholder = 'ejemplo: CARRERA 12 # 34 - 56 SUR'; wrapIcon(addr, ICON.pin); }
   label('ep-f-add', 'Referencia, Barrio o Observaciones <span style="font-weight:700">(opcional)</span>'); if (add) { add.placeholder = 'Barrio/Unidad/Conjunto/Edificio/torre'; wrapIcon(add, ICON.pin); }

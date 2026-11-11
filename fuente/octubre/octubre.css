@@ -112,3 +112,5 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 .oc-guias { font-size: 13px; opacity: .9; }
 .oc-pop .oc-bold-slider { width: 100%; min-width: 200px; min-height: 36px; }
 .oc-pop .oc-grid2 .ep-f{margin:0 0 14px!important}.oc-pop .oc-grid2{display:flex;flex-direction:column}
+html body #ep-navbar-fixed, html body .ep-navbar-fixed-btn { display: none !important; }
+html body { padding-top: 0 !important; margin-top: 0 !important; }

@@ -104,3 +104,10 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 
 .oc-pop .oc-bold-slider{margin-top:8px;max-width:260px;overflow:hidden}
 .oc-pop .oc-tr-logos{display:flex;align-items:center;gap:16px;margin-top:8px}.oc-pop .oc-tr-logos img{height:22px;width:auto;display:block}.oc-pop .oc-tr-logos img+img{height:20px}
+
+.oc-inc { margin: 14px 0 0; padding: 12px 16px; background: #f6f6f6; border: 1px solid #e3e3e3; border-radius: 10px; }
+.oc-inc-t { display: block; margin: 0 0 8px; font: 800 13px/1.2 Inter, Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: #555; }
+.oc-inc ul { list-style: none; margin: 0; padding: 0; }
+.oc-inc li { display: flex; align-items: flex-start; gap: 9px; margin: 0; padding: 5px 0; font: 600 15px/1.35 Inter, Arial, sans-serif; color: #111; }
+.oc-inc li svg { flex: none; margin-top: 2px; }
+.oc-sel .oc-inc + .oc-sum { margin-top: 10px; }

@@ -34,6 +34,7 @@
   sel.className = 'oc-sel';
   sel.innerHTML = '<h3>USTED SELECCIONÓ:</h3>' +
     '<div class="oc-row"><span class="oc-thumb"><img alt="" data-oc-img><b>1</b></span><span class="oc-name" data-ep-bind="name">Plan</span><span class="oc-price" data-ep-bind="price"></span></div>' +
+    '<div class="oc-inc"><b class="oc-inc-t">Tu pedido incluye</b><ul data-oc-inc></ul></div>' +
     '<div class="oc-sum"><div><span>Subtotal</span><b data-ep-bind="price"></b></div><div><span>Envío</span><b data-oc-ship>Gratis</b></div><div class="oc-line"><span>Total</span><b data-ep-bind="total"></b></div></div>' +
     '<h3 class="oc-h1">1- Ingrese sus datos para el envío</h3>';
   form.insertBefore(sel, form.firstChild);
@@ -48,7 +49,19 @@
     var m = on && on.closest('label') && /\$\s*[\d.]+/.exec(on.closest('label').textContent);
     el.textContent = m ? m[0].replace(/\s+/g, '') : 'Gratis';
   }
-  document.addEventListener('change', function () { setTimeout(function () { thumb(); ship(); }, 30); });
+  var CHK = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  function inc() {
+    var ul = $('[data-oc-inc]', sel), r = $('input[name="ep-pack-order"]:checked', form), C = window.EP_CONFIG;
+    if (!ul || !r || !C) return;
+    var pk = (C.packs || []).filter(function (x) { return x.id === r.value; })[0]; if (!pk) return;
+    var items = [pk.boxes + (pk.boxes > 1 ? ' cajas' : ' caja') + ' de ENERPLU (' + pk.tablets + ' tabletas sublinguales)'];
+    (pk.gifts || []).forEach(function (g) { items.push(g + ' de regalo'); });
+    items.push('Envío gratis en paquete neutro', 'Pagas al recibir, o en línea con descuento');
+    var html = items.map(function (t) { return '<li>' + CHK + '<span>' + t + '</span></li>'; }).join('');
+    if (ul.getAttribute('data-k') !== html) { ul.setAttribute('data-k', html); ul.innerHTML = html; }
+  }
+  setInterval(inc, 400);
+  document.addEventListener('change', function () { setTimeout(function () { thumb(); ship(); inc(); }, 30); });
   setTimeout(thumb, 400); setTimeout(thumb, 1500);
 
   /* ---- un solo campo "Nombre y apellido" (se reparte en los dos campos que usa el pedido) ---- */
@@ -203,12 +216,17 @@
     });
   }
   /* logos oficiales dentro de la tarjeta de Bold: slider oficial (cesar 2026-11-10) */
+  var boldBox = null;
   function boldSlider() {
     var inp = form.querySelector('input[name="ep-pay"][value="bold"]'); if (!inp) return;
     var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-bold-slider')) return;
-    var box = document.createElement('div'); box.className = 'oc-bold-slider';
-    var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?type=slider';
-    box.appendChild(sc); (row.querySelector('.ep-ship-main') || row).appendChild(box);
+    /* la tarjeta se vuelve a pintar al cambiar ciudad/plan: se conserva la misma caja y se reubica */
+    if (!boldBox) {
+      boldBox = document.createElement('div'); boldBox.className = 'oc-bold-slider';
+      var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?type=slider';
+      boldBox.appendChild(sc);
+    }
+    (row.querySelector('.ep-ship-main') || row).appendChild(boldBox);
   }
   function transLogos() {
     var inp = form.querySelector('input[name="ep-pay"][value="transfer"]'); if (!inp) return;

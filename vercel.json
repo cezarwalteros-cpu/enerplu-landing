@@ -1,6 +1,6 @@
 {
   "framework": null,
-  "buildCommand": "",
+  "buildCommand": "node tools/bajar-recursos.mjs",
   "outputDirectory": "public",
   "cleanUrls": true,
   "redirects": [
@@ -17,6 +17,15 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/rec/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, immutable"
         }
       ]
     },

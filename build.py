@@ -402,12 +402,14 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
 (OUT / 'terminos.html').write_text((ROOT / 'fuente' / 'producto' / 'terminos.html').read_text())
 (ROOT / 'vercel.json').write_text(json.dumps({
     "framework": None,
-    "buildCommand": "",
+    # copia a nuestro servidor las imágenes de Shopify y el CSS/fuentes de losgomosos.lat (si falla, deja el enlace original)
+    "buildCommand": "node tools/bajar-recursos.mjs",
     "outputDirectory": "public",
     "cleanUrls": True,
     # con la prueba E-04 apagada, quien llegue a /b vuelve a la página principal (conserva los parámetros del anuncio)
     "redirects": ([] if AB_E04 else [{"source": "/b", "destination": "/", "permanent": False}]),
     "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}]},
+                {"source": "/rec/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800, immutable"}]},
                 {"source": "/guias/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}]}]
 }, indent=2))
 print('ok', len(html))

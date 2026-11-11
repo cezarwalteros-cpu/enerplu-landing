@@ -8531,14 +8531,14 @@ window.EP_POPUP_MODE = 'off';
     var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-bold-slider')) return;
     var box = document.createElement('div'); box.className = 'oc-bold-slider';
     var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?type=slider';
-    box.appendChild(sc); (row.querySelector('.ep-pay-txt') || row).appendChild(box);
+    box.appendChild(sc); (row.querySelector('.ep-ship-main') || row).appendChild(box);
   }
   function transLogos() {
     var inp = form.querySelector('input[name="ep-pay"][value="transfer"]'); if (!inp) return;
     var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-tr-logos')) return;
     var box = document.createElement('div'); box.className = 'oc-tr-logos';
     box.innerHTML = '<img src="/img/pay-bancolombia.webp" alt="Bancolombia" height="22"><img src="/img/pay-breb.webp" alt="Bre-B" height="20">';
-    (row.querySelector('.ep-pay-txt') || row).appendChild(box);
+    (row.querySelector('.ep-ship-main') || row).appendChild(box);
   }
   setInterval(function () { payTotals(); boldSlider(); transLogos(); }, 350);
   document.addEventListener('change', function () { setTimeout(payTotals, 60); });

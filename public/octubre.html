@@ -1919,6 +1919,7 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 html body #ep-navbar-fixed, html body .ep-navbar-fixed-btn { display: none !important; }
 html body { padding-top: 0 !important; margin-top: 0 !important; }
 .oc-pop .oc-card-logos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.oc-pop .oc-card-logos img{width:38px;height:24px;display:block}
+html body #ep-offer-widget .oc-trust-guias{display:flex!important;align-items:center;justify-content:center;gap:8px}html body #ep-offer-widget .oc-tg-covers{display:inline-flex}html body #ep-offer-widget .oc-tg-covers img{width:20px!important;height:28px!important;object-fit:cover;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.3);margin-left:-5px!important;border:1px solid #fff}html body #ep-offer-widget .oc-tg-covers img:first-child{margin-left:0!important}
 </style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
@@ -8543,6 +8544,21 @@ window.EP_POPUP_MODE = 'off';
     });
   }
   setInterval(guias, 800);
+
+  /* recuadro de confianza bajo el botón de ofertas: guías digitales de obsequio, pequeño (cesar 2026-11-10) */
+  var CL = 'https://res.cloudinary.com/dzlys7ftg/image/upload/w_120,f_auto,q_auto/v179415142';
+  var trust = document.querySelector('#ep-offer-widget .ep-trust'), gt = null;
+  if (trust) {
+    gt = document.createElement('div'); gt.className = 'ep-trust-line oc-trust-guias';
+    gt.innerHTML = '<span class="oc-tg-covers">' +
+      '<img src="' + CL + '1/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Maestro del Orgasmo">' +
+      '<img src="' + CL + '2/Portada_Secretos_sexuales__edici%C3%B3n_de_lujo_tnnyoz.webp" alt="Secretos Sexuales">' +
+      '<img src="' + CL + '1/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Genio del Sexo"></span>' +
+      '<span>Obsequio: 3 guías digitales</span>';
+    trust.insertBefore(gt, trust.firstChild);
+  }
+  function guiasTrust() { if (!gt) return; var r = $('input[name="ep-pack-order"]:checked', form); gt.style.display = r && r.value === 'inicial' ? 'none' : ''; }
+  setInterval(guiasTrust, 400);
   /* logos de tarjetas, PSE y Nequi como archivos propios (el slider de Bold no cargaba en móvil, cesar 2026-11-10) */
   function boldSlider() {
     var inp = form.querySelector('input[name="ep-pay"][value="bold"]'); if (!inp) return;

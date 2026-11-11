@@ -282,6 +282,8 @@ if not HERO_V2:
     # textos del selector (cesar 2026-11-10): ya hay pago anticipado, así que no se dice "sin tarjeta / sin pagos por adelantado"; es un paquete, no una caja
     _body_oc = must(_body_oc, '<div class="ep-trust-line">🔒 Sin tarjeta · Sin pagos por adelantado</div>', '')
     _body_oc = must(_body_oc, '📦 Caja neutra: nadie sabe qué contiene', '📦 Paquete neutro: nadie sabe qué contiene')
+    # los botones del hero y de los testimonios apuntaban a la página de Shopify: aquí bajan a las ofertas sin salir de la página
+    _body_oc = re.sub(r'https://enerplu\.lat/pages/html\?[^"#]*#ep-offer-widget', '#ep-offer-widget', _body_oc)
     assert _oc.count(body) == 1, 'octubre: no encuentro el cuerpo'
     _oc = _oc.replace(body, _body_oc)
     assert _oc.count(head_styles) == 1, 'octubre: no encuentro los estilos'

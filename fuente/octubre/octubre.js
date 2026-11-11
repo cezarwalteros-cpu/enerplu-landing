@@ -157,21 +157,42 @@
     if (r && !r.checked) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }
     setTimeout(function () { thumb(); ship(); }, 40);
   }
+  function goOffers() {
+    var box = document.getElementById('ep-offer-widget'), nav = document.getElementById('ep-navbar-fixed');
+    var navH = nav && getComputedStyle(nav).display !== 'none' ? nav.offsetHeight : 0;
+    if (box) window.scrollTo({ top: box.getBoundingClientRect().top + window.pageYOffset - navH - 10, behavior: 'smooth' });
+  }
   document.addEventListener('click', function (e) {
     var t = e.target; if (!t || !t.closest || t.closest('.ep-pop')) return;
     var card = t.closest('#ep-offers .ep-card');
     if (card) { pick([].indexOf.call(document.querySelectorAll('#ep-offers .ep-card'), card)); return; }
     if (t.closest('#ep-checkout-btn')) { e.preventDefault(); open('selector'); return; }
-    /* botones de la página (barra de arriba, hero, testimonios): bajan a las ofertas */
-    var btn = t.closest('a, button, .gp-button, [role=button]');
-    if (btn && /^(go-plan-dominio|go-plan-dominio-nav)$/.test(btn.id || '') || (btn && /quiero|comprar ahora|pedir/i.test(btn.textContent || '') && !btn.closest('#ep-offer-widget') && !btn.closest('.ep-root'))) {
-      var href = btn.getAttribute('href') || '';
-      if (href && !/^#|^javascript:/i.test(href)) return;
-      e.preventDefault(); e.stopPropagation();
-      var box = document.getElementById('ep-offer-widget'), nav = document.getElementById('ep-navbar-fixed');
-      if (box) window.scrollTo({ top: box.getBoundingClientRect().top + window.pageYOffset - ((nav && nav.offsetHeight) || 70) - 10, behavior: 'smooth' });
-    }
+    /* botones de la página (barra de arriba, hero, testimonios, reseñas, barra fija): bajan a las ofertas, nunca salen de la página */
+    var btn = t.closest('#go-plan-dominio, #go-plan-dominio-nav, .ep-navbar-fixed-btn, .ep-hero-clean-btn, .ep-wa-ss-cta, .enerplu-review-cta, .oc-sticky-btn');
+    if (btn) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); goOffers(); }
   }, true);
   pick(1);
+
+  /* ---- barra fija "VER OFERTAS DISPONIBLES": aparece al bajar y se esconde cuando ya se ven las ofertas o está abierta la ventana ---- */
+  var st = document.createElement('div');
+  st.className = 'oc-sticky';
+  st.innerHTML = '<button type="button" class="oc-sticky-btn">VER OFERTAS DISPONIBLES</button>';
+  document.body.appendChild(st);
+  var offersSeen = false;
+  function stick() { st.classList.toggle('is-on', window.pageYOffset > 350 && !offersSeen && !isOpen); }
+  var ow = document.getElementById('ep-offer-widget');
+  if (ow && 'IntersectionObserver' in window) new IntersectionObserver(function (en) { offersSeen = en[0].isIntersecting; stick(); }).observe(ow);
+  window.addEventListener('scroll', stick, { passive: true });
+  window.addEventListener('resize', stick);
+  setInterval(stick, 500);
+
+  /* ---- sello de Bold (kit oficial) bajo los métodos de pago ---- */
+  var payBlock = $('[data-ep-pay-block]', form);
+  if (payBlock) {
+    var bk = document.createElement('div'); bk.className = 'oc-bold'; bk.innerHTML = '<span>Pagos procesados por</span><div id="bold-kit"></div>';
+    payBlock.appendChild(bk);
+    var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?theme=light&target=bold-kit';
+    document.head.appendChild(sc);
+  }
   if (q.get('bold-order-id')) open('bold');
 })();

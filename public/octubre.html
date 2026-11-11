@@ -1907,6 +1907,7 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 .oc-pop .oc-pay-total { display: block; margin-top: 6px; color: #111; font-size: 15px; font-weight: 900; white-space: nowrap; }
 
 .oc-pop .oc-bold-slider{margin-top:8px;max-width:260px;overflow:hidden}
+.oc-pop .oc-tr-logos{display:flex;align-items:center;gap:16px;margin-top:8px}.oc-pop .oc-tr-logos img{height:22px;width:auto;display:block}.oc-pop .oc-tr-logos img+img{height:20px}
 </style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
@@ -8532,7 +8533,14 @@ window.EP_POPUP_MODE = 'off';
     var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?type=slider';
     box.appendChild(sc); (row.querySelector('.ep-pay-txt') || row).appendChild(box);
   }
-  setInterval(function () { payTotals(); boldSlider(); }, 350);
+  function transLogos() {
+    var inp = form.querySelector('input[name="ep-pay"][value="transfer"]'); if (!inp) return;
+    var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-tr-logos')) return;
+    var box = document.createElement('div'); box.className = 'oc-tr-logos';
+    box.innerHTML = '<img src="/img/pay-bancolombia.webp" alt="Bancolombia" height="22"><img src="/img/pay-breb.webp" alt="Bre-B" height="20">';
+    (row.querySelector('.ep-pay-txt') || row).appendChild(box);
+  }
+  setInterval(function () { payTotals(); boldSlider(); transLogos(); }, 350);
   document.addEventListener('change', function () { setTimeout(payTotals, 60); });
 
   /* ---- logos de medios de pago: una sola vez, después del botón y solo cuando se paga en línea ----

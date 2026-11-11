@@ -114,3 +114,4 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 .oc-pop .oc-grid2 .ep-f{margin:0 0 14px!important}.oc-pop .oc-grid2 .oc-ic{width:34px}.oc-pop .oc-grid2 input{min-width:0;padding-left:10px;padding-right:6px}
 html body #ep-navbar-fixed, html body .ep-navbar-fixed-btn { display: none !important; }
 html body { padding-top: 0 !important; margin-top: 0 !important; }
+.oc-pop .oc-card-logos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.oc-pop .oc-card-logos img{width:38px;height:24px;display:block}

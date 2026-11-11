@@ -1918,6 +1918,7 @@ html body .ep-navbar-fixed-btn { display: none !important; }
 .oc-pop .oc-grid2 .ep-f{margin:0 0 14px!important}.oc-pop .oc-grid2 .oc-ic{width:34px}.oc-pop .oc-grid2 input{min-width:0;padding-left:10px;padding-right:6px}
 html body #ep-navbar-fixed, html body .ep-navbar-fixed-btn { display: none !important; }
 html body { padding-top: 0 !important; margin-top: 0 !important; }
+.oc-pop .oc-card-logos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.oc-pop .oc-card-logos img{width:38px;height:24px;display:block}
 </style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
@@ -8542,17 +8543,14 @@ window.EP_POPUP_MODE = 'off';
     });
   }
   setInterval(guias, 800);
-  var boldBox = null;
+  /* logos de tarjetas, PSE y Nequi como archivos propios (el slider de Bold no cargaba en móvil, cesar 2026-11-10) */
   function boldSlider() {
     var inp = form.querySelector('input[name="ep-pay"][value="bold"]'); if (!inp) return;
-    var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-bold-slider')) return;
-    /* la tarjeta se vuelve a pintar al cambiar ciudad/plan: se conserva la misma caja y se reubica */
-    if (!boldBox) {
-      boldBox = document.createElement('div'); boldBox.className = 'oc-bold-slider';
-      var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?type=slider';
-      boldBox.appendChild(sc);
-    }
-    (row.querySelector('.ep-ship-main') || row).appendChild(boldBox);
+    var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-card-logos')) return;
+    var box = document.createElement('div'); box.className = 'oc-card-logos';
+    box.innerHTML = [['visa', 'Visa'], ['master', 'Mastercard'], ['american_express', 'American Express'], ['diners_club', 'Diners Club'], ['pse', 'PSE'], ['nequi', 'Nequi']]
+      .map(function (l) { return '<img src="/img/pay/' + l[0] + '.svg" alt="' + l[1] + '" width="38" height="24">'; }).join('');
+    (row.querySelector('.ep-ship-main') || row).appendChild(box);
   }
   function transLogos() {
     var inp = form.querySelector('input[name="ep-pay"][value="transfer"]'); if (!inp) return;

@@ -209,17 +209,14 @@
     });
   }
   setInterval(guias, 800);
-  var boldBox = null;
+  /* logos de tarjetas, PSE y Nequi como archivos propios (el slider de Bold no cargaba en móvil, cesar 2026-11-10) */
   function boldSlider() {
     var inp = form.querySelector('input[name="ep-pay"][value="bold"]'); if (!inp) return;
-    var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-bold-slider')) return;
-    /* la tarjeta se vuelve a pintar al cambiar ciudad/plan: se conserva la misma caja y se reubica */
-    if (!boldBox) {
-      boldBox = document.createElement('div'); boldBox.className = 'oc-bold-slider';
-      var sc = document.createElement('script'); sc.async = true; sc.src = 'https://bold.co/library/ui-kit.js?type=slider';
-      boldBox.appendChild(sc);
-    }
-    (row.querySelector('.ep-ship-main') || row).appendChild(boldBox);
+    var row = inp.closest('.ep-pay-opt') || inp.parentNode; if (!row || row.querySelector('.oc-card-logos')) return;
+    var box = document.createElement('div'); box.className = 'oc-card-logos';
+    box.innerHTML = [['visa', 'Visa'], ['master', 'Mastercard'], ['american_express', 'American Express'], ['diners_club', 'Diners Club'], ['pse', 'PSE'], ['nequi', 'Nequi']]
+      .map(function (l) { return '<img src="/img/pay/' + l[0] + '.svg" alt="' + l[1] + '" width="38" height="24">'; }).join('');
+    (row.querySelector('.ep-ship-main') || row).appendChild(box);
   }
   function transLogos() {
     var inp = form.querySelector('input[name="ep-pay"][value="transfer"]'); if (!inp) return;

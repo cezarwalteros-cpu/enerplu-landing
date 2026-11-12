@@ -1649,6 +1649,11 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-libro-txt b { font: 700 10.5px/1.05 Georgia, 'Times New Roman', serif; color: #e2c48a; letter-spacing: .3px; }
 .ep-root .eph-libro-txt i { font: italic 7px/1.2 Georgia, serif; color: #c9a86a; margin-top: 4px; }
 
+/* beneficio primero (2026-11-12) */
+.ep-root .eph-c .eph-ben{display:block;font-size:13px;font-weight:700;color:#fff;line-height:1.25;margin:1px 0 2px}
+.ep-root .eph-c .eph-ben + .eph-qty{font-size:11.5px;color:#9a9a9a}
+.ep-pop .ep-root .eph-c .eph-ben{color:#111}
+
 /* E-03 · ventana de ofertas + pedido (variante B). Mismo look negro/dorado del formulario. */
 .ep-pop-lock, .ep-pop-lock body { overflow: hidden !important; }
 .ep-pop { position: fixed; inset: 0; z-index: 2147483100; background: rgba(0, 0, 0, .75); display: flex; justify-content: center; align-items: flex-start;
@@ -6549,13 +6554,15 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=700" },
     inicial: { tag: "", inc: [], basic: true, img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=700" }
   };
+  /* beneficio primero (cesar 2026-11-12, Ogilvy: se compran beneficios, no productos) */
+  var BEN = { inicial: "10 encuentros", dominio: "20 encuentros", elite: "40 encuentros" };
   R.selector = function (cfg, sel) {
     sel = sel || cfg.defaultPack;
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
       var pct = was > 0 ? Math.round(save / was * 100) : 0;
-      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Retardante 30 ml + Velvet</span>' : '';
+      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> retardante para durar más</span>' : '';
       return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
         '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
         (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
@@ -6564,8 +6571,8 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
           '<span class="eph-c-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
           '<span class="eph-c-info">' +
             '<span class="eph-name">' + R.esc(p.name) + '</span>' +
-            '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
-            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión</span>' : '') +   /* C-02: precio por uso */
+            (BEN[p.id] ? '<span class="eph-ben">' + BEN[p.id] + '</span>' : '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>') +
+            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por encuentro</span>' : '') +   /* C-02: precio por uso */
           '</span>' +
           '<span class="eph-c-price">' +
             '<span class="eph-price">' + R.money(p.price) + '</span>' +

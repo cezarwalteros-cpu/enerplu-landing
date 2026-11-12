@@ -141,7 +141,7 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   /* ---- selector de ofertas de la página de Shopify (v7): elegir tarjeta = elegir plan; el botón abre la ventana ---- */
   var IDS = ['dominio', 'elite', 'inicial'];   /* orden en pantalla: Dominio, Élite, Básico al final (cesar 2026-11-12) */
-  var CTAS = ['PEDIR MI PLAN DOMINIO TOTAL', 'PEDIR MI PLAN ÉLITE', 'PEDIR EL PLAN BÁSICO'];
+  var CTAS = ['QUIERO MIS 20 ENCUENTROS', 'QUIERO MIS 40 ENCUENTROS', 'QUIERO 10 ENCUENTROS'];
   function pick(i) {
     var cards = document.querySelectorAll('#ep-offers .ep-card');
     cards.forEach(function (c, k) { c.classList.toggle('selected', k === i); });
@@ -204,7 +204,7 @@
       if (c.querySelector('.oc-guias')) return;
       var bonus = c.querySelector('.ep-line--bonus'); if (!bonus) return;
       var d = document.createElement('div'); d.className = 'ep-line oc-guias';
-      d.innerHTML = '<span class="ep-ico">📘</span><span>+ 3 guías digitales de regalo</span>';
+      d.innerHTML = '<span class="ep-ico">📘</span><span>+ 3 guías de regalo</span>';
       bonus.parentNode.insertBefore(d, bonus.nextSibling);
     });
   }

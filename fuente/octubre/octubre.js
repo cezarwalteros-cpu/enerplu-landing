@@ -140,8 +140,8 @@
   pop.addEventListener('click', function (e) { if (e.target === pop || e.target.closest('[data-pop-close]')) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   /* ---- selector de ofertas de la página de Shopify (v7): elegir tarjeta = elegir plan; el botón abre la ventana ---- */
-  var IDS = ['inicial', 'dominio', 'elite'];
-  var CTAS = ['PEDIR EL PLAN BÁSICO', 'PEDIR MI PLAN DOMINIO TOTAL', 'PEDIR MI PLAN ÉLITE'];
+  var IDS = ['dominio', 'elite', 'inicial'];   /* orden en pantalla: Dominio, Élite, Básico al final (cesar 2026-11-12) */
+  var CTAS = ['PEDIR MI PLAN DOMINIO TOTAL', 'PEDIR MI PLAN ÉLITE', 'PEDIR EL PLAN BÁSICO'];
   function pick(i) {
     var cards = document.querySelectorAll('#ep-offers .ep-card');
     cards.forEach(function (c, k) { c.classList.toggle('selected', k === i); });
@@ -166,7 +166,7 @@
     var btn = t.closest('#go-plan-dominio, #go-plan-dominio-nav, .ep-navbar-fixed-btn, .ep-hero-clean-btn, .ep-wa-ss-cta, .enerplu-review-cta, .oc-sticky-btn');
     if (btn) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); goOffers(); }
   }, true);
-  pick(1);
+  pick(0);
 
   /* ---- barra fija "VER OFERTAS DISPONIBLES": aparece al bajar y se esconde cuando ya se ven las ofertas o está abierta la ventana ---- */
   var st = document.createElement('div');

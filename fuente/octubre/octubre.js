@@ -219,7 +219,7 @@
       '<img src="' + CL + '1/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Maestro del Orgasmo">' +
       '<img src="' + CL + '2/Portada_Secretos_sexuales__edici%C3%B3n_de_lujo_tnnyoz.webp" alt="Secretos Sexuales">' +
       '<img src="' + CL + '1/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Genio del Sexo"></span>' +
-      '<span>Obsequio: 3 guías digitales</span>';
+      '<span>Obsequio en compras superiores a $100.000: 3 guías digitales</span>';
     trust.insertBefore(gt, trust.firstChild);
   }
   function guiasTrust() { if (!gt) return; var r = $('input[name="ep-pack-order"]:checked', form); gt.style.display = r && r.value === 'inicial' ? 'none' : ''; }

@@ -10,14 +10,14 @@
     inicial: { tag: "", inc: [], basic: true, img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=700" }
   };
   /* beneficio primero (cesar 2026-11-12, Ogilvy: se compran beneficios, no productos) */
-  var BEN = { inicial: "10 encuentros con firmeza y control", dominio: "20 encuentros: un mes entero sin dudar de ti", elite: "40 encuentros: 2 meses de confianza total" };
+  var BEN = { inicial: "10 encuentros", dominio: "20 encuentros · 1 mes", elite: "40 encuentros · 2 meses" };
   R.selector = function (cfg, sel) {
     sel = sel || cfg.defaultPack;
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
       var pct = was > 0 ? Math.round(save / was * 100) : 0;
-      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Retardante para durar más y terminar cuando tú decides + Velvet</span>' : '';
+      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> retardante para durar más</span>' : '';
       return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
         '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
         (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
@@ -26,8 +26,7 @@
           '<span class="eph-c-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
           '<span class="eph-c-info">' +
             '<span class="eph-name">' + R.esc(p.name) + '</span>' +
-            (BEN[p.id] ? '<span class="eph-ben">' + BEN[p.id] + '</span>' : '') +
-            '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
+            (BEN[p.id] ? '<span class="eph-ben">' + BEN[p.id] + '</span>' : '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>') +
             (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por encuentro</span>' : '') +   /* C-02: precio por uso */
           '</span>' +
           '<span class="eph-c-price">' +

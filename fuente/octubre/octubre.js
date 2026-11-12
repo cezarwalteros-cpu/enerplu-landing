@@ -140,8 +140,8 @@
   pop.addEventListener('click', function (e) { if (e.target === pop || e.target.closest('[data-pop-close]')) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   /* ---- selector de ofertas de la página de Shopify (v7): elegir tarjeta = elegir plan; el botón abre la ventana ---- */
-  var IDS = ['inicial', 'dominio', 'elite'];
-  var CTAS = ['PEDIR EL PLAN BÁSICO', 'PEDIR MI PLAN DOMINIO TOTAL', 'PEDIR MI PLAN ÉLITE'];
+  var IDS = ['dominio', 'elite', 'inicial'];   /* orden en pantalla: Dominio, Élite, Básico al final (cesar 2026-11-12) */
+  var CTAS = ['PEDIR MI PLAN DOMINIO TOTAL', 'PEDIR MI PLAN ÉLITE', 'PEDIR EL PLAN BÁSICO'];
   function pick(i) {
     var cards = document.querySelectorAll('#ep-offers .ep-card');
     cards.forEach(function (c, k) { c.classList.toggle('selected', k === i); });
@@ -166,7 +166,7 @@
     var btn = t.closest('#go-plan-dominio, #go-plan-dominio-nav, .ep-navbar-fixed-btn, .ep-hero-clean-btn, .ep-wa-ss-cta, .enerplu-review-cta, .oc-sticky-btn');
     if (btn) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); goOffers(); }
   }, true);
-  pick(1);
+  pick(0);
 
   /* ---- barra fija "VER OFERTAS DISPONIBLES": aparece al bajar y se esconde cuando ya se ven las ofertas o está abierta la ventana ---- */
   var st = document.createElement('div');
@@ -219,7 +219,7 @@
       '<img src="' + CL + '1/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Maestro del Orgasmo">' +
       '<img src="' + CL + '2/Portada_Secretos_sexuales__edici%C3%B3n_de_lujo_tnnyoz.webp" alt="Secretos Sexuales">' +
       '<img src="' + CL + '1/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Genio del Sexo"></span>' +
-      '<span>Obsequio: 3 guías digitales</span>';
+      '<span>Obsequio en compras superiores a $100.000: 3 guías digitales</span>';
     trust.insertBefore(gt, trust.firstChild);
   }
   function guiasTrust() { if (!gt) return; var r = $('input[name="ep-pack-order"]:checked', form); gt.style.display = r && r.value === 'inicial' ? 'none' : ''; }

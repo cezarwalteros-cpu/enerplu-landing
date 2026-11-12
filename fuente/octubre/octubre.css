@@ -117,3 +117,5 @@ html body { padding-top: 0 !important; margin-top: 0 !important; }
 .oc-pop .oc-card-logos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.oc-pop .oc-card-logos img{width:38px;height:24px;display:block}
 html body #ep-offer-widget .oc-trust-guias{display:flex!important;align-items:center;justify-content:center;gap:10px;padding:4px 0 6px}html body #ep-offer-widget .oc-tg-covers{display:inline-flex}html body #ep-offer-widget .oc-tg-covers img{width:38px!important;height:54px!important;object-fit:cover;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.3);margin-left:-8px!important;border:1px solid #fff}html body #ep-offer-widget .oc-tg-covers img:first-child{margin-left:0!important}
 .oc-pop [data-ep-submit] { padding-top: 18px !important; padding-bottom: 18px !important; min-height: 72px; }
+/* Básico sin ancla de ahorro (cesar 2026-11-12): nota gris en lugar de "AHORRAS" */
+#ep-offers .ep-save.ep-save--none{background:transparent!important;color:#8a8f98!important;border:0!important;font-weight:600;padding:0}

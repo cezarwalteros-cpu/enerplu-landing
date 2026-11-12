@@ -6072,6 +6072,29 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     bind: function () {
       var self = this, f = this.form, cityInp = this.el('city'), list = qs('#ep-f-city-list');
       f.addEventListener('focusin', function (e) { var t = e.target; if (t && /^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName) && t.type !== 'radio' && t.type !== 'checkbox') self.formStart(); });
+      /* medición del formulario campo por campo (cesar 2026-11-12): vio el formulario, primer campo, cada campo completo, y en cuál se fue */
+      var fmT = function () { try { return Math.round(performance.now() / 1000); } catch (e) { return null; } };
+      var fmDone = {}, fmLast = '', fmStarted = false, fmGone = false;
+      f.addEventListener('focusin', function (e) {
+        var t = e.target, n = t && t.name;
+        if (!n || self.fields.indexOf(n) < 0) return;
+        fmLast = n;
+        if (!fmStarted) { fmStarted = true; Funnel.send('form_start', { field: n, plan: state.pack, t: fmT() }); }
+      });
+      f.addEventListener('focusout', function (e) {
+        var t = e.target, n = t && t.name;
+        if (!n || self.fields.indexOf(n) < 0 || fmDone[n]) return;
+        var val = String(t.value || '').trim();
+        if (val && !self.check(n)) { fmDone[n] = true; Funnel.send('form_field', { field: n, t: fmT() }); }
+      });
+      if ('IntersectionObserver' in global) {
+        var fmIo = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { fmIo.disconnect(); Funnel.send('form_field', { field: '_visto', plan: state.pack, t: fmT() }); } }); }, { threshold: .1 });
+        fmIo.observe(f);
+      }
+      global.addEventListener('pagehide', function () {
+        if (!fmStarted || self.done || fmGone) return; fmGone = true;
+        Funnel.send('form_field', { field: '_salida', ultimo: fmLast, completos: Object.keys(fmDone), plan: state.pack, t: fmT() });
+      });
       f.addEventListener('change', function (e) {
         var t = e.target;
         if (t.name === 'ep-ship') { self.st.ship = t.value; qsa('.ep-ship-opt', f).forEach(function (l) { l.classList.toggle('is-on', qs('input', l).checked); }); self.update(); }

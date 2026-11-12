@@ -1654,6 +1654,11 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-libro-txt b { font: 700 10.5px/1.05 Georgia, 'Times New Roman', serif; color: #e2c48a; letter-spacing: .3px; }
 .ep-root .eph-libro-txt i { font: italic 7px/1.2 Georgia, serif; color: #c9a86a; margin-top: 4px; }
 
+/* beneficio primero (2026-11-12) */
+.ep-root .eph-c .eph-ben{display:block;font-size:13px;font-weight:700;color:#fff;line-height:1.25;margin:1px 0 2px}
+.ep-root .eph-c .eph-ben + .eph-qty{font-size:11.5px;color:#9a9a9a}
+.ep-pop .ep-root .eph-c .eph-ben{color:#111}
+
 /* E-03 · ventana de ofertas + pedido (variante B). Mismo look negro/dorado del formulario. */
 .ep-pop-lock, .ep-pop-lock body { overflow: hidden !important; }
 .ep-pop { position: fixed; inset: 0; z-index: 2147483100; background: rgba(0, 0, 0, .75); display: flex; justify-content: center; align-items: flex-start;
@@ -5265,9 +5270,9 @@ body {
   <h2 class="ep-title">Elige tu plan</h2>
   <p class="ep-subtitle">💵 Pagas al recibir · 📦 Empaque 100% discreto</p>
   <img class="ep-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="eager">
-  <div id="ep-offers"><div class="ep-card selected"><span class="ep-badge ep-badge--winner">★ MÁS ELEGIDO</span><div class="ep-radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="ep-info"><p class="ep-name">Plan Dominio Total</p><p class="ep-tagline">El más vendido en Colombia · 30 días</p><div class="ep-line"><span class="ep-ico">💊</span><span>2 cajas · 20 tabletas (20 ocasiones)</span></div><div class="ep-line ep-line--bonus"><span class="ep-ico">🔥</span><span>GRATIS: Gel Prolongador Max-Control 30ml</span></div><div class="ep-line ep-line--ship"><span class="ep-ico">🚚</span><span>Envío GRATIS a toda Colombia</span></div><span class="ep-each">$6.495 por tableta</span></div><div class="ep-pricing"><div class="ep-img-wrap"><img class="ep-img" src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/DOMINIO.webp?v=1793468717&width=1000" alt="Plan Dominio Total" loading="lazy"></div><p class="ep-compare">$169.800</p><p class="ep-price">$129.900</p><span class="ep-save">AHORRAS $39.900</span></div></div><div class="ep-card"><span class="ep-badge ep-badge--neutral">MEJOR PRECIO POR TABLETA</span><div class="ep-radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="ep-info"><p class="ep-name">Plan Élite</p><p class="ep-tagline">Máxima intensidad · más de 2 meses</p><div class="ep-line"><span class="ep-ico">💊</span><span>4 cajas · 40 tabletas (40 ocasiones)</span></div><div class="ep-line ep-line--bonus"><span class="ep-ico">🔥</span><span>GRATIS: Gel Prolongador Max-Control 30ml</span></div><div class="ep-line ep-line--ship"><span class="ep-ico">🚚</span><span>Envío GRATIS a toda Colombia</span></div><span class="ep-each">$3.998 por tableta</span></div><div class="ep-pricing"><div class="ep-img-wrap"><img class="ep-img" src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=1000" alt="Plan Élite" loading="lazy"></div><p class="ep-compare">$259.900</p><p class="ep-price">$159.900</p><span class="ep-save">AHORRAS $100.000</span></div></div><div class="ep-card ep-card--muted"><div class="ep-radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="ep-info"><p class="ep-name">Plan Básico</p><div class="ep-line"><span class="ep-ico">💊</span><span>1 caja · 10 tabletas</span></div><div class="ep-line ep-line--ship"><span class="ep-ico">🚚</span><span>Envío GRATIS</span></div><span class="ep-each ep-each--muted">$8.990 por tableta</span></div><div class="ep-pricing"><div class="ep-img-wrap"><img class="ep-img" src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=1000" alt="Plan Básico" loading="lazy"></div><p class="ep-price">$89.900</p><span class="ep-save ep-save--none">Sin gel de regalo</span></div></div></div>
+  <div id="ep-offers"><div class="ep-card selected"><span class="ep-badge ep-badge--winner">★ MÁS ELEGIDO</span><div class="ep-radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="ep-info"><p class="ep-name">Plan Dominio Total</p><p class="ep-tagline">El más vendido en Colombia · 30 días</p><div class="ep-line"><span class="ep-ico">💊</span><span><b>20 encuentros: un mes entero sin dudar de ti</b><br><small>2 cajas · 20 tabletas</small></span></div><div class="ep-line ep-line--bonus"><span class="ep-ico">🔥</span><span>GRATIS: Gel Prolongador para durar más y terminar cuando tú decides</span></div><div class="ep-line ep-line--ship"><span class="ep-ico">🚚</span><span>Envío GRATIS a toda Colombia</span></div><span class="ep-each">$6.495 por encuentro</span></div><div class="ep-pricing"><div class="ep-img-wrap"><img class="ep-img" src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/DOMINIO.webp?v=1793468717&width=1000" alt="Plan Dominio Total" loading="lazy"></div><p class="ep-compare">$169.800</p><p class="ep-price">$129.900</p><span class="ep-save">AHORRAS $39.900</span></div></div><div class="ep-card"><span class="ep-badge ep-badge--neutral">MEJOR PRECIO POR ENCUENTRO</span><div class="ep-radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="ep-info"><p class="ep-name">Plan Élite</p><p class="ep-tagline">Máxima intensidad · más de 2 meses</p><div class="ep-line"><span class="ep-ico">💊</span><span><b>40 encuentros: 2 meses de confianza total</b><br><small>4 cajas · 40 tabletas</small></span></div><div class="ep-line ep-line--bonus"><span class="ep-ico">🔥</span><span>GRATIS: Gel Prolongador para durar más y terminar cuando tú decides</span></div><div class="ep-line ep-line--ship"><span class="ep-ico">🚚</span><span>Envío GRATIS a toda Colombia</span></div><span class="ep-each">$3.998 por encuentro</span></div><div class="ep-pricing"><div class="ep-img-wrap"><img class="ep-img" src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=1000" alt="Plan Élite" loading="lazy"></div><p class="ep-compare">$259.900</p><p class="ep-price">$159.900</p><span class="ep-save">AHORRAS $100.000</span></div></div><div class="ep-card ep-card--muted"><div class="ep-radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="ep-info"><p class="ep-name">Plan Básico</p><div class="ep-line"><span class="ep-ico">💊</span><span><b>10 encuentros con firmeza y control</b><br><small>1 caja · 10 tabletas</small></span></div><div class="ep-line ep-line--ship"><span class="ep-ico">🚚</span><span>Envío GRATIS</span></div><span class="ep-each ep-each--muted">$8.990 por encuentro</span></div><div class="ep-pricing"><div class="ep-img-wrap"><img class="ep-img" src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=1000" alt="Plan Básico" loading="lazy"></div><p class="ep-price">$89.900</p><span class="ep-save ep-save--none">Sin gel de regalo</span></div></div></div>
   <button id="ep-checkout-btn" type="button">
-    <span class="ep-btn-main" id="ep-btn-cta">PEDIR MI PLAN DOMINIO TOTAL</span>
+    <span class="ep-btn-main" id="ep-btn-cta">QUIERO MI MES DE CONTROL TOTAL</span>
     <span class="ep-btn-sub">Total: <span id="ep-btn-price">$129.900</span> · Solo pagas cuando llega a tu casa</span>
   </button>
   <div class="ep-trust">
@@ -8020,13 +8025,15 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=700" },
     inicial: { tag: "", inc: [], basic: true, img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=700" }
   };
+  /* beneficio primero (cesar 2026-11-12, Ogilvy: se compran beneficios, no productos) */
+  var BEN = { inicial: "10 encuentros con firmeza y control", dominio: "20 encuentros: un mes entero sin dudar de ti", elite: "40 encuentros: 2 meses de confianza total" };
   R.selector = function (cfg, sel) {
     sel = sel || cfg.defaultPack;
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
       var pct = was > 0 ? Math.round(save / was * 100) : 0;
-      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Retardante 30 ml + Velvet</span>' : '';
+      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Retardante para durar más y terminar cuando tú decides + Velvet</span>' : '';
       return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
         '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
         (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
@@ -8035,8 +8042,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
           '<span class="eph-c-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
           '<span class="eph-c-info">' +
             '<span class="eph-name">' + R.esc(p.name) + '</span>' +
+            (BEN[p.id] ? '<span class="eph-ben">' + BEN[p.id] + '</span>' : '') +
             '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
-            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión</span>' : '') +   /* C-02: precio por uso */
+            (p.tablets ? '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por encuentro</span>' : '') +   /* C-02: precio por uso */
           '</span>' +
           '<span class="eph-c-price">' +
             '<span class="eph-price">' + R.money(p.price) + '</span>' +
@@ -8478,7 +8486,7 @@ window.EP_POPUP_MODE = 'off';
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   /* ---- selector de ofertas de la página de Shopify (v7): elegir tarjeta = elegir plan; el botón abre la ventana ---- */
   var IDS = ['dominio', 'elite', 'inicial'];   /* orden en pantalla: Dominio, Élite, Básico al final (cesar 2026-11-12) */
-  var CTAS = ['PEDIR MI PLAN DOMINIO TOTAL', 'PEDIR MI PLAN ÉLITE', 'PEDIR EL PLAN BÁSICO'];
+  var CTAS = ['QUIERO MI MES DE CONTROL TOTAL', 'QUIERO MIS 2 MESES DE CONFIANZA', 'QUIERO MIS 10 ENCUENTROS'];
   function pick(i) {
     var cards = document.querySelectorAll('#ep-offers .ep-card');
     cards.forEach(function (c, k) { c.classList.toggle('selected', k === i); });

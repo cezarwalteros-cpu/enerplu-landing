@@ -150,3 +150,10 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-libro-txt { width: 66px; height: 86px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.45); background: radial-gradient(120% 90% at 50% 20%, #5a0f17, #1d0407); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 4px; box-sizing: border-box; }
 .ep-root .eph-libro-txt b { font: 700 10.5px/1.05 Georgia, 'Times New Roman', serif; color: #e2c48a; letter-spacing: .3px; }
 .ep-root .eph-libro-txt i { font: italic 7px/1.2 Georgia, serif; color: #c9a86a; margin-top: 4px; }
+
+/* E-06 · Oferta A */
+.ep-root .eph-c-inc.is-miss span { color: #9a9a9a; }
+.ep-root .eph-ga { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 10px; padding: 12px; border: 1.5px solid #d4af37; border-radius: 12px; background: #11100c; color: #e8e8e8; font-size: 13px; line-height: 1.4; text-align: left; }
+.ep-root .eph-ga svg { flex: 0 0 30px; width: 30px; height: 30px; }
+.ep-root .eph-ga b { color: #d4af37; }
+.ep-root .eph-ga a { color: #d4af37; text-decoration: underline; }

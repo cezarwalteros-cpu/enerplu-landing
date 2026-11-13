@@ -295,6 +295,45 @@ if POPUP5:
 # Imagen "RESULTADOS VISIBLES DE INMEDIATO" (data-id gpGrrwtDmE): era lo más tocado de la página en Clarity (33 toques en 3 días)
 # y no hacía nada. Al tocarla hace lo mismo que "VER OFERTAS" (aprobado por cesar 2026-11-13 12:54 pm). Sale en "/" y "/oferta-a".
 IMG_A_OFERTAS = True
+
+# Puente embudo -> Clarity (aprobado por cesar 2026-11-13 5:41 pm): etiqueta cada sesión de Clarity con anuncio, campaña,
+# conjunto, variante y sid, y marca los pasos del embudo como eventos de Clarity, para filtrar grabaciones por anuncio,
+# variante y paso. Lee lo que ya envían los scripts del embudo (sendBeacon/fetch a funnel-track) y el push 'ep_purchase';
+# no cambia nada de lo que se envía al CRM. Sin datos personales. CLARITY_PUENTE = False lo apaga.
+CLARITY_PUENTE = True
+if CLARITY_PUENTE:
+    html = must(html, '</head>', """<script>(function(){
+  if(window.__epClar)return;window.__epClar=1;
+  function c(){try{window.clarity.apply(null,arguments)}catch(e){}}
+  var q=new URLSearchParams(location.search),p=location.pathname.replace(/\\/+$/,'')||'/';
+  [['anuncio','utm_term'],['campana','utm_campaign'],['conjunto','utm_content'],['fuente','utm_source']].forEach(function(k){var v=q.get(k[1]);if(v)c('set',k[0],v.slice(0,100));});
+  c('set','pagina',p);
+  if(p==='/'||p==='/oferta-a')c('set','e06',p==='/oferta-a'?'B':'A');
+  var sidOk=0;
+  var N={selector_view:'vio_ofertas',cta_click:'toco_comprar',plan_select:'eligio_plan',form_start:'empezo_formulario',
+    form_error:'error_formulario',pay_select:'eligio_pago',plan_click:'toco_confirmar',upsell_view:'vio_upsell',pay_fallback_cod:'pago_a_contraentrega'};
+  var hecho={};
+  function ev(n){if(!hecho[n]){hecho[n]=1;c('event',n);}}
+  function leer(body){try{
+    if(typeof body!=='string')return;var b=JSON.parse(body);if(!b||!b.ev)return;var x=b.extra||{};
+    if(b.sid&&!sidOk){sidOk=1;c('set','sid',String(b.sid).slice(0,40));}
+    if(x.plan)c('set','plan',String(x.plan).slice(0,40));
+    if(b.ev==='form_field'){
+      if(x.field==='_visto')ev('vio_formulario');
+      else if(x.field==='_salida'){ if(!(x.completos||[]).length)ev('salio_sin_escribir'); if(x.ultimo)c('set','ultimo_campo',String(x.ultimo).slice(0,30)); }
+      else ev('escribio_dato');
+      return;}
+    if(N[b.ev])ev(N[b.ev]);
+  }catch(e){}}
+  function esEmbudo(u){return /funnel-track/.test(String(u||''));}
+  try{var sb=navigator.sendBeacon&&navigator.sendBeacon.bind(navigator);
+    if(sb)navigator.sendBeacon=function(u,d){if(esEmbudo(u)){if(typeof d==='string')leer(d);else if(d&&d.text)d.text().then(leer).catch(function(){});}return sb(u,d);};}catch(e){}
+  try{var f=window.fetch&&window.fetch.bind(window);
+    if(f)window.fetch=function(u,o){if(esEmbudo(u)&&o&&typeof o.body==='string')leer(o.body);return f(u,o);};}catch(e){}
+  var dl=window.dataLayer=window.dataLayer||[],push=dl.push.bind(dl);
+  dl.push=function(o){try{if(o&&o.event==='ep_purchase'){ev('pedido');c('upgrade','pedido');}}catch(e){}return push.apply(null,arguments);};
+})();</script>
+</head>""")
 if IMG_A_OFERTAS:
     html = must(html, '</head>', '<style>[data-id="gpGrrwtDmE"] img{cursor:pointer}</style>\n</head>')
     html = must(html, '</body>', """<script>(function(){document.addEventListener('click',function(e){

@@ -1817,6 +1817,7 @@ html.epp-lock{overflow:hidden}
 .ep-sum-list li.is-cup small{letter-spacing:.06em}
 @media (prefers-reduced-motion:reduce){.epp,.epp-card{transition:none}}
 </style>
+<style>[data-id="gpGrrwtDmE"] img{cursor:pointer}</style>
 <style>/* /octubre · réplica de la página de octubre: selector en la página + ventana con el formulario (estilo Releasit) */
 .oc-sec { background: #000; }
 .oc-wrap { max-width: 560px; margin: 0 auto; padding: 30px 16px 34px; font-family: 'Inter', -apple-system, Roboto, Arial, sans-serif; text-align: center; }
@@ -8443,6 +8444,10 @@ window.EP_POPUP_MODE = 'off';
   if (window.EP_POP) init(window.EP_POP); else addEventListener('ep:pop-ready', function () { init(window.EP_POP); }, { once: true });
 })();
 </script>
+<script>(function(){document.addEventListener('click',function(e){
+  var img=e.target.closest&&e.target.closest('[data-id="gpGrrwtDmE"] img');if(!img)return;
+  var a=document.querySelector('a[href="#ep-offer-widget"]');if(!a)return;e.preventDefault();a.click();
+},false);})();</script>
 <script>/* /octubre · réplica de la página de octubre (selector en la página + formulario en ventana, estilo Releasit).
    Es el mismo <form> de siempre (mismos campos, validación, ciudad, pago, bump, upsell, carrito y pedido): aquí solo se
    cambia cómo se ve y dónde vive. Nada de esto está en la página principal. */

@@ -292,6 +292,17 @@ if POPUP5:
     html = must(html, '</head>', '<style>' + (ROOT / 'fuente' / 'popup5.css').read_text() + '</style>\n</head>')
     html = must(html, '</body>', '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n</body>')
 
+# Imagen "RESULTADOS VISIBLES DE INMEDIATO" (data-id gpGrrwtDmE): era lo más tocado de la página en Clarity (33 toques en 3 días)
+# y no hacía nada. Al tocarla hace lo mismo que "VER OFERTAS" (aprobado por cesar 2026-11-13 12:54 pm). Sale en "/" y "/oferta-a".
+IMG_A_OFERTAS = True
+if IMG_A_OFERTAS:
+    html = must(html, '</head>', '<style>[data-id="gpGrrwtDmE"] img{cursor:pointer}</style>\n</head>')
+    html = must(html, '</body>', """<script>(function(){document.addEventListener('click',function(e){
+  var img=e.target.closest&&e.target.closest('[data-id="gpGrrwtDmE"] img');if(!img)return;
+  var a=document.querySelector('a[href="#ep-offer-widget"]');if(!a)return;e.preventDefault();a.click();
+},false);})();</script>
+</body>""")
+
 # /octubre · réplica de la página de octubre (pedido de cesar 2026-11-10): textos y botones de entonces, testimonios de WhatsApp,
 # selector de planes en la página y el formulario en una ventana (estilo Releasit), con el mismo checkout de hoy.
 # Vista previa, noindex. No cambia la página principal.

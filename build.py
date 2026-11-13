@@ -197,6 +197,7 @@ html = f"""<!doctype html>
 {base_css}
 {head_styles}
 <style>
+html,body{{margin:0;padding:0;background:#000}}
 {ep_css}
 {oferta_css}
 {popup_css}

@@ -3,7 +3,17 @@
 <head>
 <meta name="robots" content="noindex">
 <script>window.EP_PREVIEW_UPSELL={"upsell": {"key": "retardante", "only": "inicial", "price": 24900, "compare": 49900, "title": "Spray Retardante Club Velvet 30 ml", "image": "https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_500/v1794346291/Botella_Club_Velvet_Retardante_Premium_qj3ihr.webp", "eyebrow": "Espera, antes de confirmar", "headline": "Lleva la experiencia al nivel de control absoluto", "text": "Ya tienes la firmeza y resistencia con tu pedido por dentro; el spray Velvet te da el control exacto del reloj por fuera. El combo de blindaje definitivo.", "bullets": ["Olvídate de la tensión mental de tener que aguantar", "Disfruta del ritmo intenso sin miedo a terminar antes", "Llega en el mismo paquete 100% discreto y sin costo de envío adicional"]}, "bump": {"title": "Gel Estrechante Virgyflower (30 ml)", "contain": true, "image": "https://res.cloudinary.com/dzlys7ftg/image/upload/v1794344899/ESTRECHANTE_tg6at5.webp", "text": "Efecto astringente y lubricante inmediato: mayor fricción y sensación más intensa para ambos. Fórmula suave en frasco de 30 ml. Se despacha en el mismo paquete 100% discreto."}};try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=N')}catch(e){}</script>
-
+<script>
+(function(){try{
+  var p=location.pathname; if(p!=='/'&&p!=='/index'&&p!=='/index.html') return;
+  var q=location.search; if(/[?&]ep_test=1(&|$)/.test(q)) return;
+  var f=(q.match(/[?&]ab6=([AB])/)||[])[1], v=f;
+  if(!v){try{v=localStorage.getItem('ep_e06')}catch(e){}}
+  if(v!=='A'&&v!=='B'){v=Math.random()<0.5?'A':'B'}
+  try{localStorage.setItem('ep_e06',v)}catch(e){}
+  if(v==='B'){location.replace('/oferta-a'+q+location.hash);}
+}catch(e){}})();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Enerplu | Energía, Resistencia, Firmeza Suplemento Natural ™</title>
@@ -1640,6 +1650,13 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 .ep-root .eph-libro-txt { width: 66px; height: 86px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.45); background: radial-gradient(120% 90% at 50% 20%, #5a0f17, #1d0407); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 4px; box-sizing: border-box; }
 .ep-root .eph-libro-txt b { font: 700 10.5px/1.05 Georgia, 'Times New Roman', serif; color: #e2c48a; letter-spacing: .3px; }
 .ep-root .eph-libro-txt i { font: italic 7px/1.2 Georgia, serif; color: #c9a86a; margin-top: 4px; }
+
+/* E-06 · Oferta A */
+.ep-root .eph-c-inc.is-miss span { color: #9a9a9a; }
+.ep-root .eph-ga { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 10px; padding: 12px; border: 1.5px solid #d4af37; border-radius: 12px; background: #11100c; color: #e8e8e8; font-size: 13px; line-height: 1.4; text-align: left; }
+.ep-root .eph-ga svg { flex: 0 0 30px; width: 30px; height: 30px; }
+.ep-root .eph-ga b { color: #d4af37; }
+.ep-root .eph-ga a { color: #d4af37; text-decoration: underline; }
 
 /* E-03 · ventana de ofertas + pedido (variante B). Mismo look negro/dorado del formulario. */
 .ep-pop-lock, .ep-pop-lock body { overflow: hidden !important; }
@@ -6571,8 +6588,36 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=700" },
     inicial: { tag: "Para probar", inc: [], basic: true, img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=700" }
   };
+  /* E-06 · Oferta A (cesar 2026-11-12): mismos planes y precios, sin tachados ni %, precio por tableta,
+     una línea con lo que incluye cada plan. Solo en /oferta-a (window.EP_OFERTA_A). */
+  var OFA = !!window.EP_OFERTA_A;
+  if (OFA) {
+    LOOK.dominio.tag = "El más pedido"; LOOK.dominio.incA = "Incluye spray retardante 30 ml + sachet";
+    LOOK.elite.tag = "Mejor precio por tableta"; LOOK.elite.incA = "Incluye spray retardante 30 ml + sachet";
+    LOOK.inicial.incA = "Incluye sachet · sin spray retardante";
+    var derive0 = R.derive;   /* sin "precio de lista" inflado en el resumen ni en los textos de ahorro */
+    R.derive = function (c, p) { var d = derive0(c, p); d.compare = p.price; d.save = 0; return d; };
+  }
   R.selector = function (cfg, sel) {
     sel = sel || cfg.defaultPack;
+    if (OFA) return R.ordered(cfg).map(function (p) {
+      var L = LOOK[p.id] || { tag: "", img: "" }, on = p.id === sel;
+      return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
+        '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
+        (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
+        '<span class="eph-c-row">' +
+          '<span class="eph-check" aria-hidden="true"></span>' +
+          '<span class="eph-c-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
+          '<span class="eph-c-info">' +
+            '<span class="eph-name">' + R.esc(p.name) + '</span>' +
+            '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
+            '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por tableta</span>' +
+          '</span>' +
+          '<span class="eph-c-price"><span class="eph-price">' + R.money(p.price) + '</span></span>' +
+        '</span>' +
+        (L.incA ? '<span class="eph-c-gift eph-c-inc' + (L.basic ? ' is-miss' : '') + '"><span>' + R.esc(L.incA) + '</span></span>' : '') +
+      '</label>';
+    }).join('');
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
@@ -6891,7 +6936,7 @@ window.EP_POPUP_MODE = 'off';
   var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;
   var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}
     if(!sid){if(n++<20)setTimeout(go,300);return;}
-    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E05',v:'A'}});
+    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E06',v:'A'}});
     var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
     try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}
   })();

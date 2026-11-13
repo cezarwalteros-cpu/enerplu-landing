@@ -272,7 +272,7 @@ def ab_send(v, exp='E04'):
 # E-05 (cesar 2026-11-10 10:47 pm, "Test A/B 50/50"): página actual (A, "/") contra la réplica de octubre (B, "/octubre").
 # Asignación: localStorage ep_e05 (50/50, fija por navegador); ?ab5=A|B fuerza la variante. B se redirige antes de cargar el píxel.
 # Medición: funnel_events ab_assign {exp:'E05', v} por sesión + checkout_attempts.session_id. AB_E05 = False apaga la prueba (todos ven A).
-AB_E05 = True
+AB_E05 = False   # 13-nov: E-05 cerrada; la página actual queda como control de E-06
 AB5_HEAD = """<script>
 (function(){try{
   var p=location.pathname; if(p!=='/'&&p!=='/index'&&p!=='/index.html') return;
@@ -322,6 +322,37 @@ if AB_E04 and not HERO_V2:
 if AB_E05 and not HERO_V2:
     index_html = must(index_html, '<head>', '<head>\n' + AB5_HEAD)
     index_html = must(index_html, '</body>', ab_send('A', 'E05') + '\n</body>')
+# E-06 (cesar 2026-11-12 10:14 pm, "publica para mañana con la ganadora de E-05"): página actual (A, "/") contra la
+# Oferta A (B, "/oferta-a"): mismos 3 planes y precios, sin tachados ni %, precio por tableta, qué incluye cada plan,
+# garantía explicada debajo de los planes, sin "hasta 56 % de descuento" en la barra.
+# Asignación: localStorage ep_e06 (50/50, fija por navegador); ?ab6=A|B fuerza la variante. AB_E06 = False apaga la prueba.
+AB_E06 = True
+AB6_HEAD = AB5_HEAD.replace("ab5=", "ab6=").replace("ep_e05", "ep_e06").replace("'/octubre'", "'/oferta-a'")
+if not HERO_V2:
+    _ofa = html
+    _ofa = must(_ofa, '<head>', '<head>\n<script>window.EP_OFERTA_A=true</script>')
+    _ofa = must(_ofa, 'Tenemos 3 ofertas disponibles hoy</h2>', 'Elige tu plan</h2>', 2)   # sección + teaser de la ventana (apagada)
+    _ofa = must(_ofa, '<p class="eph-sub">🚚 Envío gratis · 💵 Pago al recibir · 📦 Discreto</p>', '<p class="eph-sub">Pagas al recibir · Envío gratis · Paquete discreto</p>')
+    _ofa = re.sub(r'\s*<div class="eph-garantia">.*?</div>\s*</div>', '', _ofa, count=1, flags=re.S)
+    assert 'eph-garantia' not in _ofa.split('ep-offer-widget')[1].split('</form>')[0], 'oferta-a: quedó el sello de garantía'
+    _ofa = must(_ofa, '🎁 <b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.',
+                'En todos los planes recibes <b>3 guías digitales</b> por WhatsApp al recibir.')
+    _GA = ('<div class="eph-ga"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+           '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>'
+           '<div><b>Garantía Real · Dominio y Élite</b><br>Prueba una caja. Si decides no continuar, te devolvemos el valor correspondiente a las cajas sin abrir.<br>'
+           'Tienes 15 días desde la entrega. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a></div></div>')
+    _ofa = must(_ofa, '<div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>',
+                '<div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>\n        ' + _GA)
+    # barra superior: sin "hasta 56 % de descuento"
+    _ofa = _ofa.replace('<span class="epb-item"><i>🔥</i>Oferta hasta <b>%d %% de descuento</b></span>' % PCT, '<span class="epb-item"><b>Paquete discreto</b></span>')
+    _ofa = must(_ofa, 'Oferta hasta %d %% de descuento. Pagas al recibir.' % PCT, 'Paquete discreto. Pagas al recibir.')
+    assert 'Oferta hasta' not in _ofa, 'oferta-a: quedó "Oferta hasta X % de descuento"'
+    if AB_E06:
+        _ofa = must(_ofa, '</body>', ab_send('B', 'E06') + '\n</body>')
+    (OUT / 'oferta-a.html').write_text(_ofa)
+if AB_E06 and not HERO_V2:
+    index_html = must(index_html, '<head>', '<head>\n' + AB6_HEAD)
+    index_html = must(index_html, '</body>', ab_send('A', 'E06') + '\n</body>')
 (OUT / 'index.html').write_text(index_html)
 if AB_E04 and not HERO_V2:
     with tempfile.TemporaryDirectory() as tmp:

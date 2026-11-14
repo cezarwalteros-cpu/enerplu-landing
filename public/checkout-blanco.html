@@ -7046,6 +7046,18 @@ window.EP_POPUP_MODE = 'off';
   document.addEventListener('click', function () { setTimeout(pinta, 0); }, true);
   setTimeout(pinta, 300);
 })();
+/* Plan elegido en la página anterior: /checkout-blanco?plan=basico|dominio|elite llega con ese plan ya marcado. */
+(function () {
+  var plan = (new URLSearchParams(location.search).get('plan') || '').toLowerCase();
+  var id = { basico: 'inicial', inicial: 'inicial', dominio: 'dominio', elite: 'elite' }[plan];
+  if (!id) return;
+  var n = 0;
+  (function marca() {
+    var el = document.querySelector('input[name="ep-pack-order"][value="' + id + '"]');
+    if (!el) { if (n++ < 20) setTimeout(marca, 150); return; }
+    if (!el.checked) { el.checked = true; el.dispatchEvent(new Event('change', { bubbles: true })); }
+  })();
+})();
 </script>
 </body>
 </html>

@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>ENERPLU | La rosada que no se traga</title>
 <meta name="description" content="Tableta sublingual con maca negra. Lista en 5 a 15 minutos. Pagas al recibir, envío gratis y discreto a toda Colombia.">
+<link rel="preconnect" href="https://res.cloudinary.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -224,14 +225,14 @@ footer p{margin:0 0 8px}
 .cta-note span{display:flex;gap:6px;align-items:center}
 .cta-note .ico{width:16px;height:16px;color:#35D04A}
 .btn.gold{position:relative;overflow:hidden;box-shadow:0 10px 34px rgba(212,175,55,.35)}
-.btn.gold::after{content:"";position:absolute;top:0;bottom:0;width:38%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);animation:sweep 3.4s ease-in-out infinite}
-@keyframes sweep{0%,55%{left:-60%}100%{left:130%}}
+.btn.gold::after{content:"";position:absolute;top:0;bottom:0;width:38%;left:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:translateX(-160%) skewX(-20deg);animation:sweep 3.4s ease-in-out infinite}
+@keyframes sweep{0%,55%{transform:translateX(-160%) skewX(-20deg)}100%{transform:translateX(345%) skewX(-20deg)}}
 .btn .ico{transition:transform .2s}
 .btn:hover .ico{transform:translateX(4px)}
 .stage-wrap{display:grid;gap:14px;min-width:0;perspective:1100px}
 .stage{position:relative;width:100%;max-width:540px;margin:0 auto;aspect-ratio:1/1;transform-style:preserve-3d;transition:transform .25s ease-out;animation:float 6s ease-in-out infinite}
 @keyframes float{50%{translate:0 -10px}}
-.stage-ring{position:absolute;inset:0;border-radius:30px;background:conic-gradient(from var(--a),rgba(212,175,55,.15) 0 55%,#F6E27A 76%,#D4AF37 88%,rgba(212,175,55,.15) 100%);animation:spin 5s linear infinite;filter:drop-shadow(0 0 26px rgba(212,175,55,.45))}
+.stage-ring{position:absolute;inset:0;border-radius:30px;background:conic-gradient(from var(--a),rgba(212,175,55,.15) 0 55%,#F6E27A 76%,#D4AF37 88%,rgba(212,175,55,.15) 100%);animation:spin 5s linear infinite;box-shadow:0 0 44px rgba(212,175,55,.34)}
 @keyframes spin{to{--a:360deg}}
 .stage-img{position:absolute;inset:3px;border-radius:27px;overflow:hidden;background:#000}
 .stage-img img{width:100%;height:100%;object-fit:cover}
@@ -287,6 +288,30 @@ footer p{margin:0 0 8px}
   .shine,.stage,.stage-ring,.hero::before,.btn.gold::after,.pulse{animation:none}
 }
 
+/* planes: un solo bloque centrado, sin segunda foto de inicio */
+.pdp{padding:56px 0 56px}
+.pdp .w{display:block}
+.pdp .buy{max-width:680px;margin:0 auto}
+.pdp .head{align-items:center;text-align:center;margin-bottom:10px}
+.pdp .head .lead{margin:0 auto}
+@media (min-width:960px){.pdp{padding:88px 0}.pdp .w{display:block}}
+/* ajustes de revisión */
+.dock>div{flex:none}
+.cmp-row>*{overflow-wrap:anywhere}
+@media (max-width:430px){
+  .cmp-row{grid-template-columns:.9fr 1.05fr 1fr 1fr}
+  .cmp-row>*{padding:12px 5px;font-size:12.5px}
+  .cmp-row>:first-child{font-size:9.5px;letter-spacing:0;padding-left:8px}
+  .cmp-h>:nth-child(n+2){font-size:10.5px;letter-spacing:0}
+  .cmp-h>:nth-child(2){font-size:12px}
+}
+@media (max-width:359px){.dock{gap:8px;padding-left:12px;padding-right:12px}.dock .btn b{display:none}.dock .btn{font-size:13px}}
+.opt.is-on{border-color:var(--gold);background:var(--gold-bg);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
+.opt.is-on .dot{border-color:var(--ink)}
+.opt.is-on .dot::after{background:var(--ink)}
+.btn.gold{max-width:100%}
+@media (max-width:379px){.btn.gold{font-size:14px;padding:0 16px;gap:8px}}
+.zz,.zz::after,.zz::before{animation-play-state:paused !important}
 /* reseñas: el mismo código de la página actual, con el diseño nuevo */
 .enerplu-reviews{background:var(--bg)}
 .enerplu-reviews-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,400px);gap:36px;align-items:end}
@@ -396,7 +421,7 @@ footer p{margin:0 0 8px}
         <div class="cta-note"><span><svg class="ico"><use href="#i-check"/></svg>Envío gratis</span><span><svg class="ico"><use href="#i-check"/></svg>Bolsa negra</span><span><svg class="ico"><use href="#i-check"/></svg>INVIMA</span></div>
       </div>
     </div>
-    <div class="stage-wrap fade" style="--i:3">
+    <div class="stage-wrap">
       <div class="stage" id="stage">
         <div class="stage-ring"></div>
         <div class="stage-img"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_1000,f_auto,q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" width="1000" height="1000" alt="ENERPLU tabletas con maca negra" fetchpriority="high"></div>
@@ -425,21 +450,8 @@ footer p{margin:0 0 8px}
 
 <section class="pdp" id="planes">
   <div class="w">
-    <div class="gal">
-      <div class="gal-main">
-        <img id="gal-img" src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_1000,f_auto,q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" width="1000" height="1000" alt="ENERPLU tabletas con maca negra" loading="lazy">
-      </div>
-      <div class="thumbs" role="group" aria-label="Fotos del producto">
-        <button type="button" aria-pressed="true" data-src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_1000,f_auto,q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" width="200" height="200" alt="Producto"></button>
-        <button type="button" aria-pressed="false" data-src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_1000,f_auto,q_auto/v1775097458/enerplu_maca_negra_qxhy5r.webp"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1775097458/enerplu_maca_negra_qxhy5r.webp" width="200" height="200" alt="Tabletas ENERPLU" loading="lazy"></button>
-        <button type="button" aria-pressed="false" data-src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_1000,f_auto,q_auto/v1774025718/ENEPLU_MECANISMO_fextu4.webp"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1774025718/ENEPLU_MECANISMO_fextu4.webp" width="200" height="200" alt="Mecanismo" loading="lazy"></button>
-        <button type="button" aria-pressed="false" data-src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_1000,f_auto,q_auto/v1775097458/otras_marcas_ulah9k.webp"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1775097458/otras_marcas_ulah9k.webp" width="200" height="200" alt="Bebidas y jarabes" loading="lazy"></button>
-        <button type="button" aria-pressed="false" data-src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_1000,f_auto,q_auto/v1775097830/RINVIMA_ENERPLU_kqmwhs.webp"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1775097830/RINVIMA_ENERPLU_kqmwhs.webp" width="200" height="200" alt="Registro INVIMA" loading="lazy"></button>
-      </div>
-    </div>
-
     <div class="buy">
-      <div class="head" style="margin-bottom:6px">
+      <div class="head">
         <span class="tagl">Elige tu arsenal</span>
         <h2>Entre más cajas, <em>más barata cada noche.</em></h2>
         <p class="lead">Cada caja trae 10 tabletas: 10 noches en las que mandas tú. Toca tu plan y pide. Pagas al recibir.</p>
@@ -552,39 +564,39 @@ footer p{margin:0 0 8px}
   // No venían adjuntas en el archivo fuente; colócalas aquí sin cambiar el nombre de la clave.
   const PHOTO_URLS={
   "alonso_g": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Alonso_G..webp?v=1791734675",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Alonso_G..webp?v=1791734675&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Alonso_G..webp?v=1791734675"
   },
   "andres_v": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Andres_V..webp?v=1791734675",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Andres_V..webp?v=1791734675&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Andres_V..webp?v=1791734675"
   },
   "dario_v": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Dario_V..webp?v=1791734674",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Dario_V..webp?v=1791734674&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Dario_V..webp?v=1791734674"
   },
   "diego_p": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Diego_P..webp?v=1791734674",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Diego_P..webp?v=1791734674&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Diego_P..webp?v=1791734674"
   },
   "guillermo_n": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Guillermo_N..png?v=1791734676",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Guillermo_N..png?v=1791734676&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Guillermo_N..png?v=1791734676"
   },
   "gustavo_a": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Gustavo_A..webp?v=1791734675",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Gustavo_A..webp?v=1791734675&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Gustavo_A..webp?v=1791734675"
   },
   "leonardo_p": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Leonardo_P..webp?v=1791734675",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Leonardo_P..webp?v=1791734675&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Leonardo_P..webp?v=1791734675"
   },
   "mauricio_n": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Mauricio_N..webp?v=1791734675",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Mauricio_N..webp?v=1791734675&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Mauricio_N..webp?v=1791734675"
   },
   "ricardo_h": {
-    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Ricardo_H..png?v=1791734677",
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Ricardo_H..png?v=1791734677&width=300",
     "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Ricardo_H..png?v=1791734677"
   }
 };
@@ -761,6 +773,7 @@ footer p{margin:0 0 8px}
   // El plan se elige tocando la tarjeta; solo el botón lleva al checkout (con el plan, UTM y fbclid).
   function sync() {
     var r = document.querySelector('input[name="plan"]:checked'), k = KIT[r.value];
+    document.querySelectorAll('.opt').forEach(function (o) { o.classList.toggle('is-on', o.contains(r)); });
     $('dock-name').textContent = r.dataset.name; $('dock-price').textContent = r.dataset.price;
     $('kit-name').textContent = r.dataset.name; $('kit-price').textContent = r.dataset.price;
     $('kit-boxes').textContent = k.boxes; $('kit-occ').textContent = k.occ;
@@ -770,6 +783,7 @@ footer p{margin:0 0 8px}
   }
   document.querySelectorAll('input[name="plan"]').forEach(function (r) { r.addEventListener('change', sync); });
   sync();
+  addEventListener('pageshow', sync);
   // Galería: la miniatura cambia la foto grande sin mover la página.
   document.querySelectorAll('.thumbs button').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -827,17 +841,28 @@ footer p{margin:0 0 8px}
   var tm = d.getElementById('timer'), dig = d.getElementById('t-dig'), lab = d.getElementById('t-lab'), tb = d.getElementById('t-bar');
   if (reduce) { tm.classList.add('ok'); dig.textContent = 'LISTO'; lab.textContent = 'Desde el minuto 5'; tb.style.transform = 'scaleX(1)'; }
   else {
-    var RUN = 4200, HOLD = 2600, t0 = performance.now();
-    (function loop(t) {
+    var RUN = 4200, HOLD = 2600, t0 = performance.now(), vis = true, last = '';
+    function set(txt, l, k, ok) {
+      tb.style.transform = 'scaleX(' + k + ')';
+      if (txt === last) return; last = txt;
+      dig.textContent = txt; if (lab.textContent !== l) lab.textContent = l; tm.classList.toggle('ok', ok);
+    }
+    function loop(t) {
+      if (!vis) return;
       var e = (t - t0) % (RUN + HOLD);
       if (e < RUN) {
         var k = e / RUN, sec = Math.floor(k * 300), m = Math.floor(sec / 60), x = sec % 60;
-        dig.textContent = '0' + m + ':' + (x < 10 ? '0' : '') + x;
-        lab.textContent = k < .18 ? 'Bajo la lengua' : k < .7 ? 'Entrando a la sangre' : 'Subiendo';
-        tb.style.transform = 'scaleX(' + k + ')'; tm.classList.remove('ok');
-      } else { dig.textContent = 'LISTO'; lab.textContent = 'Desde el minuto 5'; tb.style.transform = 'scaleX(1)'; tm.classList.add('ok'); }
+        set('0' + m + ':' + (x < 10 ? '0' : '') + x, k < .18 ? 'Bajo la lengua' : k < .7 ? 'Entrando a la sangre' : 'Subiendo', k, false);
+      } else set('LISTO', 'Desde el minuto 5', 1, true);
       requestAnimationFrame(loop);
-    })(t0);
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { var v = es[0].isIntersecting; if (v && !vis) { vis = true; requestAnimationFrame(loop); } else vis = v; }).observe(tm);
+    requestAnimationFrame(loop);
+  }
+  // las animaciones continuas se pausan fuera de pantalla
+  if ('IntersectionObserver' in window) {
+    var pz = new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('zz', !e.isIntersecting); }); }, { rootMargin: '80px' });
+    d.querySelectorAll('.shine,.btn.gold,.stage,.stage-ring,.pulse,.hero').forEach(function (el) { pz.observe(el); });
   }
   // inclinación de la foto con el cursor (computador)
   var st = d.getElementById('stage');

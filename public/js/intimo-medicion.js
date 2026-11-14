@@ -28,7 +28,9 @@
     try { fetch(U, { method: 'POST', body: body, keepalive: true, headers: { 'Content-Type': 'text/plain' } }); } catch (e) {}
   };
 
-  epSend('page_view');
+  // ?c=<código del cliente> (enlaces de posventa por WhatsApp): queda en la visita para atribuirla.
+  var cli = (q.get('c') || '').replace(/[^\w-]/g, '').slice(0, 40);
+  epSend('page_view', cli ? { c: cli } : null); epTag('cliente', cli);
   epTag('pagina', pagina); epTag('anuncio', q.get('utm_term')); epTag('campana', q.get('utm_campaign')); epTag('conjunto', q.get('utm_content')); epTag('fuente', q.get('utm_source')); epTag('sid', sid);
 
   // Profundidad de lectura

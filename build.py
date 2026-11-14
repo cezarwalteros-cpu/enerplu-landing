@@ -404,6 +404,24 @@ if not HERO_V2:
 if AB_E06 and not HERO_V2:
     index_html = must(index_html, '<head>', '<head>\n' + AB6_HEAD)
     index_html = must(index_html, '</body>', ab_send('A', 'E06') + '\n</body>')
+# Checkout blanco en 3 pasos (cesar 2026-11-13 7:40 pm, "blanco crealo", maqueta https://claude.ai/artifact/3Lq26TgYytzKKBAoma1Nf1).
+# Página aparte /checkout-blanco (igual a "/" con la sección de oferta + formulario en blanco, barra 1 Plan · 2 Entrega · 3 Pago,
+# número en cada paso y el envío dentro del paso 2). Mismos planes, precios, campos, bump, resumen y botón.
+# Todavía NO entra en ninguna prueba A/B: nadie llega aquí salvo con el enlace. CHECKOUT_BLANCO = False la quita.
+CHECKOUT_BLANCO = True
+if CHECKOUT_BLANCO and not HERO_V2:
+    _ck = html
+    _ck = must(_ck, '<section class="ep-order eph-order" id="ep-order"', '<section class="ep-order eph-order ck3" id="ep-order"')
+    _ck = must(_ck, '<div class="ep-wrap ep-wrap--form">', '<div class="ep-wrap ep-wrap--form">\n    <div class="ck3-bar" aria-hidden="true"><span>1 Plan</span><span>2 Entrega</span><span>3 Pago</span></div>')
+    _ck = must(_ck, '<div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>',
+               '<p class="ck3-step"><span class="ck3-n">1</span>Elige tu plan</p>\n        <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>')
+    _ck = must(_ck, '<fieldset class="ep-of-block">\n        <legend class="ep-of-legend">¿A dónde te lo enviamos?</legend>',
+               '<fieldset class="ep-of-block ck3-addr">\n        <legend class="ep-of-legend"><span class="ck3-n">2</span>¿A dónde te lo enviamos?</legend>')
+    _ck = must(_ck, '<fieldset class="ep-of-block" data-ep-ship-block>', '<fieldset class="ep-of-block ck3-ship" data-ep-ship-block>')
+    _ck = must(_ck, '<legend class="ep-of-legend">¿Cómo quieres pagar?</legend>', '<legend class="ep-of-legend"><span class="ck3-n">3</span>¿Cómo quieres pagar?</legend>')
+    _ck = must(_ck, '</head>', '<style>\n' + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.css').read_text() + '</style>\n</head>')
+    _ck = must(_ck, '</body>', '<script>\n' + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.js').read_text() + '</script>\n</body>')
+    (OUT / 'checkout-blanco.html').write_text(_ck)
 (OUT / 'index.html').write_text(index_html)
 if AB_E04 and not HERO_V2:
     with tempfile.TemporaryDirectory() as tmp:

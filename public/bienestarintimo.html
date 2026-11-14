@@ -353,6 +353,15 @@ footer p{margin:0 0 8px}
 .pc .cat{font:700 10px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold-d)}
 .pc h3{font-size:17px;font-weight:900;text-transform:uppercase;line-height:1.05}
 .pc p{margin:0;color:var(--mut);font-size:13px;line-height:1.35;flex:1}
+.uses{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:5px}
+.uses li{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:4px 8px 4px 6px;font:700 10px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--ink);background:#fff;white-space:nowrap}
+.uses .ico{width:14px;height:14px;stroke-width:2;color:var(--gold-d)}
+.uses .frio{border-color:#BAE0EE;background:#F0F9FC;color:#0B5A70}.uses .frio .ico{color:#0E7490}
+.uses .caliente{border-color:#F5C9B8;background:#FEF4EF;color:#8F2D0B}.uses .caliente .ico{color:#C2410C}
+.uses .no{border-color:#E5E7EB;background:var(--bg2);color:var(--faint)}.uses .no .ico{color:var(--no)}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 16px;font:600 12.5px/1.3 var(--txt);color:var(--mut)}
+.leg span{display:inline-flex;gap:5px;align-items:center}
+.leg .ico{width:16px;height:16px;color:var(--gold-d)}
 .pc .n{position:absolute;top:-9px;right:-7px;min-width:28px;height:28px;padding:0 7px;border-radius:999px;background:var(--ink);color:var(--gold);font:700 13px/28px var(--mono);text-align:center;transform:scale(0);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
 .pc.has .n{transform:scale(1)}
 .qty{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden;height:44px}
@@ -463,6 +472,18 @@ footer p{margin:0 0 8px}
   <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7.5" cy="17.5" r="1.7"/><circle cx="17.5" cy="17.5" r="1.7"/></symbol>
   <symbol id="i-box" viewBox="0 0 24 24"><path d="M12 3l8 4.2v9.6L12 21l-8-4.2V7.2z"/><path d="M4 7.2l8 4.2 8-4.2M12 11.4V21"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 7.6-7 9.5-4.1-1.9-7-5.2-7-9.5V6z"/><path d="M9 12l2.2 2.2L15.2 10"/></symbol>
+  <symbol id="u-frio" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9M9.5 4.5L12 7l2.5-2.5M9.5 19.5L12 17l2.5 2.5"/></symbol>
+  <symbol id="u-caliente" viewBox="0 0 24 24"><path d="M12 3c.5 3.5 5 5.5 5 10.5a5 5 0 01-10 0c0-2 .8-3.3 2-4.5.3 1.5 1 2.3 1.8 2.8C10.5 9 10.5 6 12 3z"/></symbol>
+  <symbol id="u-oral" viewBox="0 0 24 24"><path d="M3 12c2.5-3.5 5-5 6.5-5 1 0 1.7.6 2.5 1.3C12.8 7.6 13.5 7 14.5 7c1.5 0 4 1.5 6.5 5-2.5 3.5-5.5 5.5-9 5.5S5.5 15.5 3 12z"/><path d="M3 12c3 .8 6 .8 9 0 3 .8 6 .8 9 0"/></symbol>
+  <symbol id="u-sabor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M8.2 9.5L4 7.5v9l4.2-2M15.8 9.5L20 7.5v9l-4.2-2"/></symbol>
+  <symbol id="u-anal" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="u-vaginal" viewBox="0 0 24 24"><path d="M12 20s-7-4.3-7-9.5A3.8 3.8 0 0112 8a3.8 3.8 0 017 2.5c0 5.2-7 9.5-7 9.5z"/></symbol>
+  <symbol id="u-agua" viewBox="0 0 24 24"><path d="M12 3.5s6 6.3 6 10.5a6 6 0 01-12 0c0-4.2 6-10.5 6-10.5z"/></symbol>
+  <symbol id="u-no" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></symbol>
+  <symbol id="u-reloj" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 3h5"/></symbol>
+  <symbol id="u-spray" viewBox="0 0 24 24"><path d="M8 10h6v10.5H8zM9.5 10V6.5h3V10M12.5 7.5h3M18 5.5h.01M19.5 8h.01M18 10.5h.01"/></symbol>
+  <symbol id="u-dilata" viewBox="0 0 24 24"><path d="M3 12h7M21 12h-7M6 9l-3 3 3 3M18 9l3 3-3 3"/></symbol>
+  <symbol id="u-aprieta" viewBox="0 0 24 24"><path d="M3 12h6M21 12h-6M6.5 9l3 3-3 3M17.5 9l-3 3 3 3"/></symbol>
   <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -709,25 +730,25 @@ footer p{margin:0 0 8px}
   var d = document, $ = function (id) { return d.getElementById(id); };
   var CAT = { frio: 'Frío', caliente: 'Caliente', funcional: 'Funcional', retardante: 'Retardante' };
   var P = [
-    ['velvet', 'Club Velvet', 'retardante', 'Retardante en spray de nuestra marca.'],
-    ['sandia', 'Sandía', 'frio', 'Frío en el oral, caliente en la penetración.'],
-    ['chocolate', 'Chocolate', 'caliente', 'Sensación caliente con sabor.'],
-    ['fresa', 'Fresa', 'caliente', 'Sensación caliente con sabor.'],
-    ['uva', 'Uva', 'frio', 'Frío en el oral, caliente en la penetración.'],
-    ['chicle', 'Chicle', 'caliente', 'Sensación caliente con sabor.'],
-    ['bombon', 'Bombón', 'frio', 'Frío en el oral, caliente en la penetración.'],
-    ['lecherita', 'Lecherita', 'caliente', 'Sensación caliente con sabor.'],
-    ['arequipe', 'Arequipe', 'caliente', 'Sensación caliente con sabor.'],
-    ['tequila', 'Tequila Naranja', 'frio', 'Frío en el oral, caliente en la penetración.'],
-    ['caramelo', 'Caramelo', 'caliente', 'Sensación caliente con sabor.'],
-    ['cafe', 'Crema de Café', 'caliente', 'Sensación caliente con sabor.'],
-    ['cholao', 'Cholao', 'frio', 'Frío en el oral, caliente en la penetración.'],
-    ['anis', 'Anís', 'caliente', 'Sensación caliente con sabor.'],
-    ['mantecado', 'Mantecado', 'caliente', 'Sensación caliente con sabor.'],
-    ['lubrimax', 'Lubrimax', 'funcional', 'Neutro, a base de agua. No altera el pH.'],
-    ['virgy', 'Virgyflower', 'funcional', 'Estrechante vaginal.'],
-    ['analduo', 'Anal Duo', 'funcional', 'Lubrica y dilata. Aroma a fresa.'],
-    ['mixcum', 'Mix Cum', 'funcional', 'Textura acuosa, color blanco.']
+    ['velvet', 'Club Velvet', 'retardante', 'Retardante en spray de nuestra marca.', [['reloj','Retardante'],['spray','Spray']]],
+    ['sandia', 'Sandía', 'frio', 'Frío en el oral, caliente en la penetración.', [['frio','Frío','frio'],['oral','Oral'],['sabor','Con sabor']]],
+    ['chocolate', 'Chocolate', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['fresa', 'Fresa', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['uva', 'Uva', 'frio', 'Frío en el oral, caliente en la penetración.', [['frio','Frío','frio'],['oral','Oral'],['sabor','Con sabor']]],
+    ['chicle', 'Chicle', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['bombon', 'Bombón', 'frio', 'Frío en el oral, caliente en la penetración.', [['frio','Frío','frio'],['oral','Oral'],['sabor','Con sabor']]],
+    ['lecherita', 'Lecherita', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['arequipe', 'Arequipe', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['tequila', 'Tequila Naranja', 'frio', 'Frío en el oral, caliente en la penetración.', [['frio','Frío','frio'],['oral','Oral'],['sabor','Con sabor']]],
+    ['caramelo', 'Caramelo', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['cafe', 'Crema de Café', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['cholao', 'Cholao', 'frio', 'Frío en el oral, caliente en la penetración.', [['frio','Frío','frio'],['oral','Oral'],['sabor','Con sabor']]],
+    ['anis', 'Anís', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['mantecado', 'Mantecado', 'caliente', 'Sensación caliente con sabor.', [['caliente','Caliente','caliente'],['oral','Oral'],['sabor','Con sabor']]],
+    ['lubrimax', 'Lubrimax', 'funcional', 'Neutro, a base de agua. No altera el pH.', [['agua','Base agua'],['vaginal','Vaginal']]],
+    ['virgy', 'Virgyflower', 'funcional', 'Estrechante vaginal.', [['aprieta','Estrechante'],['vaginal','Vaginal'],['no','No oral','no']]],
+    ['analduo', 'Anal Duo', 'funcional', 'Lubrica y dilata. Aroma a fresa.', [['anal','Anal'],['dilata','Dilata'],['no','No oral','no']]],
+    ['mixcum', 'Mix Cum', 'funcional', 'Textura acuosa, color blanco.', [['oral','Oral'],['agua','Acuoso']]]
   ];
   var MIN = 3, MAX = 6, BASE = 89900, EXTRA = 28500, UNIT = 39900, ADS = { anillo: ['Anillo vibrador Thor', 18000], caja: ['Caja de ENERPLU', 39900] };
   var cant = {}, ads = { anillo: 0, caja: 0 }, tracked = false;
@@ -742,6 +763,7 @@ footer p{margin:0 0 8px}
     el.innerHTML = '<span class="n" aria-hidden="true">0</span>' +
       '<div class="pc-img"><img loading="lazy" src="/img/intimo/' + p[0] + '.webp" width="640" height="640" alt="' + p[1] + ', frasco de 30 ml"></div>' +
       '<span class="cat">' + CAT[p[2]] + ' · 30 ml</span><h3>' + p[1] + '</h3><p>' + p[3] + '</p>' +
+      '<ul class="uses" aria-label="Uso">' + p[4].map(function (u) { return '<li' + (u[2] ? ' class="' + u[2] + '"' : '') + '><svg class="ico"><use href="#u-' + u[0] + '"/></svg>' + u[1] + '</li>'; }).join('') + '</ul>' +
       '<button class="add-btn" type="button" data-d="1">Agregar</button>' +
       '<div class="qty" hidden><button type="button" data-d="-1" aria-label="Quitar un ' + p[1] + '">−</button><output>0</output><button type="button" data-d="1" aria-label="Agregar un ' + p[1] + '">+</button></div>';
     box.appendChild(el);

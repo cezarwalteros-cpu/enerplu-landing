@@ -45,7 +45,7 @@ h2 em,.h1 em{font-style:normal;color:var(--gold-d)}
 .ann .w{display:flex;justify-content:center;gap:6px 22px;flex-wrap:wrap;padding-block:10px;text-align:center}
 .ann b{color:var(--gold);font-weight:700}
 
-.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top{position:relative;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .top .w{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px}
 .logo{font:900 23px/1 var(--disp);letter-spacing:.06em;text-decoration:none}
 .logo i{font-style:normal;color:var(--gold-d)}
@@ -314,6 +314,16 @@ footer p{margin:0 0 8px}
 .btn.gold{max-width:100%}
 @media (max-width:379px){.btn.gold{font-size:14px;padding:0 16px;gap:8px}}
 .zz,.zz::after,.zz::before{animation-play-state:paused !important}
+/* cesar 13-nov: nada fijo en el inicio; la barra de abajo solo acompaña cuando no hay botón a la vista */
+.dock{transform:translateY(110%);transition:transform .3s ease;visibility:hidden}
+.dock.show{transform:none;visibility:visible}
+.h1-sub{font-size:.44em;line-height:1.06;letter-spacing:-.01em;margin-top:.5em !important;padding-bottom:.12em}
+.h1-sub>span{white-space:normal}
+.pdp h2{font-size:clamp(27px,5.6vw,46px);line-height:1.02}
+.ship-box{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--gold);background:var(--gold-bg);border-radius:16px;padding:14px 16px}
+.ship-box .ico{width:24px;height:24px;flex:none;color:var(--gold-d);margin-top:2px}
+.ship-box p{margin:0;font-size:14.5px;line-height:1.4;color:var(--ink)}
+.ship-box p span{display:block;color:var(--mut)}
 /* reseñas: el mismo código de la página actual, con el diseño nuevo */
 .enerplu-reviews{background:var(--bg)}
 .enerplu-reviews-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,400px);gap:36px;align-items:end}
@@ -439,14 +449,14 @@ footer p{margin:0 0 8px}
   <canvas id="sparks" aria-hidden="true"></canvas>
   <div class="w top-grid">
     <div class="hero-copy">
-      <span class="pill fade" style="--i:0"><i class="pulse"></i>Más de 3.800 pedidos entregados en Colombia</span>
+      <span class="pill fade" style="--i:0"><i class="pulse"></i>Más de 6.300 pedidos en Colombia</span>
       <h1>
-        <span class="ln" style="--i:1"><span>Ella se</span></span>
-        <span class="ln" style="--i:2"><span>desviste.</span></span>
-        <span class="ln" style="--i:3"><span class="shine">Tú ya estás</span></span>
-        <span class="ln" style="--i:4"><span class="shine">listo.</span></span>
+        <span class="ln" style="--i:1"><span>Como una</span></span>
+        <span class="ln" style="--i:2"><span>piedra en</span></span>
+        <span class="ln" style="--i:3"><span>15 minutos.</span></span>
+        <span class="ln h1-sub" style="--i:5"><span class="shine">Y con gasolina pa' repetir toda la noche.</span></span>
       </h1>
-      <p class="lead fade" style="--i:6">Una tableta rosada bajo la lengua. En <b>5 a 15 minutos</b> respondes como a los 25: <b>duro, firme y con aguante para repetir.</b> Sin agua, sin jarabes y sin que ella sepa qué cambiaste.</p>
+      <p class="lead fade" style="--i:6">Una tableta rosada <b>bajo la lengua</b>, sin agua y sin jarabes. Respondes <b>como a los 25</b> y ella no sabe qué cambiaste. La pagas cuando la recibes.</p>
       <div class="cta-row fade" style="--i:7">
         <a class="btn gold" href="#planes">PÍDELO YA - Pagas al recibir<svg class="ico"><use href="#i-arrow"/></svg></a>
         <div class="cta-note"><span><svg class="ico"><use href="#i-check"/></svg>Envío gratis</span><span><svg class="ico"><use href="#i-check"/></svg>Bolsa negra</span><span><svg class="ico"><use href="#i-check"/></svg>INVIMA</span></div>
@@ -469,7 +479,7 @@ footer p{margin:0 0 8px}
       <div><b class="shine">5-15<small>min</small></b><span>De cero a máxima potencia. Antes de que ella apague la luz.</span></div>
       <div><b class="shine">0</b><span>Testigos. Va bajo la lengua, sin agua. Ni ella te ve tomarla.</span></div>
       <div><b class="shine">$0</b><span>Por adelantado. La pagas en efectivo cuando la tienes en la mano.</span></div>
-      <div><b class="shine">+<i data-count="3800" style="font-style:normal">3.800</i></b><span>Pedidos entregados en Colombia, en bolsa negra.</span></div>
+      <div><b class="shine">+<i data-count="6300" style="font-style:normal">6.300</i></b><span>Pedidos en Colombia. Todos salen en bolsa negra.</span></div>
     </div>
   </div>
 </section>
@@ -484,7 +494,7 @@ footer p{margin:0 0 8px}
     <div class="buy">
       <div class="head">
         <span class="tagl">Elige tu arsenal</span>
-        <h2>Entre más cajas, <em>más barata cada noche.</em></h2>
+        <h2>Asegura tu arsenal ya: <em>entre más cajas lleves, más barato te sale cada polvo.</em></h2>
         <p class="lead">Cada caja trae 10 tabletas: 10 noches en las que mandas tú. Toca tu plan y pide. Pagas al recibir.</p>
       </div>
 
@@ -513,9 +523,10 @@ footer p{margin:0 0 8px}
       </fieldset>
 
       <a class="btn block" data-ck href="/pedido">PÍDELO YA <b>- Pagas al recibir</b><svg class="ico"><use href="#i-arrow"/></svg></a>
+      <div class="ship-box"><svg class="ico"><use href="#i-truck"/></svg><p><b>Medellín y área metropolitana: te llega hoy mismo</b> si confirmas antes de las 10:30 a. m. <span>Resto del país: 2 a 5 días hábiles.</span></p></div>
       <div class="mini">
         <div><svg class="ico"><use href="#i-cash"/></svg>Pagas en efectivo al recibir</div>
-        <div><svg class="ico"><use href="#i-truck"/></svg>Envío gratis, 3 a 4 días</div>
+        <div><svg class="ico"><use href="#i-truck"/></svg>Envío gratis a toda Colombia</div>
         <div><svg class="ico"><use href="#i-box"/></svg>Bolsa negra, 100% discreto</div>
         <div><svg class="ico"><use href="#i-shield"/></svg>Registro INVIMA</div>
       </div>
@@ -576,8 +587,7 @@ footer p{margin:0 0 8px}
           <img loading="lazy" src="/img/wa-real-4.webp" width="900" height="717" alt="Mensaje de un cliente por WhatsApp">
         </div>
         <div class="count">
-          <div><b>+<i data-count="3800" style="font-style:normal">3.800</i></b><span>pedidos entregados</span></div>
-          <div><b>+<i data-count="6300" style="font-style:normal">6.300</i></b><span>pedidos desde mayo</span></div>
+          <div><b>+<i data-count="6300" style="font-style:normal">6.300</i></b><span>pedidos en Colombia</span></div>
         </div>
       </div>
     </div>
@@ -738,7 +748,7 @@ footer p{margin:0 0 8px}
           <li id="kit-ret"><span>Retardante en spray<small>Para durar lo que tú quieras</small></span><b>Incluido</b></li>
           <li><span>Sachet de obsequio<small>Para estrenar con ella</small></span><b>Gratis</b></li>
           <li><span>3 guías digitales<small>Te llegan por WhatsApp al recibir tu pedido</small></span><b>Gratis</b></li>
-          <li><span>Envío discreto a toda Colombia<small>Bolsa negra sellada, 3 a 4 días hábiles</small></span><b>Gratis</b></li>
+          <li><span>Envío discreto a toda Colombia<small>Bolsa negra sellada. Medellín el mismo día, resto del país 2 a 5 días hábiles</small></span><b>Gratis</b></li>
           <li id="kit-gar"><span>Garantía Real<small>O te devolvemos tu dinero. Aplican términos</small></span><b>Incluida</b></li>
         </ul>
         <div class="kit-total"><span>Pagas al recibir</span><b id="kit-price">$129.900</b></div>
@@ -763,7 +773,7 @@ footer p{margin:0 0 8px}
     <div class="faq">
       <details><summary>¿Cómo se usa?<svg class="ico"><use href="#i-down"/></svg></summary><p>Deja una tableta bajo la lengua de 5 a 15 minutos antes del encuentro. No necesitas agua. Una tableta por ocasión.</p></details>
       <details><summary>¿Cómo pago?<svg class="ico"><use href="#i-down"/></svg></summary><p>En efectivo cuando el pedido llega a tu casa. Si prefieres pagar ahora con tarjeta, PSE, Nequi o transferencia Bancolombia, te descontamos $12.000.</p></details>
-      <details><summary>¿Cuándo me llega?<svg class="ico"><use href="#i-down"/></svg></summary><p>En 3 a 4 días hábiles según tu ciudad. El envío estándar es gratis.</p></details>
+      <details><summary>¿Cuándo me llega?<svg class="ico"><use href="#i-down"/></svg></summary><p>Si confirmas antes de las 10:30 a. m., te llega el mismo día en Medellín y el área metropolitana (lunes a sábado). Al resto del país llega en 2 a 5 días hábiles. El envío estándar es gratis.</p></details>
       <details><summary>¿Cómo llega el paquete?<svg class="ico"><use href="#i-down"/></svg></summary><p>En una bolsa negra sellada y con empaque discreto.</p></details>
       <details><summary>¿Y si no me funciona?<svg class="ico"><use href="#i-down"/></svg></summary><p>Los planes Dominio Total y Élite tienen Garantía Real: 15 días desde la entrega, devolviendo las cajas selladas.</p></details>
       <details><summary>¿Es seguro?<svg class="ico"><use href="#i-down"/></svg></summary><p>ENERPLU es un suplemento alimenticio con registro INVIMA NSA-2314-2025, no un medicamento. Si tienes una condición del corazón, presión alta o tomas medicamentos, consulta antes con tu médico.</p></details>
@@ -924,6 +934,18 @@ footer p{margin:0 0 8px}
       requestAnimationFrame(draw);
     }
   }
+  // barra de abajo: solo aparece cuando no hay ningún botón de pedir a la vista y ya pasó el inicio
+  (function () {
+    var dock = d.querySelector('.dock'), hero = d.querySelector('.hero'); if (!dock) return;
+    if (!('IntersectionObserver' in window)) { dock.classList.add('show'); return; }
+    var seen = new Set(), heroOn = true;
+    function upd() { dock.classList.toggle('show', !heroOn && seen.size === 0); }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.target === hero) heroOn = e.isIntersecting; else if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target); }); upd(); });
+    io.observe(hero);
+    d.querySelectorAll('a.btn, button.btn').forEach(function (b) { if (!dock.contains(b)) io.observe(b); });
+    new MutationObserver(function () { d.querySelectorAll('#resenas .btn').forEach(function (b) { io.observe(b); }); }).observe(d.getElementById('resenas'), { childList: true });
+    d.querySelectorAll('#resenas .btn').forEach(function (b) { io.observe(b); });
+  })();
   // el kit se anima al cambiar de plan
   d.querySelectorAll('input[name="plan"]').forEach(function (r) {
     r.addEventListener('change', function () {

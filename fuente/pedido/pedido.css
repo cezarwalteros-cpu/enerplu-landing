@@ -11,3 +11,5 @@ html, body { background: #fff !important; }
 .ep-root .eph-order.ck3 { padding-top: 0; }
 .ep-root .eph-order.ck3 .eph-title { font-family: Archivo, Inter, system-ui, sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; }
 .ep-root .eph-order.ck3 .ep-wrap--form { max-width: 720px; }
+.pdh-logo img { height: 44px; width: auto; display: block; }
+.pdh { padding-top: 8px; padding-bottom: 8px; }

@@ -83,3 +83,4 @@ html, body { background: #F3F3F0 !important; }
 .pdh-in { gap: 6px; padding-left: 12px; padding-right: 12px; }
 .pdh-back, .pdh-safe { white-space: nowrap; min-width: 0; }
 @media (max-width: 350px) { .pdh-logo img { height: 38px; } .pdh-safe span { display: none; } .pdh-back span { display: none; } }
+.ep-root.ck-keep .eph-guarantee { display: none !important; }   /* sello de "30 días": la garantía real es de 15 */

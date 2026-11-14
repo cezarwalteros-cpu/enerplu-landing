@@ -8,7 +8,7 @@ import { join, extname, basename } from 'node:path';
 
 const PUB = new URL('../public/', import.meta.url).pathname;
 const MIRROR = process.env.BAJAR_MIRROR || ''; // solo para pruebas locales: http://localhost:9999
-const RE = /(?:https?:)?\/\/(?:cdn\.shopify\.com\/s\/files|losgomosos\.lat\/cdn\/(?:shop|fonts))\/[^"'\s)\\<>,]+/g;
+const RE = /(?:https?:)?\/\/(?:cdn\.shopify\.com\/s\/files|(?:www\.)?losgomosos\.lat\/cdn\/(?:shop|fonts))\/[^"'\s)\\<>,]+/g;
 const TIPOS = { '.css': 'css', '.woff2': 'fonts', '.woff': 'fonts' };
 
 const pages = readdirSync(PUB).filter(f => f.endsWith('.html'));
@@ -16,7 +16,12 @@ const htmls = Object.fromEntries(pages.map(f => [f, readFileSync(join(PUB, f), '
 const urls = new Set();
 for (const s of Object.values(htmls)) for (const m of s.matchAll(RE)) if (!m[0].endsWith('/')) urls.add(m[0]);
 
-function absUrl(u) { return (u.startsWith('//') ? 'https:' + u : u).replace(/&amp;/g, '&'); }
+// losgomosos.lat pasa a Vercel (cesar 2026-11-14): sus archivos se bajan directo del CDN de Shopify (tienda 74894180397)
+function shopify(a) {
+  return a.replace(/^https:\/\/(?:www\.)?losgomosos\.lat\/cdn\/shop\//, 'https://cdn.shopify.com/s/files/1/0748/9418/0397/')
+    .replace(/^https:\/\/(?:www\.)?losgomosos\.lat\/cdn\/fonts\//, 'https://fonts.shopifycdn.com/');
+}
+function absUrl(u) { return shopify((u.startsWith('//') ? 'https:' + u : u).replace(/&amp;/g, '&')); }
 function localPath(u) {
   const a = new URL(absUrl(u));
   const ext = extname(a.pathname).toLowerCase() || '.bin';
@@ -58,7 +63,7 @@ const mapa = new Map(ok.map(r => [r[0], r[1]]));
 
 for (const f of pages) {
   let s = htmls[f];
-  s = s.replace(RE, m => mapa.get(m) || m);
+  s = s.replace(RE, m => mapa.get(m) || (/losgomosos\.lat/.test(m) ? absUrl(m) : m));
   // sin recursos pendientes de esos dominios, el preconnect sobra
   for (const host of ['losgomosos.lat', 'cdn.shopify.com']) {
     const re = new RegExp(`//${host.replace('.', '\\.')}/(?:cdn|s/files)/`);

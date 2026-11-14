@@ -1,7 +1,7 @@
 /* /pedido: checkout en página aparte. Solo se ve la sección de pedido; nada de la página antigua. */
 html, body { background: #F3F3F0 !important; }
 #MainContent > :not(.ck-keep) { display: none !important; }
-.ep-hc-sticky, .epb, .ep5-pop, .ep5-chip { display: none !important; }
+.ep-hc-sticky, .epb { display: none !important; }
 .ep-root.ck-keep { background: #F3F3F0; min-height: 100vh; }
 /* cabecera negra con logo, candado y franja de confianza */
 .pdh { background: #0D0D0D; color: #fff; }
@@ -37,13 +37,6 @@ html, body { background: #F3F3F0 !important; }
 .pdg-seal b { font: 900 22px/1 Archivo, Inter, sans-serif; margin-top: -8px; }
 .pdg-seal i { position: absolute; bottom: 11px; font: 800 9px/1 Inter, sans-serif; font-style: normal; letter-spacing: .08em; text-transform: uppercase; }
 .pdg-top strong { display: block; font: 800 18px/1.15 Archivo, Inter, sans-serif; color: #D4AF37; }
-.pdg-top span:not(.pdg-seal) { display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: #D1D5DB; }
-.pdg-steps { list-style: none; counter-reset: g; margin: 0; padding: 14px 16px 4px; display: grid; gap: 12px; }
-.pdg-steps li { counter-increment: g; position: relative; padding-left: 36px; font-size: 14px; line-height: 1.45; color: #374151; margin: 0; }
-.pdg-steps li::before { content: counter(g); position: absolute; left: 0; top: 0; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: #FDF8EC; border: 1px solid #D4AF37; color: #8A6410; font: 800 12.5px/1 Inter, sans-serif; }
-.pdg-steps b { color: #111; }
-.pdg-foot { margin: 10px 16px 14px; padding-top: 10px; border-top: 1px solid #F0E9D6; font-size: 12px; line-height: 1.45; color: #6B7280; }
-.pdg-foot a { color: #8A6410; font-weight: 600; }
 /* botón de confirmar: negro con dorado, como la página nueva */
 .ep-root .eph-order.ck3 .ep-of-submit { background: #0D0D0D !important; color: #fff !important; border-radius: 999px !important; box-shadow: 0 12px 28px rgba(13, 13, 13, .28) !important; }
 .ep-root .eph-order.ck3 .ep-of-submit .ep-cta-price { color: #D4AF37 !important; }
@@ -79,8 +72,23 @@ html, body { background: #F3F3F0 !important; }
 .pdf a { color: #4B5563; }
 .ep-root .eph-order.ck3 .ep-plans { padding: 16px 10px; }
 .ep-root .eph-order.ck3 .ep-plans > .ck3-step, .ep-root .eph-order.ck3 .ep-plans > .pdg, .ep-root .eph-order.ck3 .ep-plans > .eph-bonus { margin-left: 4px; margin-right: 4px; }
-.pdg-foot { margin-bottom: 16px; }
 .pdh-in { gap: 6px; padding-left: 12px; padding-right: 12px; }
 .pdh-back, .pdh-safe { white-space: nowrap; min-width: 0; }
 @media (max-width: 350px) { .pdh-logo img { height: 38px; } .pdh-safe span { display: none; } .pdh-back span { display: none; } }
 .ep-root.ck-keep .eph-guarantee { display: none !important; }   /* sello de "30 días": la garantía real es de 15 */
+
+/* garantía corta: solo sello, título y enlace a condiciones */
+a.pdg { display: block; text-decoration: none; border: 0; background: #0D0D0D; }
+.pdg-top { padding: 14px 16px; }
+.pdg-txt { display: block; min-width: 0; }
+.pdg-txt > span { display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: #D1D5DB; }
+.pdg-txt > em { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; font: 700 13px/1 Inter, sans-serif; font-style: normal; color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+/* guías: foto real de las tres portadas */
+.ep-root .eph-order.ck3 .ep-plans > .eph-bonus--libros { padding: 0 0 14px; border: 0; border-radius: 16px; background: #000; overflow: hidden; color: #E5E7EB; font-size: 14px; }
+.ep-root .eph-order.ck3 .eph-bonus--libros b { color: #D4AF37; }
+.ep-root .eph-order.ck3 .eph-bonus--libros p { padding: 0 16px; }
+.ep-root .eph-order.ck3 .pd-libros { display: block; margin: 0 0 4px; }
+.ep-root .eph-order.ck3 .pd-libros img { display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto; border-radius: 0; box-shadow: none; background: #000; transform: none; object-fit: contain; }
+/* subtítulo antes de las opciones de pago anticipado (solo si hay ahorro) */
+.ep-root.ck-keep .ep-pay-opt:has(input[value="cod"]) + .ep-pay-opt:has(.ep-pay-save) { margin-top: 40px; }
+.ep-root.ck-keep .ep-pay-opt:has(input[value="cod"]) + .ep-pay-opt:has(.ep-pay-save)::before { content: "Si quieres ahorrar más, aprovecha:"; position: absolute; left: 2px; right: 0; bottom: 100%; margin-bottom: 10px; font: 800 15px/1.2 Inter, system-ui, sans-serif; color: #111; }

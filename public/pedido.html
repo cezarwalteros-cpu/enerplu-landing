@@ -1906,7 +1906,7 @@ html.epp-lock{overflow:hidden}
 /* /pedido: checkout en página aparte. Solo se ve la sección de pedido; nada de la página antigua. */
 html, body { background: #F3F3F0 !important; }
 #MainContent > :not(.ck-keep) { display: none !important; }
-.ep-hc-sticky, .epb, .ep5-pop, .ep5-chip { display: none !important; }
+.ep-hc-sticky, .epb { display: none !important; }
 .ep-root.ck-keep { background: #F3F3F0; min-height: 100vh; }
 /* cabecera negra con logo, candado y franja de confianza */
 .pdh { background: #0D0D0D; color: #fff; }
@@ -1942,13 +1942,6 @@ html, body { background: #F3F3F0 !important; }
 .pdg-seal b { font: 900 22px/1 Archivo, Inter, sans-serif; margin-top: -8px; }
 .pdg-seal i { position: absolute; bottom: 11px; font: 800 9px/1 Inter, sans-serif; font-style: normal; letter-spacing: .08em; text-transform: uppercase; }
 .pdg-top strong { display: block; font: 800 18px/1.15 Archivo, Inter, sans-serif; color: #D4AF37; }
-.pdg-top span:not(.pdg-seal) { display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: #D1D5DB; }
-.pdg-steps { list-style: none; counter-reset: g; margin: 0; padding: 14px 16px 4px; display: grid; gap: 12px; }
-.pdg-steps li { counter-increment: g; position: relative; padding-left: 36px; font-size: 14px; line-height: 1.45; color: #374151; margin: 0; }
-.pdg-steps li::before { content: counter(g); position: absolute; left: 0; top: 0; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: #FDF8EC; border: 1px solid #D4AF37; color: #8A6410; font: 800 12.5px/1 Inter, sans-serif; }
-.pdg-steps b { color: #111; }
-.pdg-foot { margin: 10px 16px 14px; padding-top: 10px; border-top: 1px solid #F0E9D6; font-size: 12px; line-height: 1.45; color: #6B7280; }
-.pdg-foot a { color: #8A6410; font-weight: 600; }
 /* botón de confirmar: negro con dorado, como la página nueva */
 .ep-root .eph-order.ck3 .ep-of-submit { background: #0D0D0D !important; color: #fff !important; border-radius: 999px !important; box-shadow: 0 12px 28px rgba(13, 13, 13, .28) !important; }
 .ep-root .eph-order.ck3 .ep-of-submit .ep-cta-price { color: #D4AF37 !important; }
@@ -1984,15 +1977,30 @@ html, body { background: #F3F3F0 !important; }
 .pdf a { color: #4B5563; }
 .ep-root .eph-order.ck3 .ep-plans { padding: 16px 10px; }
 .ep-root .eph-order.ck3 .ep-plans > .ck3-step, .ep-root .eph-order.ck3 .ep-plans > .pdg, .ep-root .eph-order.ck3 .ep-plans > .eph-bonus { margin-left: 4px; margin-right: 4px; }
-.pdg-foot { margin-bottom: 16px; }
 .pdh-in { gap: 6px; padding-left: 12px; padding-right: 12px; }
 .pdh-back, .pdh-safe { white-space: nowrap; min-width: 0; }
 @media (max-width: 350px) { .pdh-logo img { height: 38px; } .pdh-safe span { display: none; } .pdh-back span { display: none; } }
 .ep-root.ck-keep .eph-guarantee { display: none !important; }   /* sello de "30 días": la garantía real es de 15 */
+
+/* garantía corta: solo sello, título y enlace a condiciones */
+a.pdg { display: block; text-decoration: none; border: 0; background: #0D0D0D; }
+.pdg-top { padding: 14px 16px; }
+.pdg-txt { display: block; min-width: 0; }
+.pdg-txt > span { display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: #D1D5DB; }
+.pdg-txt > em { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; font: 700 13px/1 Inter, sans-serif; font-style: normal; color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+/* guías: foto real de las tres portadas */
+.ep-root .eph-order.ck3 .ep-plans > .eph-bonus--libros { padding: 0 0 14px; border: 0; border-radius: 16px; background: #000; overflow: hidden; color: #E5E7EB; font-size: 14px; }
+.ep-root .eph-order.ck3 .eph-bonus--libros b { color: #D4AF37; }
+.ep-root .eph-order.ck3 .eph-bonus--libros p { padding: 0 16px; }
+.ep-root .eph-order.ck3 .pd-libros { display: block; margin: 0 0 4px; }
+.ep-root .eph-order.ck3 .pd-libros img { display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto; border-radius: 0; box-shadow: none; background: #000; transform: none; object-fit: contain; }
+/* subtítulo antes de las opciones de pago anticipado (solo si hay ahorro) */
+.ep-root.ck-keep .ep-pay-opt:has(input[value="cod"]) + .ep-pay-opt:has(.ep-pay-save) { margin-top: 40px; }
+.ep-root.ck-keep .ep-pay-opt:has(input[value="cod"]) + .ep-pay-opt:has(.ep-pay-save)::before { content: "Si quieres ahorrar más, aprovecha:"; position: absolute; left: 2px; right: 0; bottom: 100%; margin-bottom: 10px; font: 800 15px/1.2 Inter, system-ui, sans-serif; color: #111; }
 </style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
-<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1248121626590977&ev=PageView&noscript=1"></noscript>
+<noscript><img loading="lazy" height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1248121626590977&ev=PageView&noscript=1"></noscript>
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
   <symbol id="ep-i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="ep-i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
@@ -2194,7 +2202,7 @@ html, body { background: #F3F3F0 !important; }
     <h1 class="ep-hc-title">DE CERO A MÁXIMA<br>POTENCIA EN <span>5 A 15 MINUTOS.</span></h1>
 
     <div class="ep-hc-img">
-      <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" alt="ENERPLU tabletas masticables con maca negra" width="1080" height="1080" fetchpriority="high">
+      <img loading="lazy" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp" alt="ENERPLU tabletas masticables con maca negra" width="1080" height="1080" fetchpriority="high">
     </div>
 
     <p class="ep-hc-sub">
@@ -2623,7 +2631,7 @@ html, body { background: #F3F3F0 !important; }
     <div class="ep-compare-grid">
       <div class="ep-compare-col">
         <div class="ep-compare-product">
-          <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1775097458/otras_marcas_ulah9k.webp" alt="Bebidas y Jarabes">
+          <img loading="lazy" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1775097458/otras_marcas_ulah9k.webp" alt="Bebidas y Jarabes">
         </div>
 
         <div class="ep-compare-card ep-compare-card-left">
@@ -2642,7 +2650,7 @@ html, body { background: #F3F3F0 !important; }
 
       <div class="ep-compare-col">
         <div class="ep-compare-product">
-          <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1775097458/enerplu_maca_negra_qxhy5r.webp" alt="Masticables Enerplu">
+          <img loading="lazy" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1775097458/enerplu_maca_negra_qxhy5r.webp" alt="Masticables Enerplu">
         </div>
 
         <div class="ep-compare-card ep-compare-card-right">
@@ -2969,7 +2977,7 @@ html, body { background: #F3F3F0 !important; }
     </div>
 
     <div class="ep-mech-v2-right">
-      <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1774025718/ENEPLU_MECANISMO_fextu4.webp" alt="Mecanismo Enerplu">
+      <img loading="lazy" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1774025718/ENEPLU_MECANISMO_fextu4.webp" alt="Mecanismo Enerplu">
     </div>
 
   </div>
@@ -3165,7 +3173,7 @@ html, body { background: #F3F3F0 !important; }
   <div class="ep-authority-inner">
     <div class="ep-authority-left">
       <div class="ep-authority-logo-wrap">
-        <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1775097830/RINVIMA_ENERPLU_kqmwhs.webp" alt="INVIMA" class="ep-authority-logo">
+        <img loading="lazy" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1775097830/RINVIMA_ENERPLU_kqmwhs.webp" alt="INVIMA" class="ep-authority-logo">
       </div>
     </div>
 
@@ -3512,21 +3520,15 @@ html, body { background: #F3F3F0 !important; }
       <div class="eph ep-plans" id="ep-offer-widget">
         <h2 class="eph-title" id="eph-title">Elige tu plan</h2>
         <p class="eph-sub">Pagas al recibir · Envío gratis · Paquete discreto</p>
-        <div class="eph-bonus eph-bonus--libros"><div class="eph-libros"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Guía Maestro del Orgasmo" width="66" height="86" loading="lazy"><span class="eph-libro-txt" role="img" aria-label="Guía Secretos Sexuales"><b>SECRETOS</b><b>SEXUALES</b><i>Edición de lujo</i></span><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Guía Genio del Sexo" width="66" height="86" loading="lazy"></div><p>En todos los planes recibes <b>3 guías digitales</b> por WhatsApp al recibir.</p></div>
+        <div class="eph-bonus eph-bonus--libros"><div class="eph-libros pd-libros"><img src="/img/guias-libros.webp" alt="Guías Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" width="1200" height="805" loading="lazy"></div><p>En todos los planes recibes <b>3 guías digitales</b> por WhatsApp al recibir.</p></div>
         <p class="ck3-step"><span class="ck3-n">1</span>Elige tu plan</p>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
-        <div class="pdg">
-  <div class="pdg-top">
-    <span class="pdg-seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><b>15</b><i>días</i></span>
-    <div><strong>Garantía Real de 15 días</strong><span>En los planes Dominio Total y Élite, en tu primera compra.</span></div>
-  </div>
-  <ol class="pdg-steps">
-    <li><b>Pruebas tu primera caja.</b> Mínimo 2 veces, en días distintos.</li>
-    <li><b>Si no te convence, nos escribes por WhatsApp</b> dentro de los 15 días siguientes a la entrega.</li>
-    <li><b>Devuelves las cajas selladas y te transferimos su valor</b> en máximo 5 días hábiles: $64.950 en Dominio Total (1 caja) o hasta $79.950 en Élite (2 cajas).</li>
-  </ol>
-  <p class="pdg-foot">Respalda GRUPO EMPRESARIAL BIENESTAR TOTAL S.A.S. · NIT 901926358-4. <a href="/garantia" target="_blank" rel="noopener">Leer condiciones completas</a></p>
-</div>
+        <a class="pdg" href="/garantia" target="_blank" rel="noopener">
+  <span class="pdg-top">
+    <span class="pdg-seal" aria-hidden="true"><b>15</b><i>días</i></span>
+    <span class="pdg-txt"><strong>Garantía Real de 15 días</strong><span>En Dominio Total y Élite, en tu primera compra.</span><em>Ver condiciones <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em></span>
+  </span>
+</a>
 
       </div>
 
@@ -3640,7 +3642,6 @@ html, body { background: #F3F3F0 !important; }
 </section>
 <footer class="pdf">
   <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto/v1775103361/logo_enerplu_fgdhwk.webp" width="250" height="100" alt="ENERPLU" loading="lazy">
-  <p>GRUPO EMPRESARIAL BIENESTAR TOTAL S.A.S. · NIT 901926358-4 · Sabaneta, Antioquia</p>
   <p><a href="/garantia" target="_blank" rel="noopener">Garantía</a> · <a href="/terminos" target="_blank" rel="noopener">Términos y condiciones</a></p>
 </footer>
 
@@ -3848,7 +3849,7 @@ html, body { background: #F3F3F0 !important; }
     <button type="button" class="lc-btn enerplu-review-cta" id="enerplu-review-cta">QUIERO PROBARLO SIN RIESGO</button>
     <p class="enerplu-review-footer">Pagas al recibir · Bolsa negra sellada · Lubricante de regalo</p>
   </div>
-  <dialog class="enerplu-review-dialog" aria-label="Foto de cliente de ENERPLU"><button type="button" class="enerplu-review-close" aria-label="Cerrar foto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button><img width="800" height="800" alt="Foto compartida por un cliente de ENERPLU"></dialog>`;
+  <dialog class="enerplu-review-dialog" aria-label="Foto de cliente de ENERPLU"><button type="button" class="enerplu-review-close" aria-label="Cerrar foto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button><img loading="lazy" width="800" height="800" alt="Foto compartida por un cliente de ENERPLU"></dialog>`;
   const listEl=root.querySelector('#enerplu-review-list');
   const countEl=root.querySelector('#enerplu-review-count');
   const moreEl=root.querySelector('#enerplu-review-more');
@@ -5584,7 +5585,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
   var qs = function (s, r) { return (r || document).querySelector(s); };
   var qsa = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var state = { pack: C.defaultPack };
+  var state = { pack: ({ basico: 'inicial', inicial: 'inicial', dominio: 'dominio', elite: 'elite' })[(new URLSearchParams(location.search).get('plan') || '').toLowerCase()] || C.defaultPack };
   var once = {};
   var galleries = [];
 
@@ -6455,7 +6456,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         '<p class="ep-ups-eyebrow">' + HG + ' ' + R.esc(up.eyebrow || 'Espera, antes de confirmar') + '</p>' +
         '<h3 class="ep-ups-title">' + R.esc(up.headline || up.title) + '</h3>' +
         '<p class="ep-ups-text">' + R.esc(up.text || '') + '</p>' +
-        (up.image ? '<span class="ep-ups-img"><img src="' + R.esc(up.image) + '" alt="' + R.esc(up.title) + '" decoding="async"></span>' : '') +
+        (up.image ? '<span class="ep-ups-img"><img loading="lazy" src="' + R.esc(up.image) + '" alt="' + R.esc(up.title) + '" decoding="async"></span>' : '') +
         '<ul class="ep-ups-list">' + (up.bullets || []).map(function (b) { return '<li>' + R.ico('check') + '<span>' + R.esc(b) + '</span></li>'; }).join('') + '</ul>' +
         '<p class="ep-ups-price"><s>' + R.money(up.compare) + '</s><b>' + R.money(up.price) + '</b><span>Ahorras ' + R.money(up.compare - up.price) + '</span></p>' +
         '<button type="button" class="ep-ups-yes" data-ep-ups="yes"><b>Sí, agregarlo por ' + R.money(up.price) + '</b><small>' + (self.payOnline() ? 'Llega en el mismo paquete 100% discreto' : 'Llega en el mismo paquete · pagas al recibir') + '</small></button>' +
@@ -6667,7 +6668,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       if (open && dlg && body) {
         var r = (C.reviews || [])[Number(open.getAttribute('data-ep-rv-open'))];
         if (!r) return;
-        body.innerHTML = '<img src="' + R.esc(r.photo) + '" alt="Foto de ' + R.esc(r.name) + '">' +
+        body.innerHTML = '<img loading="lazy" src="' + R.esc(r.photo) + '" alt="Foto de ' + R.esc(r.name) + '">' +
           '<div class="ep-rv-dlg-text">' + R.stars(r.rating || 5) + '<p>' + R.esc(r.text) + '</p><small>' + R.esc(r.name) + (r.city ? ' · ' + R.esc(r.city) : '') + '</small></div>';
         if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
         track('ReviewPhoto', { name: r.name }, true);
@@ -6998,158 +6999,6 @@ window.EP_POPUP_MODE = 'off';
 
 </script>
 
-<script>/* Popup de 5% en la primera compra (cesar 2026-11-10: "quiero hacer esto mismo en ENERPLU", igual que Mg Collagen).
-   Prueba "popup5" (N sin popup 20%, A 40%, B 40%), independiente de la prueba de página E-04 (sale por igual en "/" y en "/b"):
-   A = "No te vayas": aparece al intentar salir (botón atrás, volver a la pestaña, cursor que sale por arriba). Cupón con reloj de 15 min.
-   B = "Primera compra": aparece a los 8 s y deja una barra arriba.
-   El descuento lo valida y lo aplica el CRM (discount_codes, checkout-native action "coupon"); aquí solo se muestra.
-   Solo se ve en el resumen del formulario; se suma al descuento de pago anticipado. ?pop=A|B fuerza, ?pop=0 lo apaga. */
-(function () {
-  var CODE = 'ENERPLU5', PCT = 5, MIN_A = 15, SEG_B = 8, IMG = '/img/popup-enerplu.webp';
-  var I = {
-    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
-    clk: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
-    chk: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
-    truck: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="17.5" cy="17.5" r="1.5"/></svg>',
-    box: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
-    arr: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
-  };
-  var ls = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
-  var ss = { get: function (k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} } };
-  var mmss = function (ms) { var s = Math.max(0, Math.round(ms / 1000)); return ('0' + Math.floor(s / 60)).slice(-2) + ':' + ('0' + (s % 60)).slice(-2); };
-
-  function init(h) {
-    var qs = new URLSearchParams(location.search), f = (qs.get('pop') || '').toUpperCase();
-    var forced = f === 'A' || f === 'B' || f === 'N' ? f : null;
-    if (qs.get('pop') === '0') return;
-    /* N = grupo sin popup (20%), para saber si el 5% de verdad sube pedidos; A y B 40% cada uno */
-    var v = forced || ls.get('ep_pop_v');
-    if (v !== 'A' && v !== 'B' && v !== 'N') { var r = Math.random(); v = r < 0.2 ? 'N' : r < 0.6 ? 'A' : 'B'; ls.set('ep_pop_v', v); }
-    if (!ss.get('ep_pop_as')) { ss.set('ep_pop_as', '1'); h.funnel('ab_assign', { exp: 'popup5', v: v }); }
-    if (v === 'N') return;
-
-    /* cupón ya aceptado en esta sesión: se conserva al recargar */
-    try { var c0 = JSON.parse(ss.get('ep_cup') || 'null'); if (c0 && (!c0.exp || c0.exp > Date.now())) var c0ok = c0; } catch (e) {}
-
-    /* aviso de cupón aplicado, justo donde aterriza la persona (encima de "Tu pedido" o del formulario) */
-    var note = null, ntick = null;
-    function apply(c) {
-      h.applyCoupon(c); clearInterval(ntick); if (note) { note.remove(); note = null; }
-      if (!c) return;
-      var at = document.querySelector('#tp-card') || document.querySelector('#ep-order form') || document.querySelector('#ep-order');
-      if (!at) return;
-      note = document.createElement('div'); note.className = 'epp-ok';
-      note.innerHTML = I.chk + '<div><b>' + c.pct + '% de descuento aplicado</b><small>Código ' + c.code + ' · ya está en el total de tu pedido</small></div>' + (c.exp ? '<span class="epp-tm">' + I.clk + '<span data-tm></span></span>' : '');
-      at.parentNode.insertBefore(note, at);
-      if (c.exp) { var f = function () { var left = c.exp - Date.now(); if (left <= 0) { ss.set('ep_cup', 'null'); apply(null); return; } note.querySelector('[data-tm]').textContent = mmss(left); }; f(); ntick = setInterval(f, 1000); }
-    }
-    var seen = !forced && ls.get('ep_pop_seen') === '1', open = false, el = null, tick = null, expA = 0, pre = false;
-    var typing = function () { var a = document.activeElement; return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)); };
-    if (typeof c0ok !== 'undefined') apply(c0ok);
-    function preload() { if (pre) return; pre = true; new Image().src = IMG; }
-
-    function bar() {
-      if (v !== 'B' || bar.d) return; bar.d = 1;
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'epp-bar';
-      b.innerHTML = 'Primera compra · <b>' + PCT + '% con ' + CODE + '</b>';
-      b.addEventListener('click', function () { accept('bar'); });
-      document.body.insertBefore(b, document.body.firstChild);
-    }
-    function close(how) {
-      if (!open) return; open = false; clearInterval(tick);
-      document.documentElement.classList.remove('epp-lock');
-      el.classList.remove('on'); var e = el; setTimeout(function () { e.remove(); }, 260);
-      if (how) h.funnel('popup_close', { v: v, how: how });
-      bar();
-    }
-    function accept(from) {
-      h.funnel('popup_accept', { v: v, from: from });
-      /* se aplica de una vez para no hacer esperar; el CRM lo valida en segundo plano y de nuevo al crear el pedido */
-      var c = { code: CODE, pct: PCT, exp: v === 'A' ? (expA || Date.now() + MIN_A * 60000) : null, demo: !!h.test };
-      ss.set('ep_cup', JSON.stringify(c)); apply(c);
-      close(); h.goForm();
-      if (h.test) return; /* vista de prueba: se muestra aunque el código aún no exista (no se manda al pedido) */
-      h.api({ action: 'coupon', code: CODE, offer_key: h.selKey(), bump: h.bump() }).then(function (r) {
-        if (r && r.status && r.status < 500 && !(r.j && r.j.success)) { ss.set('ep_cup', 'null'); apply(null); h.funnel('form_error', { server: 1, cupon: CODE }); }
-      }, function () {});
-    }
-    function show(trig) {
-      if (seen || open || h.ordered()) return false;
-      seen = true; open = true; if (!forced) ls.set('ep_pop_seen', '1');
-      preload();
-      var A = v === 'A'; if (A) expA = Date.now() + MIN_A * 60000;
-      el = document.createElement('div'); el.className = 'epp'; el.setAttribute('data-v', v);
-      el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', PCT + '% de descuento en tu primera compra');
-      el.innerHTML =
-        '<div class="epp-card"><div class="epp-hero" style="background-image:url(' + IMG + ')"><span class="epp-mark"><i></i>ENERPLU</span><button type="button" class="epp-x" aria-label="Cerrar">' + I.x + '</button></div>' +
-        '<div class="epp-body"><p class="epp-eye">' + (A ? 'Antes de irte' : 'Primera compra') + '</p>' +
-        (A ? '<p class="epp-t">Pruébalo hoy con <em>' + PCT + '% de descuento</em></p><p class="epp-p">Tu primer pedido sale con <b>' + PCT + '% menos</b>. Lo pides ahora, llega en paquete discreto y <b>pagas al recibir</b>.</p>'
-           : '<p class="epp-t">En tu primera compra, <em>' + PCT + '% de descuento</em></p><p class="epp-p">El descuento se aplica solo en tu pedido, <b>no tienes que escribir nada</b>. Si pagas ahora, se suma al descuento de pago anticipado.</p>') +
-        '<div class="epp-cup"><span class="epp-pct">' + PCT + '<sup>%</sup></span><div class="epp-mid"><small>Tu código</small><b>' + CODE + '</b></div>' +
-        (A ? '<span class="epp-tm">' + I.clk + '<span data-tm>' + mmss(MIN_A * 60000) + '</span></span>' : '<span class="epp-tm s">1.ª compra</span>') + '</div>' +
-        '<button type="button" class="epp-go">' + (A ? 'Usar mi 5% ahora' : 'Aplicar mi 5%') + I.arr + '</button>' +
-        '<ul class="epp-tr"><li>' + I.truck + 'Envío gratis</li><li>' + I.box + 'Paquete discreto</li><li>' + I.chk + 'Pagas al recibir</li></ul>' +
-        '<button type="button" class="epp-no">' + (A ? 'No, gracias' : 'Seguir viendo') + '</button></div></div>';
-      document.body.appendChild(el);
-      document.documentElement.classList.add('epp-lock');
-      requestAnimationFrame(function () { el.classList.add('on'); });
-      el.querySelector('.epp-x').addEventListener('click', function () { close('x'); });
-      el.querySelector('.epp-no').addEventListener('click', function () { close('no'); });
-      el.querySelector('.epp-go').addEventListener('click', function () { accept('popup'); });
-      el.addEventListener('click', function (e) { if (e.target === el) close('fuera'); });
-      if (A) tick = setInterval(function () { var t = el.querySelector('[data-tm]'); if (t) t.textContent = mmss(expA - Date.now()); }, 1000);
-      h.funnel('popup_view', { v: v, trig: trig });
-      return true;
-    }
-    addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) close('esc'); });
-    if (seen) { bar(); return; }
-
-    if (v === 'A') {
-      /* 1) Botón "atrás": se arma cuando ya mostró interés (bajó en la página o lleva 15 s).
-            Chrome en celular ignora el "atrás" si la persona nunca tocó la página, así que el estado se guarda al primer toque. */
-      var armed = false, ready = false, pushed = false;
-      var active = function () { try { return !navigator.userActivation || navigator.userActivation.hasBeenActive; } catch (e) { return true; } };
-      var push = function () {
-        if (pushed || !ready || seen || !active()) return; pushed = true;
-        try { history.pushState({ eppop: 1 }, ''); } catch (e) { return; }
-        addEventListener('popstate', function onPop(e) {
-          if (e.state && e.state.eppop) return;
-          removeEventListener('popstate', onPop);
-          show('atras');
-        });
-      };
-      var arm = function () { if (armed) return; armed = true; ready = true; preload(); push(); };
-      ['pointerdown', 'touchend', 'keydown'].forEach(function (ev) { addEventListener(ev, function () { setTimeout(push, 0); }, { passive: true }); });
-      setTimeout(arm, 15000);
-      var t0 = Date.now(), maxY = 0, lastY = 0, lastT = 0, upFrom = -1;
-      addEventListener('scroll', function () {
-        var d = document.documentElement, y = scrollY, now = Date.now();
-        if ((y + innerHeight) / d.scrollHeight > 0.3) arm();
-        /* 1b) Celular: venía leyendo abajo y sube rápido (gesto típico antes de salir). Mismas medidas que Mg:
-               racha hacia arriba de más del 60% del alto de pantalla, habiendo bajado más de 1,2 pantallas y con 6 s en la página */
-        if (y > maxY) maxY = y;
-        if (y < lastY) {
-          if (upFrom < 0 || now - lastT > 300) upFrom = lastY;
-          if (now - t0 > 6000 && maxY > innerHeight * 1.2 && upFrom - y > innerHeight * 0.6 && !typing()) show('sube');
-        } else upFrom = -1;
-        lastY = y; lastT = now;
-      }, { passive: true });
-      /* 2) Se fue a otra app o pestaña y volvió (2 s o más por fuera) */
-      var away = 0;
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden) { away = Date.now(); return; }
-        if (away && Date.now() - away >= 2000 && !typing()) show('vuelve');
-      });
-      /* 3) Computador: el cursor sale por arriba */
-      document.addEventListener('mouseout', function (e) { if (!e.relatedTarget && e.clientY <= 0 && !typing()) show('cursor'); });
-    } else {
-      setTimeout(preload, 2000);
-      setTimeout(function go() { if (typing()) { setTimeout(go, 4000); return; } show('tiempo'); }, SEG_B * 1000);
-    }
-  }
-  if (window.EP_POP) init(window.EP_POP); else addEventListener('ep:pop-ready', function () { init(window.EP_POP); }, { once: true });
-})();
-</script>
 <script>(function(){document.addEventListener('click',function(e){
   var img=e.target.closest&&e.target.closest('[data-id="gpGrrwtDmE"] img');if(!img)return;
   var a=document.querySelector('a[href="#ep-offer-widget"]');if(!a)return;e.preventDefault();a.click();

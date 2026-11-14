@@ -441,6 +441,12 @@ if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
     _pd = must(_pd, '<fieldset class="ep-of-block" data-ep-ship-block>', '<fieldset class="ep-of-block ck3-ship" data-ep-ship-block>')
     _pd = must(_pd, '<legend class="ep-of-legend">¿Cómo quieres pagar?</legend>', '<legend class="ep-of-legend"><span class="ck3-n">3</span>¿Cómo quieres pagar?</legend>')
     _pd = must(_pd, _GA, (ROOT / 'fuente' / 'pedido' / 'garantia.html').read_text())
+    # sin popup de 5% en el checkout aparte (tapaba el formulario y se quedaba con el botón atrás)
+    _pd = must(_pd, '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n', '')
+    # el plan del enlace (?plan=) vale desde el arranque, para que ViewContent salga con el plan correcto
+    _pd = must(_pd, 'var state = { pack: C.defaultPack };', "var state = { pack: ({ basico: 'inicial', inicial: 'inicial', dominio: 'dominio', elite: 'elite' })[(new URLSearchParams(location.search).get('plan') || '').toLowerCase()] || C.defaultPack };")
+    _pd, _n = re.subn(r'<div class="eph-libros">.*?</div>', '<div class="eph-libros pd-libros"><img src="/img/guias-libros.webp" alt="Guías Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" width="1200" height="805" loading="lazy"></div>', _pd, count=1, flags=re.S)
+    assert _n == 1, 'pedido: guias'
     _pd, _n = re.subn(r'<p class="eph-trust">.*?</p>', lambda m: (ROOT / 'fuente' / 'pedido' / 'confianza.html').read_text(), _pd, count=1, flags=re.S)
     assert _n == 1, 'pedido: no se encontró el texto de confianza bajo el botón'
     _i = _pd.index('</section>', _pd.index('id="ep-order"')) + len('</section>')
@@ -449,6 +455,10 @@ if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
     _pd = must(_pd, '</head>', '<meta name="robots" content="noindex">\n<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&display=swap" rel="stylesheet">\n<style>\n'
                + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.css').read_text() + (ROOT / 'fuente' / 'pedido' / 'pedido.css').read_text() + '</style>\n</head>')
     _pd = must(_pd, '</body>', '<script>\n' + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.js').read_text() + (ROOT / 'fuente' / 'pedido' / 'pedido.js').read_text() + '</script>\n</body>')
+    # las fotos de la página vieja (ocultas aquí) no se descargan: quedan en carga diferida
+    _a = _pd.index('<div class="ep-root ck-keep"'); _b = _pd.index('</footer>', _a)
+    _lz = lambda h: re.sub(r'<img(?![^>]*\bloading=)', '<img loading="lazy"', h)
+    _pd = _lz(_pd[:_a]) + _pd[_a:_b] + _lz(_pd[_b:])
     (OUT / 'pedido.html').write_text(_pd)
 (OUT / 'index.html').write_text(index_html)
 if AB_E04 and not HERO_V2:

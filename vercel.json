@@ -74,6 +74,16 @@
       "destination": "https://fonts.shopifycdn.com/:p*"
     },
     {
+      "source": "/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
       "source": "/products/:p*",
       "has": [
         {
@@ -112,6 +122,16 @@
         }
       ],
       "destination": "https://fonts.shopifycdn.com/:p*"
+    },
+    {
+      "source": "/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
     }
   ],
   "headers": [

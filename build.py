@@ -588,6 +588,8 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
         {"source": "/collections/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
         {"source": "/cdn/shop/:p*", "has": [{"type": "host", "value": h}], "destination": "https://cdn.shopify.com/s/files/1/0748/9418/0397/:p*"},
         {"source": "/cdn/fonts/:p*", "has": [{"type": "host", "value": h}], "destination": "https://fonts.shopifycdn.com/:p*"},
+        # cualquier otra dirección vieja de la tienda (/propuesta, /pages/...) también muestra /nueva (cesar 2026-11-14)
+        {"source": "/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
     )],
     "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}]},
                 {"source": "/rec/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800, immutable"}]},

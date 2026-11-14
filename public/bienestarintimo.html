@@ -420,18 +420,8 @@ footer p{margin:0 0 8px}
 @media (max-width:359px){.pc h3{font-size:15px}.qty{grid-template-columns:38px 1fr 38px}.ad{grid-template-columns:76px 1fr}.ad-img{width:76px;height:76px}}
 @media (prefers-reduced-motion:reduce){.pc,.ladder>div{transition:none}}
 </style>
-<script>
-/* Medición: píxel de Meta de ENERPLU y Clarity. Con ?ep_test=1 no mide nada. */
-(function () {
-  window.epTrack = function () {};
-  if (/[?&]ep_test=1(&|$)/.test(location.search)) return;
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1248121626590977'); fbq('track', 'PageView'); fbq('track', 'ViewContent', { content_name: 'Bienestar Intimo', content_category: 'intimo' });
-  (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "aj18t0em8h");
-  try { window.clarity("set", "pagina", "bienestarintimo"); } catch (e) {}
-  window.epTrack = function (ev, data) { try { fbq('track', ev, data || {}); } catch (e) {} };
-})();
-</script>
+<script src="/js/intimo-medicion.js" data-pagina="bienestarintimo"></script>
+<script>epTrack('ViewContent', { content_name: 'Bienestar Intimo', content_category: 'intimo' });</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -747,30 +737,41 @@ footer p{margin:0 0 8px}
     if (dd > 0 && n() >= MAX) return;
     cant[id] = Math.max(0, (cant[id] || 0) + dd);
     if (dd > 0 && !tracked) { tracked = true; window.epTrack('AddToCart', { content_name: 'Combo intimo', currency: 'COP', value: BASE }); }
+    var c = n();
+    epSend('plan_click', { prod: id, d: dd, frascos: c });
+    if (dd > 0) epClarity('agrego_frasco');
+    if (c >= MIN) { epSend('plan_select', { plan: 'combo' + c, frascos: c, total: BASE + (c - MIN) * EXTRA }); epTag('plan', 'combo' + c); if (c === MIN && dd > 0) epClarity('combo_listo'); }
     render(id);
   });
   d.querySelectorAll('.ad').forEach(function (el) {
     el.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-d]'); if (!b) return;
       var k = el.dataset.ad; ads[k] = Math.max(0, Math.min(MAX, ads[k] + +b.dataset.d)); render(k);
+      epSend('plan_click', { adicional: k, cant: ads[k] }); if (+b.dataset.d > 0) epClarity('agrego_adicional');
     });
   });
   d.querySelectorAll('.chip').forEach(function (ch) {
     ch.addEventListener('click', function () {
       d.querySelectorAll('.chip').forEach(function (o) { o.setAttribute('aria-pressed', o === ch ? 'true' : 'false'); });
+      epSend('plan_click', { filtro: ch.dataset.f });
       d.querySelectorAll('.pc').forEach(function (el) { el.hidden = ch.dataset.f !== 'todos' && el.dataset.cat !== ch.dataset.f; if (!el.hidden) el.classList.add('in'); });
     });
   });
 
   // Continuar: lleva al checkout aparte (/pedido-intimo) con el combo, los adicionales y los parámetros de campaña.
-  function goPay() {
-    var c = n(); if (c < MIN) return;
+  function goPay(e) {
+    var c = n(), b = e && e.currentTarget, txt = b ? (b.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40) : '';
+    if (c < MIN) { epSend('cta_click', { ok: false, frascos: c, txt: txt }); return; }
     var p = new URLSearchParams(location.search), parts = [];
     P.forEach(function (x) { if (cant[x[0]]) parts.push(x[0] + '.' + cant[x[0]]); });
     p.set('combo', parts.join('-')); p.set('anillo', ads.anillo); p.set('caja', ads.caja);
+    epSend('cta_click', { ok: true, plan: 'combo' + c, frascos: c, combo: parts.join('-'), anillo: ads.anillo, caja: ads.caja, total: BASE + (c - MIN) * EXTRA + ads.anillo * 18000 + ads.caja * 39900, txt: txt });
+    epClarity('toco_pagar');
     location.href = '/pedido-intimo?' + p.toString();
   }
   d.querySelectorAll('[data-go]').forEach(function (b) { b.addEventListener('click', goPay); });
+  // Embudo: vio el armador de combos
+  if ('IntersectionObserver' in window && $('combo')) { var ioC = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { epSend('selector_view'); epClarity('vio_combos'); ioC.disconnect(); } }, { rootMargin: '-30% 0px -30% 0px' }); ioC.observe($('combo')); }
   // Si vuelve del checkout ("Cambiar mis frascos"), el combo queda como lo dejó.
   (function () {
     var q = new URLSearchParams(location.search), c = 0;

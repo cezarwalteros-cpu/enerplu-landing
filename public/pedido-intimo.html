@@ -153,18 +153,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
 @media (max-width:350px){.pdh-logo img{height:38px}.pdh-safe span,.pdh-back span{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pay::after{animation:none}}
 </style>
-<script>
-/* Medición: píxel de Meta de ENERPLU y Clarity. Con ?ep_test=1 no mide nada. */
-(function () {
-  window.epTrack = function () {};
-  if (/[?&]ep_test=1(&|$)/.test(location.search)) return;
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1248121626590977'); fbq('track', 'PageView');
-  (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "aj18t0em8h");
-  try { window.clarity("set", "pagina", "pedido-intimo"); } catch (e) {}
-  window.epTrack = function (ev, data) { try { fbq('track', ev, data || {}); } catch (e) {} };
-})();
-</script>
+<script src="/js/intimo-medicion.js" data-pagina="pedido-intimo"></script>
 </head>
 <body>
 <header class="pdh">
@@ -316,10 +305,15 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     el.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-d]'); if (!b) return;
       var k = el.dataset.ad; ads[k] = Math.max(0, Math.min(MAX, ads[k] + +b.dataset.d)); render();
+      epSend('plan_click', { adicional: k, cant: ads[k], total: total() }); if (+b.dataset.d > 0) epClarity('agrego_adicional');
     });
   });
   render();
   window.epTrack('InitiateCheckout', { content_name: 'Combo intimo', currency: 'COP', value: total(), num_items: c });
+  epSend('selector_view', { plan: 'combo' + c, frascos: c, combo: q.get('combo'), total: total() }); epTag('plan', 'combo' + c);
+  function pago() { var r = d.querySelector('input[name="pago"]:checked'); return r ? r.value : null; }
+  d.querySelectorAll('input[name="pago"]').forEach(function (r) { r.addEventListener('change', function () { epSend('pay_select', { pago: r.value }); epTag('pago', r.value); epClarity('eligio_pago'); }); });
+  d.querySelectorAll('a[href]').forEach(function (a) { if (a.id === 'back' || a.id === 'edit') a.addEventListener('click', function () { epSend('cta_click', { txt: 'volver a la tienda', de: a.id }); }); });
 
   // barra de pasos: avanza según lo que hay en pantalla
   var secs = [$('s1'), $('s2'), $('s3')], bars = [$('b1'), $('b2'), $('b3')];
@@ -337,7 +331,8 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     return v.length >= 2;
   }
   d.querySelectorAll('[data-req]').forEach(function (i) {
-    i.addEventListener('blur', function () { if (i.value.trim()) i.closest('.fld').classList.toggle('bad', !ok(i)); });
+    i.addEventListener('blur', function () { if (i.value.trim()) { var g = ok(i); i.closest('.fld').classList.toggle('bad', !g); if (g && !i._ep) { i._ep = 1; epSend('form_field', { field: i.name || i.id }); } } });
+    i.addEventListener('input', function () { epSend('form_start'); epClarity('empezo_formulario'); }, { once: true });
     i.addEventListener('input', function () { if (ok(i)) i.closest('.fld').classList.remove('bad'); });
   });
   $('form').addEventListener('submit', function (e) {
@@ -347,8 +342,13 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     w.hidden = false;
     if (bad.length) {
       w.className = 'warn'; w.textContent = bad.length === 1 ? 'Te falta 1 dato para enviarte el pedido.' : 'Te faltan ' + bad.length + ' datos para enviarte el pedido.';
+      epSend('form_error', { fields: bad.map(function (i) { return i.name || i.id; }), plan: 'combo' + c });
+      epSend('submit_click', { ok: false, pago: pago(), plan: 'combo' + c, total: total() }); epClarity('error_formulario');
       bad[0].focus(); bad[0].scrollIntoView({ block: 'center' }); return;
     }
+    epSend('submit_click', { ok: true, pago: pago(), plan: 'combo' + c, frascos: c, anillo: ads.anillo, caja: ads.caja, total: total() });
+    window.epTrack('AddPaymentInfo', { content_name: 'Combo intimo', currency: 'COP', value: total(), num_items: c });
+    epClarity('toco_pagar_pedido');
     // Pasarela pendiente: aquí se crea el pedido en el CRM y se abre el pago. Mientras tanto no se cobra nada.
     w.className = 'warn info'; w.textContent = 'Vista previa: el pago en línea todavía no está conectado, así que este pedido no se cobra ni se envía.';
     w.scrollIntoView({ block: 'center' });

@@ -3506,7 +3506,7 @@ html.epp-lock{overflow:hidden}
           <details><summary>¿Cómo llega el paquete?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>En una bolsa negra sellada y con empaque discreto.</p></div></details>
           <details><summary>¿Cómo se usa?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Mastica una tableta de 5 a 15 minutos antes del encuentro y déjala disolver bajo la lengua. No necesitas agua. Una tableta por ocasión; no la tomes todos los días.</p></div></details>
           <details><summary>¿Cuántos usos trae cada caja?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Cada caja trae 10 tabletas, es decir, 10 ocasiones. Por eso los combos de 2 y 4 cajas te salen más baratos por tableta.</p></div></details>
-          <details><summary>¿Me cobran algo más?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>No. El envío estándar es gratis y pagas solo el valor de tu pedido. El envío express es opcional.</p></div></details>
+          <details><summary>¿Me cobran algo más?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>No. El envío es gratis y pagas solo el valor de tu pedido.</p></div></details>
           <details><summary>¿Es seguro?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>ENERPLU es un suplemento alimenticio con registro INVIMA NSA-2314-2025, no un medicamento. Si tienes una condición del corazón, presión alta o tomas medicamentos, consulta antes con tu médico.</p></div></details>
         </div>
       </div>
@@ -5004,7 +5004,7 @@ window.EP_CONFIG = {
               eyebrow: 'Espera, antes de confirmar', headline: 'Lleva la experiencia al nivel de control absoluto',
               text: 'Ya tienes la firmeza y resistencia con tu pedido por dentro; el spray Velvet te da el control exacto del reloj por fuera. El combo de blindaje definitivo.',
               bullets: ['Olvídate de la tensión mental de tener que aguantar', 'Disfruta del ritmo intenso sin miedo a terminar antes', 'Llega en el mismo paquete 100% discreto y sin costo de envío adicional'] },
-    express: { price: 5000, title: 'Express', text: 'Despacho con prioridad y envío asegurado' },
+    express: null,   /* sin envío express (cesar 2026-11-14: "eso no se cumple") */
     thanksTitle: '¡Pedido recibido!',
     thanksText: 'Te escribiremos por WhatsApp para confirmar tu pedido. Ten tu celular a la mano.',
     deliveryDays: [3, 4],
@@ -6023,8 +6023,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     payMode: function () {
       if (!this.form) return;
       var on = this.payOnline(), row = qs('[data-ep-email-row]', this.form), em = this.el('email');
-      if (row) row.hidden = !on;
-      if (em) { if (on) em.setAttribute('required', ''); else { em.removeAttribute('required'); this.err('email', ''); } }
+      /* correo fuera del formulario, también para pago en línea (cesar 2026-11-14: "quitar el correo del formulario") */
+      if (row) row.hidden = true;
+      if (em) { em.removeAttribute('required'); this.err('email', ''); }
       var m = this.method(), sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = m === 'bold' ? 'Pago seguro en línea con Bold' : m === 'transfer' ? 'Pagas por transferencia' : 'Pagas en efectivo al recibir';
       var key = m + (this.st.city && this.st.city.prepaid ? '1' : '0');
       if (this.payWas !== key) { this.payWas = key; this.paintPay(); this.update(); }
@@ -6151,7 +6152,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
          sin número, el pedido queda marcado en las notas para confirmar el punto por WhatsApp */
       if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección o el punto de entrega' : '';
       if (name === 'additional') return '';   /* barrio opcional (2026-11-08): si viene vacío se confirma por WhatsApp */
-      if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
+      if (name === 'email') return '';
       return '';
     },
     fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'address1', 'additional'],
@@ -6286,7 +6287,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
-        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
+        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') || 'Sin barrio: confirmar por WhatsApp', notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: !!(up && this.st.upsell && p.id === up.only),
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',

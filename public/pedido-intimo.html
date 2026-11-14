@@ -367,7 +367,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
   function ok(i) {
     var v = i.value.trim();
     if (i.hasAttribute('data-tel')) return /^3\d{9}$/.test(v.replace(/\D/g, ''));
-    if (i.hasAttribute('data-mail')) return pago() !== 'linea' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    if (i.hasAttribute('data-mail')) return true; /* correo fuera del formulario (cesar 2026-11-14) */
     if (i.hasAttribute('data-city')) return !!city;
     if (i.id === 'f-dir') return v.length >= 5;
     return v.length >= 2;
@@ -406,7 +406,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
   // método de pago: el correo solo se pide para pago en línea
   function syncPago() {
     var linea = pago() === 'linea';
-    $('fld-mail').hidden = !linea;
+    $('fld-mail').hidden = true;
     $('pay').querySelector('.l').firstChild.nodeValue = linea ? 'Pagar mi pedido' : 'Hacer mi pedido';
     $('pay').querySelector('small').textContent = linea ? 'Pago seguro en línea con Bold' : 'Pagas por transferencia o llave';
   }
@@ -529,7 +529,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     epClarity('toco_pagar_pedido');
     var body = {
       action: 'order', slug: SLUG, session_id: sid, website: $('f-web').value,
-      customer: { first_name: val('f-nom'), last_name: val('f-ape'), phone: val('f-cel').replace(/\D/g, ''), email: linea ? val('f-mail') : undefined },
+      customer: { first_name: val('f-nom'), last_name: val('f-ape'), phone: val('f-cel').replace(/\D/g, ''), email: undefined },
       address: { department: city.departamento, city: city.municipio, address1: val('f-dir'), additional: val('f-bar') },
       combo: cant, addons: { anillo: ads.anillo, caja: ads.caja },
       payment_method: linea ? 'bold' : 'transfer', tracking: tracking()

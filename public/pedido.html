@@ -1942,13 +1942,6 @@ html, body { background: #F3F3F0 !important; }
 .pdg-seal b { font: 900 22px/1 Archivo, Inter, sans-serif; margin-top: -8px; }
 .pdg-seal i { position: absolute; bottom: 11px; font: 800 9px/1 Inter, sans-serif; font-style: normal; letter-spacing: .08em; text-transform: uppercase; }
 .pdg-top strong { display: block; font: 800 18px/1.15 Archivo, Inter, sans-serif; color: #D4AF37; }
-.pdg-top span:not(.pdg-seal) { display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: #D1D5DB; }
-.pdg-steps { list-style: none; counter-reset: g; margin: 0; padding: 14px 16px 4px; display: grid; gap: 12px; }
-.pdg-steps li { counter-increment: g; position: relative; padding-left: 36px; font-size: 14px; line-height: 1.45; color: #374151; margin: 0; }
-.pdg-steps li::before { content: counter(g); position: absolute; left: 0; top: 0; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: #FDF8EC; border: 1px solid #D4AF37; color: #8A6410; font: 800 12.5px/1 Inter, sans-serif; }
-.pdg-steps b { color: #111; }
-.pdg-foot { margin: 10px 16px 14px; padding-top: 10px; border-top: 1px solid #F0E9D6; font-size: 12px; line-height: 1.45; color: #6B7280; }
-.pdg-foot a { color: #8A6410; font-weight: 600; }
 /* botón de confirmar: negro con dorado, como la página nueva */
 .ep-root .eph-order.ck3 .ep-of-submit { background: #0D0D0D !important; color: #fff !important; border-radius: 999px !important; box-shadow: 0 12px 28px rgba(13, 13, 13, .28) !important; }
 .ep-root .eph-order.ck3 .ep-of-submit .ep-cta-price { color: #D4AF37 !important; }
@@ -1984,11 +1977,26 @@ html, body { background: #F3F3F0 !important; }
 .pdf a { color: #4B5563; }
 .ep-root .eph-order.ck3 .ep-plans { padding: 16px 10px; }
 .ep-root .eph-order.ck3 .ep-plans > .ck3-step, .ep-root .eph-order.ck3 .ep-plans > .pdg, .ep-root .eph-order.ck3 .ep-plans > .eph-bonus { margin-left: 4px; margin-right: 4px; }
-.pdg-foot { margin-bottom: 16px; }
 .pdh-in { gap: 6px; padding-left: 12px; padding-right: 12px; }
 .pdh-back, .pdh-safe { white-space: nowrap; min-width: 0; }
 @media (max-width: 350px) { .pdh-logo img { height: 38px; } .pdh-safe span { display: none; } .pdh-back span { display: none; } }
 .ep-root.ck-keep .eph-guarantee { display: none !important; }   /* sello de "30 días": la garantía real es de 15 */
+
+/* garantía corta: solo sello, título y enlace a condiciones */
+a.pdg { display: block; text-decoration: none; border: 0; background: #0D0D0D; }
+.pdg-top { padding: 14px 16px; }
+.pdg-txt { display: block; min-width: 0; }
+.pdg-txt > span { display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: #D1D5DB; }
+.pdg-txt > em { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; font: 700 13px/1 Inter, sans-serif; font-style: normal; color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+/* guías: foto real de las tres portadas */
+.ep-root .eph-order.ck3 .ep-plans > .eph-bonus--libros { padding: 0 0 14px; border: 0; border-radius: 16px; background: #000; overflow: hidden; color: #E5E7EB; font-size: 14px; }
+.ep-root .eph-order.ck3 .eph-bonus--libros b { color: #D4AF37; }
+.ep-root .eph-order.ck3 .eph-bonus--libros p { padding: 0 16px; }
+.ep-root .eph-order.ck3 .pd-libros { display: block; margin: 0 0 4px; }
+.ep-root .eph-order.ck3 .pd-libros img { display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto; border-radius: 0; box-shadow: none; background: #000; transform: none; object-fit: contain; }
+/* subtítulo antes de las opciones de pago anticipado (solo si hay ahorro) */
+.ep-root.ck-keep .ep-pay-opt:has(input[value="cod"]) + .ep-pay-opt:has(.ep-pay-save) { margin-top: 40px; }
+.ep-root.ck-keep .ep-pay-opt:has(input[value="cod"]) + .ep-pay-opt:has(.ep-pay-save)::before { content: "Si quieres ahorrar más, aprovecha:"; position: absolute; left: 2px; right: 0; bottom: 100%; margin-bottom: 10px; font: 800 15px/1.2 Inter, system-ui, sans-serif; color: #111; }
 </style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
@@ -3512,21 +3520,15 @@ html, body { background: #F3F3F0 !important; }
       <div class="eph ep-plans" id="ep-offer-widget">
         <h2 class="eph-title" id="eph-title">Elige tu plan</h2>
         <p class="eph-sub">Pagas al recibir · Envío gratis · Paquete discreto</p>
-        <div class="eph-bonus eph-bonus--libros"><div class="eph-libros"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Guía Maestro del Orgasmo" width="66" height="86" loading="lazy"><span class="eph-libro-txt" role="img" aria-label="Guía Secretos Sexuales"><b>SECRETOS</b><b>SEXUALES</b><i>Edición de lujo</i></span><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Guía Genio del Sexo" width="66" height="86" loading="lazy"></div><p>En todos los planes recibes <b>3 guías digitales</b> por WhatsApp al recibir.</p></div>
+        <div class="eph-bonus eph-bonus--libros"><div class="eph-libros pd-libros"><img src="/img/guias-libros.webp" alt="Guías Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" width="1200" height="805" loading="lazy"></div><p>En todos los planes recibes <b>3 guías digitales</b> por WhatsApp al recibir.</p></div>
         <p class="ck3-step"><span class="ck3-n">1</span>Elige tu plan</p>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
-        <div class="pdg">
-  <div class="pdg-top">
-    <span class="pdg-seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><b>15</b><i>días</i></span>
-    <div><strong>Garantía Real de 15 días</strong><span>En los planes Dominio Total y Élite, en tu primera compra.</span></div>
-  </div>
-  <ol class="pdg-steps">
-    <li><b>Pruebas tu primera caja.</b> Mínimo 2 veces, en días distintos.</li>
-    <li><b>Si no te convence, nos escribes por WhatsApp</b> dentro de los 15 días siguientes a la entrega.</li>
-    <li><b>Devuelves las cajas selladas y te transferimos su valor</b> en máximo 5 días hábiles: $64.950 en Dominio Total (1 caja) o hasta $79.950 en Élite (2 cajas).</li>
-  </ol>
-  <p class="pdg-foot">Respalda GRUPO EMPRESARIAL BIENESTAR TOTAL S.A.S. · NIT 901926358-4. <a href="/garantia" target="_blank" rel="noopener">Leer condiciones completas</a></p>
-</div>
+        <a class="pdg" href="/garantia" target="_blank" rel="noopener">
+  <span class="pdg-top">
+    <span class="pdg-seal" aria-hidden="true"><b>15</b><i>días</i></span>
+    <span class="pdg-txt"><strong>Garantía Real de 15 días</strong><span>En Dominio Total y Élite, en tu primera compra.</span><em>Ver condiciones <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></em></span>
+  </span>
+</a>
 
       </div>
 

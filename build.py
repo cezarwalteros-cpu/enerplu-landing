@@ -441,6 +441,8 @@ if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
     _pd = must(_pd, '<fieldset class="ep-of-block" data-ep-ship-block>', '<fieldset class="ep-of-block ck3-ship" data-ep-ship-block>')
     _pd = must(_pd, '<legend class="ep-of-legend">¿Cómo quieres pagar?</legend>', '<legend class="ep-of-legend"><span class="ck3-n">3</span>¿Cómo quieres pagar?</legend>')
     _pd = must(_pd, _GA, (ROOT / 'fuente' / 'pedido' / 'garantia.html').read_text())
+    _pd, _n = re.subn(r'<div class="eph-libros">.*?</div>', '<div class="eph-libros pd-libros"><img src="/img/guias-libros.webp" alt="Guías Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" width="1200" height="805" loading="lazy"></div>', _pd, count=1, flags=re.S)
+    assert _n == 1, 'pedido: guias'
     _pd, _n = re.subn(r'<p class="eph-trust">.*?</p>', lambda m: (ROOT / 'fuente' / 'pedido' / 'confianza.html').read_text(), _pd, count=1, flags=re.S)
     assert _n == 1, 'pedido: no se encontró el texto de confianza bajo el botón'
     _i = _pd.index('</section>', _pd.index('id="ep-order"')) + len('</section>')

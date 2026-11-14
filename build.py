@@ -578,7 +578,17 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
     "outputDirectory": "public",
     "cleanUrls": True,
     # con la prueba E-04 apagada, quien llegue a /b vuelve a la página principal (conserva los parámetros del anuncio)
-    "redirects": ([] if AB_E04 else [{"source": "/b", "destination": "/", "permanent": False}]),
+    "redirects": ([] if AB_E04 else [{"source": "/b", "destination": "/", "permanent": False}])
+                 # la portada de losgomosos.lat va a /nueva (index.html existe, así que un rewrite no aplicaría)
+                 + [{"source": "/", "has": [{"type": "host", "value": h}], "destination": "/nueva", "permanent": False}
+                    for h in ("losgomosos.lat", "www.losgomosos.lat")],
+    # losgomosos.lat (antes Shopify) muestra la landing /nueva: los anuncios viejos a /products/enerplu caen ahí con sus UTM
+    "rewrites": [r for h in ("losgomosos.lat", "www.losgomosos.lat") for r in (
+        {"source": "/products/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
+        {"source": "/collections/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
+        {"source": "/cdn/shop/:p*", "has": [{"type": "host", "value": h}], "destination": "https://cdn.shopify.com/s/files/1/0748/9418/0397/:p*"},
+        {"source": "/cdn/fonts/:p*", "has": [{"type": "host", "value": h}], "destination": "https://fonts.shopifycdn.com/:p*"},
+    )],
     "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}]},
                 {"source": "/rec/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800, immutable"}]},
                 {"source": "/guias/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}]}]

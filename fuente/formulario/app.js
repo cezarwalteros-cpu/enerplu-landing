@@ -974,8 +974,9 @@
     payMode: function () {
       if (!this.form) return;
       var on = this.payOnline(), row = qs('[data-ep-email-row]', this.form), em = this.el('email');
-      if (row) row.hidden = !on;
-      if (em) { if (on) em.setAttribute('required', ''); else { em.removeAttribute('required'); this.err('email', ''); } }
+      /* correo fuera del formulario, también para pago en línea (cesar 2026-11-14: "quitar el correo del formulario") */
+      if (row) row.hidden = true;
+      if (em) { em.removeAttribute('required'); this.err('email', ''); }
       var m = this.method(), sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = m === 'bold' ? 'Pago seguro en línea con Bold' : m === 'transfer' ? 'Pagas por transferencia' : 'Pagas en efectivo al recibir';
       var key = m + (this.st.city && this.st.city.prepaid ? '1' : '0');
       if (this.payWas !== key) { this.payWas = key; this.paintPay(); this.update(); }
@@ -1102,7 +1103,7 @@
          sin número, el pedido queda marcado en las notas para confirmar el punto por WhatsApp */
       if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección o el punto de entrega' : '';
       if (name === 'additional') return '';   /* barrio opcional (2026-11-08): si viene vacío se confirma por WhatsApp */
-      if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
+      if (name === 'email') return '';
       return '';
     },
     fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'address1', 'additional'],
@@ -1237,7 +1238,7 @@
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
-        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
+        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') || 'Sin barrio: confirmar por WhatsApp', notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: !!(up && this.st.upsell && p.id === up.only),
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',

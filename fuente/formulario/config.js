@@ -147,7 +147,7 @@ window.EP_CONFIG = {
               eyebrow: 'Espera, antes de confirmar', headline: 'Lleva la experiencia al nivel de control absoluto',
               text: 'Ya tienes la firmeza y resistencia con tu pedido por dentro; el spray Velvet te da el control exacto del reloj por fuera. El combo de blindaje definitivo.',
               bullets: ['Olvídate de la tensión mental de tener que aguantar', 'Disfruta del ritmo intenso sin miedo a terminar antes', 'Llega en el mismo paquete 100% discreto y sin costo de envío adicional'] },
-    express: { price: 5000, title: 'Express', text: 'Despacho con prioridad y envío asegurado' },
+    express: null,   /* sin envío express (cesar 2026-11-14: "eso no se cumple") */
     thanksTitle: '¡Pedido recibido!',
     thanksText: 'Te escribiremos por WhatsApp para confirmar tu pedido. Ten tu celular a la mano.',
     deliveryDays: [3, 4],

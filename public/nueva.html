@@ -893,7 +893,7 @@ footer p{margin:0 0 8px}
   // las animaciones continuas se pausan fuera de pantalla
   if ('IntersectionObserver' in window) {
     var pz = new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('zz', !e.isIntersecting); }); }, { rootMargin: '80px' });
-    d.querySelectorAll('.shine,.btn.gold,.stage,.stage-ring,.pulse,.hero').forEach(function (el) { pz.observe(el); });
+    d.querySelectorAll('.final .shine,.btn.gold,.stage,.stage-ring,.pulse').forEach(function (el) { pz.observe(el); });
   }
   // inclinación de la foto con el cursor (computador)
   var st = d.getElementById('stage');

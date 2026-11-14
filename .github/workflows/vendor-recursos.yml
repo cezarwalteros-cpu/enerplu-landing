@@ -1,0 +1,29 @@
+# Una sola vez (o cuando haga falta): copia al repo las imágenes, CSS y fuentes que las páginas
+# todavía cargan desde Shopify, y guarda el mapa en tools/rec-mapa.json. Desde ahí el build ya no depende de Shopify.
+name: vendor-recursos
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/project-thread-3kwnjg-imagenes]
+    paths: [.github/workflows/vendor-recursos.yml]
+permissions:
+  contents: write
+jobs:
+  copiar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Bajar recursos y guardar mapa
+        run: GUARDAR_REC=1 node tools/bajar-recursos.mjs
+      - name: Guardar en el repo (solo public/rec y el mapa; el HTML queda igual)
+        run: |
+          git checkout -- public/*.html
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f public/rec tools/rec-mapa.json
+          git diff --cached --quiet && echo "nada nuevo" && exit 0
+          git commit -m "Recursos de Shopify guardados en el repo (public/rec + tools/rec-mapa.json)"
+          git push

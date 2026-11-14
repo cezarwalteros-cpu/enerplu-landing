@@ -1,0 +1,13 @@
+/* /pedido: checkout en página aparte. Solo se ve la sección de pedido; nada de la página antigua. */
+html, body { background: #fff !important; }
+#MainContent > :not(.ck-keep) { display: none !important; }
+.ep-hc-sticky, .epb, .ep5-pop, .ep5-chip { display: none !important; }
+.ep-root.ck-keep { background: #fff; min-height: 100vh; }
+.pdh { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; max-width: 720px; margin: 0 auto; padding: 14px 16px; background: #fff; }
+.pdh-back { display: inline-flex; align-items: center; gap: 6px; font: 600 14px/1 Inter, system-ui, sans-serif; color: #4B5563 !important; text-decoration: none; min-height: 40px; }
+.pdh-logo { font: 900 22px/1 Archivo, Inter, system-ui, sans-serif; letter-spacing: .02em; color: #0D0D0D; }
+.pdh-logo b { color: #8A6410; font-weight: 900; }
+.pdh-safe { justify-self: end; display: inline-flex; align-items: center; gap: 6px; font: 700 12px/1.1 Inter, system-ui, sans-serif; color: #15803D; text-align: right; }
+.ep-root .eph-order.ck3 { padding-top: 0; }
+.ep-root .eph-order.ck3 .eph-title { font-family: Archivo, Inter, system-ui, sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; }
+.ep-root .eph-order.ck3 .ep-wrap--form { max-width: 720px; }

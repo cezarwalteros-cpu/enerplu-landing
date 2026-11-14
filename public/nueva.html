@@ -379,6 +379,35 @@ footer p{margin:0 0 8px}
 }
 @media(prefers-reduced-motion:reduce){.enerplu-review-item{animation:none}}
 </style>
+<script>
+/* Medición (igual que la página principal): píxel de Meta, Clarity y embudo del CRM. Con ?ep_test=1 no mide nada. */
+(function () {
+  if (/[?&]ep_test=1(&|$)/.test(location.search)) return;
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1248121626590977'); fbq('track', 'PageView'); fbq('track', 'ViewContent', { content_name: 'ENERPLU', content_category: 'nueva' });
+  (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "aj18t0em8h");
+  var U = "https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track", sid, q = new URLSearchParams(location.search), sent = {};
+  try { sid = sessionStorage.getItem("ep_sid"); if (!sid) { sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem("ep_sid", sid); } }
+  catch (e) { sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function send(ev, extra) {
+    if (sent[ev] && ev !== "plan_select" && ev !== "cta_click") return; sent[ev] = 1;
+    var body = JSON.stringify({ sid: sid, ev: ev, page: location.host + location.pathname, store: "enerplu",
+      utm_source: q.get("utm_source"), utm_campaign: q.get("utm_campaign"), utm_content: q.get("utm_content"), utm_term: q.get("utm_term"), extra: extra || null });
+    try { if (navigator.sendBeacon && navigator.sendBeacon(U, new Blob([body], { type: "text/plain" }))) return; } catch (e) {}
+    try { fetch(U, { method: "POST", body: body, keepalive: true, headers: { "Content-Type": "text/plain" } }); } catch (e) {}
+  }
+  function tag(k, v) { try { if (v) window.clarity("set", k, String(v).slice(0, 200)); } catch (e) {} }
+  send("page_view");
+  tag("pagina", "nueva"); tag("anuncio", q.get("utm_term")); tag("campana", q.get("utm_campaign")); tag("conjunto", q.get("utm_content")); tag("fuente", q.get("utm_source")); tag("sid", sid);
+  document.addEventListener("DOMContentLoaded", function () {
+    var pl = document.getElementById("planes");
+    if (pl && "IntersectionObserver" in window) { var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { send("selector_view"); try { window.clarity("event", "vio_ofertas"); } catch (e) {} io.disconnect(); } }, { threshold: .3 }); io.observe(pl); }
+    document.addEventListener("change", function (e) { if (e.target && e.target.name === "plan") { send("plan_select", { plan: e.target.value }); tag("plan", e.target.value); try { window.clarity("event", "eligio_plan"); } catch (x) {} } });
+    document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a[data-ck]"); if (a) { var r = document.querySelector('input[name="plan"]:checked'); send("cta_click", { plan: r && r.value, txt: (a.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40) }); try { window.clarity("event", "toco_comprar"); } catch (x) {} } }, true);
+    var raf = 0; addEventListener("scroll", function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(function () { var h = document.documentElement, m = h.scrollHeight - innerHeight, r = m > 0 ? scrollY / m : 1; if (r >= .5) send("scroll_50"); if (r >= .9) send("scroll_90"); }); }, { passive: true });
+  });
+})();
+</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -398,7 +427,7 @@ footer p{margin:0 0 8px}
   <div class="w">
     <a class="logo" href="#inicio" aria-label="ENERPLU, inicio">ENER<i>PLU</i></a>
     <nav class="nav" aria-label="Secciones"><a href="#formula">Fórmula</a><a href="#resultados">Resultados</a><a href="#comparativo">Comparativo</a><a href="#preguntas">Preguntas</a></nav>
-    <a class="btn sm" data-ck href="/checkout-blanco#ep-order">Pedir ahora</a>
+    <a class="btn sm" data-ck href="/pedido">Pedir ahora</a>
   </div>
 </header>
 
@@ -481,7 +510,7 @@ footer p{margin:0 0 8px}
         </label>
       </fieldset>
 
-      <a class="btn block" data-ck href="/checkout-blanco#ep-order">PÍDELO YA <b>- Pagas al recibir</b><svg class="ico"><use href="#i-arrow"/></svg></a>
+      <a class="btn block" data-ck href="/pedido">PÍDELO YA <b>- Pagas al recibir</b><svg class="ico"><use href="#i-arrow"/></svg></a>
       <div class="mini">
         <div><svg class="ico"><use href="#i-cash"/></svg>Pagas en efectivo al recibir</div>
         <div><svg class="ico"><use href="#i-truck"/></svg>Envío gratis, 3 a 4 días</div>
@@ -536,7 +565,7 @@ footer p{margin:0 0 8px}
       <h2>Ellos ya no <em>piden tiempo.</em></h2>
     </div>
     <div class="res">
-      <a class="res-main" data-ck href="/checkout-blanco#ep-order"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948" width="1080" height="420" alt="Resultados de clientes ENERPLU"></a>
+      <a class="res-main" data-ck href="/pedido"><img loading="lazy" src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948" width="1080" height="420" alt="Resultados de clientes ENERPLU"></a>
       <div style="display:grid;gap:16px">
         <div class="chats">
           <img loading="lazy" src="/img/wa-real-1.webp" width="900" height="723" alt="Mensaje de un cliente por WhatsApp">
@@ -689,7 +718,7 @@ footer p{margin:0 0 8px}
       <div class="cmp-row" role="row"><span role="cell">Discreción</span><span role="cell"><svg class="ico y"><use href="#i-check"/></svg>Nadie se entera</span><span role="cell"><svg class="ico n"><use href="#i-x"/></svg>Pena en el mostrador</span><span role="cell"><svg class="ico n"><use href="#i-x"/></svg>Sabor y aliento</span></div>
       <div class="cmp-row" role="row"><span role="cell">Pago</span><span role="cell"><svg class="ico y"><use href="#i-check"/></svg>Al recibir</span><span role="cell">Por adelantado</span><span role="cell">Por adelantado</span></div>
     </div>
-    <p style="margin:26px 0 0;text-align:center"><a class="btn" data-ck href="/checkout-blanco#ep-order">PÍDELO YA <b>- Pagas al recibir</b></a></p>
+    <p style="margin:26px 0 0;text-align:center"><a class="btn" data-ck href="/pedido">PÍDELO YA <b>- Pagas al recibir</b></a></p>
   </div>
 </section>
 
@@ -711,7 +740,7 @@ footer p{margin:0 0 8px}
           <li id="kit-gar"><span>Garantía Real<small>O te devolvemos tu dinero. Aplican términos</small></span><b>Incluida</b></li>
         </ul>
         <div class="kit-total"><span>Pagas al recibir</span><b id="kit-price">$129.900</b></div>
-        <a class="btn block gold" data-ck href="/checkout-blanco#ep-order">Pedir mi kit<svg class="ico"><use href="#i-arrow"/></svg></a>
+        <a class="btn block gold" data-ck href="/pedido">Pedir mi kit<svg class="ico"><use href="#i-arrow"/></svg></a>
       </div>
     </div>
   </div>
@@ -744,7 +773,7 @@ footer p{margin:0 0 8px}
   <div class="w">
     <h2>Nadie se entera.<br><em class="shine">Ella lo nota.</em></h2>
     <p>Pídela hoy, recíbela en bolsa negra y págala cuando la tengas en la mano.</p>
-    <a class="btn gold" data-ck href="/checkout-blanco#ep-order">PÍDELO YA - Pagas al recibir<svg class="ico"><use href="#i-arrow"/></svg></a>
+    <a class="btn gold" data-ck href="/pedido">PÍDELO YA - Pagas al recibir<svg class="ico"><use href="#i-arrow"/></svg></a>
   </div>
 </section>
 </main>
@@ -758,7 +787,7 @@ footer p{margin:0 0 8px}
 
 <div class="dock">
   <div><span id="dock-name">Dominio Total</span><b id="dock-price">$129.900</b></div>
-  <a class="btn" data-ck href="/checkout-blanco#ep-order">PÍDELO YA <b>- Pagas al recibir</b></a>
+  <a class="btn" data-ck href="/pedido">PÍDELO YA <b>- Pagas al recibir</b></a>
 </div>
 
 <script>
@@ -779,7 +808,7 @@ footer p{margin:0 0 8px}
     $('kit-boxes').textContent = k.boxes; $('kit-occ').textContent = k.occ;
     $('kit-ret').hidden = !k.ret; $('kit-gar').hidden = !k.gar;
     var p = new URLSearchParams(q); p.set('plan', r.value);
-    document.querySelectorAll('a[data-ck]').forEach(function (a) { a.href = '/checkout-blanco?' + p.toString() + '#ep-order'; });
+    document.querySelectorAll('a[data-ck]').forEach(function (a) { a.href = '/pedido?' + p.toString(); });
   }
   document.querySelectorAll('input[name="plan"]').forEach(function (r) { r.addEventListener('change', sync); });
   sync();

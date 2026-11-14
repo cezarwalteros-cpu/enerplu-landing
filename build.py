@@ -459,6 +459,32 @@ if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
     _a = _pd.index('<div class="ep-root ck-keep"'); _b = _pd.index('</footer>', _a)
     _lz = lambda h: re.sub(r'<img(?![^>]*\bloading=)', '<img loading="lazy"', h)
     _pd = _lz(_pd[:_a]) + _pd[_a:_b] + _lz(_pd[_b:])
+    # /pedido liviano (cesar 2026-11-14 9 am: "tiene que cargar instantáneo"; la página vieja escondida no va):
+    # el cuerpo queda solo con el checkout (.ck-keep) y salen las hojas de estilo de Shopify/GemPages y el popup.
+    # El contador del embudo (funnel-track) pasa a la cabecera para registrar la visita desde el primer momento.
+    _a = _pd.index('<div class="ep-root ck-keep"')
+    _depth = 0
+    for _m in re.finditer(r'<(/?)div\b[^>]*>', _pd[_a:]):
+        _depth += -1 if _m.group(1) else 1
+        if _depth == 0:
+            _keep = _pd[_a:_a + _m.end()]
+            break
+    _fm = re.search(r'<script>\s*\(function \(\) \{\s*if \(window\.__epFunnel\) return;[\s\S]*?</script>', _pd)
+    assert _fm, 'pedido: no se encontró el contador del embudo'
+    _mo = re.search(r'<main\b[^>]*id="MainContent"[^>]*>', _pd)
+    _me = _pd.index('</main>', _mo.end())
+    _pd = _pd[:_mo.end()] + '\n' + _keep + '\n' + _pd[_me:]
+    _pd = must(_pd, '</head>', _fm.group(0) + '\n</head>')
+    for _pat in [r'<link[^>]*losgomosos\.lat/cdn/shop/[^>]*base\.css[^>]*>\s*',
+                 r'<link rel="preconnect" href="https://(?:losgomosos\.lat|cdn\.shopify\.com)"[^>]*>\s*',
+                 r'<style data-shopify="">[\s\S]*?</style>\s*',
+                 r'<style>\s*\.gps \*[\s\S]*?</style>\s*',
+                 r'<style>\s*\.gps\{--g-h1[\s\S]*?</style>\s*',
+                 r'<style>\s*button\._rsi-buy-now-button[\s\S]*?</style>\s*',
+                 r'<style>\s*/\* Popup de 5%[\s\S]*?</style>\s*',
+                 r'<style>\[data-id="gpGrrwtDmE"\] img\{cursor:pointer\}</style>\s*']:
+        _pd, _n = re.subn(_pat, '', _pd)
+        assert _n >= 1, 'pedido liviano: no se encontró ' + _pat
     (OUT / 'pedido.html').write_text(_pd)
 (OUT / 'index.html').write_text(index_html)
 if AB_E04 and not HERO_V2:

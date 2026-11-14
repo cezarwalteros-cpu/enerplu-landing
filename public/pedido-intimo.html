@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Tu pedido | ENERPLU Bienestar Íntimo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Checkout de Bienestar Íntimo (2026-11-13). Mismo diseño de /pedido: cabecera negra con logo y candado, barra de 3 pasos,
+   tarjetas blancas sobre gris claro, botón negro con precio dorado, bloque de confianza y pie con logo. Solo pago anticipado. */
+:root{--bg:#F3F3F0;--ink:#0D0D0D;--mut:#4B5563;--faint:#6B7280;--line:#E5E7EB;--gold:#D4AF37;--gold-d:#8A6410;--gold-bg:#FDF8EC;--ok:#15803D;--no:#B42318;
+  --disp:Archivo,Inter,system-ui,sans-serif;--txt:Inter,system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:#111;font:400 16px/1.5 var(--txt);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+/* cabecera */
+.pdh{background:var(--ink);color:#fff}
+.pdh-in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;max-width:760px;margin:0 auto;padding:10px 12px}
+.pdh-back{display:inline-flex;align-items:center;gap:6px;font:600 14px/1 var(--txt);color:#D1D5DB;text-decoration:none;min-height:44px;white-space:nowrap}
+.pdh-logo img{height:52px;width:auto;max-width:none}
+.pdh-safe{justify-self:end;display:inline-flex;align-items:center;gap:6px;font:700 12.5px/1.1 var(--txt);color:var(--gold);white-space:nowrap}
+.pdh-strip{list-style:none;margin:0;padding:9px 12px;display:flex;justify-content:center;flex-wrap:wrap;gap:6px 18px;border-top:1px solid #262626;background:#141414;font:600 12.5px/1.2 var(--txt);color:#E5E7EB}
+.pdh-strip li{display:inline-flex;align-items:center;gap:6px}
+.pdh-strip svg{width:16px;height:16px;color:var(--gold);flex:none}
+/* barra de pasos */
+.bar{position:sticky;top:0;z-index:20;background:#fff;box-shadow:0 6px 16px rgba(13,13,13,.06)}
+.bar ol{list-style:none;margin:0 auto;padding:12px 16px 10px;max-width:720px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bar li{font:700 12.5px/1.2 var(--txt);color:var(--faint);display:grid;gap:6px}
+.bar li::before{content:"";height:4px;border-radius:2px;background:var(--line);transition:background .3s}
+.bar li.done{color:#111}.bar li.done::before{background:var(--gold)}
+.bar li.now{color:var(--gold-d)}.bar li.now::before{background:var(--gold)}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 0;display:grid;gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 16px;box-shadow:0 2px 10px rgba(17,17,17,.05)}
+.step{display:flex;align-items:center;gap:12px;margin:0 0 14px;font:800 21px/1.15 var(--disp)}
+.step i{flex:none;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font:800 15px/1 var(--disp);font-style:normal}
+.note{border:1px solid #F1DFA6;background:var(--gold-bg);border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.4;margin:0;text-align:center}
+/* paso 1: combo */
+.items{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.items li{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:8px 12px 8px 8px}
+.items img{width:56px;height:56px;border-radius:10px;object-fit:cover;background:#fff}
+.items strong{display:block;font:800 16px/1.2 var(--disp)}
+.items small{display:block;color:var(--faint);font-size:13px}
+.items b{font:700 14px/1 var(--txt);color:var(--mut);white-space:nowrap}
+.combo-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--gold-bg);border:1.5px solid var(--gold)}
+.combo-row span{font:600 14.5px/1.3 var(--txt)}
+.combo-row span small{display:block;color:var(--ok);font-weight:600;font-size:13px}
+.combo-row b{font:800 22px/1 var(--disp);color:var(--ok);white-space:nowrap}
+.edit{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font:700 14px/1 var(--txt);color:#111;text-decoration:underline;text-underline-offset:3px;min-height:32px}
+.bump{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:center;border:2px dashed #E3CF8E;border-radius:16px;background:#FFFDF6;padding:12px;transition:border-color .2s,background .2s}
+.bump.on{border-style:solid;border-color:var(--gold);background:var(--gold-bg)}
+.bump img{width:76px;height:76px;border-radius:10px;object-fit:cover;background:var(--ink)}
+.bump strong{display:block;font:800 16px/1.2 var(--disp)}
+.bump p{margin:2px 0 8px;font-size:13px;line-height:1.35;color:var(--mut)}
+.bump-row{display:flex;align-items:center;justify-content:space-between;gap:8px 10px;flex-wrap:wrap}
+.bump-row b{font:800 17px/1 var(--disp);color:var(--ok)}
+.qty{display:grid;grid-template-columns:40px 44px 40px;align-items:center;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden;height:40px;background:#fff}
+.qty button{appearance:none;border:0;background:#fff;height:100%;font:800 19px/1 var(--disp);cursor:pointer}
+.qty button:disabled{color:#C4C4C4;cursor:not-allowed}
+.qty output{text-align:center;font:700 15px/1 var(--txt);font-variant-numeric:tabular-nums}
+.bumps{display:grid;gap:10px}
+.bumps-h{font:800 15px/1.2 var(--txt);margin:0 2px}
+/* paso 2: datos */
+.grid2{display:grid;gap:14px}
+.fld{display:grid;gap:6px;min-width:0}
+.fld label{font:700 15px/1.2 var(--txt)}
+.fld label em{font:400 13px var(--txt);font-style:normal;color:var(--faint)}
+.fld input{height:54px;border-radius:12px;border:1.5px solid #D1D5DB;padding:0 14px;font:500 16px var(--txt);background:#fff;width:100%;min-width:0}
+.fld input::placeholder{color:#9CA3AF}
+.fld input:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.22)}
+.fld.bad input{border-color:var(--no);box-shadow:0 0 0 3px rgba(180,35,24,.12)}
+.fld .err{display:none;color:var(--no);font:600 13px/1.3 var(--txt)}
+.fld.bad .err{display:block}
+.fld .hint{color:var(--faint);font-size:13px;margin:0}
+.tel{display:grid;grid-template-columns:auto 1fr}
+.tel span{display:grid;place-items:center;padding:0 14px;border:1.5px solid #D1D5DB;border-right:0;border-radius:12px 0 0 12px;background:#F3F4F6;font:700 16px var(--txt)}
+.tel input{border-radius:0 12px 12px 0}
+.fields{display:grid;gap:16px}
+.sub{font:800 15px/1.2 var(--txt);margin:20px 0 10px}
+.opt{position:relative;display:grid;grid-template-columns:24px 1fr auto;gap:4px 12px;align-items:center;border:1.5px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;background:#fff;transition:border-color .2s,background .2s,box-shadow .2s}
+.opt + .opt{margin-top:10px}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .dot{width:22px;height:22px;border-radius:50%;border:2px solid #9CA3AF;display:grid;place-items:center}
+.opt .dot::after{content:"";width:10px;height:10px;border-radius:50%;background:transparent}
+.opt:has(input:checked),.opt.is-on{border-color:var(--gold);background:var(--gold-bg);box-shadow:0 0 0 3px rgba(212,175,55,.16)}
+.opt:has(input:checked) .dot,.opt.is-on .dot{border-color:var(--gold)}
+.opt:has(input:checked) .dot::after,.opt.is-on .dot::after{background:var(--gold)}
+.opt:has(input:focus-visible){outline:3px solid var(--gold);outline-offset:2px}
+.opt strong{display:block;font:800 17px/1.2 var(--disp)}
+.opt small{display:block;color:var(--mut);font-size:13.5px;line-height:1.35;margin-top:2px}
+.opt .r{font:800 16px/1 var(--disp);white-space:nowrap}
+.opt .r.free{color:var(--ok)}
+.logos{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.logos img{height:27px;width:auto;max-width:none}
+.logos .bc{height:24px}
+/* resumen y botón */
+.sum h2{font:800 17px/1.2 var(--txt);margin:0 0 10px}
+.sum ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sum li{display:flex;justify-content:space-between;gap:12px;font-size:15.5px}
+.sum li small{color:var(--faint);font-size:13px}
+.sum li b{white-space:nowrap;font-variant-numeric:tabular-nums}
+.sum li b.g{color:var(--ok)}
+.sum-tot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.sum-tot span{font:800 17px/1.2 var(--txt)}
+.sum-tot b{font:800 28px/1 var(--disp);color:var(--ok);font-variant-numeric:tabular-nums}
+.sum-ship{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;color:var(--mut);font-size:14px;line-height:1.4}
+.sum-ship svg{width:20px;height:20px;flex:none;color:var(--ok);margin-top:1px}
+.pay{appearance:none;width:100%;border:0;border-radius:999px;background:var(--ink);color:#fff;min-height:66px;padding:10px 22px;display:flex;align-items:center;justify-content:center;gap:16px;cursor:pointer;box-shadow:0 12px 28px rgba(13,13,13,.28);transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.pay:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(13,13,13,.34)}
+.pay::after{content:"";position:absolute;top:0;bottom:0;width:34%;left:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:translateX(-160%) skewX(-20deg);animation:sweep 3.6s ease-in-out infinite}
+@keyframes sweep{0%,55%{transform:translateX(-160%) skewX(-20deg)}100%{transform:translateX(420%) skewX(-20deg)}}
+.pay .l{text-align:left;font:800 19px/1.15 var(--txt)}
+.pay .l small{display:block;font:500 13px/1.2 var(--txt);color:#D1D5DB}
+.pay .sep{width:1px;align-self:stretch;background:rgba(255,255,255,.25)}
+.pay .p{font:800 20px/1 var(--disp);color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap}
+.warn{border:1.5px solid #F1B4AD;background:#FEF3F2;color:#7A1A12;border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.4;margin:0}
+.warn.info{border:1.5px dashed var(--gold-d);background:var(--gold-bg);color:#111}
+/* confianza */
+.pdt-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.pdt-list li{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.4;color:var(--mut)}
+.pdt-list svg{width:22px;height:22px;flex:none;color:var(--ok);margin-top:1px}
+.pdt-list b{color:#111}
+.pdt-pay{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.pdt-pay>span{width:100%;font:700 11px/1 var(--txt);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.pdt-pay img{height:27px;width:auto;max-width:none}
+.pdt-pay .bc{height:24px}
+/* preguntas y pie */
+.faq{max-width:720px;margin:26px auto 0;padding:0 16px}
+.faq h2{font:800 18px/1.2 var(--txt);text-align:center;margin:0 0 8px}
+details{border-top:1px solid var(--line)}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:14px;align-items:center;padding:16px 2px;font:700 16px/1.25 var(--txt)}
+summary::-webkit-details-marker{display:none}
+summary svg{width:18px;height:18px;flex:none;color:var(--gold-d);transition:transform .2s}
+details[open] summary svg{transform:rotate(180deg)}
+details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
+.pdf{max-width:720px;margin:0 auto;padding:26px 16px 44px;text-align:center;font:500 12px/1.5 var(--txt);color:var(--faint)}
+.pdf img{height:44px;width:auto;margin:0 auto 8px}
+.pdf p{margin:4px 0}
+.pdf a{color:var(--mut)}
+.empty{text-align:center;padding:34px 18px}
+.empty h1{font:800 24px/1.15 var(--disp);margin:0 0 8px}
+.empty p{color:var(--mut);margin:0 0 18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 26px;border-radius:999px;background:var(--ink);color:#fff;font:800 15px/1 var(--disp);letter-spacing:.03em;text-transform:uppercase;text-decoration:none}
+@media (min-width:560px){.grid2{grid-template-columns:1fr 1fr}.bumps{grid-template-columns:1fr 1fr}.bumps-h{grid-column:1/-1}}
+@media (max-width:380px){.pdh-back span,.pdh-safe span{font-size:11.5px}.pdh-logo img{height:44px}.pdh-strip{font-size:11.5px;gap:5px 12px}.step{font-size:19px}.pay{gap:12px;padding:10px 16px}.pay .l{font-size:17px}.pay .p{font-size:18px}}
+@media (max-width:350px){.pdh-logo img{height:38px}.pdh-safe span,.pdh-back span{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pay::after{animation:none}}
+</style>
+<script>
+/* Medición: píxel de Meta de ENERPLU y Clarity. Con ?ep_test=1 no mide nada. */
+(function () {
+  window.epTrack = function () {};
+  if (/[?&]ep_test=1(&|$)/.test(location.search)) return;
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1248121626590977'); fbq('track', 'PageView');
+  (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "aj18t0em8h");
+  try { window.clarity("set", "pagina", "pedido-intimo"); } catch (e) {}
+  window.epTrack = function (ev, data) { try { fbq('track', ev, data || {}); } catch (e) {} };
+})();
+</script>
+</head>
+<body>
+<header class="pdh">
+  <div class="pdh-in">
+    <a class="pdh-back" href="/bienestarintimo" id="back"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Volver</span></a>
+    <span class="pdh-logo"><img src="/img/intimo/logo-enerplu.webp" width="250" height="100" alt="ENERPLU"></span>
+    <span class="pdh-safe"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Compra segura</span></span>
+  </div>
+  <ul class="pdh-strip">
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Pago en línea</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1zM14 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>Envío gratis</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>Bolsa negra, discreto</li>
+  </ul>
+</header>
+
+<nav class="bar" aria-label="Pasos del pedido"><ol><li id="b1" class="done">1 Combo</li><li id="b2" class="now">2 Entrega</li><li id="b3">3 Pago</li></ol></nav>
+
+<main>
+<div class="wrap" id="vacio" hidden>
+  <div class="card empty">
+    <h1>Tu combo está vacío</h1>
+    <p>Para pedir necesitas elegir mínimo 3 frascos.</p>
+    <a class="btn" href="/bienestarintimo#combo" id="back2">Armar mi combo</a>
+  </div>
+</div>
+
+<form class="wrap" id="form" novalidate hidden>
+  <section class="card" id="s1">
+    <h2 class="step"><i>1</i>Tu combo</h2>
+    <ul class="items" id="items"></ul>
+    <div class="combo-row"><span><span id="combo-name">Combo de 3 frascos</span><small id="combo-save"></small></span><b id="combo-price">$89.900</b></div>
+    <a class="edit" href="/bienestarintimo#combo" id="edit">Cambiar mis frascos</a>
+  </section>
+
+  <section class="bumps" aria-label="Adicionales">
+    <p class="bumps-h">Súmale a tu pedido, en el mismo paquete:</p>
+    <div class="bump" data-ad="anillo">
+      <img loading="lazy" src="/img/intimo/anillo.webp" width="555" height="695" alt="Anillo vibrador Thor en su caja">
+      <div><strong>Anillo vibrador Thor</strong><p>Suave y flexible, con baterías incluidas.</p>
+        <div class="bump-row"><b>+ $18.000</b><div class="qty"><button type="button" data-d="-1" aria-label="Quitar un anillo">−</button><output>0</output><button type="button" data-d="1" aria-label="Agregar un anillo">+</button></div></div></div>
+    </div>
+    <div class="bump" data-ad="caja">
+      <img loading="lazy" src="/img/intimo/caja.webp" width="460" height="320" alt="Caja de ENERPLU con maca negra">
+      <div><strong>Caja de ENERPLU</strong><p>10 tabletas. Precio especial solo con tu combo.</p>
+        <div class="bump-row"><b>+ $39.900</b><div class="qty"><button type="button" data-d="-1" aria-label="Quitar una caja">−</button><output>0</output><button type="button" data-d="1" aria-label="Agregar una caja">+</button></div></div></div>
+    </div>
+  </section>
+
+  <section class="card" id="s2">
+    <h2 class="step"><i>2</i>¿A dónde te lo enviamos?</h2>
+    <div class="fields">
+      <div class="grid2">
+        <div class="fld"><label for="f-nom">Nombre</label><input id="f-nom" name="nombre" autocomplete="given-name" placeholder="Tu nombre" data-req><span class="err">Escribe tu nombre.</span></div>
+        <div class="fld"><label for="f-ape">Apellido</label><input id="f-ape" name="apellido" autocomplete="family-name" placeholder="Tu apellido" data-req><span class="err">Escribe tu apellido.</span></div>
+      </div>
+      <div class="fld"><label for="f-cel">Celular (WhatsApp)</label><div class="tel"><span>+57</span><input id="f-cel" name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="300 123 4567" maxlength="12" data-req data-tel></div><p class="hint">Por aquí te confirmamos el pedido antes de enviarlo.</p><span class="err">Escribe un celular de 10 dígitos que empiece por 3.</span></div>
+      <div class="fld"><label for="f-ciu">Ciudad o municipio</label><input id="f-ciu" name="ciudad" autocomplete="address-level2" placeholder="Ej: Itagüí, Bogotá, Cali..." data-req><span class="err">Escribe tu ciudad o municipio.</span></div>
+      <div class="fld"><label for="f-dir">Dirección</label><input id="f-dir" name="direccion" autocomplete="street-address" placeholder="Ej: Calle 10 # 20-30" data-req><span class="err">Escribe la dirección de entrega.</span></div>
+      <div class="fld"><label for="f-bar">Barrio y detalles <em>(opcional)</em></label><input id="f-bar" name="barrio" placeholder="Barrio, apto, casa o una referencia"></div>
+    </div>
+    <p class="sub">Envío</p>
+    <div class="opt is-on"><span class="dot"></span><span><strong>Estándar</strong><small>Sale en bolsa negra sellada, sin el nombre del producto por fuera.</small></span><span class="r free">Gratis</span></div>
+  </section>
+
+  <section class="card" id="s3">
+    <h2 class="step"><i>3</i>¿Cómo quieres pagar?</h2>
+    <p class="note" style="margin-bottom:12px">Esta tienda funciona <b>solo con pago anticipado</b>. Pagas en línea y despachamos tu pedido.</p>
+    <label class="opt"><input type="radio" name="pago" value="linea" checked><span class="dot"></span><span><strong>Tarjeta, PSE o Nequi</strong><small>Pago en línea por pasarela segura.</small><span class="logos"><img src="/img/pay/visa.svg" alt="Visa" width="42" height="27"><img src="/img/pay/master.svg" alt="Mastercard" width="42" height="27"><img src="/img/pay/pse.svg" alt="PSE" width="42" height="27"><img src="/img/pay/nequi.svg" alt="Nequi" width="42" height="27"></span></span><span></span></label>
+    <label class="opt"><input type="radio" name="pago" value="bancolombia"><span class="dot"></span><span><strong>Transferencia Bancolombia</strong><small>Desde tu app o con llave Bre-B.</small><span class="logos"><img class="bc" src="/img/pay-bancolombia.webp" alt="Bancolombia" width="240" height="57"><img class="bc" src="/img/pay-breb.webp" alt="Bre-B" height="24"></span></span><span></span></label>
+  </section>
+
+  <section class="card sum" aria-live="polite">
+    <h2>Resumen de tu pedido</h2>
+    <ul id="sum"></ul>
+    <div class="sum-tot"><span>Total a pagar hoy</span><b id="total">$0</b></div>
+    <p class="sum-ship"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1zM14 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg><span>El envío va por nuestra cuenta. El total que ves es todo lo que pagas.</span></p>
+  </section>
+
+  <p class="warn" id="warn" role="alert" hidden></p>
+  <button class="pay" type="submit" id="pay"><span class="l">Pagar mi pedido<small>Pago anticipado en línea</small></span><span class="sep"></span><span class="p" id="pay-p">$0</span></button>
+
+  <section class="card">
+    <ul class="pdt-list">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.7A8.4 8.4 0 1 1 21 11.5z"/></svg><span><b>Te confirmamos por WhatsApp</b> apenas recibimos tu pago, con el detalle de lo que va en tu paquete.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span><b>Producto original.</b> Somos distribuidores oficiales de SEXLO en Colombia.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span><b>Nadie sabe qué pediste.</b> Bolsa negra sellada, sin el nombre del producto por fuera.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span><b>Tus datos están protegidos.</b> Solo los usamos para entregar tu pedido.</span></li>
+    </ul>
+    <div class="pdt-pay">
+      <span>Medios de pago</span>
+      <img src="/img/pay/visa.svg" alt="Visa" width="42" height="27" loading="lazy"><img src="/img/pay/master.svg" alt="Mastercard" width="42" height="27" loading="lazy"><img src="/img/pay/pse.svg" alt="PSE" width="42" height="27" loading="lazy"><img src="/img/pay/nequi.svg" alt="Nequi" width="42" height="27" loading="lazy"><img class="bc" src="/img/pay-bancolombia.webp" alt="Bancolombia" width="240" height="57" loading="lazy">
+    </div>
+  </section>
+</form>
+
+<section class="faq" id="faq" hidden>
+  <h2>Preguntas frecuentes</h2>
+  <details><summary>¿Cómo pago?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>En línea, con tarjeta, PSE, Nequi o transferencia Bancolombia. Esta tienda es solo con pago anticipado, no hay pago al recibir.</p></details>
+  <details><summary>¿Cómo llega el paquete?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>En una bolsa negra sellada y con empaque discreto. Por fuera no dice qué es.</p></details>
+  <details><summary>¿Me cobran algo más?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>No. El envío es gratis y el total del resumen es lo único que pagas.</p></details>
+  <details><summary>¿Puedo cambiar los frascos?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Sí. Antes de pagar toca "Cambiar mis frascos" y vuelves a la tienda con tu combo como lo dejaste.</p></details>
+</section>
+</main>
+
+<footer class="pdf">
+  <img src="/img/intimo/logo-enerplu.webp" width="250" height="100" alt="ENERPLU" loading="lazy">
+  <p>Venta solo a mayores de 18 años · <a href="/terminos" target="_blank" rel="noopener">Términos y condiciones</a></p>
+</footer>
+
+<script>
+(function () {
+  var d = document, $ = function (id) { return d.getElementById(id); };
+  var N = { velvet: ['Club Velvet', 'Retardante en spray'], sandia: ['Sandía', 'Frío'], chocolate: ['Chocolate', 'Caliente'], fresa: ['Fresa', 'Caliente'], uva: ['Uva', 'Frío'], chicle: ['Chicle', 'Caliente'], bombon: ['Bombón', 'Frío'], lecherita: ['Lecherita', 'Caliente'], arequipe: ['Arequipe', 'Caliente'], tequila: ['Tequila Naranja', 'Frío'], caramelo: ['Caramelo', 'Caliente'], cafe: ['Crema de Café', 'Caliente'], cholao: ['Cholao', 'Frío'], anis: ['Anís', 'Caliente'], mantecado: ['Mantecado', 'Caliente'], lubrimax: ['Lubrimax', 'Neutro, base agua'], virgy: ['Virgyflower', 'Estrechante'], analduo: ['Anal Duo', 'Lubrica y dilata'], mixcum: ['Mix Cum', 'Textura acuosa'] };
+  var MIN = 3, MAX = 6, BASE = 89900, EXTRA = 28500, UNIT = 39900, ADS = { anillo: ['Anillo vibrador Thor', 18000], caja: ['Caja de ENERPLU', 39900] };
+  var q = new URLSearchParams(location.search), cant = {}, ads = { anillo: 0, caja: 0 }, c = 0;
+  (q.get('combo') || '').split('-').forEach(function (t) {
+    var p = t.split('.'), n = Math.floor(+p[1]);
+    if (N[p[0]] && n > 0 && c < MAX) { n = Math.min(n, MAX - c); cant[p[0]] = (cant[p[0]] || 0) + n; c += n; }
+  });
+  ['anillo', 'caja'].forEach(function (k) { ads[k] = Math.max(0, Math.min(MAX, Math.floor(+q.get(k)) || 0)); });
+  function pesos(v) { return '$' + String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  var kit = BASE + (c - MIN) * EXTRA;
+  function total() { return kit + ads.anillo * ADS.anillo[1] + ads.caja * ADS.caja[1]; }
+  function backUrl() { var p = new URLSearchParams(q); p.set('anillo', ads.anillo); p.set('caja', ads.caja); return '/bienestarintimo?' + p.toString() + '#combo'; }
+
+  if (c < MIN) { $('vacio').hidden = false; d.querySelector('.bar').hidden = true; return; }
+  $('form').hidden = false; $('faq').hidden = false;
+  $('items').innerHTML = Object.keys(cant).map(function (id) {
+    return '<li><img src="/img/intimo/' + id + '.webp" width="56" height="56" alt=""><span><strong>' + N[id][0] + '</strong><small>' + N[id][1] + ' · 30 ml</small></span><b>× ' + cant[id] + '</b></li>';
+  }).join('');
+  $('combo-name').textContent = 'Combo de ' + c + ' frascos';
+  $('combo-save').textContent = 'Ahorras ' + pesos(c * UNIT - kit) + ' frente al precio por unidad';
+  $('combo-price').textContent = pesos(kit);
+
+  function render() {
+    d.querySelectorAll('.bump').forEach(function (el) {
+      var n = ads[el.dataset.ad];
+      el.classList.toggle('on', n > 0); el.querySelector('output').textContent = n;
+      el.querySelector('[data-d="-1"]').disabled = n === 0; el.querySelector('[data-d="1"]').disabled = n >= MAX;
+    });
+    var rows = ['<li><span>Combo de ' + c + ' frascos <small>30 ml c/u</small></span><b>' + pesos(kit) + '</b></li>'];
+    for (var k in ads) if (ads[k]) rows.push('<li><span>' + ads[k] + ' × ' + ADS[k][0] + '</span><b>' + pesos(ads[k] * ADS[k][1]) + '</b></li>');
+    rows.push('<li><span>Envío a toda Colombia</span><b class="g">Gratis</b></li>');
+    $('sum').innerHTML = rows.join('');
+    $('total').textContent = $('pay-p').textContent = pesos(total());
+    var u = backUrl(); $('back').href = u; $('edit').href = u;
+  }
+  d.querySelectorAll('.bump').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-d]'); if (!b) return;
+      var k = el.dataset.ad; ads[k] = Math.max(0, Math.min(MAX, ads[k] + +b.dataset.d)); render();
+    });
+  });
+  render();
+  window.epTrack('InitiateCheckout', { content_name: 'Combo intimo', currency: 'COP', value: total(), num_items: c });
+
+  // barra de pasos: avanza según lo que hay en pantalla
+  var secs = [$('s1'), $('s2'), $('s3')], bars = [$('b1'), $('b2'), $('b3')];
+  function step() {
+    var cur = 0; secs.forEach(function (s, i) { if (s.getBoundingClientRect().top < innerHeight * .45) cur = i; });
+    if (cur === 0) cur = 1;   // el combo ya viene armado
+    bars.forEach(function (b, i) { b.className = i < cur ? 'done' : i === cur ? 'now' : ''; });
+  }
+  addEventListener('scroll', step, { passive: true }); step();
+
+  // validación
+  function ok(i) {
+    var v = i.value.trim();
+    if (i.hasAttribute('data-tel')) return /^3\d{9}$/.test(v.replace(/\D/g, ''));
+    return v.length >= 2;
+  }
+  d.querySelectorAll('[data-req]').forEach(function (i) {
+    i.addEventListener('blur', function () { if (i.value.trim()) i.closest('.fld').classList.toggle('bad', !ok(i)); });
+    i.addEventListener('input', function () { if (ok(i)) i.closest('.fld').classList.remove('bad'); });
+  });
+  $('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var w = $('warn'), bad = [];
+    d.querySelectorAll('[data-req]').forEach(function (i) { var b = !ok(i); i.closest('.fld').classList.toggle('bad', b); if (b) bad.push(i); });
+    w.hidden = false;
+    if (bad.length) {
+      w.className = 'warn'; w.textContent = bad.length === 1 ? 'Te falta 1 dato para enviarte el pedido.' : 'Te faltan ' + bad.length + ' datos para enviarte el pedido.';
+      bad[0].focus(); bad[0].scrollIntoView({ block: 'center' }); return;
+    }
+    // Pasarela pendiente: aquí se crea el pedido en el CRM y se abre el pago. Mientras tanto no se cobra nada.
+    w.className = 'warn info'; w.textContent = 'Vista previa: el pago en línea todavía no está conectado, así que este pedido no se cobra ni se envía.';
+    w.scrollIntoView({ block: 'center' });
+  });
+})();
+</script>
+</body>
+</html>

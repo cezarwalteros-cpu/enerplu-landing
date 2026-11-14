@@ -409,49 +409,16 @@ footer p{margin:0 0 8px}
 .sum-note .ico{width:15px;height:15px;color:#35D04A}
 .form-img.light{background:#fff;border:1px solid var(--line)}
 .dock .btn:disabled{background:#E5E7EB;color:#6B7280}
-/* pago */
-.ck{position:fixed;inset:0;margin:0;width:100%;max-width:none;height:100%;max-height:none;border:0;padding:0;background:var(--bg2);color:var(--ink);overflow:auto}
-.ck::backdrop{background:rgba(13,13,13,.82);backdrop-filter:blur(4px)}
-.ck[open]{animation:ckIn .35s cubic-bezier(.2,.8,.2,1)}
-@keyframes ckIn{from{opacity:0;transform:translateY(24px)}}
-.ck-top{background:var(--ink);position:sticky;top:0;z-index:2}
-.ck-top .w{display:flex;align-items:center;justify-content:space-between;height:58px;max-width:720px}
-.ck-top img{height:42px;width:auto}
-.ck-x{appearance:none;border:1px solid #3A3A3A;background:none;color:#fff;border-radius:999px;min-height:38px;padding:0 14px;font:700 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
-.ck-body{max-width:720px;margin:0 auto;padding:22px 20px 40px;display:grid;gap:16px}
-.ck-body h2{font-size:clamp(26px,6vw,38px)}
-.box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;display:grid;gap:12px}
-.box h3{font:700 12px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold-d)}
-.ck-list{list-style:none;margin:0;padding:0}
-.ck-list li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:15px}
-.ck-list li b{font-variant-numeric:tabular-nums;white-space:nowrap}
-.ck-list li.free b{color:var(--ok)}
-.ck-tot{display:flex;justify-content:space-between;align-items:baseline}
-.ck-tot span{font:700 12px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
-.ck-tot b{font:900 32px/1 var(--disp);font-variant-numeric:tabular-nums}
-.fld{display:grid;gap:6px}
-.fld label{font:700 11.5px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
-.fld input{height:52px;border-radius:14px;border:1.5px solid var(--line);padding:0 14px;font:500 16px var(--txt);color:var(--ink);background:#fff;width:100%}
-.fld input:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.22)}
-.fld2{display:grid;gap:12px}
-.pays{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.pays img{height:30px;width:auto;border:1px solid var(--line);border-radius:6px;background:#fff;padding:3px 5px}
-.ck-warn{border:1.5px dashed var(--gold-d);background:var(--gold-bg);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.4;margin:0}
-.ck-trust{display:grid;gap:8px;font:600 13px/1.3 var(--txt);color:var(--mut)}
-.ck-trust div{display:flex;gap:8px;align-items:center}
-.ck-trust .ico{width:18px;height:18px;color:var(--gold-d)}
-.ck-foot{font-size:12px;color:var(--faint);text-align:center;margin:4px 0 0}
-@media (min-width:560px){.ladder{grid-template-columns:repeat(4,minmax(0,1fr))}.prods{grid-template-columns:repeat(3,minmax(0,1fr))}.fld2{grid-template-columns:1fr 1fr}}
+@media (min-width:560px){.ladder{grid-template-columns:repeat(4,minmax(0,1fr))}.prods{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (min-width:760px){.gar{grid-template-columns:repeat(3,minmax(0,1fr))}.addons{grid-template-columns:repeat(2,minmax(0,1fr))}.addons-h{grid-column:1/-1}}
 @media (min-width:960px){
   .shop-grid{grid-template-columns:minmax(0,1fr) 380px;gap:40px;align-items:start}
   .sum{position:sticky;top:20px}
   .filters{margin:0 0 8px;padding-inline:0;flex-wrap:wrap}
   .pc h3{font-size:18px}
-  .ck{inset:0;margin:auto;width:min(760px,94vw);height:min(92vh,980px);border-radius:24px}
 }
 @media (max-width:359px){.pc h3{font-size:15px}.qty{grid-template-columns:38px 1fr 38px}.ad{grid-template-columns:76px 1fr}.ad-img{width:76px;height:76px}}
-@media (prefers-reduced-motion:reduce){.ck[open]{animation:none}.pc,.ladder>div{transition:none}}
+@media (prefers-reduced-motion:reduce){.pc,.ladder>div{transition:none}}
 </style>
 <script>
 /* Medición: píxel de Meta de ENERPLU y Clarity. Con ?ep_test=1 no mide nada. */
@@ -690,40 +657,6 @@ footer p{margin:0 0 8px}
   <button class="btn" type="button" id="dock-go" data-go disabled>Elige 3</button>
 </div>
 
-<dialog class="ck" id="ck" aria-labelledby="ck-h">
-  <div class="ck-top"><div class="w"><img src="/img/intimo/logo-enerplu.webp" width="250" height="100" alt="ENERPLU"><button class="ck-x" type="button" id="ck-x">Volver</button></div></div>
-  <form class="ck-body" id="ck-form" novalidate>
-    <div class="head" style="margin:0"><span class="tagl">Último paso</span><h2 id="ck-h">Tu pedido, <em>listo para pagar.</em></h2></div>
-    <div class="box">
-      <h3>Tu combo</h3>
-      <ul class="ck-list" id="ck-list"></ul>
-      <div class="ck-tot"><span>Total a pagar</span><b id="ck-total">$0</b></div>
-    </div>
-    <div class="box">
-      <h3>A dónde lo enviamos</h3>
-      <div class="fld2">
-        <div class="fld"><label for="f-nom">Nombre y apellido</label><input id="f-nom" name="nombre" autocomplete="name" required></div>
-        <div class="fld"><label for="f-cel">Celular (WhatsApp)</label><input id="f-cel" name="celular" type="tel" inputmode="numeric" autocomplete="tel" placeholder="300 000 0000" required></div>
-      </div>
-      <div class="fld2">
-        <div class="fld"><label for="f-ciu">Ciudad</label><input id="f-ciu" name="ciudad" autocomplete="address-level2" required></div>
-        <div class="fld"><label for="f-dir">Dirección y barrio</label><input id="f-dir" name="direccion" autocomplete="street-address" required></div>
-      </div>
-    </div>
-    <div class="box">
-      <h3>Pago en línea</h3>
-      <div class="pays"><img src="/img/pay/visa.svg" alt="Visa"><img src="/img/pay/master.svg" alt="Mastercard"><img src="/img/pay/pse.svg" alt="PSE"><img src="/img/pay/nequi.svg" alt="Nequi"><img src="/img/pay-bancolombia.webp" alt="Bancolombia"></div>
-      <p class="ck-warn" id="ck-warn" hidden></p>
-      <button class="btn block gold" type="submit" id="ck-pay">Pagar ahora<svg class="ico"><use href="#i-arrow"/></svg></button>
-      <div class="ck-trust">
-        <div><svg class="ico"><use href="#i-lock"/></svg>Te confirmamos tu pedido por WhatsApp.</div>
-        <div><svg class="ico"><use href="#i-box"/></svg>Envío gratis en bolsa negra sellada.</div>
-        <div><svg class="ico"><use href="#i-shield"/></svg>Producto original, distribuidor oficial SEXLO.</div>
-      </div>
-    </div>
-    <p class="ck-foot">Venta solo a mayores de 18 años · <a href="/terminos">Términos</a></p>
-  </form>
-</dialog>
 
 <script>
 (function () {
@@ -829,30 +762,24 @@ footer p{margin:0 0 8px}
     });
   });
 
-  // Pago: resumen + datos. La pasarela todavía no está conectada (pendiente de confirmar con cesar).
-  var ck = $('ck');
-  function openCk() {
+  // Continuar: lleva al checkout aparte (/pedido-intimo) con el combo, los adicionales y los parámetros de campaña.
+  function goPay() {
     var c = n(); if (c < MIN) return;
-    var rows = [];
-    rows.push('<li><span>Combo de ' + c + ' frascos</span><b>' + pesos(kit(c)) + '</b></li>');
-    P.forEach(function (p) { var q = cant[p[0]]; if (q) rows.push('<li style="font-weight:400;color:var(--mut);padding-left:12px"><span>' + q + ' × ' + p[1] + '</span><b></b></li>'); });
-    for (var k in ads) if (ads[k]) rows.push('<li><span>' + ads[k] + ' × ' + ADS[k][0] + '</span><b>' + pesos(ads[k] * ADS[k][1]) + '</b></li>');
-    rows.push('<li class="free"><span>Envío a toda Colombia</span><b>Gratis</b></li>');
-    $('ck-list').innerHTML = rows.join(''); $('ck-total').textContent = pesos(total());
-    $('ck-pay').firstChild.textContent = 'Pagar ahora ' + pesos(total());
-    $('ck-warn').hidden = true;
-    if (ck.showModal) ck.showModal(); else ck.setAttribute('open', '');
-    window.epTrack('InitiateCheckout', { content_name: 'Combo intimo', currency: 'COP', value: total(), num_items: c });
+    var p = new URLSearchParams(location.search), parts = [];
+    P.forEach(function (x) { if (cant[x[0]]) parts.push(x[0] + '.' + cant[x[0]]); });
+    p.set('combo', parts.join('-')); p.set('anillo', ads.anillo); p.set('caja', ads.caja);
+    location.href = '/pedido-intimo?' + p.toString();
   }
-  d.querySelectorAll('[data-go]').forEach(function (b) { b.addEventListener('click', openCk); });
-  $('ck-x').addEventListener('click', function () { ck.close ? ck.close() : ck.removeAttribute('open'); });
-  $('ck-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var w = $('ck-warn'), bad = [].filter.call(this.querySelectorAll('input[required]'), function (i) { return !i.value.trim(); });
-    w.hidden = false;
-    if (bad.length) { w.textContent = 'Nos falta un dato para enviarte el pedido. Revisa los campos vacíos.'; bad[0].focus(); return; }
-    w.textContent = 'Vista previa: el pago en línea todavía no está conectado, así que este pedido no se cobra ni se envía.';
-  });
+  d.querySelectorAll('[data-go]').forEach(function (b) { b.addEventListener('click', goPay); });
+  // Si vuelve del checkout ("Cambiar mis frascos"), el combo queda como lo dejó.
+  (function () {
+    var q = new URLSearchParams(location.search), c = 0;
+    (q.get('combo') || '').split('-').forEach(function (t) {
+      var x = t.split('.'), k = Math.floor(+x[1]);
+      if (k > 0 && c < MAX && P.some(function (y) { return y[0] === x[0]; })) { k = Math.min(k, MAX - c); cant[x[0]] = (cant[x[0]] || 0) + k; c += k; }
+    });
+    ['anillo', 'caja'].forEach(function (k) { ads[k] = Math.max(0, Math.min(MAX, Math.floor(+q.get(k)) || 0)); });
+  })();
   render();
 })();
 </script>
@@ -878,7 +805,6 @@ footer p{margin:0 0 8px}
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: .08, rootMargin: '0px 0px -4% 0px' });
     groups.forEach(function (g) {
       d.querySelectorAll(g[0]).forEach(function (el) {
-        if (el.closest('dialog')) return;
         var i = [].indexOf.call(el.parentNode.children, el);
         el.classList.add('rv'); if (g[1]) el.classList.add(g[1]);
         el.style.setProperty('--d', (i % 6) * .06 + 's');
@@ -953,7 +879,7 @@ footer p{margin:0 0 8px}
     var dock = d.getElementById('dock'), hero = d.querySelector('.hero'), go = d.getElementById('go'), fin = d.querySelector('.final');
     if (!('IntersectionObserver' in window)) { dock.classList.add('show'); return; }
     var st = { hero: true, go: false, fin: false };
-    function upd() { dock.classList.toggle('show', !st.hero && !st.go && !st.fin && !d.getElementById('ck').open); }
+    function upd() { dock.classList.toggle('show', !st.hero && !st.go && !st.fin); }
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.target === hero) st.hero = e.isIntersecting; else if (e.target === go) st.go = e.isIntersecting; else st.fin = e.isIntersecting; }); upd(); });
     io.observe(hero); io.observe(go); io.observe(fin);
   })();

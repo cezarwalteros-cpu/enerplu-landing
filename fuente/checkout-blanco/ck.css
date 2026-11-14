@@ -1,0 +1,66 @@
+/* Checkout blanco en 3 pasos (cesar 2026-11-13 7:40 pm, "blanco crealo"). Solo la sección de oferta + formulario:
+   el resto de la landing sigue negra. Mismos planes, precios, campos, bump, resumen y botón. */
+.ep-root .eph-order.ck3 {
+  --ep-bg: #FFFFFF; --ep-bg-2: #F7F7F5; --ep-surface: #FFFFFF; --ep-surface-2: #F3F4F6;
+  --ep-line: #E5E7EB; --ep-line-strong: #D1D5DB; --ep-text: #111111; --ep-muted: #4B5563; --ep-faint: #6B7280;
+  --ep-accent: #B8860B; --ep-ok: #15803D; --ep-err: #B42318; --ep-err-bg: #FEF3F2; --ep-shadow: rgba(17, 17, 17, .06);
+  color-scheme: light; background: #fff; color: #111;
+}
+.ep-root .eph-order.ck3 .eph-title, .ep-root .eph-order.ck3 .ep-of-legend, .ep-root .eph-order.ck3 .eph-name, .ep-root .eph-order.ck3 .ep-f label,
+.ep-root .eph-order.ck3 .eph-faq-title, .ep-root .eph-order.ck3 .eph-card.is-basic .eph-price { color: #111; }
+.ep-root .eph-order.ck3 .eph-sub, .ep-root .eph-order.ck3 .eph-qty, .ep-root .eph-order.ck3 .ep-f-help, .ep-root .eph-order.ck3 .ep-micro,
+.ep-root .eph-order.ck3 .eph-c .eph-unit, .ep-root .eph-order.ck3 .eph-unit { color: #4B5563; }
+.ep-root .eph-order.ck3 .eph-was { color: #6B7280; }
+.ep-root .eph-order.ck3 .eph-price, .ep-root .eph-order.ck3 .ep-bump-price b, .ep-root .eph-order.ck3 .ep-sum-total b { color: #15803D; }
+.ep-root .eph-order.ck3 .eph-save, .ep-root .eph-order.ck3 .eph-c-save { color: #15803D; }
+/* tarjetas */
+.ep-root .eph-order.ck3 .eph-list .eph-card, .ep-root .eph-order.ck3 .eph-list .eph-card.eph-c { background: #fff; border-color: #E5E7EB; }
+.ep-root .eph-order.ck3 .eph-list .eph-card.is-on { background: #FDF8EC; border-color: #D4AF37; box-shadow: 0 0 0 3px rgba(212, 175, 55, .18); }
+.ep-root .eph-order.ck3 .eph-check { background: #fff; border-color: #9CA3AF; }
+.ep-root .eph-order.ck3 .eph-c-gift { background: #FDF8EC; color: #374151; }
+.ep-root .eph-order.ck3 .eph-c-gift b, .ep-root .eph-order.ck3 .eph-inc i, .ep-root .eph-order.ck3 .eph-inc b { color: #8A6410; }
+.ep-root .eph-order.ck3 .eph-inc > span { color: #374151; }
+.ep-root .eph-order.ck3 .eph-tag { background: #FDF8EC; color: #8A6410; border-color: #E8D9B0; }
+.ep-root .eph-order.ck3 .eph-card.rec .eph-tag { background: #15803D; color: #fff; border-color: #15803D; }
+.ep-root .eph-order.ck3 .eph-card[data-pack="elite"] .eph-tag { background: #C2410C; color: #fff; border-color: #C2410C; }
+.ep-root .eph-order.ck3 .eph-garantia, .ep-root .eph-order.ck3 .eph-ga { background: #FDF8EC; color: #374151; }
+.ep-root .eph-order.ck3 .eph-garantia b, .ep-root .eph-order.ck3 .eph-bonus b, .ep-root .eph-order.ck3 .eph-ga b { color: #8A6410; }
+.ep-root .eph-order.ck3 .eph-garantia a { color: #6B7280; }
+.ep-root .eph-order.ck3 .eph-bonus { color: #374151; border-color: #E8D9B0; }
+/* empujón al siguiente plan */
+.ep-root .eph-order.ck3 .ep-nudge-in { background: #fff; border-color: #E8D9B0; color: #374151; }
+.ep-root .eph-order.ck3 .ep-nudge-in.is-strong { background: #FDF8EC; }
+.ep-root .eph-order.ck3 .ep-nudge-in b { color: #111; }
+.ep-root .eph-order.ck3 .ep-nudge-btn { color: #8A6410 !important; border-color: #D4AF37 !important; }
+.ep-root .eph-order.ck3 .ep-nudge-in.is-strong .ep-nudge-btn { background: #D4AF37 !important; color: #111 !important; }
+/* bloques */
+.ep-root .eph-order.ck3 .ep-of-block { background: #fff; border-color: #E5E7EB; box-shadow: 0 2px 10px rgba(17, 17, 17, .05); }
+.ep-root .eph-order.ck3 .ep-f input { border-color: #D1D5DB; }
+.ep-root .eph-order.ck3 .ep-f input::placeholder { color: #6B7280; }
+.ep-root .eph-order.ck3 .ep-f-phone span { background: #F3F4F6; }
+.ep-root .eph-order.ck3 .ep-city-ok { color: #374151; }
+.ep-root .eph-order.ck3 .ep-city-ok em, .ep-root .eph-order.ck3 .ep-city-ok .ep-ico { color: #B42318; }
+.ep-root .eph-order.ck3 .ep-ship-opt { border-color: #E5E7EB; }
+.ep-root .eph-order.ck3 .ep-ship-opt.is-on { background: #FDF8EC; border-color: #D4AF37; }
+.ep-root .eph-order.ck3 .ep-bump { background: #fff; }
+.ep-root .eph-order.ck3 .ep-bump-box { background: #fff; }
+.ep-root .eph-order.ck3 .ep-sum { background: #F9FAFB; border-color: #E5E7EB; }
+.ep-root .eph-order.ck3 .eph-trust { color: #374151; border-color: #E5E7EB; }
+.ep-root .eph-order.ck3 .eph-trust a, .ep-root .eph-order.ck3 .eph-faq a { color: #8A6410; }
+.ep-root .eph-order.ck3 .eph-libros img, .ep-root .eph-order.ck3 .eph-libro-txt { box-shadow: 0 4px 10px rgba(0, 0, 0, .18); }
+.ep-root .eph-order.ck3 .ep-of-test { color: #111; }
+/* barra de pasos */
+.ep-root .ck3-bar { position: sticky; top: 0; z-index: 5; background: #fff; margin: -28px -16px 14px; padding: 10px 16px 9px; border-bottom: 1px solid #E5E7EB; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.ep-root .ck3-bar span { display: flex; flex-direction: column; gap: 5px; font: 600 12px/1.2 Inter, system-ui, sans-serif; color: #6B7280; }
+.ep-root .ck3-bar span::before { content: ""; height: 4px; border-radius: 2px; background: #E5E7EB; }
+.ep-root .ck3-bar span.is-on { color: #8A6410; font-weight: 700; }
+.ep-root .ck3-bar span.is-on::before, .ep-root .ck3-bar span.is-done::before { background: #D4AF37; }
+.ep-root .ck3-bar span.is-done { color: #111; }
+/* número de cada paso */
+.ep-root .ck3-step { display: flex; align-items: center; gap: 10px; margin: 4px 0 12px; font: 800 19px/1.2 Inter, system-ui, sans-serif; color: #111; }
+.ep-root .ck3-n { flex: 0 0 28px; width: 28px; height: 28px; border-radius: 50%; background: #D4AF37; color: #111; display: grid; place-items: center; font: 800 15px/1 Inter, system-ui, sans-serif; }
+.ep-root .eph-order.ck3 .ep-of-legend { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; }
+/* el envío queda dentro del paso 2: sin caja propia, pegado a la dirección */
+.ep-root .eph-order.ck3 .ck3-ship { border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; margin-top: -22px; padding-top: 4px; box-shadow: 0 8px 10px rgba(17, 17, 17, .05); }
+.ep-root .eph-order.ck3 .ck3-ship .ep-of-legend { font-size: 15px; font-weight: 700; }
+.ep-root .eph-order.ck3 .ck3-addr { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: 0; box-shadow: none; }

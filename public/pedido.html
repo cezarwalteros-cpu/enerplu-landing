@@ -1904,20 +1904,90 @@ html.epp-lock{overflow:hidden}
 .ep-root .eph-order.ck3 .ck3-ship .ep-of-legend { font-size: 15px; font-weight: 700; }
 .ep-root .eph-order.ck3 .ck3-addr { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: 0; box-shadow: none; }
 /* /pedido: checkout en página aparte. Solo se ve la sección de pedido; nada de la página antigua. */
-html, body { background: #fff !important; }
+html, body { background: #F3F3F0 !important; }
 #MainContent > :not(.ck-keep) { display: none !important; }
 .ep-hc-sticky, .epb, .ep5-pop, .ep5-chip { display: none !important; }
-.ep-root.ck-keep { background: #fff; min-height: 100vh; }
-.pdh { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; max-width: 720px; margin: 0 auto; padding: 14px 16px; background: #fff; }
-.pdh-back { display: inline-flex; align-items: center; gap: 6px; font: 600 14px/1 Inter, system-ui, sans-serif; color: #4B5563 !important; text-decoration: none; min-height: 40px; }
-.pdh-logo { font: 900 22px/1 Archivo, Inter, system-ui, sans-serif; letter-spacing: .02em; color: #0D0D0D; }
-.pdh-logo b { color: #8A6410; font-weight: 900; }
-.pdh-safe { justify-self: end; display: inline-flex; align-items: center; gap: 6px; font: 700 12px/1.1 Inter, system-ui, sans-serif; color: #15803D; text-align: right; }
-.ep-root .eph-order.ck3 { padding-top: 0; }
-.ep-root .eph-order.ck3 .eph-title { font-family: Archivo, Inter, system-ui, sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; }
+.ep-root.ck-keep { background: #F3F3F0; min-height: 100vh; }
+/* cabecera negra con logo, candado y franja de confianza */
+.pdh { background: #0D0D0D; color: #fff; }
+.pdh-in { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; max-width: 760px; margin: 0 auto; padding: 10px 16px; }
+.pdh-back { display: inline-flex; align-items: center; gap: 6px; font: 600 14px/1 Inter, system-ui, sans-serif; color: #D1D5DB !important; text-decoration: none; min-height: 44px; }
+.pdh-logo img { height: 52px; width: auto; max-width: none; display: block; }
+.pdh-safe { justify-self: end; display: inline-flex; align-items: center; gap: 6px; font: 700 12.5px/1.1 Inter, system-ui, sans-serif; color: #D4AF37; text-align: right; }
+.pdh-strip { list-style: none; margin: 0; padding: 9px 12px; display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 18px; border-top: 1px solid #262626; background: #141414; font: 600 12.5px/1.2 Inter, system-ui, sans-serif; color: #E5E7EB; }
+.pdh-strip li { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 0; }
+.pdh-strip li::before { display: none; }
+.pdh-strip svg { width: 16px; height: 16px; color: #D4AF37; flex: none; }
+@media (max-width: 380px) { .pdh-back span, .pdh-safe span { font-size: 11.5px; } .pdh-logo img { height: 44px; } .pdh-strip { font-size: 11.5px; gap: 5px 12px; } }
+/* cuerpo: tarjetas blancas sobre gris claro */
+.ep-root .eph-order.ck3 { background: #F3F3F0; padding-top: 0; }
 .ep-root .eph-order.ck3 .ep-wrap--form { max-width: 720px; }
-.pdh-logo img { height: 44px; width: auto; display: block; }
-.pdh { padding-top: 8px; padding-bottom: 8px; }
+.ep-root .ck3-bar { margin: 0 -16px 18px; top: 0; padding: 12px 16px 10px; box-shadow: 0 6px 16px rgba(13, 13, 13, .06); }
+.ep-root .eph-order.ck3 .eph-title, .ep-root .eph-order.ck3 .eph-sub { display: none; }
+.ep-root .eph-order.ck3 .ep-plans { background: #fff; border: 1px solid #E5E7EB; border-radius: 18px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(17, 17, 17, .05); display: flex; flex-direction: column; }
+.ep-root .eph-order.ck3 .ep-plans > .ck3-step { order: 1; margin-top: 0; }
+.ep-root .eph-order.ck3 .ep-plans > .eph-list { order: 2; }
+.ep-root .eph-order.ck3 .ep-plans > .eph-bonus { order: 3; margin-top: 14px; }
+.ep-root .eph-order.ck3 .ep-plans > .pdg { order: 4; }
+.ep-root .eph-order.ck3 .ep-of-block { border-radius: 18px; }
+.ep-root .eph-order.ck3 .ck3-step, .ep-root .eph-order.ck3 .ep-of-legend { font-family: Archivo, Inter, system-ui, sans-serif; font-weight: 800; }
+.ep-root .eph-order.ck3 .ck3-n { background: #0D0D0D; color: #D4AF37; }
+.ep-root .eph-order.ck3 .eph-card.rec .eph-tag { background: #0D0D0D; color: #D4AF37; border-color: #0D0D0D; }
+.ep-root .eph-order.ck3 .eph-card[data-pack="elite"] .eph-tag { background: #8A6410; color: #fff; border-color: #8A6410; }
+/* garantía: sello, pasos concretos y empresa que respalda */
+.pdg { margin: 14px 0 0; border: 1px solid #E8D9B0; border-radius: 16px; background: #fff; overflow: hidden; font-family: Inter, system-ui, sans-serif; color: #111; }
+.pdg-top { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: #0D0D0D; color: #fff; }
+.pdg-seal { position: relative; flex: none; width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #F6E7A8, #D4AF37 55%, #8A6410); color: #0D0D0D; box-shadow: 0 0 0 3px #0D0D0D, 0 0 0 4.5px #D4AF37; }
+.pdg-seal svg { display: none; }
+.pdg-seal b { font: 900 22px/1 Archivo, Inter, sans-serif; margin-top: -8px; }
+.pdg-seal i { position: absolute; bottom: 11px; font: 800 9px/1 Inter, sans-serif; font-style: normal; letter-spacing: .08em; text-transform: uppercase; }
+.pdg-top strong { display: block; font: 800 18px/1.15 Archivo, Inter, sans-serif; color: #D4AF37; }
+.pdg-top span:not(.pdg-seal) { display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: #D1D5DB; }
+.pdg-steps { list-style: none; counter-reset: g; margin: 0; padding: 14px 16px 4px; display: grid; gap: 12px; }
+.pdg-steps li { counter-increment: g; position: relative; padding-left: 36px; font-size: 14px; line-height: 1.45; color: #374151; margin: 0; }
+.pdg-steps li::before { content: counter(g); position: absolute; left: 0; top: 0; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: #FDF8EC; border: 1px solid #D4AF37; color: #8A6410; font: 800 12.5px/1 Inter, sans-serif; }
+.pdg-steps b { color: #111; }
+.pdg-foot { margin: 10px 16px 14px; padding-top: 10px; border-top: 1px solid #F0E9D6; font-size: 12px; line-height: 1.45; color: #6B7280; }
+.pdg-foot a { color: #8A6410; font-weight: 600; }
+/* botón de confirmar: negro con dorado, como la página nueva */
+.ep-root .eph-order.ck3 .ep-of-submit { background: #0D0D0D !important; color: #fff !important; border-radius: 999px !important; box-shadow: 0 12px 28px rgba(13, 13, 13, .28) !important; }
+.ep-root .eph-order.ck3 .ep-of-submit .ep-cta-price { color: #D4AF37 !important; }
+.ep-root .eph-order.ck3 .ep-of-submit .ep-cta-label small { color: #D1D5DB !important; }
+.ep-root .eph-order.ck3 .ep-of-submit .ep-cta-sep { background: rgba(255, 255, 255, .25) !important; }
+/* confianza debajo del botón */
+.pdt { margin: 18px 0 6px; background: #fff; border: 1px solid #E5E7EB; border-radius: 18px; padding: 16px; font-family: Inter, system-ui, sans-serif; box-shadow: 0 2px 10px rgba(17, 17, 17, .05); }
+.pdt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.pdt-list li { display: flex; gap: 12px; align-items: flex-start; margin: 0; padding: 0; font-size: 14px; line-height: 1.4; color: #4B5563; }
+.pdt-list li::before { display: none; }
+.pdt-list svg { width: 22px; height: 22px; flex: none; color: #15803D; margin-top: 1px; }
+.pdt-list b { color: #111; }
+.pdt-pay { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #E5E7EB; }
+.pdt-pay > span { width: 100%; font: 700 11px/1 Inter, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #6B7280; }
+.pdt-pay img { height: 27px; width: auto; max-width: none; display: block; }
+.pdt-pay .pdt-bc { height: 24px; }
+.pdt-cod { font: 800 11px/1 Inter, sans-serif; font-style: normal; letter-spacing: .02em; padding: 8px 9px; border: 1px solid #D1D5DB; border-radius: 5px; color: #111; background: #fff; }
+.ep-root .eph-order.ck3 .ep-pay-accept { display: none !important; }
+/* medios de pago dentro de las opciones: logos oficiales (public/img/pay), no texto */
+.ep-root.ck-keep .ep-pay-logos { gap: 8px; align-items: center; }
+.ep-root.ck-keep .ep-pay-logo.is-visa, .ep-root.ck-keep .ep-pay-logo.is-mc, .ep-root.ck-keep .ep-pay-logo.is-amex, .ep-root.ck-keep .ep-pay-logo.is-pse,
+.ep-root.ck-keep .ep-pay-logo.is-nequi, .ep-root.ck-keep .ep-pay-logo.is-bc { display: inline-block; font-size: 0; line-height: 0; color: transparent; padding: 0; border: 0; border-radius: 4px; width: 42px; height: 27px; background: transparent center / contain no-repeat; vertical-align: middle; }
+.ep-root.ck-keep .ep-pay-logo.is-visa { background-image: url(/img/pay/visa.svg); }
+.ep-root.ck-keep .ep-pay-logo.is-mc { background-image: url(/img/pay/master.svg); }
+.ep-root.ck-keep .ep-pay-logo.is-amex { background-image: url(/img/pay/american_express.svg); }
+.ep-root.ck-keep .ep-pay-logo.is-pse { background-image: url(/img/pay/pse.svg); }
+.ep-root.ck-keep .ep-pay-logo.is-nequi { background-image: url(/img/pay/nequi.svg); }
+.ep-root.ck-keep .ep-pay-logo.is-bc { width: 204px; height: 26px; background-image: url(/img/pay-bancolombia.webp), url(/img/pay-breb.webp); background-position: left center, right center; background-size: 105px auto, 90px auto; }
+/* pie con la empresa */
+.pdf { max-width: 720px; margin: 0 auto; padding: 22px 16px 40px; text-align: center; font: 500 12px/1.5 Inter, system-ui, sans-serif; color: #6B7280; }
+.pdf img { height: 44px; width: auto; display: block; margin: 0 auto 8px; }
+.pdf p { margin: 4px 0; }
+.pdf a { color: #4B5563; }
+.ep-root .eph-order.ck3 .ep-plans { padding: 16px 10px; }
+.ep-root .eph-order.ck3 .ep-plans > .ck3-step, .ep-root .eph-order.ck3 .ep-plans > .pdg, .ep-root .eph-order.ck3 .ep-plans > .eph-bonus { margin-left: 4px; margin-right: 4px; }
+.pdg-foot { margin-bottom: 16px; }
+.pdh-in { gap: 6px; padding-left: 12px; padding-right: 12px; }
+.pdh-back, .pdh-safe { white-space: nowrap; min-width: 0; }
+@media (max-width: 350px) { .pdh-logo img { height: 38px; } .pdh-safe span { display: none; } .pdh-back span { display: none; } }
 </style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
@@ -3419,9 +3489,16 @@ html, body { background: #fff !important; }
 <!-- OFERTA + FORMULARIO · una sola sección: las 3 ofertas (selector, mismo diseño del selector v13) y debajo los datos de envío -->
 <div class="ep-root ck-keep" data-ep-theme="negro">
 <header class="pdh">
-  <a class="pdh-back" href="/nueva" data-pd-back><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Volver</a>
-  <span class="pdh-logo"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto/v1775103361/logo_enerplu_fgdhwk.webp" width="250" height="100" alt="ENERPLU"></span>
-  <span class="pdh-safe"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pagas al recibir</span>
+  <div class="pdh-in">
+    <a class="pdh-back" href="/nueva" data-pd-back><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Volver</span></a>
+    <span class="pdh-logo"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto/v1775103361/logo_enerplu_fgdhwk.webp" width="250" height="100" alt="ENERPLU"></span>
+    <span class="pdh-safe"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Compra segura</span></span>
+  </div>
+  <ul class="pdh-strip">
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>Pagas al recibir</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1zM14 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>Envío gratis</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>Bolsa negra, discreto</li>
+  </ul>
 </header>
 
 <section class="ep-order eph-order ck3" id="ep-order" aria-labelledby="eph-title">
@@ -3437,7 +3514,19 @@ html, body { background: #fff !important; }
         <div class="eph-bonus eph-bonus--libros"><div class="eph-libros"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Guía Maestro del Orgasmo" width="66" height="86" loading="lazy"><span class="eph-libro-txt" role="img" aria-label="Guía Secretos Sexuales"><b>SECRETOS</b><b>SEXUALES</b><i>Edición de lujo</i></span><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Guía Genio del Sexo" width="66" height="86" loading="lazy"></div><p>En todos los planes recibes <b>3 guías digitales</b> por WhatsApp al recibir.</p></div>
         <p class="ck3-step"><span class="ck3-n">1</span>Elige tu plan</p>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
-        <div class="eph-ga"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><div><b>Garantía Real · Dominio y Élite</b><br>Prueba una caja. Si decides no continuar, te devolvemos el valor correspondiente a las cajas sin abrir.<br>Tienes 15 días desde la entrega. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a></div></div>
+        <div class="pdg">
+  <div class="pdg-top">
+    <span class="pdg-seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><b>15</b><i>días</i></span>
+    <div><strong>Garantía Real de 15 días</strong><span>En los planes Dominio Total y Élite, en tu primera compra.</span></div>
+  </div>
+  <ol class="pdg-steps">
+    <li><b>Pruebas tu primera caja.</b> Mínimo 2 veces, en días distintos.</li>
+    <li><b>Si no te convence, nos escribes por WhatsApp</b> dentro de los 15 días siguientes a la entrega.</li>
+    <li><b>Devuelves las cajas selladas y te transferimos su valor</b> en máximo 5 días hábiles: $64.950 en Dominio Total (1 caja) o hasta $79.950 en Élite (2 cajas).</li>
+  </ol>
+  <p class="pdg-foot">Respalda GRUPO EMPRESARIAL BIENESTAR TOTAL S.A.S. · NIT 901926358-4. <a href="/garantia" target="_blank" rel="noopener">Leer condiciones completas</a></p>
+</div>
+
       </div>
 
       <fieldset class="ep-of-block ck3-addr">
@@ -3515,7 +3604,20 @@ html, body { background: #fff !important; }
       </div>
 
       <img class="eph-guarantee" src="https://cdn.shopify.com/s/files/1/0612/5351/7510/files/GARANTIA-30-DIAS.png?v=1708300511" alt="Garantía de 30 días" loading="lazy" width="88" height="88">
-      <p class="eph-trust">Te confirmamos tu pedido por WhatsApp antes de enviarlo<br>Garantía Real o te devolvemos tu dinero <a href="/garantia" target="_blank" rel="noopener">*Aplican términos</a></p>
+      <div class="pdt">
+  <ul class="pdt-list">
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.7A8.4 8.4 0 1 1 21 11.5z"/></svg><span><b>Te confirmamos por WhatsApp</b> antes de enviar. Nada sale sin tu visto bueno.</span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><span><b>No pagas nada ahora.</b> Pagas en efectivo cuando tienes el paquete en la mano.</span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span><b>Registro sanitario INVIMA NSA-2314-2025.</b> Suplemento, no medicamento.</span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span><b>Tus datos están protegidos.</b> Solo los usamos para entregar tu pedido.</span></li>
+  </ul>
+  <div class="pdt-pay">
+    <span>Medios de pago</span>
+    <i class="pdt-cod">Contraentrega</i>
+    <img src="/img/pay/visa.svg" alt="Visa" width="42" height="27" loading="lazy"><img src="/img/pay/master.svg" alt="Mastercard" width="42" height="27" loading="lazy"><img src="/img/pay/pse.svg" alt="PSE" width="42" height="27" loading="lazy"><img src="/img/pay/nequi.svg" alt="Nequi" width="42" height="27" loading="lazy"><img class="pdt-bc" src="/img/pay-bancolombia.webp" alt="Bancolombia" width="240" height="57" loading="lazy">
+  </div>
+</div>
+
       <!-- C-01: preguntas frecuentes debajo del botón (2026-11-06) -->
       <div class="eph-faq" id="eph-faq">
         <h3 class="eph-faq-title">Preguntas frecuentes</h3>
@@ -3535,6 +3637,12 @@ html, body { background: #fff !important; }
     <div class="ep-thanks" data-ep-thanks hidden tabindex="-1"></div>
   </div>
 </section>
+<footer class="pdf">
+  <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto/v1775103361/logo_enerplu_fgdhwk.webp" width="250" height="100" alt="ENERPLU" loading="lazy">
+  <p>GRUPO EMPRESARIAL BIENESTAR TOTAL S.A.S. · NIT 901926358-4 · Sabaneta, Antioquia</p>
+  <p><a href="/garantia" target="_blank" rel="noopener">Garantía</a> · <a href="/terminos" target="_blank" rel="noopener">Términos y condiciones</a></p>
+</footer>
+
 </div>
 
 <section id="shopify-section-template--27852326797357__gp_section_641235265020494789" class="shopify-section gps-641235265020494789 gps gpsil">

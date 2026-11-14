@@ -440,6 +440,11 @@ if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
                '<fieldset class="ep-of-block ck3-addr">\n        <legend class="ep-of-legend"><span class="ck3-n">2</span>¿A dónde te lo enviamos?</legend>')
     _pd = must(_pd, '<fieldset class="ep-of-block" data-ep-ship-block>', '<fieldset class="ep-of-block ck3-ship" data-ep-ship-block>')
     _pd = must(_pd, '<legend class="ep-of-legend">¿Cómo quieres pagar?</legend>', '<legend class="ep-of-legend"><span class="ck3-n">3</span>¿Cómo quieres pagar?</legend>')
+    _pd = must(_pd, _GA, (ROOT / 'fuente' / 'pedido' / 'garantia.html').read_text())
+    _pd, _n = re.subn(r'<p class="eph-trust">.*?</p>', lambda m: (ROOT / 'fuente' / 'pedido' / 'confianza.html').read_text(), _pd, count=1, flags=re.S)
+    assert _n == 1, 'pedido: no se encontró el texto de confianza bajo el botón'
+    _i = _pd.index('</section>', _pd.index('id="ep-order"')) + len('</section>')
+    _pd = _pd[:_i] + '\n' + (ROOT / 'fuente' / 'pedido' / 'pie.html').read_text() + _pd[_i:]
     _pd = re.sub('[\U0001F381\U0001F69A\U0001F4B5\U0001F4E6\U0001F4AC\U0001F6E1\U0001F525]\uFE0F? ?', '', _pd)   # sin emojis en esta página
     _pd = must(_pd, '</head>', '<meta name="robots" content="noindex">\n<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&display=swap" rel="stylesheet">\n<style>\n'
                + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.css').read_text() + (ROOT / 'fuente' / 'pedido' / 'pedido.css').read_text() + '</style>\n</head>')

@@ -313,6 +313,7 @@ footer p{margin:0 0 8px}
 .opt.is-on .dot::after{background:var(--ink)}
 .btn.gold{max-width:100%}
 @media (max-width:379px){.btn.gold{font-size:14px;padding:0 16px;gap:8px}}
+@media (max-width:339px){.btn.gold{font-size:13px;padding:0 10px;gap:6px;letter-spacing:0}.nums b{font-size:30px}}
 .zz,.zz::after,.zz::before{animation-play-state:paused !important}
 /* cesar 13-nov: nada fijo en el inicio; la barra de abajo solo acompaña cuando no hay botón a la vista */
 .dock{transform:translateY(110%);transition:transform .3s ease;visibility:hidden}
@@ -890,7 +891,7 @@ footer p{margin:0 0 8px}
     }
     function loop(t) {
       if (!vis) return;
-      var e = (t - t0) % (RUN + HOLD);
+      var e = Math.max(0, t - t0) % (RUN + HOLD);
       if (e < RUN) {
         var k = e / RUN, sec = Math.floor(k * 300), m = Math.floor(sec / 60), x = sec % 60;
         set('0' + m + ':' + (x < 10 ? '0' : '') + x, k < .18 ? 'Bajo la lengua' : k < .7 ? 'Entrando a la sangre' : 'Subiendo', k, false);

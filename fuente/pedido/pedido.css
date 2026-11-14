@@ -1,7 +1,7 @@
 /* /pedido: checkout en página aparte. Solo se ve la sección de pedido; nada de la página antigua. */
 html, body { background: #F3F3F0 !important; }
 #MainContent > :not(.ck-keep) { display: none !important; }
-.ep-hc-sticky, .epb, .ep5-pop, .ep5-chip { display: none !important; }
+.ep-hc-sticky, .epb { display: none !important; }
 .ep-root.ck-keep { background: #F3F3F0; min-height: 100vh; }
 /* cabecera negra con logo, candado y franja de confianza */
 .pdh { background: #0D0D0D; color: #fff; }

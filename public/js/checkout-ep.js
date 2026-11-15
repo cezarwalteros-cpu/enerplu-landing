@@ -18,9 +18,9 @@
     pixel: "1248121626590977"
   };
   var PLANS = [
-    { key: "x1", id: "basico", name: "Plan Básico", boxes: 1, tablets: 10, price: 89900, extras: ["Sobre de lubricante"], note: "Para probar", img: "/img/ck/basico.jpg" },
     { key: "dominio", id: "dominio", name: "Plan Dominio Total", boxes: 2, tablets: 20, price: 129900, extras: ["Spray retardante 30 ml", "Sobre de lubricante"], gift: "Spray retardante", badge: "MÁS VENDIDO", img: "/img/ck/dominio.jpg" },
-    { key: "elite", id: "elite", name: "Plan Élite", boxes: 4, tablets: 40, price: 159900, extras: ["Spray retardante 30 ml", "Sobre de lubricante"], gift: "Spray retardante", badge: "MEJOR PRECIO", dark: true, img: "/img/ck/elite.jpg" }
+    { key: "elite", id: "elite", name: "Plan Élite", boxes: 4, tablets: 40, price: 159900, extras: ["Spray retardante 30 ml", "Sobre de lubricante"], gift: "Spray retardante", badge: "MEJOR PRECIO", dark: true, img: "/img/ck/elite.jpg" },
+    { key: "x1", id: "basico", name: "Plan Básico", boxes: 1, tablets: 10, price: 89900, extras: ["Sobre de lubricante"], note: "Para probar", img: "/img/ck/basico.jpg" },
   ];
 
   var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
@@ -67,10 +67,10 @@
 
   /* ---------- estado ---------- */
   var alias = { basico: "basico", "básico": "basico", x1: "basico", inicial: "basico", dominio: "dominio", elite: "elite", "élite": "elite" };
-  var plan = PLANS.filter(function (p) { return p.id === alias[(qs.get("plan") || "").toLowerCase()]; })[0] || PLANS[1];
+  var plan = PLANS.filter(function (p) { return p.id === alias[(qs.get("plan") || "").toLowerCase()]; })[0] || PLANS[0];   // orden de cesar 15-11: Dominio, Élite, Básico
   var pay = "cod", city = null, prepaidCity = false, phoneBlock = null;
   var boldOn = true, transferOn = false, discount = 12000;
-  var single = function () { return PLANS[0].price; };
+  var single = function () { return PLANS.filter(function (p) { return p.id === "basico"; })[0].price; };
   var disc = function () { return pay === "cod" ? 0 : discount; };
   var total = function () { return plan.price - disc(); };
 

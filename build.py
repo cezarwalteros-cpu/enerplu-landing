@@ -426,7 +426,7 @@ if AB_E07 and not HERO_V2:
 # E-07 en losgomosos.lat (cesar 2026-11-15 2:59 pm, "publica"): las visitas a losgomosos.lat/products/* y /collections/*
 # (hoy ven /nueva por rewrite) entran también al 50/50: A sigue en /nueva, B va a /ofertas del mismo dominio (mismo
 # localStorage ep_e07 y sid). /nueva en pedido.enerplu.com y /propuesta no cambian. AB_E07_LG = False lo quita.
-AB_E07_LG = True
+AB_E07_LG = False   # 15-11 5:43 pm cesar 'Quitarlo ya en losgomosos': BT15 sin ventas 3:05-5:40 pm (0/166, las dos mitades)
 _nv = (OUT / 'nueva.html').read_text()
 _nv = re.sub(r'<head>\n<!--E07LG-->.*?<!--/E07LG-->\n', '<head>', _nv, count=1, flags=re.S)
 _nv = re.sub(r'<!--E07LG-->.*?<!--/E07LG-->\n', '', _nv, flags=re.S)

@@ -127,7 +127,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .pt .tag.g{color:var(--black);background:var(--gold2)}
 .ps{font-size:12.5px;color:var(--ink2);margin-top:3px}
 .logos{display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap}
-.logos span{font:800 10.5px Inter,sans-serif;letter-spacing:.03em;border:1px solid var(--line);border-radius:5px;background:#fff;padding:3px 6px;color:var(--ink2)}
+.logos img{display:block;height:24px;width:auto}
+.logos img.bc{height:22px}
 
 /* resumen */
 .sum{margin-top:24px;background:var(--black);color:#fff;border-radius:22px;padding:18px;position:relative;overflow:hidden;border:1px solid #2A2519}
@@ -301,11 +302,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
       <label class="pay" data-m="bold">
         <input type="radio" name="pay"><span class="radio"></span>
         <span><div class="pt">Pagar ahora en línea <span class="tag g" id="boldTag">-$12.000</span></div><div class="ps">Tarjeta, PSE o Nequi. Pago protegido por Bold.</div>
-        <div class="logos"><span>VISA</span><span>MASTERCARD</span><span>PSE</span><span>NEQUI</span></div></span>
+        <div class="logos"><img src="/img/pay/visa.svg" alt="Visa" width="38" height="24"><img src="/img/pay/master.svg" alt="Mastercard" width="38" height="24"><img src="/img/pay/pse.svg" alt="PSE" width="38" height="24"><img src="/img/pay/nequi.svg" alt="Nequi" width="38" height="24"></div></span>
       </label>
       <label class="pay" data-m="transfer" hidden>
         <input type="radio" name="pay"><span class="radio"></span>
-        <span><div class="pt">Transferencia Bancolombia <span class="tag g" id="trTag">-$12.000</span></div><div class="ps">Te damos la llave y envías el comprobante por WhatsApp.</div></span>
+        <span><div class="pt">Transferencia Bancolombia <span class="tag g" id="trTag">-$12.000</span></div><div class="ps">Te damos la llave y envías el comprobante por WhatsApp.</div>
+        <div class="logos"><img class="bc" src="/img/pay-bancolombia.webp" alt="Bancolombia" height="22"><img class="bc" src="/img/pay-breb.webp" alt="Bre-B" height="17" style="height:17px"></div></span>
       </label>
     </div>
   </section>

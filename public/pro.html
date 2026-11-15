@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>ENERPLU | Máxima potencia</title>
+<script>(function(){var u=new URL(location.href);if(u.searchParams.get('ep_test')!=='1'){u.searchParams.set('ep_test','1');history.replaceState(null,'',u.toString());}})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="preload" as="image" href="/img/pro-caja.webp">
+<style>
+:root{
+  --k:#050505;--k2:#0C0C0C;--k3:#151515;--line:rgba(255,255,255,.09);
+  --tx:#F2EFE8;--mu:rgba(242,239,232,.62);
+  --gold:#D4AF37;--gold-l:#F7DC86;--gold-d:#9A7418;--red:#E3212F;
+  --disp:Archivo,Inter,system-ui,sans-serif;--txt:Inter,system-ui,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--k);color:var(--tx);font:16px/1.5 var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.w{width:100%;max-width:1120px;margin:0 auto;padding:0 20px}
+.p-ic{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.disp{font-family:var(--disp);font-stretch:72%;font-weight:900;text-transform:uppercase;line-height:.9;letter-spacing:-.01em}
+.gold-t{background:linear-gradient(100deg,var(--gold-d) 0%,var(--gold) 28%,#FFF4CC 46%,var(--gold) 62%,var(--gold-d) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 4.5s ease-in-out infinite}
+@keyframes sheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+/* grano de película sobre toda la página */
+body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+/* cinta superior */
+.tick{position:relative;z-index:5;background:var(--gold);color:#0A0A0A;overflow:hidden;border-bottom:1px solid #000}
+.tick-r{display:flex;width:max-content;animation:mq 26s linear infinite}
+.tick-i{display:flex;align-items:center;gap:10px;padding:9px 18px;font:800 12px/1 var(--disp);font-stretch:90%;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.tick-i .p-ic{width:16px;height:16px;stroke-width:2}
+.tick-d{width:5px;height:5px;background:#0A0A0A;transform:rotate(45deg)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* HERO */
+.p-hero{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;display:flex;flex-direction:column}
+#fx{position:absolute;inset:0;width:100%;height:100%;z-index:-2;background:radial-gradient(80% 60% at 50% 70%,#2a1a05 0%,#050505 70%)}
+.p-hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(5,5,5,.55) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0) 70%,var(--k) 100%)}
+.hero-in{flex:1;display:grid;grid-template-columns:1fr;gap:0;align-content:start;padding-top:18px;padding-bottom:34px}
+.h-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.h-logo{height:30px;width:auto}
+.h-rate{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--line);border-radius:99px;background:rgba(10,10,10,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:12px;color:var(--mu)}
+.h-rate b{color:var(--tx);font-weight:700}
+.stars{display:inline-flex;gap:1px;color:var(--gold)}
+.stars svg{width:12px;height:12px;fill:currentColor}
+.h-kick{margin-top:22px;display:flex;align-items:center;gap:10px;color:var(--gold)}
+.h-kick::before{content:"";width:28px;height:1px;background:currentColor}
+h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
+.h-t .ln{display:block;overflow:hidden;padding-bottom:.04em}
+.h-t .wd{display:inline-block;transform:translateY(110%);animation:up .9s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes up{to{transform:none}}
+.h-stage{position:relative;height:clamp(280px,78vw,560px);margin:8px -20px -6px;perspective:900px}
+.h-glow{position:absolute;left:50%;top:52%;width:78%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(227,33,47,.38) 0%,rgba(212,175,55,.18) 35%,transparent 68%);filter:blur(10px);animation:beat 1.6s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:translate(-50%,-50%) scale(.92);opacity:.7}14%{transform:translate(-50%,-50%) scale(1.06);opacity:1}28%{transform:translate(-50%,-50%) scale(.96)}42%{transform:translate(-50%,-50%) scale(1.03);opacity:.95}}
+.h-ring{position:absolute;left:50%;top:50%;width:min(86vw,470px);aspect-ratio:1;transform:translate(-50%,-50%)}
+.h-ring svg{width:100%;height:100%;animation:spin 28s linear infinite}
+.h-ring text{font:600 9.6px var(--mono);letter-spacing:.32em;fill:rgba(247,220,134,.75)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.h-box{position:absolute;left:50%;top:50%;width:min(80vw,440px);transform:translate(-50%,-50%);transform-style:preserve-3d;will-change:transform}
+.h-box-in{position:relative;animation:float 6s ease-in-out infinite;border-radius:14px;overflow:hidden;-webkit-mask-image:radial-gradient(50% 50% at 50% 50%,#000 52%,transparent 100%);mask-image:radial-gradient(50% 50% at 50% 50%,#000 52%,transparent 100%)}
+.h-box-in::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,236,170,.38) 48%,transparent 60%);background-size:260% 100%;mix-blend-mode:screen;animation:sweep 3.8s ease-in-out infinite 1.4s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes sweep{0%{background-position:120% 0}60%,100%{background-position:-60% 0}}
+.h-sub{margin-top:4px;color:var(--mu);font-size:16.5px;max-width:52ch}
+.h-sub b{color:var(--tx)}
+.h-chips{display:flex;gap:8px;margin-top:18px}
+.h-chip{flex:1;text-align:center;padding:11px 6px;border:1px solid rgba(212,175,55,.35);border-radius:12px;background:linear-gradient(180deg,rgba(212,175,55,.12),rgba(212,175,55,.02));font:800 15px/1 var(--disp);font-stretch:80%;text-transform:uppercase;letter-spacing:.02em}
+.p-cta{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;margin-top:20px;padding:20px 22px;border-radius:14px;background:linear-gradient(180deg,#F5D77A 0%,var(--gold) 48%,#B8901F 100%);color:#0A0A0A;font:900 18px/1 var(--disp);font-stretch:85%;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 0 0 1px rgba(255,236,170,.5) inset,0 14px 40px -10px rgba(212,175,55,.65),0 0 60px -20px rgba(227,33,47,.6);overflow:hidden;transition:transform .25s}
+.p-cta::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);transform:skewX(-20deg);animation:shine 3.2s ease-in-out infinite}
+@keyframes shine{0%,55%{left:-60%}100%{left:130%}}
+.p-cta .p-ic{width:22px;height:22px;stroke-width:2.2}
+.p-cta:active{transform:scale(.98)}
+.cta-note{display:flex;justify-content:center;gap:16px;margin-top:12px;color:var(--mu);font-size:13px}
+.cta-note span{display:flex;align-items:center;gap:6px}
+.cta-note .p-ic{width:16px;height:16px;color:var(--gold)}
+.h-trust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
+.h-trust div{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(12,12,12,.6);font-size:13px;font-weight:600;line-height:1.25}
+.h-trust .p-ic{color:var(--gold)}
+.scroll-cue{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);width:1px;height:34px;background:linear-gradient(var(--gold),transparent);animation:cue 2s ease-in-out infinite}
+@keyframes cue{0%{transform:translateX(-50%) scaleY(0);transform-origin:top}50%{transform:translateX(-50%) scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:translateX(-50%) scaleY(0);transform-origin:bottom}}
+
+/* secciones */
+.p-sec{position:relative;padding:84px 0}
+.p-tag{display:inline-flex;align-items:center;gap:10px;color:var(--gold)}
+.p-tag::before{content:"";width:22px;height:1px;background:currentColor}
+.p-sec h2{margin-top:14px;font-size:clamp(40px,11.5vw,88px)}
+.lead{margin-top:18px;color:var(--mu);font-size:17px;max-width:56ch}
+.lead b{color:var(--tx)}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.p-in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* resultados */
+.res{padding:30px 0 10px}
+.res-card{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--k2)}
+.res-card img{width:100%;height:auto}
+
+/* mecanismo */
+.mech{background:radial-gradient(70% 40% at 100% 0%,rgba(212,175,55,.1),transparent 70%),var(--k)}
+.mech h2 .tm{font-size:.42em;vertical-align:top;letter-spacing:0}
+.vs{margin-top:34px;display:grid;gap:12px}
+.vs-row{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--k2)}
+.vs-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.vs-h b{font:900 17px/1 var(--disp);font-stretch:80%;text-transform:uppercase;letter-spacing:.02em}
+.vs-h span{color:var(--mu);font-size:13px}
+.bar{position:relative;height:10px;margin-top:14px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;width:0;border-radius:99px;transition:width 1.8s cubic-bezier(.2,.8,.2,1)}
+.vs-row.p-bad .bar i{background:repeating-linear-gradient(90deg,#5a5a5a 0 6px,#3a3a3a 6px 9px)}
+.vs-row.p-good{border-color:rgba(212,175,55,.45);background:linear-gradient(180deg,rgba(212,175,55,.08),rgba(212,175,55,0)),var(--k2)}
+.vs-row.p-good .bar i{background:linear-gradient(90deg,var(--red),var(--gold),var(--gold-l));box-shadow:0 0 18px rgba(212,175,55,.7)}
+.vs-row.p-bad .big{color:#8a8a8a}
+.vs-row .big{font:900 44px/1 var(--disp);font-stretch:70%}
+.vs-row.p-good .big{color:var(--gold)}
+.vs-row p{margin-top:8px;color:var(--mu);font-size:14px}
+.p-steps{position:relative;margin-top:44px;padding-left:34px}
+.p-steps::before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:2px;background:rgba(255,255,255,.08)}
+.p-steps .prog{position:absolute;left:10px;top:6px;width:2px;height:0;background:linear-gradient(var(--gold-l),var(--red));box-shadow:0 0 12px var(--gold)}
+.p-st{position:relative;padding:4px 0 30px}
+.p-st::before{content:"";position:absolute;left:-30px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--k);border:2px solid rgba(255,255,255,.2);transition:.5s}
+.p-st.p-on::before{border-color:var(--gold);background:var(--gold);box-shadow:0 0 0 6px rgba(212,175,55,.15),0 0 20px var(--gold)}
+.p-st .n{color:var(--gold)}
+.p-st h3{margin-top:6px;font:800 21px/1.15 var(--disp);font-stretch:85%;text-transform:uppercase}
+.mech-img{margin-top:8px;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+
+/* seguridad */
+.safe{background:linear-gradient(180deg,var(--k) 0%,#0B0906 100%)}
+.safe-grid{display:grid;gap:12px;margin-top:34px}
+.glow-card{position:relative;border-radius:20px;padding:1px;overflow:hidden;background:var(--line)}
+.glow-card::before{content:"";position:absolute;inset:-60%;background:conic-gradient(from 0deg,transparent 0 70%,var(--gold) 80%,var(--red) 88%,transparent 96%);animation:spin 5s linear infinite}
+.glow-card>div{position:relative;border-radius:19px;background:var(--k2);padding:22px}
+.inv{display:flex;align-items:center;gap:18px}
+.inv img{width:96px;height:auto;border-radius:10px;background:#fff;padding:6px}
+.inv b{display:block;font:900 22px/1.05 var(--disp);font-stretch:80%;text-transform:uppercase}
+.inv span{display:block;margin-top:6px;color:var(--gold);font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.zero{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.zero div{padding:20px 16px;border:1px solid var(--line);border-radius:18px;background:var(--k2)}
+.zero .p-ic{width:28px;height:28px;color:var(--gold);stroke-width:1.4}
+.zero b{display:block;margin-top:14px;font:900 30px/1 var(--disp);font-stretch:72%;text-transform:uppercase;color:var(--gold)}
+.zero span{display:block;margin-top:4px;font:700 15px/1.2 var(--disp);font-stretch:85%;text-transform:uppercase}
+
+/* decisión */
+.dec h2{font-size:clamp(34px,9.6vw,76px)}
+.opts{display:grid;gap:12px;margin-top:30px}
+.opt{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding:20px 18px;border:1px solid var(--line);border-radius:18px;background:var(--k2);color:var(--mu);font-size:15px}
+.opt .p-ic{width:24px;height:24px;margin-top:2px}
+.opt .p-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--line)}
+.opt b{display:block;margin-bottom:6px;color:var(--tx);font:900 17px/1 var(--disp);font-stretch:85%;text-transform:uppercase;letter-spacing:.02em}
+.opt.x{opacity:.7}
+.opt.x .p-num{color:#8a8a8a}
+.opt.win{position:relative;color:var(--tx);border-color:transparent;background:linear-gradient(var(--k2),var(--k2)) padding-box,conic-gradient(from var(--a,0deg),var(--gold),var(--red),var(--gold-l),var(--gold)) border-box;border:1.5px solid transparent;box-shadow:0 20px 60px -20px rgba(212,175,55,.45);animation:rot 4s linear infinite}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes rot{to{--a:360deg}}
+.opt.win .p-num{background:var(--gold);color:#0A0A0A;border-color:var(--gold)}
+.opt.win b{color:var(--gold)}
+.arsenal{margin-top:46px;text-align:center}
+.arsenal .disp{font-size:clamp(30px,8.6vw,60px)}
+.arsenal .p-ic{width:30px;height:30px;margin:16px auto 0;color:var(--gold);animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+/* checkout dentro de la página: marco oscuro alrededor */
+.ckn-sec{background:#F4F2EE;padding:18px 0 10px;border-radius:26px 26px 0 0;position:relative;z-index:2;box-shadow:0 -30px 80px -20px rgba(212,175,55,.35)}
+#ckn{max-width:620px;margin:0 auto}
+
+/* reseñas en banda clara */
+#resenas{--bg:#F4F2EE;--bg2:#ECE9E2;--ink:#0D0D0D;--mut:#4B5563;--faint:#6B7280;--line:#E2DED5;--gold:#D4AF37;--gold-d:#8A6410;--gold-bg:#FDF8EC;--ok:#15803D;--no:#B42318;--disp:Archivo,Inter,system-ui,sans-serif;color:#0D0D0D;background:#F4F2EE;padding:56px 0 64px}
+#resenas .w{max-width:1120px}
+#resenas .tagl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8A6410}
+#resenas h2{margin-top:10px;font-family:Archivo,Inter,sans-serif;font-stretch:72%;font-weight:900;text-transform:uppercase;line-height:.92;font-size:clamp(38px,11vw,80px);color:#0D0D0D}
+#resenas h2 em{font-style:normal;color:#8A6410}
+/* reseñas: el mismo código de la página actual, con el diseño nuevo */
+.enerplu-reviews{background:var(--bg)}
+.enerplu-reviews-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,400px);gap:36px;align-items:end}
+.enerplu-reviews-copy{display:flex;flex-direction:column;gap:14px}
+.enerplu-reviews-subtitle{margin:0;color:var(--mut);font-size:17px;max-width:46ch}
+.enerplu-review-summary-card{background:var(--ink);color:#F2F2F2;border-radius:22px;padding:26px 26px 22px;position:relative;overflow:hidden}
+.enerplu-review-summary-card::before{content:"";position:absolute;inset:-40% -20% auto auto;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.28),transparent 65%);pointer-events:none}
+.enerplu-review-score{display:flex;align-items:center;gap:16px;position:relative}
+.enerplu-review-score strong{font:900 76px/.85 var(--disp);letter-spacing:-.03em;background:linear-gradient(120deg,#F6E7A8,#D4AF37 45%,#8A6410);-webkit-background-clip:text;background-clip:text;color:transparent}
+.enerplu-review-score>div{display:grid;gap:6px}
+.enerplu-review-score>div>span:last-child{font:700 11.5px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#B9B9B4}
+.enerplu-review-stars{display:inline-flex;gap:2px;color:var(--gold);flex:none}
+.enerplu-review-muted{color:var(--faint);font-size:14px;margin:10px 0 0}
+.enerplu-review-summary-card .enerplu-review-muted{color:#B9B9B4;position:relative}
+.enerplu-review-breakdown{display:grid;gap:9px;margin-top:18px;position:relative}
+.enerplu-review-bar-row{display:grid;grid-template-columns:82px 1fr 40px;align-items:center;gap:10px;font:700 11.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#D8D8D2}
+.enerplu-review-bar-row>span:first-child{white-space:nowrap}
+.enerplu-review-bar-row>span:last-child{text-align:right;color:var(--gold)}
+.enerplu-review-bar-row progress{appearance:none;-webkit-appearance:none;width:100%;height:8px;border:0;border-radius:99px;overflow:hidden;background:#2A2A2A}
+.enerplu-review-bar-row progress::-webkit-progress-bar{background:#2A2A2A}
+.enerplu-review-bar-row progress::-webkit-progress-value{background:linear-gradient(90deg,#8A6410,#D4AF37);border-radius:99px}
+.enerplu-review-bar-row progress::-moz-progress-bar{background:#D4AF37;border-radius:99px}
+.enerplu-review-photos{margin-top:40px}
+.enerplu-review-photos h3{font:700 12px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold-d);margin:0 0 14px}
+.enerplu-review-photo-strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;scrollbar-width:thin}
+.enerplu-review-photo{appearance:none;display:block;padding:0;border:0;background:none;flex:none;cursor:pointer;scroll-snap-align:start;border-radius:16px;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.enerplu-review-photo:hover{transform:translateY(-3px);box-shadow:0 0 0 2px var(--gold),0 14px 28px rgba(13,13,13,.18)}
+.enerplu-review-photo img{display:block;width:120px;height:120px;max-width:none;object-fit:cover;border-radius:16px;background:var(--bg2)}
+.enerplu-review-photo-strip .enerplu-review-photo img{width:132px;height:132px}
+.enerplu-review-filters{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:30px;padding-top:26px;border-top:1px solid var(--line)}
+.enerplu-review-filter,.enerplu-review-useful,.enerplu-review-more{appearance:none;border:1.5px solid var(--ink);background:#fff;color:var(--ink);font:700 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:0 16px;min-height:40px;cursor:pointer;transition:background .2s,color .2s,transform .2s}
+.enerplu-review-filter:hover,.enerplu-review-more:hover{background:var(--ink);color:#fff}
+.enerplu-review-filter[aria-pressed=true]{background:var(--ink);color:var(--gold)}
+.enerplu-review-rating{display:flex;align-items:center;gap:10px;margin-left:auto;font:700 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.enerplu-review-rating select{font:600 14px var(--txt);text-transform:none;letter-spacing:0;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:0 14px;min-height:40px;max-width:100%}
+#enerplu-review-count{font:700 11.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-top:18px}
+.enerplu-review-list{list-style:none;padding:0;margin:18px 0 0;columns:3 300px;column-gap:16px}
+.enerplu-review-item{break-inside:avoid;margin:0 0 16px;padding:22px;border:1px solid var(--line);border-radius:20px;background:#fff;transition:transform .25s,box-shadow .25s,border-color .25s;animation:rvIn .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--n,0)*70ms)}
+.enerplu-review-item:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 18px 40px rgba(13,13,13,.10)}
+@keyframes rvIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.enerplu-review-author{display:flex;align-items:center;gap:12px}
+.enerplu-review-avatar{width:42px;height:42px;display:grid;place-items:center;flex:none;border-radius:50%;background:var(--ink);color:var(--gold);font:900 17px/1 var(--disp)}
+.enerplu-review-author strong{font:800 16px/1.2 var(--disp);color:var(--ink)}
+.enerplu-review-author p{font-size:13px;margin:2px 0 0;color:var(--faint)}
+.enerplu-review-verification{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px;font:700 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ok)}
+.enerplu-review-time{font-size:12.5px;color:var(--faint);margin:8px 0 0}
+.enerplu-review-text{font:600 17px/1.45 var(--txt);margin:10px 0 0;color:var(--ink);overflow-wrap:anywhere}
+.enerplu-review-item>.enerplu-review-photo{margin-top:14px}
+.enerplu-review-useful{min-height:34px;padding:0 14px;font-size:11px;margin-top:14px;display:inline-flex;align-items:center;gap:6px;border-color:var(--line);color:var(--mut)}
+.enerplu-review-useful[aria-pressed=true]{border-color:var(--gold);background:var(--gold-bg);color:var(--gold-d)}
+.enerplu-review-more{display:flex;align-items:center;justify-content:center;margin:10px auto 0;min-height:48px;padding:0 26px}
+.enerplu-review-cta{display:flex;margin:26px auto 0;border:0;cursor:pointer}
+.enerplu-review-footer{margin:14px 0 0;text-align:center;font:700 11.5px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.enerplu-review-empty{color:var(--mut);padding:20px 0;margin:0}
+.enerplu-review-dialog{position:fixed;inset:0;margin:auto;max-width:92vw;border:0;border-radius:20px;padding:0;background:#0D0D0D;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.enerplu-review-dialog::backdrop{background:rgba(13,13,13,.82);backdrop-filter:blur(4px)}
+.enerplu-review-dialog>img{display:block;max-height:85vh;max-width:92vw;width:auto;height:auto}
+.enerplu-review-dialog .enerplu-review-close{position:absolute;top:10px;right:10px;width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(13,13,13,.75);color:#fff;cursor:pointer}
+.enerplu-reviews button:focus-visible,.enerplu-reviews select:focus-visible{outline:2px solid var(--gold-d);outline-offset:2px}
+@media(max-width:860px){
+  .enerplu-reviews-head{grid-template-columns:1fr;gap:24px;align-items:start}
+  .enerplu-review-rating{margin-left:0;width:100%;justify-content:space-between}
+  .enerplu-review-score strong{font-size:64px}
+  .enerplu-review-photo-strip .enerplu-review-photo img{width:112px;height:112px}
+}
+@media(prefers-reduced-motion:reduce){.enerplu-review-item{animation:none}}
+
+
+/* cierre */
+.foot{padding:40px 0 120px;text-align:center;color:var(--mu);font-size:12px;border-top:1px solid var(--line)}
+.foot img{height:28px;width:auto;margin:0 auto 18px}
+.foot nav{display:flex;justify-content:center;gap:16px;margin:14px 0}
+.foot nav a{text-decoration:underline;text-underline-offset:3px}
+
+/* barra inferior: solo después del hero y nunca junto al pedido */
+.sb{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:80;display:flex;align-items:center;gap:12px;padding:10px 10px 10px 16px;border-radius:16px;background:rgba(12,12,12,.82);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border:1px solid rgba(212,175,55,.3);box-shadow:0 20px 50px rgba(0,0,0,.6);transform:translateY(160%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.sb.p-on{transform:none}
+.sb-t{flex:1;min-width:0;font-size:12px;color:var(--mu);line-height:1.3}
+.sb-t b{display:flex;align-items:center;gap:6px;color:var(--tx);font:800 14px/1.2 var(--disp);font-stretch:85%;text-transform:uppercase}
+.sb-t .p-ic{width:16px;height:16px;color:var(--gold)}
+.sb a{flex:none;padding:13px 16px;border-radius:11px;background:linear-gradient(180deg,#F5D77A,var(--gold) 50%,#B8901F);color:#0A0A0A;font:900 14px/1 var(--disp);font-stretch:85%;text-transform:uppercase;letter-spacing:.03em}
+
+@media (min-width:900px){
+  .hero-in{grid-template-columns:1.05fr .95fr;column-gap:40px;align-items:center;padding-top:26px}
+  .h-top{grid-column:1/-1}
+  .h-col{grid-column:1}
+  .h-stage{grid-column:2;grid-row:2/span 1;height:600px;margin:0}
+  .h-ring{width:560px}.h-box{width:520px}
+  h1.h-t{font-size:112px}
+  .p-cta{max-width:460px}.cta-note{justify-content:flex-start}
+  .vs,.safe-grid,.opts{grid-template-columns:repeat(3,1fr)}
+  .safe-grid{grid-template-columns:1.2fr 1fr}
+  .mech-wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .h-t .wd{transform:none}.rv{opacity:1;transform:none}
+}
+</style>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap">
+<style>#ckn{
+  --bg:#F5F5F2; --card:#FFFFFF; --ink:#0D0D0D; --ink2:#4B5563; --mute:#6B7280; --line:#E5E7EB;
+  --gold:#D4AF37; --gold2:#E9CB6B; --goldd:#8A6410; --goldbg:#FDF8EC; --black:#0D0D0D; --black2:#1A1A1A;
+  --ok:#15803D; --okbg:#E8F5EC; --warn:#B42318; --radius:16px; --disp:Archivo,Inter,system-ui,sans-serif;
+  color-scheme:light;
+}#ckn,#ckn *{box-sizing:border-box}#ckn [hidden]{display:none!important}#ckn{-webkit-text-size-adjust:100%}#ckn{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}#ckn svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}#ckn a{color:inherit}#ckn /* barra superior */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--black)}#ckn .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(13,13,13,.97);backdrop-filter:blur(8px);color:#fff;border-bottom:1px solid #26221a}#ckn .top .in,#ckn .steps{max-width:460px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}#ckn .top .in{padding-top:11px;padding-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}#ckn .brand{display:flex;align-items:center;text-decoration:none}#ckn .brand img{height:32px;width:auto;display:block}#ckn .brand i{font-style:normal;color:var(--gold)}#ckn .secure{display:flex;align-items:center;gap:6px;font-size:12px;color:#D9D3C2;font-weight:500}#ckn .secure svg{color:var(--gold);width:15px;height:15px}#ckn .steps{display:flex;gap:6px;padding-bottom:10px}#ckn .st{flex:1;font-size:11px;color:#8C8577;letter-spacing:.05em;text-transform:uppercase;font-weight:600}#ckn .st i{display:block;height:3px;border-radius:3px;background:#2C2922;margin-bottom:6px;overflow:hidden;position:relative}#ckn .st i::after{content:"";position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--goldd),var(--gold),var(--gold2));transition:width .6s ease}#ckn .st.on{color:#fff}#ckn .st.on i::after{width:100%}#ckn .wrap{max-width:460px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 150px max(16px,env(safe-area-inset-left,0px))}#ckn /* hero */
+.hero{margin-top:16px;border-radius:22px;overflow:hidden;position:relative;background:var(--black);color:#fff;display:grid;grid-template-columns:1fr 132px;min-height:148px;box-shadow:0 18px 40px -22px rgba(0,0,0,.55);border:1px solid #2A2519}#ckn .hero .tx{padding:18px 6px 18px 18px;display:flex;flex-direction:column;justify-content:center;gap:8px;position:relative;z-index:1}#ckn .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}#ckn .hero h1{font:900 22px/1.12 var(--disp);letter-spacing:-.005em;margin:0;text-wrap:balance}#ckn .hero p{margin:0;font-size:13px;color:#CFC8B6}#ckn .hero .ph{position:relative;background:#141414}#ckn .hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#fff}#ckn .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 0% 0%,rgba(212,175,55,.18),transparent 60%);pointer-events:none}#ckn .perks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 4px}#ckn .perk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center;font-size:11.5px;font-weight:600;color:var(--ink2);display:flex;flex-direction:column;align-items:center;gap:5px;line-height:1.2}#ckn .perk svg{color:var(--goldd);width:20px;height:20px}#ckn /* secciones */
+.sec{margin-top:24px}#ckn .h{display:flex;align-items:center;gap:10px;margin:0 0 12px}#ckn .num{width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--gold);display:grid;place-items:center;font:800 13px var(--disp);flex:none;border:1px solid var(--gold)}#ckn .h h2{font:800 19px/1.2 var(--disp);margin:0;letter-spacing:-.005em}#ckn .h small{display:block;font:500 12.5px Inter,sans-serif;color:var(--mute);letter-spacing:0;margin-top:2px}#ckn /* planes */
+.plans{display:flex;flex-direction:column;gap:12px}#ckn .plan{position:relative;display:grid;grid-template-columns:22px 70px minmax(0,1fr) auto;align-items:center;gap:9px;background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 12px 14px 12px;cursor:pointer;transition:border-color .2s,box-shadow .25s,transform .15s}#ckn .plan:active{transform:scale(.99)}#ckn .plan input{position:absolute;opacity:0;pointer-events:none}#ckn .radio{width:22px;height:22px;border-radius:50%;border:2px solid #C9C9C4;display:grid;place-items:center;transition:.2s;background:#fff}#ckn .radio::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--black);transform:scale(0);transition:transform .2s}#ckn .plan.sel{border-color:var(--gold);background:linear-gradient(180deg,#fff,var(--goldbg));box-shadow:0 0 0 4px rgba(212,175,55,.18),0 14px 30px -18px rgba(138,100,16,.5)}#ckn .plan.sel .radio,#ckn .pay.sel .radio{border-color:var(--black)}#ckn .plan.sel .radio::after,#ckn .pay.sel .radio::after{transform:scale(1)}#ckn .thumb{width:70px;height:48px;border-radius:10px;overflow:hidden;background:#111;display:grid;place-items:center}#ckn .thumb img{width:100%;height:100%;object-fit:cover;object-position:0 50%}#ckn .pn{font:800 15px/1.2 var(--disp)}#ckn .pd{font-size:12.5px;color:var(--ink2);margin-top:2px}#ckn .pg{font-size:12px;color:var(--goldd);font-weight:600;margin-top:3px;display:flex;gap:4px;align-items:flex-start}#ckn .pg svg{width:13px;height:13px;margin-top:2px}#ckn .save{white-space:nowrap;display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:11.5px;font-weight:700;color:var(--ok);background:var(--okbg);padding:3px 8px;border-radius:999px}#ckn .save svg{width:13px;height:13px}#ckn .pr{text-align:right;white-space:nowrap}#ckn .pr strong{display:block;font:800 16.5px var(--disp);letter-spacing:-.01em}#ckn .pr span{display:block;font-size:11.5px;color:var(--mute);margin-top:1px}#ckn .badge{position:absolute;top:-10px;left:44px;font:800 10.5px var(--disp);letter-spacing:.09em;padding:4px 10px;border-radius:999px;color:var(--black);background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));background-size:200% 100%;animation:sh 3s linear infinite;box-shadow:0 4px 10px -4px rgba(138,100,16,.6)}#ckn .badge.dark{background:var(--black);color:var(--gold);animation:none;border:1px solid var(--gold)}@keyframes sh{to{background-position:-200% 0}}#ckn /* incluye */
+.incl{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px}#ckn .incl h3{margin:0 0 10px;font:800 12px var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}#ckn .list{list-style:none;margin:0;padding:0;display:grid;gap:9px}#ckn .list li{display:flex;gap:10px;align-items:flex-start;font-size:14px}#ckn .list li svg{color:var(--goldd);margin-top:1px}#ckn .list li em{font-style:normal;color:var(--mute);font-size:12.5px}#ckn .list li a{color:var(--goldd);font-weight:600}#ckn /* formulario */
+.form{display:grid;gap:12px}#ckn .f label{display:block;font-weight:600;font-size:13.5px;margin-bottom:5px}#ckn .f label span{color:var(--mute);font-weight:500}#ckn .inp{position:relative}#ckn .inp input{width:100%;height:52px;border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:0 44px;font:500 16px Inter,sans-serif;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}#ckn .inp input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,.2)}#ckn .inp .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--mute)}#ckn .inp .okc{position:absolute;right:14px;top:50%;transform:translateY(-50%) scale(.4);opacity:0;color:var(--ok);transition:.25s}#ckn .f.good .okc{opacity:1;transform:translateY(-50%) scale(1)}#ckn .f.good input{border-color:#9FD5B0}#ckn .f.bad input{border-color:#F0A39A}#ckn .hint{font-size:12px;color:var(--mute);margin-top:5px}#ckn .f.bad .hint{color:var(--warn)}#ckn .pre{position:absolute;left:44px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--ink2);font-size:16px}#ckn .inp.tel input{padding-left:82px}#ckn .sug{position:absolute;left:0;right:0;top:56px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 30px -16px rgba(0,0,0,.25);z-index:5;overflow:hidden}#ckn .sug button{display:block;width:100%;text-align:left;border:0;background:none;padding:12px 16px;font:500 15px Inter,sans-serif;color:var(--ink);border-bottom:1px solid #F0F0EC;cursor:pointer}#ckn .sug button:hover{background:var(--goldbg)}#ckn .sug button em{font-style:normal;color:var(--mute)}#ckn .sug .none{padding:12px 16px;color:var(--mute);font-size:14px}#ckn /* pago */
+.pays{display:grid;gap:10px}#ckn .pay{position:relative;background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:14px;cursor:pointer;display:grid;grid-template-columns:22px 1fr;gap:12px;transition:.2s}#ckn .pay input{position:absolute;opacity:0}#ckn .pay.sel{border-color:var(--gold);background:linear-gradient(180deg,#fff,var(--goldbg));box-shadow:0 0 0 4px rgba(212,175,55,.18)}#ckn .pay.off{opacity:.5;pointer-events:none}#ckn .pt{font-weight:700;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}#ckn .pt .tag{font-size:11px;font-weight:800;color:var(--ok);background:var(--okbg);padding:3px 8px;border-radius:999px}#ckn .pt .tag.g{color:var(--black);background:var(--gold2)}#ckn .ps{font-size:12.5px;color:var(--ink2);margin-top:3px}#ckn .logos{display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap}#ckn .logos img{display:block;height:24px;width:auto}#ckn .logos img.bc{height:22px}#ckn /* resumen */
+.sum{margin-top:24px;background:var(--black);color:#fff;border-radius:22px;padding:18px;position:relative;overflow:hidden;border:1px solid #2A2519}#ckn .sum::after{content:"";position:absolute;right:-60px;top:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.22),transparent 70%);pointer-events:none}#ckn .sum h3{margin:0 0 8px;font:800 12px var(--disp);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}#ckn .row{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:#D9D3C2;padding:4px 0}#ckn .row.g{color:#8FE0A8}#ckn .row.t{border-top:1px solid #2C2922;margin-top:8px;padding-top:12px;color:#fff;font-size:15px;font-weight:700;align-items:baseline}#ckn .row.t strong{font:900 27px var(--disp);color:var(--gold);letter-spacing:-.01em}#ckn .note{font-size:12px;color:#A39C8A;margin-top:6px;display:flex;gap:6px;align-items:center}#ckn .note svg{width:14px;height:14px;color:var(--gold)}#ckn .trust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}#ckn .tr{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--ink2);font-weight:500;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}#ckn .tr svg{color:var(--goldd)}#ckn .tr a{color:var(--ink);font-weight:600}#ckn /* CTA fija en celular */
+.cta{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(180deg,rgba(245,245,242,0),var(--bg) 28%);padding:18px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}#ckn .cta .in{max-width:460px;margin:0 auto}#ckn .btn{width:100%;min-height:60px;border:0;border-radius:16px;cursor:pointer;color:var(--black);font:900 16px/1.15 var(--disp);letter-spacing:.02em;background:linear-gradient(180deg,#F1D67E,var(--gold) 55%,#B8921F);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 14px;box-shadow:0 16px 30px -14px rgba(138,100,16,.7),inset 0 1px 0 rgba(255,255,255,.4)}#ckn .btn::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);animation:gl 2.8s ease-in-out infinite}@keyframes gl{0%{left:-60%}60%,100%{left:130%}}#ckn .btn svg{width:20px;height:20px}#ckn .btn.miss{background:var(--black);color:#fff;box-shadow:none}#ckn .btn.miss::after{display:none}#ckn .btn.miss em{font-style:normal;color:var(--gold);font-weight:700}#ckn .btn[disabled]{opacity:.8}#ckn .sub{text-align:center;font-size:12px;color:var(--ink2);margin-top:7px;display:flex;justify-content:center;gap:6px;align-items:center}#ckn .sub svg{width:14px;height:14px;color:var(--ok)}#ckn .err{display:none;margin-bottom:10px;background:#FEF3F2;border:1px solid #FDA29B;color:#912018;border-radius:12px;padding:12px 14px;font-size:14px}#ckn .err.show{display:block}#ckn .err a{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;padding:13px;border-radius:12px;background:#16A34A;color:#fff;font-weight:800;text-decoration:none}#ckn .err a svg{width:18px;height:18px}#ckn .ft{margin-top:18px;text-align:center;font-size:12px;color:var(--mute)}#ckn .ft nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;margin-bottom:8px}#ckn .ft a{color:var(--ink2);text-decoration:underline;text-underline-offset:2px}#ckn .ft p{margin:0;line-height:1.45}#ckn /* gracias */
+.ok{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px}#ckn .okc2{background:#fff;border-radius:24px;max-width:390px;width:100%;padding:28px 22px 22px;text-align:center;animation:pop .4s cubic-bezier(.2,1.4,.4,1);max-height:calc(100vh - 32px);overflow:auto}@keyframes pop{from{transform:scale(.85);opacity:0}}#ckn .ring{width:72px;height:72px;margin:0 auto 12px;border-radius:50%;background:var(--black);display:grid;place-items:center;color:var(--gold);border:2px solid var(--gold)}#ckn .ring svg{width:36px;height:36px;stroke-width:2.4;stroke-dasharray:40;stroke-dashoffset:40;animation:dr .6s .2s forwards}@keyframes dr{to{stroke-dashoffset:0}}#ckn .okc2 h3{font:900 23px var(--disp);margin:0 0 8px}#ckn .okc2 .num2{display:inline-block;margin:0 0 12px;background:var(--goldbg);color:var(--goldd);font-weight:700;border-radius:999px;padding:5px 12px;font-size:13px;border:1px solid #EBDDB0}#ckn .okc2 p{color:var(--ink2);margin:0 0 14px;font-size:14px}#ckn .okl{list-style:none;margin:0 0 12px;padding:12px 14px;background:var(--bg);border-radius:14px;text-align:left;display:grid;gap:6px;font-size:13.5px}#ckn .okl li{display:flex;justify-content:space-between;gap:10px}#ckn .okl li.t{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-weight:800}#ckn .okc2 .eta{display:flex;gap:8px;align-items:center;justify-content:center;font-size:13px;color:var(--ink2);margin-bottom:14px}#ckn .okc2 .eta svg{color:var(--goldd)}#ckn .okc2 button{height:48px;border-radius:14px;border:0;background:var(--black);color:#fff;font:700 15px Inter,sans-serif;padding:0 26px;cursor:pointer;width:100%}#ckn /* escritorio: dos columnas,#ckn resumen y botón a la derecha */
+@media (min-width:960px){
+  .top .in,.steps{max-width:1040px}
+  .steps{max-width:1040px}
+  .wrap{max-width:1040px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:40px;align-items:start;padding-bottom:60px}
+  .side{position:sticky;top:96px}
+  .sum{margin-top:16px}
+  .cta{position:static;background:none;padding:14px 0 0}
+  .hero{grid-template-columns:1fr 220px;min-height:180px}
+  .hero h1{font-size:28px}
+  .plans{gap:14px}
+}@media (prefers-reduced-motion:reduce){#ckn,#ckn *{animation:none!important;transition:none!important}}
+
+    #ckn{padding:8px 0 0;border-radius:0;font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    #ckn .cta{position:sticky;bottom:0}
+    #ckn .ckn-top{top:0}
+    #ckn .ft{display:none}
+    </style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+  <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></symbol>
+  <symbol id="i-pack" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.2 2.2 4.4-4.4"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M3 12h4l2-4 3 9 3-11 2 6h4"/></symbol>
+  <symbol id="i-head" viewBox="0 0 24 24"><circle cx="12" cy="10" r="6.5"/><path d="M9 21v-2.5M15 21v-2.5M9.5 9.5h.01M14.5 9.5h.01M10 13c1.2.8 2.8.8 4 0"/></symbol>
+  <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3.5 8 4.2 8.5 8 12 8zM12 8s1.5-4.5 4-3.8S15.5 8 12 8z"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26 6.91 1.01-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01z"/></symbol>
+</svg>
+
+<div class="tick" aria-label="Oferta hasta 55 % de descuento. Pagas al recibir. Envío gratis.">
+  <div class="tick-r" aria-hidden="true"><span class="tick-i"><svg class="p-ic"><use href="#i-bolt"/></svg>Oferta hasta 55 % de descuento</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-bolt"/></svg>Oferta hasta 55 % de descuento</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-bolt"/></svg>Oferta hasta 55 % de descuento</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-bolt"/></svg>Oferta hasta 55 % de descuento</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-bolt"/></svg>Oferta hasta 55 % de descuento</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-bolt"/></svg>Oferta hasta 55 % de descuento</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-bolt"/></svg>Oferta hasta 55 % de descuento</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-bolt"/></svg>Oferta hasta 55 % de descuento</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span class="tick-d"></span><span class="tick-i"><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis</span><span class="tick-d"></span></div>
+</div>
+
+<header class="p-hero" id="top">
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="w hero-in">
+    <div class="h-top">
+      <img class="h-logo" src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,h_80/v1775103361/logo_enerplu_fgdhwk.webp" alt="ENERPLU" width="120" height="30">
+      <a class="h-rate" href="#resenas"><span class="stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><b>4.9/5.0</b></a>
+    </div>
+    <div class="h-col">
+      <div class="h-kick mono">+3500 hombres colombianos</div>
+      <h1 class="h-t disp">
+        <span class="ln"><span class="wd" style="animation-delay:.10s">De cero</span></span>
+        <span class="ln"><span class="wd" style="animation-delay:.22s">a máxima</span></span>
+        <span class="ln"><span class="wd" style="animation-delay:.34s">potencia</span></span>
+        <span class="ln"><span class="wd gold-t" style="animation-delay:.46s">en 5 a 15</span></span>
+        <span class="ln"><span class="wd gold-t" style="animation-delay:.58s">minutos.</span></span>
+      </h1>
+    </div>
+    <div class="h-stage" id="stage">
+      <div class="h-glow"></div>
+      <div class="h-ring" aria-hidden="true">
+        <svg viewBox="0 0 300 300"><defs><path id="circ" d="M150,150 m-128,0 a128,128 0 1,1 256,0 a128,128 0 1,1 -256,0"/></defs>
+          <text><textPath href="#circ">MACA NEGRA · MATRIZ SUBLINGUAL · REGISTRO INVIMA NSA-2314-2025 · ENVÍO DISCRETO · </textPath></text></svg>
+      </div>
+      <div class="h-box" id="box"><div class="h-box-in"><img src="/img/pro-caja.webp" alt="Caja ENERPLU con maca negra" width="520" height="468" fetchpriority="high"></div></div>
+    </div>
+    <div class="h-col">
+      <p class="h-sub">Sin jarabes humillantes. Sin planear con una hora de anticipación. <b>La tableta masticable que inunda tu zona pélvica de sangre antes de que ella termine de desvestirse.</b></p>
+      <div class="h-chips"><span class="h-chip">Más duro</span><span class="h-chip">Más firme</span><span class="h-chip">Más control</span></div>
+      <a class="p-cta" href="#ep-offer-widget" data-cta="hero">Pídelo ya · pagas al recibir <svg class="p-ic"><use href="#i-arrow"/></svg></a>
+      <div class="cta-note"><span><svg class="p-ic"><use href="#i-cash"/></svg>Pagas al recibir</span><span><svg class="p-ic"><use href="#i-truck"/></svg>Envío gratis a toda Colombia</span></div>
+      <div class="h-trust">
+        <div><svg class="p-ic"><use href="#i-pack"/></svg>Envío 100 % discreto</div>
+        <div><svg class="p-ic"><use href="#i-shield"/></svg>Respaldo INVIMA</div>
+      </div>
+    </div>
+  </div>
+  <span class="scroll-cue" aria-hidden="true"></span>
+</header>
+
+<section class="res" aria-label="Resultados">
+  <div class="w"><div class="res-card rv"><img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948&width=900" alt="Resultados ENERPLU" loading="lazy"></div></div>
+</section>
+
+<section class="p-sec mech" id="mecanismo">
+  <div class="w mech-wrap">
+    <div>
+      <span class="p-tag mono rv">La industria la odia</span>
+      <h2 class="disp rv d1">La Matriz de Infusión Sublingual<span class="tm">™</span></h2>
+      <p class="lead rv d2">Las cápsulas son para novatos. El 50 % de su efecto se destruye en los ácidos de tu estómago. Por eso tardan horas y a veces ni funcionan. <b>Enerplu es nivel Élite.</b> Al masticarla, nuestra matriz activa de Maca Negra entra directo a tu torrente sanguíneo a través de la red de venas debajo de tu lengua.</p>
+      <div class="vs">
+        <div class="vs-row p-bad rv d1"><div class="vs-h"><b>Cápsulas</b><span>Pasan por el estómago</span></div><div class="big"><span data-count="50">0</span> %</div><p>del efecto se destruye en los ácidos.</p><div class="bar"><i data-w="50"></i></div></div>
+        <div class="vs-row p-good rv d2"><div class="vs-h"><b>ENERPLU masticable</b><span>Directo a la sangre</span></div><div class="big">Sublingual</div><p>Entra por las venas debajo de la lengua, sin pasar por el estómago.</p><div class="bar"><i data-w="100"></i></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="p-steps" id="steps"><span class="prog" id="prog"></span>
+        <div class="p-st"><span class="n mono">01 · El resultado biológico</span><h3>Es el mismo método de emergencia rápida usado en cardiología.</h3></div>
+        <div class="p-st"><span class="n mono">02</span><h3>Evita el “efecto de primer paso hepático” que destruye las cápsulas en el estómago.</h3></div>
+        <div class="p-st"><span class="n mono">03</span><h3>Absorción avalada por la ciencia vascular para un bombeo masivo en 5 minutos.</h3></div>
+      </div>
+      <div class="mech-img rv"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_900,f_auto,q_auto/v1774025718/ENEPLU_MECANISMO_fextu4.webp" alt="Mecanismo ENERPLU" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="p-sec safe" id="seguridad">
+  <div class="w">
+    <span class="p-tag mono rv">Respaldo</span>
+    <h2 class="disp rv d1">Potencia brutal. <span class="gold-t">100 % legal y segura.</span></h2>
+    <div class="safe-grid">
+      <div class="glow-card rv d1"><div class="inv"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_300,f_auto,q_auto/v1775097830/RINVIMA_ENERPLU_kqmwhs.webp" alt="INVIMA" loading="lazy"><div><b>Registro sanitario INVIMA</b><span>NSA-2314-2025</span></div></div></div>
+      <div class="zero rv d2">
+        <div><svg class="p-ic"><use href="#i-heart"/></svg><b>Cero</b><span>Taquicardia</span></div>
+        <div><svg class="p-ic"><use href="#i-head"/></svg><b>Cero</b><span>Dolor de cabeza</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="p-sec dec" id="decision">
+  <div class="w">
+    <span class="p-tag mono rv">Tu turno</span>
+    <h2 class="disp rv d1">Llegados a este punto, la decisión es <span class="gold-t">100 % tuya.</span></h2>
+    <div class="opts">
+      <div class="opt x rv d1"><span class="p-num"><svg class="p-ic"><use href="#i-circle"/></svg></span><div><b>Opción 1</b>Ignorar esto. Seguir exactamente donde estás hoy y rogar que tu cuerpo no falle la próxima vez.</div></div>
+      <div class="opt x rv d2"><span class="p-num"><svg class="p-ic"><use href="#i-warn"/></svg></span><div><b>Opción 2</b>Seguir con lo mismo. Gastar dinero en jarabes vergonzosos o cápsulas que no te funcionan.</div></div>
+      <div class="opt win rv d3"><span class="p-num"><svg class="p-ic"><use href="#i-bolt"/></svg></span><div><b>Opción 3</b>Tomar el control absoluto. Invertir en Enerplu hoy mismo, recibirlo en empaque 100 % discreto y tener una alternativa práctica cuando la necesites.</div></div>
+    </div>
+    <div class="arsenal rv"><div class="disp">Elige tu arsenal <span class="gold-t">a continuación</span></div><svg class="p-ic"><use href="#i-down"/></svg></div>
+  </div>
+</section>
+
+<section id="ep-order" class="ckn-sec">
+<div id="ckn"><span id="ep-offer-widget" style="display:block;position:relative;top:-8px"></span><svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+ <symbol id="truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+ <symbol id="cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 10v4M18 10v4"/></symbol>
+ <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+ <symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+ <symbol id="box" viewBox="0 0 24 24"><path d="M3 7.5L12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></symbol>
+ <symbol id="gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3 8 4.5 9 8 12 8zM12 8s1.5-5 4-3.5S15 8 12 8z"/></symbol>
+ <symbol id="bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+ <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+ <symbol id="phone" viewBox="0 0 24 24"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
+ <symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+ <symbol id="home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+ <symbol id="note" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 9h8M8 13h8M8 17h5"/></symbol>
+ <symbol id="chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></symbol>
+ <symbol id="bank" viewBox="0 0 24 24"><path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/></symbol>
+ <symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+ <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg><div class="top ckn-top"><div class="steps"><div class="st on" id="s1"><i></i>1 · Tu plan</div><div class="st" id="s2"><i></i>2 · Tus datos</div><div class="st" id="s3"><i></i>3 · Pago</div></div></div><div id="tb" hidden style="background:#B42318;color:#fff;text-align:center;font:700 13px Inter,sans-serif;padding:8px">MODO PRUEBA: este pedido no se crea</div>
+<input id="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><main class="wrap">
+ <div class="mainc">
+  <section class="hero">
+    <div class="tx">
+      <div class="eyebrow">Estás a un paso</div>
+      <h1>Tu pedido llega discreto y lo pagas al recibir</h1>
+      <p>Envío gratis en bolsa negra sellada.</p>
+    </div>
+    <div class="ph"><img src="/img/ck/dominio.jpg" alt="Plan Dominio Total de ENERPLU" width="700" height="350"></div>
+  </section>
+
+  <div class="perks">
+    <div class="perk"><svg class="i"><use href="#truck"/></svg>Envío GRATIS a toda Colombia</div>
+    <div class="perk"><svg class="i"><use href="#cash"/></svg>Pagas al recibir en tu casa</div>
+    <div class="perk"><svg class="i"><use href="#bag"/></svg>Bolsa negra sellada y discreta</div>
+  </div>
+
+  <!-- PASO 1 -->
+  <section class="sec ep-plans" id="paso1">
+    <div class="h"><div class="num">1</div><h2>Elige tu plan<small>Entre más cajas, menos pagas por cada tableta</small></h2></div>
+    <div class="plans" id="plans"></div>
+    <div class="incl">
+      <h3>Tu pedido incluye</h3>
+      <ul class="list" id="incl"></ul>
+    </div>
+  </section>
+
+  <!-- PASO 2 -->
+  <section class="sec" id="paso2">
+    <div class="h"><div class="num">2</div><h2>¿A dónde te lo enviamos?<small>Solo 4 datos. Toma menos de 1 minuto.</small></h2></div>
+    <div class="form">
+      <div class="f" data-v="name">
+        <label for="n">Nombre y apellido</label>
+        <div class="inp"><svg class="i ic"><use href="#user"/></svg><input id="n" autocomplete="name" placeholder="Ej: Carlos Gómez"><svg class="i okc"><use href="#check"/></svg></div>
+        <div class="hint">Quien recibe el paquete</div>
+      </div>
+      <div class="f" data-v="tel">
+        <label for="t">Celular con WhatsApp</label>
+        <div class="inp tel"><svg class="i ic"><use href="#phone"/></svg><span class="pre">+57</span><input id="t" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="300 123 4567"><svg class="i okc"><use href="#check"/></svg></div>
+        <div class="hint">Por aquí te confirmamos el pedido. 10 números.</div>
+      </div>
+      <div class="f" data-v="city">
+        <label for="c">Ciudad o municipio</label>
+        <div class="inp"><svg class="i ic"><use href="#pin"/></svg><input id="c" autocomplete="off" placeholder="Escribe y elige de la lista"><svg class="i okc"><use href="#check"/></svg><div class="sug" id="sug" hidden></div></div>
+        <div class="hint">Llegamos a toda Colombia</div>
+      </div>
+      <div class="f" data-v="addr">
+        <label for="a">Dirección</label>
+        <div class="inp"><svg class="i ic"><use href="#home"/></svg><input id="a" autocomplete="street-address" placeholder="Ej: Calle 10 # 43-25"><svg class="i okc"><use href="#check"/></svg></div>
+        <div class="hint">Calle, carrera o vereda con número si tiene</div>
+      </div>
+      <div class="f" data-v="opt">
+        <label for="b">Barrio, apto o referencia <span>(opcional)</span></label>
+        <div class="inp"><svg class="i ic"><use href="#note"/></svg><input id="b" placeholder="Ej: Barrio Laureles, apto 301"><svg class="i okc"><use href="#check"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASO 3 -->
+  <section class="sec" id="paso3">
+    <div class="h"><div class="num">3</div><h2>¿Cómo quieres pagar?<small>Elige una opción</small></h2></div>
+    <div class="pays">
+      <label class="pay sel" data-m="cod">
+        <input type="radio" name="pay" checked><span class="radio"></span>
+        <span><div class="pt">Pago al recibir <span class="tag">SIN RIESGO</span></div><div class="ps" id="codTx">Pagas en efectivo cuando el paquete llegue a tu puerta. Hoy no pagas nada.</div></span>
+      </label>
+      <label class="pay" data-m="bold">
+        <input type="radio" name="pay"><span class="radio"></span>
+        <span><div class="pt">Pagar ahora en línea <span class="tag g" id="boldTag">-$12.000</span></div><div class="ps">Tarjeta, PSE o Nequi. Pago protegido por Bold.</div>
+        <div class="logos"><img src="/img/pay/visa.svg" alt="Visa" width="38" height="24"><img src="/img/pay/master.svg" alt="Mastercard" width="38" height="24"><img src="/img/pay/pse.svg" alt="PSE" width="38" height="24"><img src="/img/pay/nequi.svg" alt="Nequi" width="38" height="24"></div></span>
+      </label>
+      <label class="pay" data-m="transfer" hidden>
+        <input type="radio" name="pay"><span class="radio"></span>
+        <span><div class="pt">Transferencia Bancolombia <span class="tag g" id="trTag">-$12.000</span></div><div class="ps">Te damos la llave y envías el comprobante por WhatsApp.</div>
+        <div class="logos"><img class="bc" src="/img/pay-bancolombia.webp" alt="Bancolombia" height="22"><img class="bc" src="/img/pay-breb.webp" alt="Bre-B" height="17" style="height:17px"></div></span>
+      </label>
+    </div>
+  </section>
+ </div>
+
+ <aside class="side">
+  <section class="sum">
+    <h3>Resumen</h3>
+    <div class="row"><span id="sumName">Plan Dominio Total</span><span id="sumSub">$129.900</span></div>
+    <div id="sumGifts"></div>
+    <div class="row g"><span>Envío</span><span>GRATIS</span></div>
+    <div class="row g" id="rowDisc" hidden><span>Descuento pago en línea</span><span>-$12.000</span></div>
+    <div class="row t"><span>Total</span><strong id="tot">$129.900</strong></div>
+    <div class="note" id="sumNote"><svg class="i"><use href="#cash"/></svg><span>Lo pagas cuando lo recibes</span></div>
+  </section>
+
+  <div class="cta"><div class="in">
+    <div class="err" id="err" role="alert"></div>
+    <button class="btn" id="go" type="button"><span id="goTx">PÍDELO YA - Pagas al recibir</span><svg class="i"><use href="#arrow"/></svg></button>
+    <div class="sub" id="goSub"><svg class="i"><use href="#shield"/></svg><span>Hoy no pagas nada · Envío gratis</span></div>
+  </div></div>
+
+  <div class="trust">
+    <div class="tr"><svg class="i"><use href="#truck"/></svg>Envío gratis a todo el país</div>
+    <div class="tr"><svg class="i"><use href="#cash"/></svg>Pagas al recibir</div>
+    <div class="tr"><svg class="i"><use href="#shield"/></svg>Registro INVIMA NSA-2314-2025</div>
+    <div class="tr"><svg class="i"><use href="#check"/></svg><a href="/garantia">Garantía Real 15 días</a></div>
+  </div>
+
+  <footer class="ft">
+    <nav><a href="/terminos">Términos y condiciones</a><a href="/garantia">Garantía Real</a></nav>
+    <p>ENERPLU es un suplemento alimenticio con registro INVIMA NSA-2314-2025, no un medicamento.</p>
+  </footer>
+ </aside>
+</main><div class="ok" id="ok" hidden><div class="okc2" id="okBox" tabindex="-1"></div></div></div>
+</section>
+
+<section id="resenas" class="sec enerplu-reviews" aria-labelledby="enerplu-reviews-title"></section>
+<script>
+(function(){
+  var root=document.getElementById('resenas');
+  if(!root || root.dataset.enerpluMounted==='true')return;
+  root.dataset.enerpluMounted='true';
+  const REVIEWS=[{"cat":"general","name":"Héctor R.","age":48,"city":"Bogotá","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Esa mierda de los jarabes naturistas no sirve para nada, esto sí me puso como una roca."},{"cat":"general","name":"Mauricio C.","age":45,"city":"Medellín","rating":5,"uso":"Hace 3 semanas","photo":null,"text":"Mi mujer me preguntó que si me había operado, lo sintió mucho más grueso desde que entró."},{"cat":"general","name":"Alonso G.","age":52,"city":"Barranquilla","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":{"sm":"__PHOTO_alonso_g_SM__","lg":"__PHOTO_alonso_g_LG__"},"text":"Toda la noche con el miembro que parecía una vara de Totumo."},{"cat":"general","name":"Diego P.","age":50,"city":"Cali","rating":5,"uso":"Hace 4 meses (Jun 2026)","photo":{"sm":"__PHOTO_diego_p_SM__","lg":"__PHOTO_diego_p_LG__"},"text":"Qué cambio tan salvaje, ahora sí se me para como cuando tenía 20 años."},{"cat":"general","name":"Javier V.","age":41,"city":"Bucaramanga","rating":5,"uso":"Solo 5 días","photo":null,"text":"No más excusas miedosas en la cama, esto te pone como un fierro en 5 minutos."},{"cat":"general","name":"Andrés M.","age":39,"city":"Pereira","rating":4,"uso":"Hace 2 semanas","photo":null,"text":"Se siente el bombeo de sangre al instante, hasta las venas se marcan de la presión."},{"cat":"general","name":"Wilson T.","age":46,"city":"Envigado","rating":5,"uso":"Hace 7 meses (Mar 2026)","photo":null,"text":"Antes se me bajaba al cambiar de pose, con Enerplu no hay quien me lo doble."},{"cat":"general","name":"Óscar L.","age":44,"city":"Cúcuta","rating":5,"uso":"Hace 6 semanas","photo":null,"text":"Firmeza absoluta, no se me cayó con nada."},{"cat":"general","name":"Rubén D.","age":53,"city":"Cartagena","rating":4,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Mi esposa se asustó del tamaño que agarró esa vaina."},{"cat":"general","name":"Nelson B.","age":47,"city":"Manizales","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Por fin algo que sí cumple y no estafa. Se para firme y no te deja a medias."},{"cat":"general","name":"Gustavo A.","age":51,"city":"Villavicencio","rating":5,"uso":"Hace 1 año (Oct 2025)","photo":{"sm":"__PHOTO_gustavo_a_SM__","lg":"__PHOTO_gustavo_a_LG__"},"text":"Quedó tieso como un garrote de principio a fin, recomendadísimo."},{"cat":"general","name":"César H.","age":40,"city":"Ibagué","rating":5,"uso":"Hace 5 meses (May 2026)","photo":null,"text":"Ni un solo gatillazo desde que la uso. Puro poder bruto."},{"cat":"general","name":"Ricardo S.","age":42,"city":"Santa Marta","rating":5,"uso":"Hace 4 semanas","photo":null,"text":"Entra directo a la sangre, no pasaron ni 5 minutos y ya estaba pidiendo guerra."},{"cat":"general","name":"Fabio G.","age":49,"city":"Neiva","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":null,"text":"Se nota la diferencia en el grosor, la patrona es la que más lo agradece."},{"cat":"general","name":"Guillermo O.","age":54,"city":"Pasto","rating":4,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Nada de agachar la cabeza de la vergüenza, esto te deja listo y de piedra."},{"cat":"general","name":"Hernán C.","age":43,"city":"Sabaneta","rating":5,"uso":"Hace 6 meses (Abr 2026)","photo":null,"text":"Yo no creía, pero esa tableta debajo de la lengua es brujería. Durísimo."},{"cat":"general","name":"Edgar M.","age":38,"city":"Montería","rating":5,"uso":"Hace 2 meses (Ago 2026)","photo":null,"text":"Adiós al miedo, ahora el que manda en la cama y pone el ritmo soy yo."},{"cat":"general","name":"Julio R.","age":55,"city":"Valledupar","rating":5,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Se me pone tan duro que hasta me asusto. Excelente producto."},{"cat":"general","name":"Fernando P.","age":48,"city":"Armenia","rating":5,"uso":"Hace 3 meses (Jul 2026)","photo":null,"text":"Cero flacidez. Entra fuerte, se mantiene fuerte y sale fuerte."},{"cat":"general","name":"Darío E.","age":50,"city":"Popayán","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Se acabó el terror a fallar. Entro con toda la arrogancia de que no se va a bajar."},{"cat":"general","name":"Germán L.","age":45,"city":"Sincelejo","rating":4,"uso":"Hace 7 meses (Mar 2026)","photo":null,"text":"¡Y qué aguante y duración! Mi pareja también lo ha notado."},{"cat":"general","name":"Camilo J.","age":37,"city":"Rionegro","rating":5,"uso":"Hace 5 días","photo":null,"text":"Terminaba el primero y a los 5 minutos ya estaba armado para el segundo."},{"cat":"general","name":"Fabián U.","age":41,"city":"Bello","rating":5,"uso":"Hace 3 semanas","photo":null,"text":"La dejé pidiendo cacao. Más de 40 minutos dándole sin parar."},{"cat":"general","name":"Alirio N.","age":52,"city":"Palmira","rating":5,"uso":"Hace 6 meses (Abr 2026)","photo":null,"text":"Increíble el cambio con las tabletas, se siente mucha más energía general."},{"cat":"general","name":"Jairo C.","age":56,"city":"Tuluá","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Hacía años no me echaba tres polvos seguidos en una misma noche."},{"cat":"general","name":"Víctor Q.","age":44,"city":"Dosquebradas","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Aguanté como un toro de lidia, mi mujer no se la creía."},{"cat":"general","name":"Gonzalo H.","age":49,"city":"Fusagasugá","rating":5,"uso":"Hace 1 semana","photo":null,"text":"Cero cansancio, me vine y el bicho seguía firme para seguir."},{"cat":"general","name":"Mario B.","age":43,"city":"Soacha","rating":4,"uso":"Hace 2 meses (Ago 2026)","photo":null,"text":"Retrasa la venida perfecto, uno controla con la mente cuándo quiere terminar."},{"cat":"general","name":"Eliécer F.","age":47,"city":"Floridablanca","rating":5,"uso":"Hace 5 meses (May 2026)","photo":null,"text":"El aguante es bestial, le di hasta que me rogó que paráramos de lo cansada que estaba."},{"cat":"general","name":"Alexander D.","age":39,"city":"Zipaquirá","rating":5,"uso":"Hace 9 días","photo":null,"text":"Control total de la eyaculación, nada de ser precoz y dar pena con esto."},{"cat":"general","name":"Carlos V.","age":51,"city":"Itagüí","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":null,"text":"Me siento mucho más activo, ¡y qué duración! No me lo esperaba."},{"cat":"general","name":"Pedro M.","age":42,"city":"Apartadó","rating":5,"uso":"Hace 1 semana","photo":null,"text":"Le di como a cajón que no cierra. 10 de 10."},{"cat":"general","name":"Leonardo P.","age":46,"city":"Piedecuesta","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":{"sm":"__PHOTO_leonardo_p_SM__","lg":"__PHOTO_leonardo_p_LG__"},"text":"Excelente, pude complacerla y hacerla gritar como hace mucho no lo lograba."},{"cat":"general","name":"Jhon Jairo S.","age":40,"city":"Buenaventura","rating":5,"uso":"Hace 3 meses (Jul 2026)","photo":null,"text":"Ya no soy de 5 minuticos, ahora la jornada es de mínimo 40."},{"cat":"general","name":"Miguel T.","age":48,"city":"Yopal","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Recuperación inmediata. Se viene uno y sigue armado como si nada."},{"cat":"general","name":"Héctor C.","age":53,"city":"Florencia","rating":5,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Mi mujer me dice que qué diablos me estoy tomando porque no la dejo dormir."},{"cat":"general","name":"Raúl M.","age":45,"city":"Tunja","rating":4,"uso":"Hace 6 meses (Abr 2026)","photo":null,"text":"Sudamos la gota gorda, mojamos las sábanas y yo seguía intacto."},{"cat":"general","name":"Rodrigo B.","age":38,"city":"Girardot","rating":5,"uso":"Hace 2 semanas","photo":null,"text":"Se me quitó el miedo a venirme rápido, ahora duro lo que a mí me dé la gana."},{"cat":"general","name":"Jaime R.","age":50,"city":"Cartago","rating":5,"uso":"Hace 7 meses (Mar 2026)","photo":null,"text":"Aguante animal, y lo mejor: sin ese dolor de cabeza asqueroso al día siguiente."},{"cat":"general","name":"Omar G.","age":41,"city":"Magangué","rating":5,"uso":"Hace 4 meses (Jun 2026)","photo":null,"text":"Te da una energía que parece que te hubieran conectado a 220v."},{"cat":"general","name":"Hugo A.","age":54,"city":"Facatativá","rating":5,"uso":"Hace 1 año (Oct 2025)","photo":null,"text":"Nada de andar tomando menjurjes, la pastillita debajo de la lengua y chao."},{"cat":"general","name":"Iván O.","age":47,"city":"Chía","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Cero taquicardia, cero dolor de cabeza, pura potencia limpia y al grano."},{"cat":"general","name":"Efraín C.","age":52,"city":"Pitalito","rating":5,"uso":"Hace 5 meses (May 2026)","photo":null,"text":"Yo tomaba bebidas de esas disque afrodisíacas que solo daban agrieras. Esto sí funciona."},{"cat":"general","name":"Daniel F.","age":39,"city":"Caucasia","rating":5,"uso":"Hace 1 semana","photo":null,"text":"Lo mejor es que no me pone la cara roja como un tomate ni me agita el corazón."},{"cat":"general","name":"Julián V.","age":43,"city":"Riohacha","rating":4,"uso":"Hace 3 meses (Jul 2026)","photo":null,"text":"Se disuelve sola, no hay que pedir vasitos de agua ni pasar penas delatándose."},{"cat":"general","name":"William P.","age":46,"city":"Santa Rosa de Cabal","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":null,"text":"Boté por el inodoro todos esos jarabes dulces humillantes. Enerplu es otra liga."},{"cat":"general","name":"Edwin S.","age":40,"city":"Malambo","rating":5,"uso":"Hace 1 mes (Sep 2026)","photo":null,"text":"Me la pongo mientras nos besamos y ella ni se da cuenta del truco. Sigilo total."},{"cat":"general","name":"Félix M.","age":55,"city":"Soledad","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"No duele la cabeza ni tapona la nariz como con la famosa pastillita azul."},{"cat":"general","name":"Rafael T.","age":49,"city":"Girón","rating":5,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Estaba mamado de las estafas naturistas, esto es ciencia directa a la vena."},{"cat":"general","name":"Armando J.","age":42,"city":"Espinal","rating":5,"uso":"Hace 3 semanas","photo":null,"text":"Sin pesadez en el estómago, listo para la acción sin sentirme inflado."},{"cat":"general","name":"Octavio L.","age":51,"city":"Calarcá","rating":5,"uso":"Hace 6 meses (Abr 2026)","photo":null,"text":"Mastiqué una 15 minutos antes y me fue súper. Qué producto hermoso."},{"cat":"general","name":"Luis Alberto C.","age":44,"city":"Garzón","rating":4,"uso":"Hace 2 meses (Ago 2026)","photo":null,"text":"Qué alivio no tener que esperar una maldita hora para que empiece a hacer efecto."},{"cat":"general","name":"Samuel P.","age":38,"city":"Buga","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Entra rápido y funciona más rápido todavía. No hay que planear el polvo."},{"cat":"general","name":"Diego H.","age":45,"city":"Bogotá","rating":5,"uso":"Hace 1 semana","photo":null,"text":"Escondo la cajita en el bolsillo y listo, nadie en mi casa nota mi secreto."},{"cat":"general","name":"Mauricio N.","age":50,"city":"Medellín","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":{"sm":"__PHOTO_mauricio_n_SM__","lg":"__PHOTO_mauricio_n_LG__"},"text":"Las botellas de vitaminas son basura para tontos, esto es el verdadero veneno."},{"cat":"general","name":"Jairo O.","age":47,"city":"Cali","rating":5,"uso":"Hace 1 año (Oct 2025)","photo":null,"text":"La matriz sublingual es un invento del diablo, qué efectividad tan brava y sin rodeos."},{"cat":"general","name":"Cristian M.","age":39,"city":"Barranquilla","rating":5,"uso":"Solo 4 días","photo":null,"text":"Ni rastro de acidez, mi estómago tranquilo y mi amigo firme exigiendo guerra."},{"cat":"general","name":"Carlos R.","age":52,"city":"Bucaramanga","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Lo de que no da taquicardia es 100% verdad, me sentí seguro y potente usándola."},{"cat":"general","name":"Andrés F.","age":41,"city":"Pereira","rating":5,"uso":"Hace 2 semanas","photo":null,"text":"Se absorbe de una, si ella me busca de repente no le tengo que sacar excusas."},{"cat":"general","name":"Eduardo B.","age":48,"city":"Manizales","rating":5,"uso":"Hace 3 meses (Jul 2026)","photo":null,"text":"El empaque negro es súper discreto, me llegó sin logos raros que me boletearan."},{"cat":"general","name":"Wilson G.","age":46,"city":"Envigado","rating":3,"uso":"Hace 7 meses (Mar 2026)","photo":null,"text":"Tengo pa' atender a mi esposa por la noche y a la sucursal al mediodía."},{"cat":"general","name":"Héctor V.","age":53,"city":"Cúcuta","rating":5,"uso":"Hace 6 meses (Abr 2026)","photo":null,"text":"Mi mujer me volvió a mirar con hambre. Me salvó el matrimonio esta tableta."},{"cat":"general","name":"César M.","age":43,"city":"Cartagena","rating":5,"uso":"Hace 9 días","photo":null,"text":"La moza me preguntó que si estaba usando algo raro porque casi la parto en dos."},{"cat":"general","name":"Fabián T.","age":40,"city":"Villavicencio","rating":4,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Ahora cumplo en la casa y me sobra gasolina para la calle. Bendito Enerplu."},{"cat":"general","name":"Rubén P.","age":54,"city":"Ibagué","rating":5,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Mi esposa anda con una sonrisa de oreja a oreja toda la puta semana."},{"cat":"general","name":"Nelson J.","age":49,"city":"Santa Marta","rating":5,"uso":"Hace 4 semanas","photo":null,"text":"Recuperé el respeto en mi propia cama, ya no hay caras largas ni silencios incómodos."},{"cat":"general","name":"Javier A.","age":38,"city":"Sabaneta","rating":5,"uso":"Hace 5 meses (May 2026)","photo":null,"text":"Tengo a dos viejas felices y yo sigo con ganas de más."},{"cat":"general","name":"Diego L.","age":51,"city":"Neiva","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":null,"text":"Ya no le saco excusas de que 'estoy muy cansado' a mi señora, ahora la busco yo."},{"cat":"general","name":"Óscar S.","age":45,"city":"Pasto","rating":5,"uso":"Hace 3 semanas","photo":null,"text":"A la sucursal la dejé temblando, qué poder de destrucción el de esta tableta."},{"cat":"general","name":"Guillermo C.","age":55,"city":"Montería","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Me siento como el macho alfa de mi casa otra vez. Se acabó la humillación."},{"cat":"general","name":"Hernán D.","age":42,"city":"Valledupar","rating":5,"uso":"Hace 7 meses (Mar 2026)","photo":null,"text":"Mi mujer me dice que parezco un animal salvaje, y a mí el ego se me sube al techo."},{"cat":"general","name":"Julio B.","age":47,"city":"Armenia","rating":5,"uso":"Hace 2 meses (Ago 2026)","photo":null,"text":"Por fin le di a mi esposa el sexo salvaje que se merece sin quedarle mal."},{"cat":"general","name":"Fernando O.","age":50,"city":"Popayán","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"La amante no me suelta, dice que su marido no le da ni un cuarto de lo que yo le doy."},{"cat":"general","name":"Darío M.","age":44,"city":"Sincelejo","rating":5,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Salvé mi orgullo de hombre, esa humillación de quedar a medias quedó enterrada."},{"cat":"general","name":"Germán R.","age":39,"city":"Rionegro","rating":5,"uso":"Hace 1 semana","photo":null,"text":"Las dos me piden más, menos mal compré la promoción de 3 cajas de una vez."},{"cat":"general","name":"Camilo V.","age":52,"city":"Bello","rating":5,"uso":"Hace 5 meses (May 2026)","photo":null,"text":"Ya no me da miedo que mi esposa se aburra y busque a otro, la tengo mansa."},{"cat":"general","name":"Alirio C.","age":46,"city":"Palmira","rating":4,"uso":"Hace 1 año (Oct 2025)","photo":null,"text":"El mejor amigo del hombre no es el perro, es una caja de Enerplu en la mesa de noche."},{"cat":"general","name":"Víctor G.","age":48,"city":"Tuluá","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Me devolvió la dignidad, ya no paso vergüenzas al bajarme la cremallera."},{"cat":"general","name":"Gonzalo P.","age":41,"city":"Dosquebradas","rating":5,"uso":"Hace 6 días","photo":null,"text":"La patrona quedó matriculada, anoche la tuve brincando por toda la cama."},{"cat":"general","name":"Eliécer N.","age":53,"city":"Fusagasugá","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":null,"text":"No hay nada más curativo para el orgullo que verle la cara de satisfacción a mi esposa."},{"cat":"general","name":"Luis G.","age":76,"city":"Medellín","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Figúrese, yo con 76 años de edad parecía uno de 15."},{"cat":"general","name":"Marcos F.","age":55,"city":"Bogotá","rating":5,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Tengo 55 pero en la cama parezco un culicagado de 20 con esta maravilla."},{"cat":"general","name":"Jorge B.","age":62,"city":"Cali","rating":5,"uso":"Hace 6 meses (Abr 2026)","photo":null,"text":"Los años pegan duro, pero con esto el chimbo no se entera de qué edad tengo."},{"cat":"general","name":"Humberto S.","age":59,"city":"Bucaramanga","rating":5,"uso":"Hace 3 meses (Jul 2026)","photo":null,"text":"Tengo diabetes y nada me servía, pero esta tableta me revivió el muerto de forma brutal."},{"cat":"general","name":"Alberto T.","age":60,"city":"Barranquilla","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"A mis 60 años volví a sentir esa calentura y agresividad de la juventud."},{"cat":"general","name":"Ernesto V.","age":57,"city":"Envigado","rating":5,"uso":"Hace 7 meses (Mar 2026)","photo":null,"text":"Mi esposa es 15 años menor y por fin le sigo el ritmo sin asfixiarme a los 5 minutos."},{"cat":"general","name":"Ramiro M.","age":64,"city":"Pereira","rating":5,"uso":"Hace 1 año (Oct 2025)","photo":null,"text":"Para los veteranos esto es oro puro. Firmeza de acero garantizada."},{"cat":"general","name":"Edgar O.","age":65,"city":"Manizales","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Creí que mi vida sexual se había acabado a los 65. Enerplu me cacheteó y me demostró lo contrario."},{"cat":"general","name":"Hernando C.","age":68,"city":"Cúcuta","rating":4,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"No importa lo jodido o viejo que estés, esto te lo levanta porque te lo levanta."},{"cat":"general","name":"Álvaro J.","age":61,"city":"Cartagena","rating":5,"uso":"Hace 5 meses (May 2026)","photo":null,"text":"Mi próstata ya no jode la erección, durísimo como cuando estaba en el colegio."},{"cat":"general","name":"Tulio D.","age":58,"city":"Ibagué","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Se me paró como en la luna de miel hace 30 años. Se me aguaron los ojos del orgullo."},{"cat":"general","name":"Mauricio L.","age":50,"city":"Villavicencio","rating":5,"uso":"Hace 6 meses (Abr 2026)","photo":null,"text":"Un señor de 50 aguantando y empujando como uno de 20. La ciencia avanza."},{"cat":"general","name":"Abelardo P.","age":66,"city":"Santa Marta","rating":5,"uso":"Hace 1 año (Oct 2025)","photo":null,"text":"A mi edad ya los jarabes solo me daban sueño, esto me inyectó fue potencia bruta."},{"cat":"general","name":"Jairo P.","age":58,"city":"Neiva","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":null,"text":"Mi señora tiene 45 y la dejé sin poder caminar derecho, y yo con 58 añitos."},{"cat":"general","name":"Ricardo H.","age":63,"city":"Pasto","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":{"sm":"__PHOTO_ricardo_h_SM__","lg":"__PHOTO_ricardo_h_LG__"},"text":"Volví a las grandes ligas por lo alto, cero complejos por la edad al empelotarme."},{"cat":"general","name":"Gustavo R.","age":56,"city":"Montería","rating":5,"uso":"Hace 4 meses (Jun 2026)","photo":null,"text":"Para los de la vieja guardia: boten a la basura el Sildenafil y pasen a esta bestialidad."},{"cat":"general","name":"Fidel A.","age":59,"city":"Valledupar","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Me devolvió 20 años de juventud sexual en apenas 5 minutos de reloj."},{"cat":"general","name":"Leonardo C.","age":49,"city":"Sabaneta","rating":5,"uso":"Hace 6 meses (Abr 2026)","photo":null,"text":"Excelente, usé el lubricante sabor a kola y estuve toda la noche firme."},{"cat":"general","name":"Darío Q.","age":67,"city":"Armenia","rating":5,"uso":"Hace 1 año (Oct 2025)","photo":null,"text":"Mi mujer no podía creer que un viejo resabiado pudiera bombear así."},{"cat":"general","name":"Orlando M.","age":52,"city":"Popayán","rating":4,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"El que diga que después de los 50 no hay sexo del duro, es porque no conoce Enerplu."},{"cat":"general","name":"Alexander G.","age":38,"city":"Bogotá","rating":5,"uso":"Hace 1 mes (Sep 2026)","photo":null,"text":"¡Brutal! Solo digo eso. Puto poder brutal."},{"cat":"general","name":"Carlos C.","age":44,"city":"Medellín","rating":5,"uso":"Hace 4 semanas","photo":null,"text":"5 minutos por reloj. Es verdad lo que dicen, no mienten en la publicidad."},{"cat":"general","name":"Andrés V.","age":41,"city":"Cali","rating":5,"uso":"Hace 5 meses (May 2026)","photo":{"sm":"__PHOTO_andres_v_SM__","lg":"__PHOTO_andres_v_LG__"},"text":"Pagué contra entrega, me llegó rapidísimo, me la puse y a la media hora ya la estaba rompiendo. 10/10."},{"cat":"general","name":"Héctor B.","age":39,"city":"Barranquilla","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Roca sólida. Cero enredos."},{"cat":"general","name":"Daniel S.","age":45,"city":"Bucaramanga","rating":5,"uso":"Hace 8 meses (Feb 2026)","photo":null,"text":"El que inventó esta matriz sublingual merece un premio, qué cosa tan violenta."},{"cat":"general","name":"Javier T.","age":51,"city":"Pereira","rating":3,"uso":"Hace 1 año (Oct 2025)","photo":null,"text":"No gasto un peso más en otras pendejadas naturistas. Solo consumo Enerplu."},{"cat":"general","name":"Wilson P.","age":48,"city":"Envigado","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"Me cambió la vida. Literalmente me salvó de la depresión por la impotencia."},{"cat":"general","name":"Óscar R.","age":42,"city":"Cúcuta","rating":5,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Duro, grueso y venoso. Cumple absolutamente todo lo que promete."},{"cat":"general","name":"Rubén M.","age":47,"city":"Manizales","rating":5,"uso":"Hace 3 meses (Jul 2026)","photo":null,"text":"Mi pedido llegó en una cajita negra sellada, súper discretos con el mensajero."},{"cat":"general","name":"Nelson C.","age":40,"city":"Cartagena","rating":5,"uso":"Hace 2 meses (Ago 2026)","photo":null,"text":"Me lo recomendó un parcero del trabajo y qué bendición de tableta."},{"cat":"general","name":"César D.","age":53,"city":"Villavicencio","rating":5,"uso":"Hace 7 meses (Mar 2026)","photo":null,"text":"Al principio dudé por tanta estafa que hay, pero en el primer polvo me di cuenta que es pólvora pura."},{"cat":"general","name":"Ricardo A.","age":46,"city":"Ibagué","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Las 3 B: Bueno, Bonito y Berracamente efectivo."},{"cat":"general","name":"Fabio J.","age":37,"city":"Santa Marta","rating":5,"uso":"Solo 3 días","photo":null,"text":"Si tienes problemas para que se te pare, deja de llorar y compra esta vaina ya."},{"cat":"general","name":"Guillermo N.","age":49,"city":"Neiva","rating":5,"uso":"Hace 6 meses (Abr 2026)","photo":{"sm":"__PHOTO_guillermo_n_SM__","lg":"__PHOTO_guillermo_n_LG__"},"text":"Funciona cada maldita vez. Nunca me ha dejado tirado."},{"cat":"general","name":"Hernán L.","age":54,"city":"Pasto","rating":5,"uso":"Hace 10 meses (Dic 2025)","photo":null,"text":"El mejor remedio que existe para el ego herido de un hombre."},{"cat":"general","name":"Edgar F.","age":43,"city":"Montería","rating":5,"uso":"Hace 9 meses (Ene 2026)","photo":null,"text":"Parecía un actor de cine para adultos, ni yo mismo me lo creía al verme."},{"cat":"general","name":"Julio R.","age":38,"city":"Sabaneta","rating":5,"uso":"Hace 1 semana","photo":null,"text":"Me quitó toda la ansiedad anticipatoria, ahora solo pienso en arrinconarla y destrozarla."},{"cat":"general","name":"Fernando B.","age":50,"city":"Valledupar","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Ya voy por mi tercera caja y pidiendo descuento. Cliente fijo de ustedes para toda la vida."},{"cat":"general","name":"Darío V.","age":55,"city":"Armenia","rating":5,"uso":"Hace 1 año (Oct 2025)","photo":{"sm":"__PHOTO_dario_v_SM__","lg":"__PHOTO_dario_v_LG__"},"text":"Señores, no boten más plata en jarabes ni mierdas raras. Esto es lo único que sirve de verdad."},{"cat":"general","name":"Camilo P.","age":41,"city":"Popayán","rating":5,"uso":"Hace 11 meses (Nov 2025)","photo":null,"text":"Me la puse bajo la lengua, a los 5 minutos estaba como una piedra, y no se bajó hasta que salió el sol."}];
+  // FOTOS: URLs públicas de archivos .webp cargados en Shopify > Contenido > Archivos.
+  // No venían adjuntas en el archivo fuente; colócalas aquí sin cambiar el nombre de la clave.
+  const PHOTO_URLS={
+  "alonso_g": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Alonso_G..webp?v=1791734675&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Alonso_G..webp?v=1791734675"
+  },
+  "andres_v": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Andres_V..webp?v=1791734675&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Andres_V..webp?v=1791734675"
+  },
+  "dario_v": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Dario_V..webp?v=1791734674&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Dario_V..webp?v=1791734674"
+  },
+  "diego_p": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Diego_P..webp?v=1791734674&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Diego_P..webp?v=1791734674"
+  },
+  "guillermo_n": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Guillermo_N..png?v=1791734676&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Guillermo_N..png?v=1791734676"
+  },
+  "gustavo_a": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Gustavo_A..webp?v=1791734675&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Gustavo_A..webp?v=1791734675"
+  },
+  "leonardo_p": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Leonardo_P..webp?v=1791734675&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Leonardo_P..webp?v=1791734675"
+  },
+  "mauricio_n": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Mauricio_N..webp?v=1791734675&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Mauricio_N..webp?v=1791734675"
+  },
+  "ricardo_h": {
+    "sm": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Ricardo_H..png?v=1791734677&width=300",
+    "lg": "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/Ricardo_H..png?v=1791734677"
+  }
+};
+  const CATEGORIES=[];
+  const score=REVIEWS.reduce((sum,r)=>sum+r.rating,0)/REVIEWS.length;
+  const summary={puntaje:Math.round(score*10)/10,total:REVIEWS.length,porcentajes:{}};
+  [5,4,3,2,1].forEach(n=>summary.porcentajes[n]=Math.round(100*REVIEWS.filter(r=>r.rating===n).length/REVIEWS.length));
+  const state={filter:'all',rating:'all',expanded:false};
+  function escapeHTML(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+  function photoURL(review,size){
+    if(!review.photo)return '';
+    const token=review.photo[size];
+    const match=token.match(/^__PHOTO_(.+)_(?:SM|LG)__$/);
+    return match?(PHOTO_URLS[match[1]]?.[size]||PHOTO_URLS[match[1]]?.lg||''):token;
+  }
+  function stars(n,size){return '<span class="enerplu-review-stars" role="img" aria-label="'+n+' de 5 estrellas">'+[1,2,3,4,5].map(i=>'<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="'+(i<=n?'currentColor':'none')+'" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3.09 6.26 6.91 1.01-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2Z"/></svg>').join('')+'</span>';}
+  const photos=REVIEWS.filter(r=>r.photo && photoURL(r,'lg'));
+  root.innerHTML=`<div class="enerplu-reviews-inner w">
+    <div class="enerplu-reviews-head">
+      <div class="enerplu-reviews-copy">
+        <span class="tagl">Reseñas de clientes</span>
+        <h2 id="enerplu-reviews-title">Ellos lo cuentan <em>sin filtro.</em></h2>
+        <p class="enerplu-reviews-subtitle">Calificaciones y comentarios de clientes que ya probaron ENERPLU.</p>
+      </div>
+      <div class="enerplu-review-summary-card">
+        <div class="enerplu-review-score"><strong>${summary.puntaje.toFixed(1)}</strong><div>${stars(Math.round(summary.puntaje),20)}<span>de 5 estrellas</span></div></div>
+        <p class="enerplu-review-muted">${summary.total} calificaciones de clientes verificados</p>
+        <div class="enerplu-review-breakdown">${[5,4,3,2,1].map(n=>`<div class="enerplu-review-bar-row"><span>${n} estrella${n>1?'s':''}</span><progress value="${summary.porcentajes[n]}" max="100" aria-label="${n} estrellas: ${summary.porcentajes[n]}%"></progress><span>${summary.porcentajes[n]}%</span></div>`).join('')}</div>
+      </div>
+    </div>
+    ${photos.length?`<div class="enerplu-review-photos"><h3>Fotos de clientes</h3><div class="enerplu-review-photo-strip">${photos.map(r=>`<button type="button" class="enerplu-review-photo" data-photo="${escapeHTML(photoURL(r,'lg'))}" aria-label="Ampliar foto de ${escapeHTML(r.name)}"><img src="${escapeHTML(photoURL(r,'sm'))}" width="96" height="96" loading="lazy" alt="Foto compartida por ${escapeHTML(r.name)}"></button>`).join('')}</div></div>`:''}
+    <div class="enerplu-review-filters" role="group" aria-label="Filtrar reseñas"><button type="button" class="enerplu-review-filter" data-filter="all" aria-pressed="true">Todas</button>${CATEGORIES.map(c=>`<button type="button" class="enerplu-review-filter" data-filter="${escapeHTML(c.id)}" aria-pressed="false">${escapeHTML(c.label)}</button>`).join('')}<button type="button" class="enerplu-review-filter" data-filter="photos" aria-pressed="false">Con fotos</button><label class="enerplu-review-rating" for="enerplu-rating-filter">Calificación <select id="enerplu-rating-filter" aria-label="Calificación"><option value="all">Todas las estrellas</option>${[5,4,3,2,1].map(n=>`<option value="${n}">${n} estrella${n>1?'s':''}</option>`).join('')}</select></label></div>
+    <p class="enerplu-review-muted" id="enerplu-review-count" role="status"></p>
+    <ul class="enerplu-review-list" id="enerplu-review-list"></ul>
+    <p class="enerplu-review-empty" id="enerplu-review-empty" hidden></p>
+    <button type="button" class="enerplu-review-more" id="enerplu-review-more" hidden>Ver más reseñas</button>
+    <button type="button" class="btn gold enerplu-review-cta" id="enerplu-review-cta">PÍDELO YA - Pagas al recibir<svg class="ico"><use href="#i-arrow"/></svg></button>
+    <p class="enerplu-review-footer">Pagas al recibir · Bolsa negra sellada · Lubricante de regalo</p>
+  </div>
+  <dialog class="enerplu-review-dialog" aria-label="Foto de cliente de ENERPLU"><button type="button" class="enerplu-review-close" aria-label="Cerrar foto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button><img width="800" height="800" alt="Foto compartida por un cliente de ENERPLU"></dialog>`;
+  const listEl=root.querySelector('#enerplu-review-list');
+  const countEl=root.querySelector('#enerplu-review-count');
+  const moreEl=root.querySelector('#enerplu-review-more');
+  const emptyEl=root.querySelector('#enerplu-review-empty');
+  function render(){
+    const filtered=REVIEWS.filter(r=>(state.filter==='all'||(state.filter==='photos'?Boolean(photoURL(r,'lg')):r.cat===state.filter))&&(state.rating==='all'||r.rating===Number(state.rating)));
+    const list=state.expanded?filtered:filtered.slice(0,6);
+    countEl.textContent=filtered.length===0?'No hay reseñas para estos filtros.':`Mostrando ${list.length} de ${filtered.length} reseñas`;
+    listEl.innerHTML=list.map((r,i)=>`<li class="enerplu-review-item" style="--n:${i%6}"><div class="enerplu-review-author"><span class="enerplu-review-avatar" aria-hidden="true">${escapeHTML(r.name.charAt(0))}</span><div><strong>${escapeHTML(r.name)}</strong><p>${r.age} años · ${escapeHTML(r.city)}</p></div></div><div class="enerplu-review-verification">${stars(r.rating,15)}<span>Compra verificada</span></div><p class="enerplu-review-time">${escapeHTML(r.uso)}</p><p class="enerplu-review-text">${escapeHTML(r.text)}</p>${photoURL(r,'lg')?`<button type="button" class="enerplu-review-photo" data-photo="${escapeHTML(photoURL(r,'lg'))}" aria-label="Ampliar foto de ${escapeHTML(r.name)}"><img src="${escapeHTML(photoURL(r,'sm'))}" width="120" height="120" loading="lazy" alt="Foto compartida por ${escapeHTML(r.name)}"></button>`:''}<button type="button" class="enerplu-review-useful" aria-pressed="false">Útil</button></li>`).join('');
+    moreEl.hidden=state.expanded||filtered.length<=6;
+    emptyEl.hidden=filtered.length!==0;
+    emptyEl.textContent=state.filter==='photos'?'Estas reseñas todavía no incluyen fotos.':'Prueba con otra calificación.';
+    root.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===state.filter)));
+  }
+  root.addEventListener('click',function(e){
+    const filter=e.target.closest('[data-filter]');if(filter){state.filter=filter.dataset.filter;state.expanded=false;render();return;}
+    const useful=e.target.closest('.enerplu-review-useful');if(useful){const pressed=useful.getAttribute('aria-pressed')==='true';useful.setAttribute('aria-pressed',String(!pressed));useful.innerHTML=pressed?'Útil':'Útil <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m20 6-11 11-5-5"/></svg>';return;}
+    const photo=e.target.closest('[data-photo]');if(photo){openPhoto(photo.dataset.photo,photo);return;}
+  });
+  root.querySelector('#enerplu-rating-filter').addEventListener('change',function(e){state.rating=e.target.value;state.expanded=false;render();});
+  moreEl.addEventListener('click',function(){state.expanded=true;render();});
+  root.querySelector('#enerplu-review-cta').addEventListener('click',function(){
+    // EDITA ESTE SELECTOR si tu bloque de ofertas no utiliza #lc-offer.
+    const target=document.querySelector('#planes');
+    if(target)target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+    else console.warn('ENERPLU: configura el ID lc-offer en la sección de ofertas de GemPages.');
+  });
+  const dialog=root.querySelector('dialog');let trigger=null;
+  function openPhoto(src,el){trigger=el;dialog.querySelector('img').src=src; if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');}
+  function closePhoto(){if(typeof dialog.close==='function')dialog.close();else dialog.removeAttribute('open');}
+  dialog.querySelector('button').addEventListener('click',closePhoto);
+  dialog.addEventListener('click',e=>{if(e.target===dialog)closePhoto();});
+  dialog.addEventListener('close',()=>{dialog.querySelector('img').removeAttribute('src');if(trigger)trigger.focus();});
+  render();
+})();
+</script>
+
+<footer class="foot">
+  <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,h_80/v1775103361/logo_enerplu_fgdhwk.webp" alt="ENERPLU" width="112" height="28" loading="lazy">
+  <p>DESCARGO DE RESPONSABILIDAD: Suplemento alimenticio. No es medicamento. Resultados pueden variar. No afiliado a Facebook.</p>
+  <nav><a href="/terminos">Política de Privacidad</a><a href="/terminos">Términos de Servicio</a></nav>
+  <p>© 2026 Enerplu Colombia. Todos los derechos reservados.</p>
+</footer>
+
+<div class="sb" id="sb" aria-hidden="true">
+  <div class="sb-t"><b><svg class="p-ic"><use href="#i-gift"/></svg>Regalo en todos los pedidos</b>Pagas al recibir · Envío discreto</div>
+  <a href="#ep-offer-widget" data-cta="sticky">Ver ofertas</a>
+</div>
+
+<script>
+/* HERO: campo de energía en WebGL (oro y rojo sobre negro, late como un pulso) */
+(function(){
+  var c=document.getElementById('fx'); if(!c) return;
+  var gl=c.getContext('webgl',{antialias:false,alpha:false,powerPreference:'low-power'}); if(!gl) return;
+  var vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var fs=[
+  'precision mediump float;uniform vec2 r;uniform float t;uniform vec2 m;',
+  'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}',
+  'float fb(vec2 p){float v=0.,a=.5;mat2 R=mat2(.8,.6,-.6,.8);for(int i=0;i<5;i++){v+=a*n(p);p=R*p*2.02;a*=.5;}return v;}',
+  'void main(){vec2 uv=(gl_FragCoord.xy-.5*r)/r.y;',
+  ' vec2 q=uv*1.6;float T=t*.12;',
+  ' vec2 w=vec2(fb(q+vec2(0.,T)),fb(q+vec2(5.2,-T)));',
+  ' vec2 w2=vec2(fb(q+3.*w+vec2(1.7,9.2)+T*1.3),fb(q+3.*w+vec2(8.3,2.8)-T));',
+  ' float f=fb(q+3.5*w2);',
+  ' float veins=pow(1.-abs(sin(f*11.+T*4.)),14.);',
+  ' float beat=pow(max(sin(t*3.9),0.),10.)+.55*pow(max(sin(t*3.9-1.1),0.),10.);',
+  ' vec2 c0=vec2(0.,-.08)+m*.18;float d=length(uv-c0);',
+  ' float core=exp(-d*d*4.5)*(.55+.45*beat);',
+  ' vec3 gold=vec3(.95,.72,.25),red=vec3(.85,.1,.12);',
+  ' vec3 col=vec3(.02)+gold*veins*(.25+.75*f)*(.35+.65*smoothstep(1.4,.0,d));',
+  ' col+=mix(red,gold,smoothstep(.0,.9,f))*core*.55;',
+  ' col+=gold*pow(f,4.)*.25;',
+  ' col*=1.-.55*smoothstep(.4,1.3,length(uv*vec2(.8,1.)));',
+  ' gl_FragColor=vec4(col,1.);}'].join('\n');
+  function sh(tp,s){var o=gl.createShader(tp);gl.shaderSource(o,s);gl.compileShader(o);return o;}
+  var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS)) return;
+  gl.useProgram(pr);
+  var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  var lp=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,2,gl.FLOAT,false,0,0);
+  var ur=gl.getUniformLocation(pr,'r'),ut=gl.getUniformLocation(pr,'t'),um=gl.getUniformLocation(pr,'m');
+  var sc=Math.min(window.devicePixelRatio||1,2)*(innerWidth<700?.5:.6);
+  function rs(){c.width=Math.max(2,c.clientWidth*sc|0);c.height=Math.max(2,c.clientHeight*sc|0);gl.viewport(0,0,c.width,c.height);}
+  rs();addEventListener('resize',rs);
+  var mx=0,my=0,tx=0,ty=0,vis=true,t0=performance.now();
+  window.__fxMove=function(x,y){tx=x;ty=y;};
+  new IntersectionObserver(function(e){vis=e[0].isIntersecting;if(vis)requestAnimationFrame(f);}).observe(c);
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function f(now){mx+=(tx-mx)*.05;my+=(ty-my)*.05;
+    gl.uniform2f(ur,c.width,c.height);gl.uniform1f(ut,(now-t0)/1000);gl.uniform2f(um,mx,-my);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    if(vis&&!still)requestAnimationFrame(f);}
+  requestAnimationFrame(f);
+})();
+
+/* caja 3D: sigue el dedo / el mouse / la inclinación del celular */
+(function(){
+  var box=document.getElementById('box'),st=document.getElementById('stage');if(!box)return;
+  var rx=0,ry=0,gx=0,gy=0;
+  function set(x,y){gx=x;gy=y;if(window.__fxMove)window.__fxMove(x,y);}
+  st.addEventListener('pointermove',function(e){var r=st.getBoundingClientRect();set((e.clientX-r.left)/r.width*2-1,(e.clientY-r.top)/r.height*2-1);});
+  st.addEventListener('pointerleave',function(){set(0,0);});
+  function ori(e){if(e.gamma==null)return;set(Math.max(-1,Math.min(1,e.gamma/25)),Math.max(-1,Math.min(1,(e.beta-45)/25)));}
+  addEventListener('deviceorientation',ori);
+  /* iPhone pide permiso: se pide en el primer toque */
+  if(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==='function'){
+    addEventListener('touchend',function once(){removeEventListener('touchend',once);DeviceOrientationEvent.requestPermission().catch(function(){});},{once:true});
+  }
+  (function loop(){rx+=(gy*-14-rx)*.08;ry+=(gx*18-ry)*.08;
+    box.style.transform='translate(-50%,-50%) rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg)';requestAnimationFrame(loop);})();
+})();
+
+/* aparición al hacer scroll, contadores, barras y línea de pasos */
+(function(){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var el=e.target;el.classList.add('p-in');
+    el.querySelectorAll('[data-w]').forEach(function(b){b.style.width=b.dataset.w+'%';});
+    el.querySelectorAll('[data-count]').forEach(function(n){var to=+n.dataset.count,s=performance.now();(function k(now){var p=Math.min(1,(now-s)/1500);n.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(k);})(s);});
+    io.unobserve(el);});},{threshold:.18,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+  var steps=document.getElementById('steps'),prog=document.getElementById('prog'),items=steps?steps.querySelectorAll('.p-st'):[];
+  function sp(){if(!steps)return;var r=steps.getBoundingClientRect(),vh=innerHeight;var p=Math.max(0,Math.min(1,(vh*.62-r.top)/r.height));
+    prog.style.height=(p*(r.height-12))+'px';items.forEach(function(it){var ir=it.getBoundingClientRect();it.classList.toggle('p-on',ir.top<vh*.62);});}
+  addEventListener('scroll',sp,{passive:true});sp();
+  /* barra inferior: aparece al salir del hero y se esconde cuando se ve el pedido */
+  var sb=document.getElementById('sb'),hero=document.getElementById('top'),order=document.getElementById('ep-order'),inHero=true,inOrder=false;
+  function up(){var on=!inHero&&!inOrder;sb.classList.toggle('p-on',on);sb.setAttribute('aria-hidden',on?'false':'true');}
+  new IntersectionObserver(function(e){inHero=e[0].isIntersecting;up();},{threshold:0}).observe(hero);
+  if(order)new IntersectionObserver(function(e){inOrder=e[0].isIntersecting;up();},{threshold:0}).observe(order);
+})();
+</script>
+<script src="/js/checkout-ep.js" defer></script>
+</body>
+</html>

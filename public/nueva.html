@@ -1,14 +1,6 @@
 <!doctype html>
 <html lang="es-CO">
 <head>
-<script>
-/* Prueba 50/50 (cesar 15-11): A = /pedido (actual), B = /checkout (nuevo). Fijo por visitante; ?ck=a|b lo fuerza. */
-(function () { var V = (new URLSearchParams(location.search).get('ck') || '').toLowerCase();
-  if (V !== 'a' && V !== 'b') { try { V = localStorage.getItem('ep_ck'); } catch (e) {} }
-  if (V !== 'a' && V !== 'b') V = Math.random() < .5 ? 'a' : 'b';
-  try { localStorage.setItem('ep_ck', V); } catch (e) {}
-  window.EP_CK = V; })();
-</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
@@ -418,13 +410,13 @@ footer p{margin:0 0 8px}
     try { fetch(U, { method: "POST", body: body, keepalive: true, headers: { "Content-Type": "text/plain" } }); } catch (e) {}
   }
   function tag(k, v) { try { if (v) window.clarity("set", k, String(v).slice(0, 200)); } catch (e) {} }
-  send("page_view", { ck: window.EP_CK });
+  send("page_view");
   tag("pagina", "nueva"); tag("anuncio", q.get("utm_term")); tag("campana", q.get("utm_campaign")); tag("conjunto", q.get("utm_content")); tag("fuente", q.get("utm_source")); tag("sid", sid);
   document.addEventListener("DOMContentLoaded", function () {
     var pl = document.getElementById("planes");
     if (pl && "IntersectionObserver" in window) { var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { send("selector_view"); try { window.clarity("event", "vio_ofertas"); } catch (e) {} io.disconnect(); } }, { threshold: .3 }); io.observe(pl); }
     document.addEventListener("change", function (e) { if (e.target && e.target.name === "plan") { send("plan_select", { plan: e.target.value }); tag("plan", e.target.value); try { window.clarity("event", "eligio_plan"); } catch (x) {} } });
-    document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a[data-ck]"); if (a) { var r = document.querySelector('input[name="plan"]:checked'); send("cta_click", { plan: r && r.value, ck: window.EP_CK, txt: (a.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40) }); try { window.clarity("event", "toco_comprar"); } catch (x) {} } }, true);
+    document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a[data-ck]"); if (a) { var r = document.querySelector('input[name="plan"]:checked'); send("cta_click", { plan: r && r.value, txt: (a.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40) }); try { window.clarity("event", "toco_comprar"); } catch (x) {} } }, true);
     var raf = 0; addEventListener("scroll", function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(function () { var h = document.documentElement, m = h.scrollHeight - innerHeight, r = m > 0 ? scrollY / m : 1; if (r >= .5) send("scroll_50"); if (r >= .9) send("scroll_90"); }); }, { passive: true });
   });
 })();
@@ -819,8 +811,6 @@ footer p{margin:0 0 8px}
     elite:   { boxes: '4 cajas de ENERPLU', occ: '40 tabletas, 40 ocasiones', ret: true,  gar: true }
   };
   var q = new URLSearchParams(location.search);
-  q.delete('ck');
-  var CK = window.EP_CK === 'b' ? '/checkout' : '/pedido';
   function $(id) { return document.getElementById(id); }
   // El plan se elige tocando la tarjeta; solo el botón lleva al checkout (con el plan, UTM y fbclid).
   function sync() {
@@ -831,7 +821,7 @@ footer p{margin:0 0 8px}
     $('kit-boxes').textContent = k.boxes; $('kit-occ').textContent = k.occ;
     $('kit-ret').hidden = !k.ret; $('kit-gar').hidden = !k.gar;
     var p = new URLSearchParams(q); p.set('plan', r.value);
-    document.querySelectorAll('a[data-ck]').forEach(function (a) { a.href = CK + '?' + p.toString(); });
+    document.querySelectorAll('a[data-ck]').forEach(function (a) { a.href = '/pedido?' + p.toString(); });
   }
   document.querySelectorAll('input[name="plan"]').forEach(function (r) { r.addEventListener('change', sync); });
   sync();

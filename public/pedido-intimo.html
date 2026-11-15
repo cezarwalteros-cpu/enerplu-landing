@@ -390,15 +390,31 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     var t = ciu.value.split(',')[0].trim(), seq = ++cSeq;
     if (t.length < 2) { cityShow([]); return Promise.resolve([]); }
     return api('GET', '?q=' + encodeURIComponent(t.slice(0, 40))).then(function (r) {
-      var rows = (r.j.ciudades || []).slice(0, 8); if (seq === cSeq) cityShow(rows); return rows;
+      var rows = (r.j.ciudades || []).slice(0, 8);
+      if (seq === cSeq) { cityShow(rows); if (!city && d.activeElement !== ciu) cityAuto(); } // escribió y salió antes de que llegara la lista
+      return rows;
     }, function () { return []; });
   }
-  ciu.addEventListener('input', function () { city = null; clearTimeout(cTimer); cTimer = setTimeout(citySearch, 220); });
+  ciu.addEventListener('input', function () { city = null; cErr.textContent = C_ERR; clearTimeout(cTimer); cTimer = setTimeout(citySearch, 220); });
   list.addEventListener('mousedown', function (e) { var li = e.target.closest('li'); if (li) { e.preventDefault(); cityPick(cRows[+li.dataset.i]); } });
+  // cesar 15-11: si lo escrito coincide con una sola ciudad se toma sola, con su departamento; si hay varias, la lista queda abierta con "Toca tu ciudad".
+  var cErr = ciu.closest('.fld').querySelector('.err'), C_ERR = cErr.textContent;
+  function cityNorm(v) { return String(v || '').split(',')[0].normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function cityAuto() {
+    if (city || !cRows.length) return !!city;
+    var t = cityNorm(ciu.value), m = cRows.filter(function (r) { return cityNorm(r.municipio) === t; });
+    if (cRows.length === 1) { cityPick(cRows[0]); return true; }
+    if (m.length === 1) { cityPick(m[0]); return true; }
+    list.hidden = false; ciu.setAttribute('aria-expanded', 'true'); cErr.textContent = 'Toca tu ciudad en la lista.'; ciu.closest('.fld').classList.add('bad');
+    return false;
+  }
+  d.addEventListener('click', function (e) { if (!list.hidden && e.target !== ciu && !list.contains(e.target) && !e.target.closest('#pay')) cityShow([]); });
   ciu.addEventListener('blur', function () {
     setTimeout(function () {
-      if (!city && cRows.length) { var t = ciu.value.split(',')[0].trim().toLowerCase(), m = cRows.filter(function (r) { return r.municipio.toLowerCase() === t; }); if (m.length === 1 || cRows.length === 1) cityPick(m[0] || cRows[0]); }
-      cityShow([]); if (ciu.value.trim()) ciu.closest('.fld').classList.toggle('bad', !city);
+      if (!city) cityAuto();
+      if (city) return;
+      if (!cRows.length || !ciu.value.trim()) { cityShow([]); cErr.textContent = C_ERR; }
+      if (ciu.value.trim()) ciu.closest('.fld').classList.add('bad');
     }, 120);
   });
 
@@ -514,6 +530,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     e.preventDefault();
     if ($('pay').disabled) return;
     var w = $('warn'), bad = [];
+    if (!city) cityAuto();
     d.querySelectorAll('[data-req]').forEach(function (i) { var b = !ok(i); i.closest('.fld').classList.toggle('bad', b); if (b) bad.push(i); });
     if (bad.length) {
       w.hidden = false; w.className = 'warn'; w.textContent = bad.length === 1 ? 'Te falta 1 dato para enviarte el pedido.' : 'Te faltan ' + bad.length + ' datos para enviarte el pedido.';

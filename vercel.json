@@ -8,6 +8,130 @@
       "source": "/b",
       "destination": "/",
       "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/products/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/collections/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/cdn/shop/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "https://cdn.shopify.com/s/files/1/0748/9418/0397/:p*"
+    },
+    {
+      "source": "/cdn/fonts/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "https://fonts.shopifycdn.com/:p*"
+    },
+    {
+      "source": "/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/products/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/collections/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/cdn/shop/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "https://cdn.shopify.com/s/files/1/0748/9418/0397/:p*"
+    },
+    {
+      "source": "/cdn/fonts/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "https://fonts.shopifycdn.com/:p*"
+    },
+    {
+      "source": "/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
     }
   ],
   "headers": [

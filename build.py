@@ -459,6 +459,32 @@ if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
     _a = _pd.index('<div class="ep-root ck-keep"'); _b = _pd.index('</footer>', _a)
     _lz = lambda h: re.sub(r'<img(?![^>]*\bloading=)', '<img loading="lazy"', h)
     _pd = _lz(_pd[:_a]) + _pd[_a:_b] + _lz(_pd[_b:])
+    # /pedido liviano (cesar 2026-11-14 9 am: "tiene que cargar instantáneo"; la página vieja escondida no va):
+    # el cuerpo queda solo con el checkout (.ck-keep) y salen las hojas de estilo de Shopify/GemPages y el popup.
+    # El contador del embudo (funnel-track) pasa a la cabecera para registrar la visita desde el primer momento.
+    _a = _pd.index('<div class="ep-root ck-keep"')
+    _depth = 0
+    for _m in re.finditer(r'<(/?)div\b[^>]*>', _pd[_a:]):
+        _depth += -1 if _m.group(1) else 1
+        if _depth == 0:
+            _keep = _pd[_a:_a + _m.end()]
+            break
+    _fm = re.search(r'<script>\s*\(function \(\) \{\s*if \(window\.__epFunnel\) return;[\s\S]*?</script>', _pd)
+    assert _fm, 'pedido: no se encontró el contador del embudo'
+    _mo = re.search(r'<main\b[^>]*id="MainContent"[^>]*>', _pd)
+    _me = _pd.index('</main>', _mo.end())
+    _pd = _pd[:_mo.end()] + '\n' + _keep + '\n' + _pd[_me:]
+    _pd = must(_pd, '</head>', _fm.group(0) + '\n</head>')
+    for _pat in [r'<link[^>]*losgomosos\.lat/cdn/shop/[^>]*base\.css[^>]*>\s*',
+                 r'<link rel="preconnect" href="https://(?:losgomosos\.lat|cdn\.shopify\.com)"[^>]*>\s*',
+                 r'<style data-shopify="">[\s\S]*?</style>\s*',
+                 r'<style>\s*\.gps \*[\s\S]*?</style>\s*',
+                 r'<style>\s*\.gps\{--g-h1[\s\S]*?</style>\s*',
+                 r'<style>\s*button\._rsi-buy-now-button[\s\S]*?</style>\s*',
+                 r'<style>\s*/\* Popup de 5%[\s\S]*?</style>\s*',
+                 r'<style>\[data-id="gpGrrwtDmE"\] img\{cursor:pointer\}</style>\s*']:
+        _pd, _n = re.subn(_pat, '', _pd)
+        assert _n >= 1, 'pedido liviano: no se encontró ' + _pat
     (OUT / 'pedido.html').write_text(_pd)
 (OUT / 'index.html').write_text(index_html)
 if AB_E04 and not HERO_V2:
@@ -552,7 +578,19 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
     "outputDirectory": "public",
     "cleanUrls": True,
     # con la prueba E-04 apagada, quien llegue a /b vuelve a la página principal (conserva los parámetros del anuncio)
-    "redirects": ([] if AB_E04 else [{"source": "/b", "destination": "/", "permanent": False}]),
+    "redirects": ([] if AB_E04 else [{"source": "/b", "destination": "/", "permanent": False}])
+                 # la portada de losgomosos.lat va a /nueva (index.html existe, así que un rewrite no aplicaría)
+                 + [{"source": "/", "has": [{"type": "host", "value": h}], "destination": "/nueva", "permanent": False}
+                    for h in ("losgomosos.lat", "www.losgomosos.lat")],
+    # losgomosos.lat (antes Shopify) muestra la landing /nueva: los anuncios viejos a /products/enerplu caen ahí con sus UTM
+    "rewrites": [r for h in ("losgomosos.lat", "www.losgomosos.lat") for r in (
+        {"source": "/products/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
+        {"source": "/collections/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
+        {"source": "/cdn/shop/:p*", "has": [{"type": "host", "value": h}], "destination": "https://cdn.shopify.com/s/files/1/0748/9418/0397/:p*"},
+        {"source": "/cdn/fonts/:p*", "has": [{"type": "host", "value": h}], "destination": "https://fonts.shopifycdn.com/:p*"},
+        # cualquier otra dirección vieja de la tienda (/propuesta, /pages/...) también muestra /nueva (cesar 2026-11-14)
+        {"source": "/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
+    )],
     "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}]},
                 {"source": "/rec/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800, immutable"}]},
                 {"source": "/guias/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}]}]

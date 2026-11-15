@@ -240,8 +240,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
       <div class="fld"><label for="f-cel">Celular (WhatsApp)</label><div class="tel"><span>+57</span><input id="f-cel" name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="300 123 4567" maxlength="12" data-req data-tel></div><p class="hint">Por aquí te confirmamos el pedido antes de enviarlo.</p><span class="err">Escribe un celular de 10 dígitos que empiece por 3.</span></div>
       <div class="fld"><label for="f-ciu">Ciudad o municipio</label><input id="f-ciu" name="ciudad" autocomplete="off" placeholder="Escribe y elige: Itagüí, Bogotá, Cali..." data-req data-city role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ciu-list"><ul class="cities" id="ciu-list" role="listbox" hidden></ul><span class="err">Escribe tu ciudad y elígela de la lista.</span></div>
       <div class="fld"><label for="f-dir">Dirección</label><input id="f-dir" name="direccion" autocomplete="street-address" placeholder="Ej: Calle 10 # 20-30" data-req><span class="err">Escribe la dirección de entrega.</span></div>
-      <div class="fld"><label for="f-bar">Barrio y detalles</label><input id="f-bar" name="barrio" placeholder="Barrio, apto, casa o una referencia" data-req><span class="err">Escribe el barrio, apto o una referencia.</span></div>
-      <input class="hp" name="website" id="f-web" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="fld"><label for="f-bar">Barrio y detalles (opcional)</label><input id="f-bar" name="barrio" placeholder="Barrio, apto, casa o una referencia"></div>
     </div>
     <p class="sub">Envío</p>
     <div class="opt is-on"><span class="dot"></span><span><strong>Estándar</strong><small>Sale en bolsa negra sellada, sin el nombre del producto por fuera.</small></span><span class="r free">Gratis</span></div>
@@ -528,9 +527,9 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     window.epTrack('AddPaymentInfo', { content_name: 'Combo intimo', currency: 'COP', value: total(), num_items: c });
     epClarity('toco_pagar_pedido');
     var body = {
-      action: 'order', slug: SLUG, session_id: sid, website: $('f-web').value,
+      action: 'order', slug: SLUG, session_id: sid, website: '',
       customer: { first_name: val('f-nom'), last_name: val('f-ape'), phone: val('f-cel').replace(/\D/g, ''), email: undefined },
-      address: { department: city.departamento, city: city.municipio, address1: val('f-dir'), additional: val('f-bar') },
+      address: { department: city.departamento, city: city.municipio, address1: val('f-dir'), additional: val('f-bar') || 'Sin referencia' },
       combo: cant, addons: { anillo: ads.anillo, caja: ads.caja },
       payment_method: linea ? 'bold' : 'transfer', tracking: tracking()
     };

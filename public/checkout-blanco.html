@@ -1807,7 +1807,7 @@ html.epp-lock{overflow:hidden}
   var q=new URLSearchParams(location.search),p=location.pathname.replace(/\/+$/,'')||'/';
   [['anuncio','utm_term'],['campana','utm_campaign'],['conjunto','utm_content'],['fuente','utm_source']].forEach(function(k){var v=q.get(k[1]);if(v)c('set',k[0],v.slice(0,100));});
   c('set','pagina',p);
-  if(p==='/'||p==='/oferta-a')c('set','e06',p==='/oferta-a'?'B':'A');
+  if(p==='/'||p==='/ofertas')c('set','e07',p==='/ofertas'?'B':'A');
   var sidOk=0;
   var N={selector_view:'vio_ofertas',cta_click:'toco_comprar',plan_select:'eligio_plan',form_start:'empezo_formulario',
     form_error:'error_formulario',pay_select:'eligio_pago',plan_click:'toco_confirmar',upsell_view:'vio_upsell',pay_fallback_cod:'pago_a_contraentrega'};

@@ -5,11 +5,11 @@
 (function(){try{
   var p=location.pathname; if(p!=='/'&&p!=='/index'&&p!=='/index.html') return;
   var q=location.search; if(/[?&]ep_test=1(&|$)/.test(q)) return;
-  var f=(q.match(/[?&]ab6=([AB])/)||[])[1], v=f;
-  if(!v){try{v=localStorage.getItem('ep_e06')}catch(e){}}
+  var f=(q.match(/[?&]ab7=([AB])/)||[])[1], v=f;
+  if(!v){try{v=localStorage.getItem('ep_e07')}catch(e){}}
   if(v!=='A'&&v!=='B'){v=Math.random()<0.5?'A':'B'}
-  try{localStorage.setItem('ep_e06',v)}catch(e){}
-  if(v==='B'){location.replace('/oferta-a'+q+location.hash);}
+  try{localStorage.setItem('ep_e07',v)}catch(e){}
+  if(v==='B'){location.replace('/ofertas'+q+location.hash);}
 }catch(e){}})();
 </script>
 <meta charset="utf-8">
@@ -1818,7 +1818,7 @@ html.epp-lock{overflow:hidden}
   var q=new URLSearchParams(location.search),p=location.pathname.replace(/\/+$/,'')||'/';
   [['anuncio','utm_term'],['campana','utm_campaign'],['conjunto','utm_content'],['fuente','utm_source']].forEach(function(k){var v=q.get(k[1]);if(v)c('set',k[0],v.slice(0,100));});
   c('set','pagina',p);
-  if(p==='/'||p==='/oferta-a')c('set','e06',p==='/oferta-a'?'B':'A');
+  if(p==='/'||p==='/ofertas')c('set','e07',p==='/ofertas'?'B':'A');
   var sidOk=0;
   var N={selector_view:'vio_ofertas',cta_click:'toco_comprar',plan_select:'eligio_plan',form_start:'empezo_formulario',
     form_error:'error_formulario',pay_select:'eligio_pago',plan_click:'toco_confirmar',upsell_view:'vio_upsell',pay_fallback_cod:'pago_a_contraentrega'};
@@ -6981,7 +6981,7 @@ window.EP_POPUP_MODE = 'off';
   var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;
   var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}
     if(!sid){if(n++<20)setTimeout(go,300);return;}
-    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E06',v:'A'}});
+    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E07',v:'A'}});
     var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
     try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}
   })();

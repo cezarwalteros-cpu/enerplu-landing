@@ -308,7 +308,7 @@ if CLARITY_PUENTE:
   var q=new URLSearchParams(location.search),p=location.pathname.replace(/\\/+$/,'')||'/';
   [['anuncio','utm_term'],['campana','utm_campaign'],['conjunto','utm_content'],['fuente','utm_source']].forEach(function(k){var v=q.get(k[1]);if(v)c('set',k[0],v.slice(0,100));});
   c('set','pagina',p);
-  if(p==='/'||p==='/oferta-a')c('set','e06',p==='/oferta-a'?'B':'A');
+  if(p==='/'||p==='/ofertas')c('set','e07',p==='/ofertas'?'B':'A');
   var sidOk=0;
   var N={selector_view:'vio_ofertas',cta_click:'toco_comprar',plan_select:'eligio_plan',form_start:'empezo_formulario',
     form_error:'error_formulario',pay_select:'eligio_pago',plan_click:'toco_confirmar',upsell_view:'vio_upsell',pay_fallback_cod:'pago_a_contraentrega'};
@@ -377,7 +377,7 @@ if AB_E05 and not HERO_V2:
 # Oferta A (B, "/oferta-a"): mismos 3 planes y precios, sin tachados ni %, precio por tableta, qué incluye cada plan,
 # garantía explicada debajo de los planes, sin "hasta 56 % de descuento" en la barra.
 # Asignación: localStorage ep_e06 (50/50, fija por navegador); ?ab6=A|B fuerza la variante. AB_E06 = False apaga la prueba.
-AB_E06 = True
+AB_E06 = False   # 15-nov: cesar la da por contaminada de tráfico basura; la reemplaza E-07 (checkout nuevo dentro de la página)
 AB6_HEAD = AB5_HEAD.replace("ab5=", "ab6=").replace("ep_e05", "ep_e06").replace("'/octubre'", "'/oferta-a'")
 if not HERO_V2:
     _ofa = html
@@ -405,6 +405,24 @@ if not HERO_V2:
 if AB_E06 and not HERO_V2:
     index_html = must(index_html, '<head>', '<head>\n' + AB6_HEAD)
     index_html = must(index_html, '</body>', ab_send('A', 'E06') + '\n</body>')
+# E-07 (cesar 2026-11-15 1:17 pm, "ME GUSTA IMPLEMENTEMOSLO" sobre la vista previa /vieja-checkout): página actual (A, "/")
+# contra la misma página con el checkout nuevo dentro (B, "/ofertas"): planes Dominio, Élite, Básico, 3 pasos, logos de pago.
+# Todo lo de arriba de la sección de pedido es igual. Asignación: localStorage ep_e07 (50/50, fija por navegador); ?ab7=A|B fuerza.
+# B no lleva el popup de 5 % (el checkout nuevo no aplica el código). AB_E07 = False apaga la prueba (todos ven A).
+AB_E07 = True
+AB7_HEAD = AB5_HEAD.replace("ab5=", "ab7=").replace("ep_e05", "ep_e07").replace("'/octubre'", "'/ofertas'")
+if not HERO_V2:
+    import sys as _sys; _sys.path.insert(0, str(ROOT / 'tools')); import vieja_checkout as _vc
+    _ofc = html
+    if POPUP5:
+        _ofc = must(_ofc, '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n', '')
+    _ofc = _vc.embed(_ofc, (OUT / 'checkout.html').read_text())
+    if AB_E07:
+        _ofc = must(_ofc, '</body>', ab_send('B', 'E07') + '\n</body>')
+    (OUT / 'ofertas.html').write_text(_ofc)
+if AB_E07 and not HERO_V2:
+    index_html = must(index_html, '<head>', '<head>\n' + AB7_HEAD)
+    index_html = must(index_html, '</body>', ab_send('A', 'E07') + '\n</body>')
 # Checkout blanco en 3 pasos (cesar 2026-11-13 7:40 pm, "blanco crealo", maqueta https://claude.ai/artifact/3Lq26TgYytzKKBAoma1Nf1).
 # Página aparte /checkout-blanco (igual a "/" con la sección de oferta + formulario en blanco, barra 1 Plan · 2 Entrega · 3 Pago,
 # número en cada paso y el envío dentro del paso 2). Mismos planes, precios, campos, bump, resumen y botón.

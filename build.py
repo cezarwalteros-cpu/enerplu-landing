@@ -423,6 +423,28 @@ if not HERO_V2:
 if AB_E07 and not HERO_V2:
     index_html = must(index_html, '<head>', '<head>\n' + AB7_HEAD)
     index_html = must(index_html, '</body>', ab_send('A', 'E07') + '\n</body>')
+# E-07 en losgomosos.lat (cesar 2026-11-15 2:59 pm, "publica"): las visitas a losgomosos.lat/products/* y /collections/*
+# (hoy ven /nueva por rewrite) entran también al 50/50: A sigue en /nueva, B va a /ofertas del mismo dominio (mismo
+# localStorage ep_e07 y sid). /nueva en pedido.enerplu.com y /propuesta no cambian. AB_E07_LG = False lo quita.
+AB_E07_LG = True
+_nv = (OUT / 'nueva.html').read_text()
+_nv = re.sub(r'<head>\n<!--E07LG-->.*?<!--/E07LG-->\n', '<head>', _nv, count=1, flags=re.S)
+_nv = re.sub(r'<!--E07LG-->.*?<!--/E07LG-->\n', '', _nv, flags=re.S)
+if AB_E07 and AB_E07_LG and not HERO_V2:
+    _lg_cond = "/(^|\\.)losgomosos\\.lat$/.test(location.hostname)&&/^\\/(products|collections)\\//.test(location.pathname)"
+    _lg_head = ("<!--E07LG--><script>\n(function(){try{\n  if(!(" + _lg_cond + ")) return;\n"
+                "  var q=location.search; if(/[?&]ep_test=1(&|$)/.test(q)) return;\n"
+                "  var v=(q.match(/[?&]ab7=([AB])/)||[])[1];\n"
+                "  if(!v){try{v=localStorage.getItem('ep_e07')}catch(e){}}\n"
+                "  if(v!=='A'&&v!=='B'){v=Math.random()<0.5?'A':'B'}\n"
+                "  try{localStorage.setItem('ep_e07',v)}catch(e){}\n"
+                "  if(v==='B'){location.replace('/ofertas'+q+location.hash);}\n"
+                "}catch(e){}})();\n</script><!--/E07LG-->\n")
+    _lg_send = ab_send('A', 'E07').replace("(function(){\n", "(function(){\n  if(!(" + _lg_cond + ")) return;\n", 1)
+    assert _lg_send != ab_send('A', 'E07')
+    _nv = must(_nv, '<head>', '<head>\n' + _lg_head)
+    _nv = must(_nv, '</body>', '<!--E07LG-->' + _lg_send + '<!--/E07LG-->\n</body>')
+(OUT / 'nueva.html').write_text(_nv)
 # Checkout blanco en 3 pasos (cesar 2026-11-13 7:40 pm, "blanco crealo", maqueta https://claude.ai/artifact/3Lq26TgYytzKKBAoma1Nf1).
 # Página aparte /checkout-blanco (igual a "/" con la sección de oferta + formulario en blanco, barra 1 Plan · 2 Entrega · 3 Pago,
 # número en cada paso y el envío dentro del paso 2). Mismos planes, precios, campos, bump, resumen y botón.

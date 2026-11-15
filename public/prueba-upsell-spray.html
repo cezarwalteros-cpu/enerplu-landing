@@ -7,11 +7,11 @@
 (function(){try{
   var p=location.pathname; if(p!=='/'&&p!=='/index'&&p!=='/index.html') return;
   var q=location.search; if(/[?&]ep_test=1(&|$)/.test(q)) return;
-  var f=(q.match(/[?&]ab6=([AB])/)||[])[1], v=f;
-  if(!v){try{v=localStorage.getItem('ep_e06')}catch(e){}}
+  var f=(q.match(/[?&]ab7=([AB])/)||[])[1], v=f;
+  if(!v){try{v=localStorage.getItem('ep_e07')}catch(e){}}
   if(v!=='A'&&v!=='B'){v=Math.random()<0.5?'A':'B'}
-  try{localStorage.setItem('ep_e06',v)}catch(e){}
-  if(v==='B'){location.replace('/oferta-a'+q+location.hash);}
+  try{localStorage.setItem('ep_e07',v)}catch(e){}
+  if(v==='B'){location.replace('/ofertas'+q+location.hash);}
 }catch(e){}})();
 </script>
 <meta charset="utf-8">
@@ -1820,7 +1820,7 @@ html.epp-lock{overflow:hidden}
   var q=new URLSearchParams(location.search),p=location.pathname.replace(/\/+$/,'')||'/';
   [['anuncio','utm_term'],['campana','utm_campaign'],['conjunto','utm_content'],['fuente','utm_source']].forEach(function(k){var v=q.get(k[1]);if(v)c('set',k[0],v.slice(0,100));});
   c('set','pagina',p);
-  if(p==='/'||p==='/oferta-a')c('set','e06',p==='/oferta-a'?'B':'A');
+  if(p==='/'||p==='/ofertas')c('set','e07',p==='/ofertas'?'B':'A');
   var sidOk=0;
   var N={selector_view:'vio_ofertas',cta_click:'toco_comprar',plan_select:'eligio_plan',form_start:'empezo_formulario',
     form_error:'error_formulario',pay_select:'eligio_pago',plan_click:'toco_confirmar',upsell_view:'vio_upsell',pay_fallback_cod:'pago_a_contraentrega'};
@@ -5846,8 +5846,10 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
        - "Colombia" y "D.C." no cuentan ("Bogotá, Colombia")
        - corregimientos, localidades y comunas conocidas llevan a su municipio ("San Antonio de Prado" → Medellín) */
     cityParts: function (raw) {
-      var parts = String(raw || '').split(/[,\/|]/);
+      /* cesar 15-11: "Ciuda /Turbo Antioquia" o "Ciudad: Turbo" buscaban "ciuda". Se quita la palabra de relleno ("Ciudad Bolívar" sigue igual) */
+      var s = String(raw || '').replace(/^\s*(ciudad\s+o\s+municipio|ciudad\s*[:\-\/,]|ciuda[sd]?\b(?!\s+bol)|municipio\b|mpio\b|mcpio\b)[\s:\-.]*/i, '');
       var clean = function (x) { return R.norm(x).replace(/\b(colombia|col|d c|dc)\b/g, ' ').replace(/\s+/g, ' ').trim(); };
+      var parts = s.split(/[,\/|]/).filter(function (x) { return clean(x); });
       return { q: clean(parts[0]), dep: clean(parts.slice(1).join(' ')) };
     },
     cityAliases: function (q) {
@@ -5859,8 +5861,12 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       });
       return out.slice(0, 4);
     },
-    citySearchNow: function (raw) {
+    citySearchNow: function (raw, cut) {
       var self = this, pr = this.cityParts(raw), seq = (this.citySeq = (this.citySeq || 0) + 1);
+      /* cesar 15-11: "Sopetran Antioquia La Ofisina Interapidi" no encontraba nada. Sin resultados, se prueba quitando palabras del final
+         (y esas palabras sirven para filtrar por departamento): "sopetran antioquia" → "sopetran". */
+      if (cut) { var w = pr.q.split(' '); pr.dep = (w.slice(w.length - cut).join(' ') + ' ' + pr.dep).trim(); pr.q = w.slice(0, w.length - cut).join(' '); }
+      this.cityQ = pr.q;
       clearTimeout(this.cityTimer);
       if (pr.q.length < 2) { this.cityList([], ''); return Promise.resolve([]); }
       var aliases = this.cityAliases(pr.q);
@@ -5868,11 +5874,13 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         var rows = (r.j && r.j.ciudades) || [];
         if (pr.dep) {   /* escribió el departamento: se queda con los que coinciden */
           var f = rows.filter(function (c) { var d = R.norm(c.departamento); return d.indexOf(pr.dep) === 0 || pr.dep.indexOf(d) === 0; });
+          if (!f.length && cut) f = rows.filter(function (c) { var d = R.norm(c.departamento); return pr.dep.indexOf(d) >= 0; });
           if (f.length) rows = f;
         }
         var all = aliases.concat(rows.filter(function (c) { return !aliases.some(function (a) { return a.municipio === c.municipio && a.departamento === c.departamento && !a.alias; }); }));
+        if (!all.length && pr.q.indexOf(' ') > 0 && seq === self.citySeq) return self.citySearchNow(raw, (cut || 0) + 1);
         if (!all.length && pr.q.length >= 4 && C.checkout.cityFuzzyApi) {   /* mal escrito: se sugieren los más parecidos */
-          return fetch(C.checkout.cityFuzzyApi, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: C.checkout.publicKey }, body: JSON.stringify({ q: pr.q }) })
+          return fetch(C.checkout.cityFuzzyApi, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: C.checkout.publicKey }, body: JSON.stringify({ q: cut ? self.cityParts(raw).q : pr.q }) })
             .then(function (r) { return r.ok ? r.json() : []; }, function () { return []; })
             .then(function (list) {
               var fz = (Array.isArray(list) ? list : []).map(function (c) { return { municipio: c.municipio, departamento: c.departamento, solo_pago_anticipado: !!c.solo_pago_anticipado, fuzzy: true }; });
@@ -5929,6 +5937,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     /* escribió la ciudad y no tocó la lista: se elige sola si hay una coincidencia clara */
     cityAuto: function () {
       var rows = this.cityRows || [], pr = this.cityParts(this.el('city').value);
+      if (this.cityQ && pr.q.indexOf(this.cityQ) === 0) pr.q = this.cityQ;   /* se buscó con menos palabras */
       if (!pr.q) return false;
       var base = function (x) { return R.norm(x).replace(/\b(d c|dc)\b/g, ' ').replace(/\s+/g, ' ').trim(); };
       var exact = rows.filter(function (c) { return c.alias ? base(c.alias.replace(/\(.*?\)/g, ' ')) === pr.q : base(c.municipio) === pr.q; });
@@ -6974,7 +6983,7 @@ window.EP_POPUP_MODE = 'off';
   var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;
   var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}
     if(!sid){if(n++<20)setTimeout(go,300);return;}
-    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E06',v:'A'}});
+    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E07',v:'A'}});
     var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
     try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}
   })();

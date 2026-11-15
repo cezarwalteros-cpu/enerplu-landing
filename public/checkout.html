@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0D0D0D">
+<title>Finaliza tu pedido · ENERPLU</title>
+<!-- Checkout aparte de ENERPLU (diseño aprobado por cesar 15-11). Pedidos por checkout-native slug enerplu. ?ep_test=1 = no crea pedido. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#F5F5F2; --card:#FFFFFF; --ink:#0D0D0D; --ink2:#4B5563; --mute:#6B7280; --line:#E5E7EB;
+  --gold:#D4AF37; --gold2:#E9CB6B; --goldd:#8A6410; --goldbg:#FDF8EC; --black:#0D0D0D; --black2:#1A1A1A;
+  --ok:#15803D; --okbg:#E8F5EC; --warn:#B42318; --radius:16px; --disp:Archivo,Inter,system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+a{color:inherit}
+
+/* barra superior */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--black)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(13,13,13,.97);backdrop-filter:blur(8px);color:#fff;border-bottom:1px solid #26221a}
+.top .in,.steps{max-width:460px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top .in{padding-top:11px;padding-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{display:flex;align-items:center;text-decoration:none}.brand img{height:32px;width:auto;display:block}
+.brand i{font-style:normal;color:var(--gold)}
+.secure{display:flex;align-items:center;gap:6px;font-size:12px;color:#D9D3C2;font-weight:500}
+.secure svg{color:var(--gold);width:15px;height:15px}
+.steps{display:flex;gap:6px;padding-bottom:10px}
+.st{flex:1;font-size:11px;color:#8C8577;letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+.st i{display:block;height:3px;border-radius:3px;background:#2C2922;margin-bottom:6px;overflow:hidden;position:relative}
+.st i::after{content:"";position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--goldd),var(--gold),var(--gold2));transition:width .6s ease}
+.st.on{color:#fff}.st.on i::after{width:100%}
+
+.wrap{max-width:460px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 150px max(16px,env(safe-area-inset-left,0px))}
+
+/* hero */
+.hero{margin-top:16px;border-radius:22px;overflow:hidden;position:relative;background:var(--black);color:#fff;display:grid;grid-template-columns:1fr 132px;min-height:148px;box-shadow:0 18px 40px -22px rgba(0,0,0,.55);border:1px solid #2A2519}
+.hero .tx{padding:18px 6px 18px 18px;display:flex;flex-direction:column;justify-content:center;gap:8px;position:relative;z-index:1}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.hero h1{font:900 22px/1.12 var(--disp);letter-spacing:-.005em;margin:0;text-wrap:balance}
+.hero p{margin:0;font-size:13px;color:#CFC8B6}
+.hero .ph{position:relative;background:#141414}
+.hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#fff}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 0% 0%,rgba(212,175,55,.18),transparent 60%);pointer-events:none}
+
+.perks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 4px}
+.perk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center;font-size:11.5px;font-weight:600;color:var(--ink2);display:flex;flex-direction:column;align-items:center;gap:5px;line-height:1.2}
+.perk svg{color:var(--goldd);width:20px;height:20px}
+
+/* secciones */
+.sec{margin-top:24px}
+.h{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+.num{width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--gold);display:grid;place-items:center;font:800 13px var(--disp);flex:none;border:1px solid var(--gold)}
+.h h2{font:800 19px/1.2 var(--disp);margin:0;letter-spacing:-.005em}
+.h small{display:block;font:500 12.5px Inter,sans-serif;color:var(--mute);letter-spacing:0;margin-top:2px}
+
+/* planes */
+.plans{display:flex;flex-direction:column;gap:12px}
+.plan{position:relative;display:grid;grid-template-columns:22px 70px minmax(0,1fr) auto;align-items:center;gap:9px;background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 12px 14px 12px;cursor:pointer;transition:border-color .2s,box-shadow .25s,transform .15s}
+.plan:active{transform:scale(.99)}
+.plan input{position:absolute;opacity:0;pointer-events:none}
+.radio{width:22px;height:22px;border-radius:50%;border:2px solid #C9C9C4;display:grid;place-items:center;transition:.2s;background:#fff}
+.radio::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--black);transform:scale(0);transition:transform .2s}
+.plan.sel{border-color:var(--gold);background:linear-gradient(180deg,#fff,var(--goldbg));box-shadow:0 0 0 4px rgba(212,175,55,.18),0 14px 30px -18px rgba(138,100,16,.5)}
+.plan.sel .radio,.pay.sel .radio{border-color:var(--black)}
+.plan.sel .radio::after,.pay.sel .radio::after{transform:scale(1)}
+.thumb{width:70px;height:48px;border-radius:10px;overflow:hidden;background:#111;display:grid;place-items:center}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:0 50%}
+.pn{font:800 15px/1.2 var(--disp)}
+.pd{font-size:12.5px;color:var(--ink2);margin-top:2px}
+.pg{font-size:12px;color:var(--goldd);font-weight:600;margin-top:3px;display:flex;gap:4px;align-items:flex-start}
+.pg svg{width:13px;height:13px;margin-top:2px}
+.save{white-space:nowrap;display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:11.5px;font-weight:700;color:var(--ok);background:var(--okbg);padding:3px 8px;border-radius:999px}
+.save svg{width:13px;height:13px}
+.pr{text-align:right;white-space:nowrap}
+.pr strong{display:block;font:800 16.5px var(--disp);letter-spacing:-.01em}
+.pr span{display:block;font-size:11.5px;color:var(--mute);margin-top:1px}
+.badge{position:absolute;top:-10px;left:44px;font:800 10.5px var(--disp);letter-spacing:.09em;padding:4px 10px;border-radius:999px;color:var(--black);background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));background-size:200% 100%;animation:sh 3s linear infinite;box-shadow:0 4px 10px -4px rgba(138,100,16,.6)}
+.badge.dark{background:var(--black);color:var(--gold);animation:none;border:1px solid var(--gold)}
+@keyframes sh{to{background-position:-200% 0}}
+
+/* incluye */
+.incl{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.incl h3{margin:0 0 10px;font:800 12px var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.list li{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.list li svg{color:var(--goldd);margin-top:1px}
+.list li em{font-style:normal;color:var(--mute);font-size:12.5px}
+.list li a{color:var(--goldd);font-weight:600}
+
+/* formulario */
+.form{display:grid;gap:12px}
+.f label{display:block;font-weight:600;font-size:13.5px;margin-bottom:5px}
+.f label span{color:var(--mute);font-weight:500}
+.inp{position:relative}
+.inp input{width:100%;height:52px;border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:0 44px;font:500 16px Inter,sans-serif;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+.inp input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,.2)}
+.inp .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--mute)}
+.inp .okc{position:absolute;right:14px;top:50%;transform:translateY(-50%) scale(.4);opacity:0;color:var(--ok);transition:.25s}
+.f.good .okc{opacity:1;transform:translateY(-50%) scale(1)}
+.f.good input{border-color:#9FD5B0}
+.f.bad input{border-color:#F0A39A}
+.hint{font-size:12px;color:var(--mute);margin-top:5px}
+.f.bad .hint{color:var(--warn)}
+.pre{position:absolute;left:44px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--ink2);font-size:16px}
+.inp.tel input{padding-left:82px}
+.sug{position:absolute;left:0;right:0;top:56px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 30px -16px rgba(0,0,0,.25);z-index:5;overflow:hidden}
+.sug button{display:block;width:100%;text-align:left;border:0;background:none;padding:12px 16px;font:500 15px Inter,sans-serif;color:var(--ink);border-bottom:1px solid #F0F0EC;cursor:pointer}
+.sug button:hover{background:var(--goldbg)}
+.sug button em{font-style:normal;color:var(--mute)}
+.sug .none{padding:12px 16px;color:var(--mute);font-size:14px}
+
+/* pago */
+.pays{display:grid;gap:10px}
+.pay{position:relative;background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:14px;cursor:pointer;display:grid;grid-template-columns:22px 1fr;gap:12px;transition:.2s}
+.pay input{position:absolute;opacity:0}
+.pay.sel{border-color:var(--gold);background:linear-gradient(180deg,#fff,var(--goldbg));box-shadow:0 0 0 4px rgba(212,175,55,.18)}
+.pay.off{opacity:.5;pointer-events:none}
+.pt{font-weight:700;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.pt .tag{font-size:11px;font-weight:800;color:var(--ok);background:var(--okbg);padding:3px 8px;border-radius:999px}
+.pt .tag.g{color:var(--black);background:var(--gold2)}
+.ps{font-size:12.5px;color:var(--ink2);margin-top:3px}
+.logos{display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.logos img{display:block;height:24px;width:auto}
+.logos img.bc{height:22px}
+
+/* resumen */
+.sum{margin-top:24px;background:var(--black);color:#fff;border-radius:22px;padding:18px;position:relative;overflow:hidden;border:1px solid #2A2519}
+.sum::after{content:"";position:absolute;right:-60px;top:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.22),transparent 70%);pointer-events:none}
+.sum h3{margin:0 0 8px;font:800 12px var(--disp);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:#D9D3C2;padding:4px 0}
+.row.g{color:#8FE0A8}
+.row.t{border-top:1px solid #2C2922;margin-top:8px;padding-top:12px;color:#fff;font-size:15px;font-weight:700;align-items:baseline}
+.row.t strong{font:900 27px var(--disp);color:var(--gold);letter-spacing:-.01em}
+.note{font-size:12px;color:#A39C8A;margin-top:6px;display:flex;gap:6px;align-items:center}
+.note svg{width:14px;height:14px;color:var(--gold)}
+
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.tr{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--ink2);font-weight:500;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+.tr svg{color:var(--goldd)}
+.tr a{color:var(--ink);font-weight:600}
+
+/* CTA fija en celular */
+.cta{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(180deg,rgba(245,245,242,0),var(--bg) 28%);padding:18px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cta .in{max-width:460px;margin:0 auto}
+.btn{width:100%;min-height:60px;border:0;border-radius:16px;cursor:pointer;color:var(--black);font:900 16px/1.15 var(--disp);letter-spacing:.02em;background:linear-gradient(180deg,#F1D67E,var(--gold) 55%,#B8921F);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 14px;box-shadow:0 16px 30px -14px rgba(138,100,16,.7),inset 0 1px 0 rgba(255,255,255,.4)}
+.btn::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);animation:gl 2.8s ease-in-out infinite}
+@keyframes gl{0%{left:-60%}60%,100%{left:130%}}
+.btn svg{width:20px;height:20px}
+.btn.miss{background:var(--black);color:#fff;box-shadow:none}
+.btn.miss::after{display:none}
+.btn.miss em{font-style:normal;color:var(--gold);font-weight:700}
+.btn[disabled]{opacity:.8}
+.sub{text-align:center;font-size:12px;color:var(--ink2);margin-top:7px;display:flex;justify-content:center;gap:6px;align-items:center}
+.sub svg{width:14px;height:14px;color:var(--ok)}
+.err{display:none;margin-bottom:10px;background:#FEF3F2;border:1px solid #FDA29B;color:#912018;border-radius:12px;padding:12px 14px;font-size:14px}
+.err.show{display:block}
+.err a{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;padding:13px;border-radius:12px;background:#16A34A;color:#fff;font-weight:800;text-decoration:none}
+.err a svg{width:18px;height:18px}
+
+.ft{margin-top:18px;text-align:center;font-size:12px;color:var(--mute)}
+.ft nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;margin-bottom:8px}
+.ft a{color:var(--ink2);text-decoration:underline;text-underline-offset:2px}
+.ft p{margin:0;line-height:1.45}
+
+/* gracias */
+.ok{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px}
+.okc2{background:#fff;border-radius:24px;max-width:390px;width:100%;padding:28px 22px 22px;text-align:center;animation:pop .4s cubic-bezier(.2,1.4,.4,1);max-height:calc(100vh - 32px);overflow:auto}
+@keyframes pop{from{transform:scale(.85);opacity:0}}
+.ring{width:72px;height:72px;margin:0 auto 12px;border-radius:50%;background:var(--black);display:grid;place-items:center;color:var(--gold);border:2px solid var(--gold)}
+.ring svg{width:36px;height:36px;stroke-width:2.4;stroke-dasharray:40;stroke-dashoffset:40;animation:dr .6s .2s forwards}
+@keyframes dr{to{stroke-dashoffset:0}}
+.okc2 h3{font:900 23px var(--disp);margin:0 0 8px}
+.okc2 .num2{display:inline-block;margin:0 0 12px;background:var(--goldbg);color:var(--goldd);font-weight:700;border-radius:999px;padding:5px 12px;font-size:13px;border:1px solid #EBDDB0}
+.okc2 p{color:var(--ink2);margin:0 0 14px;font-size:14px}
+.okl{list-style:none;margin:0 0 12px;padding:12px 14px;background:var(--bg);border-radius:14px;text-align:left;display:grid;gap:6px;font-size:13.5px}
+.okl li{display:flex;justify-content:space-between;gap:10px}
+.okl li.t{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-weight:800}
+.okc2 .eta{display:flex;gap:8px;align-items:center;justify-content:center;font-size:13px;color:var(--ink2);margin-bottom:14px}
+.okc2 .eta svg{color:var(--goldd)}
+.okc2 button{height:48px;border-radius:14px;border:0;background:var(--black);color:#fff;font:700 15px Inter,sans-serif;padding:0 26px;cursor:pointer;width:100%}
+
+/* escritorio: dos columnas, resumen y botón a la derecha */
+@media (min-width:960px){
+  .top .in,.steps{max-width:1040px}
+  .steps{max-width:1040px}
+  .wrap{max-width:1040px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:40px;align-items:start;padding-bottom:60px}
+  .side{position:sticky;top:96px}
+  .sum{margin-top:16px}
+  .cta{position:static;background:none;padding:14px 0 0}
+  .hero{grid-template-columns:1fr 220px;min-height:180px}
+  .hero h1{font-size:28px}
+  .plans{gap:14px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+ <symbol id="truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+ <symbol id="cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 10v4M18 10v4"/></symbol>
+ <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+ <symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+ <symbol id="box" viewBox="0 0 24 24"><path d="M3 7.5L12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></symbol>
+ <symbol id="gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3 8 4.5 9 8 12 8zM12 8s1.5-5 4-3.5S15 8 12 8z"/></symbol>
+ <symbol id="bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+ <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+ <symbol id="phone" viewBox="0 0 24 24"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
+ <symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+ <symbol id="home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+ <symbol id="note" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 9h8M8 13h8M8 17h5"/></symbol>
+ <symbol id="chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></symbol>
+ <symbol id="bank" viewBox="0 0 24 24"><path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/></symbol>
+ <symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+ <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="in">
+    <a class="brand" href="/nueva" aria-label="ENERPLU"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,h_64/v1775103361/logo_enerplu_fgdhwk.webp" alt="ENERPLU" width="80" height="32"></a>
+    <div class="secure"><svg class="i"><use href="#lock"/></svg>Compra 100% segura</div>
+  </div>
+  <div class="steps"><div class="st on" id="s1"><i></i>1 · Tu plan</div><div class="st" id="s2"><i></i>2 · Tus datos</div><div class="st" id="s3"><i></i>3 · Pago</div></div>
+</header>
+
+<div id="tb" hidden style="background:#B42318;color:#fff;text-align:center;font:700 13px Inter,sans-serif;padding:8px">MODO PRUEBA: este pedido no se crea</div>
+<input id="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+<main class="wrap">
+ <div class="mainc">
+  <section class="hero">
+    <div class="tx">
+      <div class="eyebrow">Estás a un paso</div>
+      <h1>Tu pedido llega discreto y lo pagas al recibir</h1>
+      <p>Envío gratis en bolsa negra sellada.</p>
+    </div>
+    <div class="ph"><img src="/img/ck/dominio.jpg" alt="Plan Dominio Total de ENERPLU" width="700" height="350"></div>
+  </section>
+
+  <div class="perks">
+    <div class="perk"><svg class="i"><use href="#truck"/></svg>Envío GRATIS a toda Colombia</div>
+    <div class="perk"><svg class="i"><use href="#cash"/></svg>Pagas al recibir en tu casa</div>
+    <div class="perk"><svg class="i"><use href="#bag"/></svg>Bolsa negra sellada y discreta</div>
+  </div>
+
+  <!-- PASO 1 -->
+  <section class="sec" id="paso1">
+    <div class="h"><div class="num">1</div><h2>Elige tu plan<small>Entre más cajas, menos pagas por cada tableta</small></h2></div>
+    <div class="plans" id="plans"></div>
+    <div class="incl">
+      <h3>Tu pedido incluye</h3>
+      <ul class="list" id="incl"></ul>
+    </div>
+  </section>
+
+  <!-- PASO 2 -->
+  <section class="sec" id="paso2">
+    <div class="h"><div class="num">2</div><h2>¿A dónde te lo enviamos?<small>Solo 4 datos. Toma menos de 1 minuto.</small></h2></div>
+    <div class="form">
+      <div class="f" data-v="name">
+        <label for="n">Nombre y apellido</label>
+        <div class="inp"><svg class="i ic"><use href="#user"/></svg><input id="n" autocomplete="name" placeholder="Ej: Carlos Gómez"><svg class="i okc"><use href="#check"/></svg></div>
+        <div class="hint">Quien recibe el paquete</div>
+      </div>
+      <div class="f" data-v="tel">
+        <label for="t">Celular con WhatsApp</label>
+        <div class="inp tel"><svg class="i ic"><use href="#phone"/></svg><span class="pre">+57</span><input id="t" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="300 123 4567"><svg class="i okc"><use href="#check"/></svg></div>
+        <div class="hint">Por aquí te confirmamos el pedido. 10 números.</div>
+      </div>
+      <div class="f" data-v="city">
+        <label for="c">Ciudad o municipio</label>
+        <div class="inp"><svg class="i ic"><use href="#pin"/></svg><input id="c" autocomplete="off" placeholder="Escribe y elige de la lista"><svg class="i okc"><use href="#check"/></svg><div class="sug" id="sug" hidden></div></div>
+        <div class="hint">Llegamos a toda Colombia</div>
+      </div>
+      <div class="f" data-v="addr">
+        <label for="a">Dirección</label>
+        <div class="inp"><svg class="i ic"><use href="#home"/></svg><input id="a" autocomplete="street-address" placeholder="Ej: Calle 10 # 43-25"><svg class="i okc"><use href="#check"/></svg></div>
+        <div class="hint">Calle, carrera o vereda con número si tiene</div>
+      </div>
+      <div class="f" data-v="opt">
+        <label for="b">Barrio, apto o referencia <span>(opcional)</span></label>
+        <div class="inp"><svg class="i ic"><use href="#note"/></svg><input id="b" placeholder="Ej: Barrio Laureles, apto 301"><svg class="i okc"><use href="#check"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASO 3 -->
+  <section class="sec" id="paso3">
+    <div class="h"><div class="num">3</div><h2>¿Cómo quieres pagar?<small>Elige una opción</small></h2></div>
+    <div class="pays">
+      <label class="pay sel" data-m="cod">
+        <input type="radio" name="pay" checked><span class="radio"></span>
+        <span><div class="pt">Pago al recibir <span class="tag">SIN RIESGO</span></div><div class="ps" id="codTx">Pagas en efectivo cuando el paquete llegue a tu puerta. Hoy no pagas nada.</div></span>
+      </label>
+      <label class="pay" data-m="bold">
+        <input type="radio" name="pay"><span class="radio"></span>
+        <span><div class="pt">Pagar ahora en línea <span class="tag g" id="boldTag">-$12.000</span></div><div class="ps">Tarjeta, PSE o Nequi. Pago protegido por Bold.</div>
+        <div class="logos"><img src="/img/pay/visa.svg" alt="Visa" width="38" height="24"><img src="/img/pay/master.svg" alt="Mastercard" width="38" height="24"><img src="/img/pay/pse.svg" alt="PSE" width="38" height="24"><img src="/img/pay/nequi.svg" alt="Nequi" width="38" height="24"></div></span>
+      </label>
+      <label class="pay" data-m="transfer" hidden>
+        <input type="radio" name="pay"><span class="radio"></span>
+        <span><div class="pt">Transferencia Bancolombia <span class="tag g" id="trTag">-$12.000</span></div><div class="ps">Te damos la llave y envías el comprobante por WhatsApp.</div>
+        <div class="logos"><img class="bc" src="/img/pay-bancolombia.webp" alt="Bancolombia" height="22"><img class="bc" src="/img/pay-breb.webp" alt="Bre-B" height="17" style="height:17px"></div></span>
+      </label>
+    </div>
+  </section>
+ </div>
+
+ <aside class="side">
+  <section class="sum">
+    <h3>Resumen</h3>
+    <div class="row"><span id="sumName">Plan Dominio Total</span><span id="sumSub">$129.900</span></div>
+    <div id="sumGifts"></div>
+    <div class="row g"><span>Envío</span><span>GRATIS</span></div>
+    <div class="row g" id="rowDisc" hidden><span>Descuento pago en línea</span><span>-$12.000</span></div>
+    <div class="row t"><span>Total</span><strong id="tot">$129.900</strong></div>
+    <div class="note" id="sumNote"><svg class="i"><use href="#cash"/></svg><span>Lo pagas cuando lo recibes</span></div>
+  </section>
+
+  <div class="cta"><div class="in">
+    <div class="err" id="err" role="alert"></div>
+    <button class="btn" id="go" type="button"><span id="goTx">PÍDELO YA - Pagas al recibir</span><svg class="i"><use href="#arrow"/></svg></button>
+    <div class="sub" id="goSub"><svg class="i"><use href="#shield"/></svg><span>Hoy no pagas nada · Envío gratis</span></div>
+  </div></div>
+
+  <div class="trust">
+    <div class="tr"><svg class="i"><use href="#truck"/></svg>Envío gratis a todo el país</div>
+    <div class="tr"><svg class="i"><use href="#cash"/></svg>Pagas al recibir</div>
+    <div class="tr"><svg class="i"><use href="#shield"/></svg>Registro INVIMA NSA-2314-2025</div>
+    <div class="tr"><svg class="i"><use href="#check"/></svg><a href="/garantia">Garantía Real 15 días</a></div>
+  </div>
+
+  <footer class="ft">
+    <nav><a href="/terminos">Términos y condiciones</a><a href="/garantia">Garantía Real</a></nav>
+    <p>ENERPLU es un suplemento alimenticio con registro INVIMA NSA-2314-2025, no un medicamento.</p>
+  </footer>
+ </aside>
+</main>
+
+<div class="ok" id="ok" hidden><div class="okc2" id="okBox" tabindex="-1"></div></div>
+
+<script src="/js/checkout-ep.js" defer></script>
+</body>
+</html>

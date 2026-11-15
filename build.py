@@ -287,7 +287,7 @@ AB5_HEAD = """<script>
 </script>"""
 # Popup de 5% en la primera compra (fuente/popup5.js, prueba "popup5" A vs B, código ENERPLU5 en el CRM). Sale en "/" y en "/b".
 # POPUP5 = False lo apaga. Necesita discount_codes ENERPLU5 + checkout_pages.show_coupon en el CRM.
-POPUP5 = True
+POPUP5 = False   # 15-nov cesar 'Sí, apagarlo': en 5 días no subió pedidos (N 1,27 % / A 1,44 % / B 1,31 %) y E-07 queda sin popup en ambas
 if POPUP5:
     html = must(html, '</head>', '<style>' + (ROOT / 'fuente' / 'popup5.css').read_text() + '</style>\n</head>')
     html = must(html, '</body>', '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n</body>')
@@ -460,7 +460,8 @@ if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
     _pd = must(_pd, '<legend class="ep-of-legend">¿Cómo quieres pagar?</legend>', '<legend class="ep-of-legend"><span class="ck3-n">3</span>¿Cómo quieres pagar?</legend>')
     _pd = must(_pd, _GA, (ROOT / 'fuente' / 'pedido' / 'garantia.html').read_text())
     # sin popup de 5% en el checkout aparte (tapaba el formulario y se quedaba con el botón atrás)
-    _pd = must(_pd, '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n', '')
+    if POPUP5:
+        _pd = must(_pd, '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n', '')
     # el plan del enlace (?plan=) vale desde el arranque, para que ViewContent salga con el plan correcto
     _pd = must(_pd, 'var state = { pack: C.defaultPack };', "var state = { pack: ({ basico: 'inicial', inicial: 'inicial', dominio: 'dominio', elite: 'elite' })[(new URLSearchParams(location.search).get('plan') || '').toLowerCase()] || C.defaultPack };")
     _pd, _n = re.subn(r'<div class="eph-libros">.*?</div>', '<div class="eph-libros pd-libros"><img src="/img/guias-libros.webp" alt="Guías Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" width="1200" height="805" loading="lazy"></div>', _pd, count=1, flags=re.S)
@@ -502,7 +503,7 @@ if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
                  r'<style>\s*/\* Popup de 5%[\s\S]*?</style>\s*',
                  r'<style>\[data-id="gpGrrwtDmE"\] img\{cursor:pointer\}</style>\s*']:
         _pd, _n = re.subn(_pat, '', _pd)
-        assert _n >= 1, 'pedido liviano: no se encontró ' + _pat
+        assert _n >= 1 or (not POPUP5 and 'Popup de 5%' in _pat), 'pedido liviano: no se encontró ' + _pat
     (OUT / 'pedido.html').write_text(_pd)
 (OUT / 'index.html').write_text(index_html)
 if AB_E04 and not HERO_V2:

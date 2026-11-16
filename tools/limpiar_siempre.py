@@ -9,10 +9,12 @@ import pathlib, re, sys
 from bs4 import BeautifulSoup, Comment
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SRC = ROOT / 'public' / 'siempre.html'
-OUT = ROOT / 'public' / 'limpia.html'
+# uso normal (desde build.py): python3 tools/limpiar_siempre.py public/index.html public/index.html  (limpia en el sitio)
+SRC = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'public' / 'siempre.html'
+OUT = pathlib.Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / 'public' / 'limpia.html'
 
-soup = BeautifulSoup(SRC.read_text(), 'html.parser')
+ANTES = SRC.read_text()
+soup = BeautifulSoup(ANTES, 'html.parser')
 head, body = soup.head, soup.body
 
 # ---------- head ----------
@@ -133,4 +135,4 @@ html = html.replace("fbq('init', '1248121626590977');\nfbq('track', 'PageView');
                     "if(!/ep_test=1/.test(location.search)){fbq('init', '1248121626590977');\nfbq('track', 'PageView');}")
 html = re.sub(r'\n\s*\n+', '\n', html)
 OUT.write_text(html)
-print('limpia.html', len(html), 'bytes (antes', len(SRC.read_text()), ')')
+print(OUT.name, 'limpia:', len(html), 'bytes (antes', len(ANTES), ')')

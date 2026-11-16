@@ -619,8 +619,9 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
 # + etiqueta e08 en Clarity. Medición: ab_assign E08 por sid + checkout_attempts.session_id. Desde 2026-11-16 4:00 am.
 AB_E08 = True
 E08_INICIO_MS = 1794805200000   # 2026-11-16T05:00:00Z = 12:00 am Bogotá
+E08_PAUSA_MS = (1794834900000, 1794842100000)  # 16-11 13:15Z-15:15Z: todo a la de siempre, no cuenta (igual que middleware.js)
 def e08_js(v):
-    return ("<!--E08--><script>(function(){try{if(Date.now()<%d)return;var q=new URLSearchParams(location.search);"
+    return ("<!--E08--><script>(function(){try{var T=Date.now();if(T<%d||(T>=%d&&T<%d))return;var q=new URLSearchParams(location.search);"
             "if(!/(?:^|; )ep_e08=/.test(document.cookie))document.cookie='ep_e08=%s; Path=/; Max-Age=2592000; SameSite=Lax; Secure';"
             "try{window.clarity&&clarity('set','e08','%s')}catch(e){}"
             "if(q.get('ep_test')==='1')return;"
@@ -631,7 +632,7 @@ def e08_js(v):
             "extra:{exp:'E08',v:'%s'}});var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';"
             "try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))"
             "fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}})();"
-            "}catch(e){}})();</script><!--/E08-->\n") % (E08_INICIO_MS, v, v, v)
+            "}catch(e){}})();</script><!--/E08-->\n") % (E08_INICIO_MS, E08_PAUSA_MS[0], E08_PAUSA_MS[1], v, v, v)
 import subprocess as _sp
 _sp.run(['python3', str(ROOT / 'tools' / 'pro_page.py')] + (['--live'] if AB_E08 else []), check=True)
 for _f, _v in (('index.html', 'A'), ('nueva.html', 'C'), ('pro.html', 'B')):

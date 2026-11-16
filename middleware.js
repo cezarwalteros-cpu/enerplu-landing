@@ -7,7 +7,7 @@ const INICIO = Date.parse('2026-11-16T05:00:00Z'); // 12:00 am Bogotá (cesar 15
 const DESTINO = { A: '/siempre', B: '/pro', C: '/nueva' };
 const HOSTS = ['pedido.enerplu.com', 'losgomosos.lat', 'www.losgomosos.lat'];
 
-export const config = { matcher: ['/', '/nueva', '/products/:path*', '/collections/:path*'] };
+export const config = { matcher: ['/', '/nueva', '/propuesta', '/products/:path*', '/collections/:path*'] };
 
 const sigue = () => new Response(null, { headers: { 'x-middleware-next': '1' } });
 

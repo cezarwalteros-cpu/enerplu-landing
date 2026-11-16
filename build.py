@@ -619,7 +619,7 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
 # + etiqueta e08 en Clarity. Medición: ab_assign E08 por sid + checkout_attempts.session_id. Desde 2026-11-16 4:00 am.
 AB_E08 = True
 E08_INICIO_MS = 1794805200000   # 2026-11-16T05:00:00Z = 12:00 am Bogotá
-E08_PAUSA_MS = (1794834900000, 1794842100000)  # 16-11 13:15Z-15:15Z: todo a la de siempre, no cuenta (igual que middleware.js)
+E08_PAUSA_MS = (1794834900000, 4070908800000)  # desde 16-11 13:15Z hasta que cesar diga: todo a la de siempre, no cuenta (igual que middleware.js)
 def e08_js(v):
     return ("<!--E08--><script>(function(){try{var T=Date.now();if(T<%d||(T>=%d&&T<%d))return;var q=new URLSearchParams(location.search);"
             "if(!/(?:^|; )ep_e08=/.test(document.cookie))document.cookie='ep_e08=%s; Path=/; Max-Age=2592000; SameSite=Lax; Secure';"

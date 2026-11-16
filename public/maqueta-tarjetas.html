@@ -104,7 +104,7 @@ img{display:block;max-width:100%}
 <body>
 <div class="wrap">
   <p class="h">Maquetas de las tarjetas de planes</p>
-  <p class="sub">3 opciones distintas. Mismos precios y regalos de hoy. Toca para elegir plan en cada una.</p>
+  <p class="sub">3 opciones distintas. Mismos precios y regalos de hoy (Básico: sachet Velvet; Dominio y Élite: sachet + spray retardante). Toca para elegir plan en cada una.</p>
 
   <!-- ===================== A ===================== -->
   <div class="lab"><b>A</b><span>Dominio protagonista</span></div>
@@ -125,6 +125,7 @@ img{display:block;max-width:100%}
       <div class="a-inc">
         <div>2 cajas de ENERPLU (20 tabletas)</div>
         <div>Spray retardante 30 ml <b class="g">gratis</b></div>
+        <div>Sachet Velvet de obsequio</div>
         <div>Envío gratis y pagas al recibir</div>
       </div>
       <div class="a-save">Ahorras $49.900</div>
@@ -133,7 +134,7 @@ img{display:block;max-width:100%}
       <div class="a-row">
         <span class="a-dot"></span>
         <div class="a-sm"><img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Elite_%20Maximo%20Ahorro.png?width=120&height=120&resize=contain&quality=80" alt="Plan Élite"></div>
-        <div class="a-mid"><b>Élite · 4 cajas</b><div>40 tabletas + spray retardante gratis</div></div>
+        <div class="a-mid"><b>Élite · 4 cajas</b><div>40 tabletas + spray retardante + sachet Velvet</div></div>
         <div class="a-r money">$159.900<small>$3.998 por ocasión</small></div>
       </div>
     </div>
@@ -141,7 +142,7 @@ img{display:block;max-width:100%}
       <div class="a-row">
         <span class="a-dot"></span>
         <div class="a-sm"><img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Basico%20Enerplu.png?width=120&height=120&resize=contain&quality=80" alt="Plan Básico"></div>
-        <div class="a-mid"><b>Básico · 1 caja</b><div>10 tabletas, para probar</div></div>
+        <div class="a-mid"><b>Básico · 1 caja</b><div>10 tabletas + sachet Velvet, para probar</div></div>
         <div class="a-r money">$89.900</div>
       </div>
     </div>
@@ -179,6 +180,7 @@ img{display:block;max-width:100%}
     <div class="r"><div>Tabletas</div><div>10</div><div>20</div><div>40</div></div>
     <div class="r"><div>Por ocasión</div><div class="money">$8.990</div><div class="money">$6.495</div><div class="money">$3.998</div></div>
     <div class="r"><div>Spray retardante 30 ml</div><div class="no">✕</div><div class="ok">✓ gratis</div><div class="ok">✓ gratis</div></div>
+    <div class="r"><div>Sachet Velvet</div><div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div></div>
     <div class="r"><div>3 guías digitales</div><div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div></div>
     <div class="r"><div>Ahorras</div><div class="no">–</div><div class="money ok">$49.900</div><div class="money ok">$199.700</div></div>
   </div>
@@ -228,7 +230,7 @@ function pintaC(k) {
   document.getElementById('c-inc').innerHTML =
     '<div class="y">' + d.q.replace(' · ', ' de ENERPLU (') + ')</div>' +
     (d.spray ? '<div class="y">Spray retardante 30 ml gratis</div>' : '<div class="n">Spray retardante (viene desde 2 cajas)</div>') +
-    '<div class="y">3 guías digitales de regalo</div><div class="y">Envío gratis y pagas al recibir</div>';
+    '<div class="y">Sachet Velvet de obsequio</div><div class="y">3 guías digitales de regalo</div><div class="y">Envío gratis y pagas al recibir</div>';
 }
 pintaC('dominio');
 document.querySelectorAll('[data-group]').forEach(function (g) {

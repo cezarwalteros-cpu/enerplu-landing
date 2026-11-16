@@ -640,6 +640,8 @@ for _f, _v in (('index.html', 'A'), ('nueva.html', 'C'), ('pro.html', 'B')):
     if AB_E08:
         _t = must(_t, '</body>', e08_js(_v) + '</body>')
     (OUT / _f).write_text(_t)
+# página de siempre LIMPIA (cesar 16-11 10:44 am "Ok publica"): sin envoltorios de GemPages ni CSS de Shopify, mismo diseño
+_sp.run(['python3', str(ROOT / 'tools' / 'limpiar_siempre.py'), str(OUT / 'index.html'), str(OUT / 'index.html')], check=True)
 _s = OUT / 'siempre.html'
 if AB_E08:
     _s.write_text((OUT / 'index.html').read_text().replace('<head>', '<head>\n<meta name="robots" content="noindex">', 1))

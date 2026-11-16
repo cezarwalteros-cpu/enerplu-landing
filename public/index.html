@@ -5181,12 +5181,12 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
           '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión</span></span>' +
           '<span class="eph-c-price"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
         '</span>' +
-        '<span class="t2-list"><span>✓ Retardante 30 ml <b>gratis</b></span><span>✓ Velvet <b>gratis</b></span>' + (save > 0 ? '<span class="t2-save">Ahorras ' + R.money(save) + '</span>' : '') + '</span>' +
+        '<span class="t2-list"><span>✓ Spray retardante 30 ml <b>gratis</b></span>' + (save > 0 ? '<span class="t2-save">Ahorras ' + R.money(save) + '</span>' : '') + '</span>' +
       '</label>';
       if (L.basic) return '<label class="' + cls + '" data-pack="' + p.id + '">' + head +
         '<span class="eph-c-row"><span class="eph-check" aria-hidden="true"></span>' + img +
           '<span class="eph-c-info"><span class="eph-name">' + R.esc(p.name) + ' <small>· para probar</small></span><span class="eph-qty">' + qty + '</span>' +
-          '<span class="t2-miss">Sin retardante ni Velvet</span></span>' +
+          '<span class="t2-miss">Sin el spray retardante</span></span>' +
           '<span class="eph-c-price"><span class="eph-price">' + R.money(p.price) + '</span></span>' +
         '</span></label>';
       return '<label class="' + cls + '" data-pack="' + p.id + '">' + head +
@@ -5194,7 +5194,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         '<span class="eph-c-row"><span class="eph-check" aria-hidden="true"></span>' + img +
           '<span class="eph-c-info"><span class="eph-name">' + R.esc(p.name) + '</span><span class="eph-qty">' + qty + '</span>' +
           '<span class="t2-best">El menor precio: ' + R.money(p.price / p.tablets) + ' por ocasión</span>' +
-          '<span class="t2-same">+ los mismos regalos del Dominio</span></span>' +
+          '<span class="t2-same">+ spray retardante gratis</span></span>' +
           '<span class="eph-c-price"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
         '</span></label>';
     }).join('');
@@ -5202,7 +5202,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
       var pct = was > 0 ? Math.round(save / was * 100) : 0;
-      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Retardante 30 ml + Velvet</span>' : '';
+      var gifts = L.inc.length ? '<span>🎁 <b>Gratis:</b> Spray retardante 30 ml</span>' : '';
       return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
         '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
         (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +

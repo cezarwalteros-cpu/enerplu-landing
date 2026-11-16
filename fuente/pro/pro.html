@@ -189,17 +189,67 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 .arsenal .p-ic{width:30px;height:30px;margin:16px auto 0;color:var(--gold);animation:bob 1.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
-/* checkout dentro de la página: marco oscuro alrededor */
-.ckn-sec{background:#F4F2EE;padding:18px 0 10px;border-radius:26px 26px 0 0;position:relative;z-index:2;box-shadow:0 -30px 80px -20px rgba(var(--g-rgb),.35)}
+/* checkout dentro de la página, en oscuro con el acento de la paleta */
+.ckn-sec{background:var(--k);padding:10px 0 10px;position:relative;z-index:2;border-top:1px solid rgba(var(--g-rgb),.25)}
 #ckn{max-width:620px;margin:0 auto}
+#ep-order #ckn{--bg:var(--k);--card:var(--k2);--ink:var(--tx);--ink2:rgba(242,239,232,.72);--mute:rgba(242,239,232,.55);--line:rgba(255,255,255,.1);--gold:rgb(var(--g-rgb));--gold2:rgb(var(--gl-rgb));--goldd:rgb(var(--gl-rgb));--goldbg:rgba(var(--g-rgb),.1);--black:#000;--black2:#141414;--okbg:rgba(21,128,61,.18);color-scheme:dark;background:var(--k);color:var(--tx)}
+#ep-order #ckn .radio{background:transparent;border-color:rgba(255,255,255,.3)}
+#ep-order #ckn .radio::after{background:var(--gold)}
+#ep-order #ckn .plan.sel .radio,#ep-order #ckn .pay.sel .radio{border-color:var(--gold)}
+#ep-order #ckn .plan.sel,#ep-order #ckn .pay.sel{background:linear-gradient(180deg,rgba(var(--g-rgb),.16),rgba(var(--g-rgb),.04));box-shadow:0 0 0 4px rgba(var(--g-rgb),.16),0 14px 30px -18px rgba(var(--g-rgb),.6)}
+#ep-order #ckn .badge{color:var(--on-acc)}
+#ep-order #ckn .num{background:var(--gold);color:var(--on-acc);border-color:var(--gold)}
+#ep-order #ckn .pt .tag.g{color:var(--on-acc)}
+#ep-order #ckn .btn{color:var(--on-acc);background:linear-gradient(180deg,var(--gold-l),var(--gold) 55%,var(--gold-d));box-shadow:0 14px 40px -12px rgba(var(--g-rgb),.7)}
+#ep-order #ckn .btn.miss{background:#1d1d1d;color:var(--tx);box-shadow:none}
+#ep-order #ckn .sug{background:var(--k2)}
+#ep-order #ckn .sug button{border-bottom-color:rgba(255,255,255,.06)}
+#ep-order #ckn .inp input{background:#0f0b0b}
+#ep-order #ckn .inp input::placeholder{color:rgba(242,239,232,.38)}
+#ep-order #ckn .sum{background:#000;border-color:rgba(var(--g-rgb),.3)}
+#ep-order #ckn .hero{border:1px solid rgba(var(--g-rgb),.3)}
+#ep-order #ckn .okc2{background:var(--k2);color:var(--tx)}
+#ep-order #ckn .top{border-bottom-color:rgba(var(--g-rgb),.3)}
 
 /* reseñas en banda clara */
-#resenas{--bg:#F4F2EE;--bg2:#ECE9E2;--ink:#0D0D0D;--mut:#4B5563;--faint:#6B7280;--line:#E2DED5;--gold:#D4AF37;--gold-d:#8A6410;--gold-bg:#FDF8EC;--ok:#15803D;--no:#B42318;--disp:Archivo,Inter,system-ui,sans-serif;color:#0D0D0D;background:#F4F2EE;padding:56px 0 64px}
+#resenas{--bg:var(--k);--bg2:var(--k2);--ink:#F2EFE8;--mut:rgba(242,239,232,.65);--faint:rgba(242,239,232,.5);--line:rgba(255,255,255,.1);--gold:rgb(var(--g-rgb));--gold-d:rgb(var(--gl-rgb));--gold-bg:rgba(var(--g-rgb),.1);--ok:#4ADE80;--no:#F87171;--disp:Archivo,Inter,system-ui,sans-serif;color:#F2EFE8;background:var(--k);padding:72px 0 64px}
 #resenas .w{max-width:1120px}
-#resenas .tagl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8A6410}
-#resenas h2{margin-top:10px;font-family:Archivo,Inter,sans-serif;font-stretch:72%;font-weight:900;text-transform:uppercase;line-height:.92;font-size:clamp(38px,11vw,80px);color:#0D0D0D}
-#resenas h2 em{font-style:normal;color:#8A6410}
+#resenas .tagl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+#resenas h2{margin-top:10px;font-family:Archivo,Inter,sans-serif;font-stretch:72%;font-weight:900;text-transform:uppercase;line-height:.92;font-size:clamp(38px,11vw,80px);color:var(--tx)}
+#resenas h2 em{font-style:normal;color:var(--gold)}
 /*RESENAS_CSS*/
+#resenas .enerplu-review-summary-card{background:#000;color:#F2F2F2;border:1px solid rgba(var(--g-rgb),.3)}
+#resenas .enerplu-review-summary-card::before{background:radial-gradient(circle,rgba(var(--g-rgb),.3),transparent 65%)}
+#resenas .enerplu-review-score strong{background:linear-gradient(120deg,var(--gold-l),var(--gold) 45%,var(--gold-d));-webkit-background-clip:text;background-clip:text}
+#resenas .enerplu-review-bar-row progress::-webkit-progress-value{background:linear-gradient(90deg,var(--gold-d),var(--gold))}
+#resenas .enerplu-review-bar-row progress::-moz-progress-bar{background:var(--gold)}
+#resenas .enerplu-review-item{background:var(--k2)}
+#resenas .enerplu-review-filter,#resenas .enerplu-review-useful,#resenas .enerplu-review-more{background:transparent;border-color:rgba(255,255,255,.25);color:var(--tx)}
+#resenas .enerplu-review-filter[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:var(--on-acc)}
+#resenas .enerplu-review-more:hover,#resenas .enerplu-review-filter:hover{background:rgba(255,255,255,.08);color:var(--tx)}
+#resenas .enerplu-review-rating select{background:var(--k2);color:var(--tx);border-color:rgba(255,255,255,.2)}
+#resenas .enerplu-review-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:520px;margin:8px auto 0;min-height:60px;padding:0 22px;border-radius:14px;border:0;background:linear-gradient(180deg,var(--gold-l),rgb(var(--g-rgb)) 50%,var(--gold-d));color:var(--on-acc);font:900 17px/1.1 Archivo,Inter,sans-serif;font-stretch:85%;text-transform:uppercase;letter-spacing:.03em;text-decoration:none}
+#resenas .enerplu-review-cta svg,#resenas .enerplu-review-cta .ico{width:20px;height:20px;flex:none}
+#resenas .enerplu-review-avatar{background:var(--gold);color:var(--on-acc)}
+#resenas .enerplu-review-useful[aria-pressed=true]{border-color:var(--gold);background:rgba(var(--g-rgb),.15);color:var(--gold-l)}
+
+
+/* preguntas frecuentes */
+.faq{padding:72px 0 80px;border-top:1px solid var(--line)}
+.faq h2{margin-top:14px;font-size:clamp(40px,11.5vw,88px)}
+.fq-list{margin-top:28px;border-top:1px solid var(--line)}
+.fq{border-bottom:1px solid var(--line)}
+.fq summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 2px;cursor:pointer;font:800 18px/1.2 var(--disp);font-stretch:85%;text-transform:uppercase;letter-spacing:.01em}
+.fq summary::-webkit-details-marker{display:none}
+.fq-x{position:relative;width:30px;height:30px;flex:none;border-radius:50%;border:1px solid rgba(var(--g-rgb),.5);transition:transform .35s,background .35s}
+.fq-x::before,.fq-x::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.6px;background:var(--gold);transform:translate(-50%,-50%)}
+.fq-x::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .35s}
+.fq[open] .fq-x{background:var(--gold);transform:rotate(180deg)}
+.fq[open] .fq-x::before,.fq[open] .fq-x::after{background:var(--on-acc)}
+.fq[open] .fq-x::after{transform:translate(-50%,-50%) rotate(0)}
+.fq p{padding:0 46px 22px 2px;color:var(--mu);font-size:16px}
+.fq[open] p{animation:fqin .45s ease}
+@keyframes fqin{from{opacity:0;transform:translateY(-6px)}}
 
 /* cierre */
 .foot{padding:40px 0 120px;text-align:center;color:var(--mu);font-size:12px;border-top:1px solid var(--line)}
@@ -359,6 +409,22 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 <section class="ep-order eph-order" id="ep-order"></section>
 
 <!--RESENAS-->
+
+<section class="faq" id="faq">
+  <div class="w">
+    <span class="p-tag mono rv">Preguntas frecuentes</span>
+    <h2 class="disp rv d1">Lo que todos <span class="gold-t">preguntan.</span></h2>
+    <div class="fq-list rv d2">
+      <details class="fq" open><summary>¿Cómo se usa?<span class="fq-x" aria-hidden="true"></span></summary><p>Deja una tableta bajo la lengua de 5 a 15 minutos antes del encuentro. No necesitas agua. Una tableta por ocasión.</p></details>
+      <details class="fq"><summary>¿Cómo pago?<span class="fq-x" aria-hidden="true"></span></summary><p>En efectivo cuando el pedido llega a tu casa. Si prefieres pagar ahora con tarjeta, PSE, Nequi o transferencia Bancolombia, te descontamos $12.000.</p></details>
+      <details class="fq"><summary>¿Cuándo me llega?<span class="fq-x" aria-hidden="true"></span></summary><p>Si confirmas antes de las 10:30 a. m., te llega el mismo día en Medellín y el área metropolitana (lunes a sábado). Al resto del país llega en 2 a 5 días hábiles. El envío estándar es gratis.</p></details>
+      <details class="fq"><summary>¿Cómo llega el paquete?<span class="fq-x" aria-hidden="true"></span></summary><p>En una bolsa negra sellada y con empaque discreto.</p></details>
+      <details class="fq"><summary>¿Y si no me funciona?<span class="fq-x" aria-hidden="true"></span></summary><p>Los planes Dominio Total y Élite tienen Garantía Real: 15 días desde la entrega, devolviendo las cajas selladas.</p></details>
+      <details class="fq"><summary>¿Es seguro?<span class="fq-x" aria-hidden="true"></span></summary><p>ENERPLU es un suplemento alimenticio con registro INVIMA NSA-2314-2025, no un medicamento. Si tienes una condición del corazón, presión alta o tomas medicamentos, consulta antes con tu médico.</p></details>
+    </div>
+    <a class="p-cta" href="#ep-offer-widget" data-cta="faq" style="max-width:520px">Pídelo ya · pagas al recibir <svg class="p-ic"><use href="#i-arrow"/></svg></a>
+  </div>
+</section>
 
 <footer class="foot">
   <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,h_80/v1775103361/logo_enerplu_fgdhwk.webp" alt="ENERPLU" width="112" height="28" loading="lazy">

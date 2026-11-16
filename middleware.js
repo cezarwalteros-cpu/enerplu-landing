@@ -4,6 +4,9 @@
 // ?ab8=A|B|C fuerza la variante (pruebas). Antes de INICIO no hace nada. Para apagarla: ACTIVA = false (o borrar este archivo).
 const ACTIVA = true;
 const INICIO = Date.parse('2026-11-16T05:00:00Z'); // 12:00 am Bogotá (cesar 15-11 11:03 pm)
+// PAUSA (cesar 16-11 8:13 am, "por dos horas dejemos todo el trafico a la pagina de siempre"): desde 8:15 am Bogotá hasta que cesar diga ("depende, me preguntas")
+// todos ven la página de siempre, sin tocar cookies ni contar en la prueba. Para volver a la prueba: PAUSA[1] = ahora.
+const PAUSA = [Date.parse('2026-11-16T13:15:00Z'), Date.parse('2099-01-01T00:00:00Z')];
 const DESTINO = { A: '/siempre', B: '/pro', C: '/nueva' };
 const HOSTS = ['pedido.enerplu.com', 'losgomosos.lat', 'www.losgomosos.lat'];
 
@@ -20,6 +23,10 @@ export default function middleware(request) {
     if (!prueba && !HOSTS.includes(host)) return sigue();
     const forzada = (url.searchParams.get('ab8') || '').toUpperCase();
     if (!DESTINO[forzada] && (prueba || Date.now() < INICIO)) return sigue();
+    const t = Date.now();
+    if (!DESTINO[forzada] && t >= PAUSA[0] && t < PAUSA[1]) {
+      return new Response(null, { headers: { 'x-middleware-rewrite': new URL('/siempre' + url.search, url).toString() } });
+    }
     const ck = (request.headers.get('cookie') || '').match(/(?:^|;\s*)ep_e08=([ABC])/);
     const v = DESTINO[forzada] ? forzada : (ck ? ck[1] : 'ABC'[Math.floor(Math.random() * 3)]);
     const destino = new URL(DESTINO[v] + url.search, url);

@@ -112,7 +112,12 @@ for c in soup.find_all(string=lambda x: isinstance(x, Comment)):
         c.extract()
 
 css_extra = soup.new_tag('style')
-css_extra.string = ('.ep-no-m,.ep-no-t,.ep-no-d{display:contents}'
+css_extra.string = ('*,*::before,*::after{box-sizing:border-box}'
+                    'html{-webkit-text-size-adjust:100%}'
+                    'body{margin:0;font-family:Inter,-apple-system,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}'
+                    'img,picture,video,canvas,svg{display:block;max-width:100%}'
+                    'p,h1,h2,h3,h4,h5,h6{overflow-wrap:break-word}'
+                    '.ep-no-m,.ep-no-t,.ep-no-d{display:contents}'
                     '@media(max-width:767px){.ep-no-m{display:none!important}}'
                     '@media(min-width:768px) and (max-width:1023px){.ep-no-t{display:none!important}}'
                     '@media(min-width:1024px){.ep-no-d{display:none!important}}'
@@ -121,6 +126,11 @@ css_extra.string = ('.ep-no-m,.ep-no-t,.ep-no-d{display:contents}'
 head.append(css_extra)
 
 html = str(soup)
+# enlaces legales propios (antes iban a la tienda de Shopify)
+html = html.replace('https://enerplu.lat/pages/politica-de-privacidad', '/terminos').replace('https://enerplu.lat/pages/terminos-y-condiciones', '/terminos')
+# el pixel no cuenta las visitas de prueba (?ep_test=1), igual que el embudo
+html = html.replace("fbq('init', '1248121626590977');\nfbq('track', 'PageView');",
+                    "if(!/ep_test=1/.test(location.search)){fbq('init', '1248121626590977');\nfbq('track', 'PageView');}")
 html = re.sub(r'\n\s*\n+', '\n', html)
 OUT.write_text(html)
 print('limpia.html', len(html), 'bytes (antes', len(SRC.read_text()), ')')

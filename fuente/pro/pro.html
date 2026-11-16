@@ -171,6 +171,7 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 .zero span{display:block;margin-top:4px;font:700 15px/1.2 var(--disp);font-stretch:85%;text-transform:uppercase}
 
 /* decisión */
+.dec{padding-bottom:36px}
 .dec h2{font-size:clamp(34px,9.6vw,76px)}
 .opts{display:grid;gap:12px;margin-top:30px}
 .opt{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding:20px 18px;border:1px solid var(--line);border-radius:18px;background:var(--k2);color:var(--mu);font-size:15px}
@@ -226,11 +227,21 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 #ep-order #ckn .thumb{width:92px;height:92px;border-radius:12px;background:#F3F3F1}
 #ep-order #ckn .thumb img{object-fit:cover;object-position:center}
 #ep-order #ckn .hero .ph img{object-fit:cover;background:#F3F3F1}
+#ep-order #ckn{--ok:rgb(var(--gl-rgb));--okbg:rgba(var(--g-rgb),.16)}
+#ep-order #ckn .row.g{color:#F2EFE8}
+#ep-order #ckn .sub svg{color:var(--gold)}
+#ep-order #ckn .inp .okc{color:#15803D}
+#ep-order #ckn .f.good input{border-color:#22C55E}
+/* encabezado del selector: "Elige tu arsenal" */
+#ep-order #ckn #paso1 .h h2{font:900 30px/1 Archivo,Inter,sans-serif;font-stretch:78%;text-transform:uppercase;letter-spacing:.005em}
+#ep-order #ckn #paso1 .h h2 small{display:block;margin-top:8px;font:600 15px/1.35 Inter,sans-serif;text-transform:none;letter-spacing:0;color:var(--tx)}
+#ep-order #ckn .ars-p{margin:4px 0 16px;color:rgba(242,239,232,.72);font-size:14.5px;line-height:1.45}
+#ep-order #ckn .ars-p b{color:var(--gold-l)}
 #ep-order #ckn .okc2{background:var(--k2);color:var(--tx)}
 #ep-order #ckn .top{border-bottom-color:rgba(var(--g-rgb),.3)}
 
 /* reseñas en banda clara */
-#resenas{--bg:var(--k);--bg2:var(--k2);--ink:#F2EFE8;--mut:rgba(242,239,232,.65);--faint:rgba(242,239,232,.5);--line:rgba(255,255,255,.1);--gold:rgb(var(--g-rgb));--gold-d:rgb(var(--gl-rgb));--gold-bg:rgba(var(--g-rgb),.1);--ok:#4ADE80;--no:#F87171;--disp:Archivo,Inter,system-ui,sans-serif;color:#F2EFE8;background:var(--k);padding:72px 0 64px}
+#resenas{--bg:var(--k);--bg2:var(--k2);--ink:#F2EFE8;--mut:rgba(242,239,232,.65);--faint:rgba(242,239,232,.5);--line:rgba(255,255,255,.1);--gold:rgb(var(--g-rgb));--gold-d:rgb(var(--gl-rgb));--gold-bg:rgba(var(--g-rgb),.1);--ok:#F2EFE8;--no:#F87171;--disp:Archivo,Inter,system-ui,sans-serif;color:#F2EFE8;background:var(--k);padding:72px 0 64px}
 #resenas .w{max-width:1120px}
 #resenas .tagl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 #resenas h2{margin-top:10px;font-family:Archivo,Inter,sans-serif;font-stretch:72%;font-weight:900;text-transform:uppercase;line-height:.92;font-size:clamp(38px,11vw,80px);color:var(--tx)}
@@ -268,6 +279,18 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 .fq p{padding:0 46px 22px 2px;color:var(--mu);font-size:16px}
 .fq[open] p{animation:fqin .45s ease}
 @keyframes fqin{from{opacity:0;transform:translateY(-6px)}}
+
+/* garantía */
+.gar{padding:20px 0 0}
+.gar-c{display:grid;grid-template-columns:92px 1fr;gap:18px;align-items:center;padding:22px 20px;border-radius:22px;border:1px solid rgba(var(--g-rgb),.4);background:radial-gradient(120% 140% at 0% 0%,rgba(var(--g-rgb),.18),transparent 60%),var(--k2)}
+.seal{position:relative;width:92px;height:92px;display:grid;place-items:center}
+.seal svg.rot{position:absolute;inset:0;width:100%;height:100%;animation:spin 18s linear infinite}
+.seal svg.rot text{font:700 8.6px var(--mono);letter-spacing:.24em;fill:var(--gold-l)}
+.seal b{position:relative;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--gold);color:var(--on-acc);font:900 24px/.9 var(--disp);font-stretch:75%;text-align:center;box-shadow:0 0 30px rgba(var(--g-rgb),.55)}
+.seal b small{display:block;font-size:9px;letter-spacing:.08em}
+.gar-c h3{font:900 24px/1 var(--disp);font-stretch:78%;text-transform:uppercase}
+.gar-c p{margin-top:8px;color:var(--mu);font-size:14.5px}
+.gar-c a{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:var(--gold-l);font-weight:700;font-size:14px;text-decoration:underline;text-underline-offset:3px}
 
 /* cierre */
 .foot{padding:40px 0 120px;text-align:center;color:var(--mu);font-size:12px;border-top:1px solid var(--line)}
@@ -411,6 +434,13 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
   </div>
 </section>
 
+<section class="gar" id="garantia">
+  <div class="w"><div class="gar-c rv">
+    <div class="seal" aria-hidden="true"><svg class="rot" viewBox="0 0 100 100"><defs><path id="gc" d="M50,50 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><text><textPath href="#gc">GARANTÍA REAL · GARANTÍA REAL · </textPath></text></svg><b>15<small>DÍAS</small></b></div>
+    <div><h3>Garantía Real de 15 días</h3><p>Los planes Dominio Total y Élite tienen 15 días desde la entrega, devolviendo las cajas selladas.</p><a href="/garantia">Ver condiciones <svg class="p-ic" style="width:16px;height:16px"><use href="#i-arrow"/></svg></a></div>
+  </div></div>
+</section>
+
 <section class="p-sec dec" id="decision">
   <div class="w">
     <span class="p-tag mono rv">Tu turno</span>
@@ -420,7 +450,6 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
       <div class="opt x rv d2"><span class="p-num"><svg class="p-ic"><use href="#i-warn"/></svg></span><div><b>Opción 2</b>Seguir con lo mismo. Gastar dinero en jarabes vergonzosos o cápsulas que no te funcionan.</div></div>
       <div class="opt win rv d3"><span class="p-num"><svg class="p-ic"><use href="#i-bolt"/></svg></span><div><b>Opción 3</b>Tomar el control absoluto. Invertir en Enerplu hoy mismo, recibirlo en empaque 100 % discreto y tener una alternativa práctica cuando la necesites.</div></div>
     </div>
-    <div class="arsenal rv"><div class="disp">Elige tu arsenal <span class="gold-t">a continuación</span></div><svg class="p-ic"><use href="#i-down"/></svg></div>
   </div>
 </section>
 

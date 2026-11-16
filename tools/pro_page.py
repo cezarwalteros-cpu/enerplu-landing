@@ -27,6 +27,15 @@ page = page.replace('/*RESENAS_CSS*/', css, 1)
 # checkout nuevo (el mismo de /ofertas)
 page = vc.embed(page, (P / 'checkout.html').read_text())
 
+# cesar 15-11 7:38 pm: sin la tarjeta "Estás a un paso" ni sus 3 fichas (repetían envío gratis / pagas al recibir / bolsa negra)
+page, n1 = re.subn(r'\s*<section class="hero">.*?</section>\s*<div class="perks">.*?</div>\s*</div>', '\n', page, count=1, flags=re.S)
+assert n1 == 1
+# título del selector (texto de cesar)
+old_h = '<h2>Elige tu plan<small>Entre más cajas, menos pagas por cada tableta</small></h2></div>'
+assert old_h in page
+page = page.replace(old_h, '<h2>Elige tu arsenal<small>Asegura tu arsenal ya: entre más cajas lleves, más barato te sale cada polvo.</small></h2></div>'
+                    '\n    <p class="ars-p">Cada caja trae 10 tabletas: 10 noches en las que mandas tú. Toca tu plan y pide. <b>Pagas al recibir.</b></p>', 1)
+
 # vista previa: nunca crea pedidos ni mide (fuerza ?ep_test=1)
 guard = ("<script>(function(){var u=new URL(location.href);if(u.searchParams.get('ep_test')!=='1'){u.searchParams.set('ep_test','1');"
          "history.replaceState(null,'',u.toString());}})();</script>")

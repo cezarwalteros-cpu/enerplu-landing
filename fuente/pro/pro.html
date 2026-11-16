@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#050505">
 <title>ENERPLU | Máxima potencia</title>
 <!--PRO_GUARD-->
-<script>(function(){var t=new URLSearchParams(location.search).get('tema');if(['rojo','champan','vino'].indexOf(t)>-1)document.documentElement.dataset.tema=t;})();</script>
+<script>(function(){var t=new URLSearchParams(location.search).get('tema');if(['oro','champan','vino'].indexOf(t)<0)t='rojo';if(t!=='oro')document.documentElement.dataset.tema=t;})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="preload" as="image" href="/img/pro-caja.webp">
@@ -108,10 +108,24 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 .rv.p-in{opacity:1;transform:none}
 .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
 
-/* resultados */
-.res{padding:30px 0 10px}
-.res-card{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--k2)}
-.res-card img{width:100%;height:auto}
+/* resultados: 5 beneficios con íconos de línea que se dibujan */
+.res{padding:72px 0 20px}
+.res h2{margin-top:14px;font-size:clamp(40px,11.5vw,88px)}
+.rs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+.rs{position:relative;display:flex;flex-direction:column;gap:12px;padding:20px 16px 18px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,rgba(var(--g-rgb),.07),rgba(var(--g-rgb),0) 60%),var(--k2);overflow:hidden}
+.rs::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(var(--g-rgb),.18),transparent 70%)}
+.rs-w{grid-column:1/-1;flex-direction:row;align-items:center;gap:16px}
+.rs-w .rs-n{position:absolute;right:16px;top:16px}
+.rs-i{position:relative;display:grid;place-items:center;width:64px;height:64px;border-radius:50%;flex:none;background:radial-gradient(circle at 50% 35%,rgba(var(--g-rgb),.2),rgba(var(--g-rgb),.03) 70%)}
+.rs-i::before{content:"";position:absolute;inset:-1px;border-radius:50%;padding:1.5px;background:conic-gradient(from var(--a,0deg),transparent 0 55%,var(--gold) 80%,var(--gold-l) 90%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:rot 3.6s linear infinite}
+.rs:nth-child(2) .rs-i::before{animation-delay:-.7s}.rs:nth-child(3) .rs-i::before{animation-delay:-1.4s}.rs:nth-child(4) .rs-i::before{animation-delay:-2.1s}.rs:nth-child(5) .rs-i::before{animation-delay:-2.8s}
+.rs-i svg{width:40px;height:40px;fill:none;stroke:var(--gold-l);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(var(--g-rgb),.6))}
+.rs-i svg *{stroke-dasharray:160;stroke-dashoffset:160;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1) .25s}
+.rs.p-in .rs-i svg *{stroke-dashoffset:0}
+.rs-n{color:var(--gold)}
+.rs b{position:relative;font:800 17px/1.15 var(--disp);font-stretch:85%;text-transform:uppercase;letter-spacing:.01em}
+@media (min-width:900px){.rs-grid{grid-template-columns:repeat(5,1fr)}.rs-w{grid-column:auto;flex-direction:column;align-items:flex-start}.rs-w .rs-n{position:static}}
+@media (prefers-reduced-motion:reduce){.rs-i svg *{stroke-dashoffset:0}}
 
 /* mecanismo */
 .mech{background:radial-gradient(70% 40% at 100% 0%,rgba(var(--g-rgb),.1),transparent 70%),var(--k)}
@@ -279,8 +293,18 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
   <span class="scroll-cue" aria-hidden="true"></span>
 </header>
 
-<section class="res" aria-label="Resultados">
-  <div class="w"><div class="res-card rv"><img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948&width=900" alt="Resultados ENERPLU" loading="lazy"></div></div>
+<section class="res" id="resultados">
+  <div class="w">
+    <span class="p-tag mono rv">Lo que vas a sentir</span>
+    <h2 class="disp rv d1">Resultados visibles <span class="gold-t">de inmediato.</span></h2>
+    <div class="rs-grid">
+      <div class="rs rv d1"><span class="rs-i"><svg viewBox="0 0 48 48"><path d="M24 6c6 8 11 14 11 21a11 11 0 0 1-22 0c0-7 5-13 11-21z"/><path d="M18 29l4-4 3 3 5-6"/><path d="M27 22h3v3"/></svg></span><span class="rs-n mono">01</span><b>Aumento garantizado de la circulación en el pene</b></div>
+      <div class="rs rv d2"><span class="rs-i"><svg viewBox="0 0 48 48"><path d="M24 43c-8 0-13-5-13-12 0-6 4-9 6-14 1 4 3 6 5 6-1-7 3-13 8-17 0 6 7 10 7 20 0 10-5 17-13 17z"/><path d="M24 43c-3 0-5-2-5-5 0-3 3-5 5-9 2 4 5 6 5 9s-2 5-5 5z"/></svg></span><span class="rs-n mono">02</span><b>Más libido y vigor sexual</b></div>
+      <div class="rs rv d3"><span class="rs-i"><svg viewBox="0 0 48 48"><path d="M8 40h32"/><path d="M12 34V28M20 34V22M28 34V16"/><path d="M34 34V8"/><path d="M29 13l5-5 5 5"/></svg></span><span class="rs-n mono">03</span><b>Erecciones firmes y mucho más duraderas</b></div>
+      <div class="rs rv d4"><span class="rs-i"><svg viewBox="0 0 48 48"><circle cx="24" cy="27" r="15"/><path d="M20 6h8M24 6v6M36 14l3-3"/><path d="M24 27V18"/><path d="M24 27l6 4"/></svg></span><span class="rs-n mono">04</span><b>Ayuda a controlar la eyaculación</b></div>
+      <div class="rs rs-w rv d1"><span class="rs-i"><svg viewBox="0 0 48 48"><path d="M17 38S5 30 5 20a7 7 0 0 1 12-5 7 7 0 0 1 12 5c0 1-.1 2-.4 3"/><path d="M33 42s-9-6-9-13a5.5 5.5 0 0 1 9-4 5.5 5.5 0 0 1 9 4c0 7-9 13-9 13z"/></svg></span><span class="rs-n mono">05</span><b>Dale mucho más placer a tu pareja</b></div>
+    </div>
+  </div>
 </section>
 
 <section class="p-sec mech" id="mecanismo">
@@ -343,13 +367,6 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
   <p>© 2026 Enerplu Colombia. Todos los derechos reservados.</p>
 </footer>
 
-<div class="tema" aria-label="Paletas"><b>COLOR</b>
-<button data-t="oro" style="background:linear-gradient(135deg,#050505 50%,#D4AF37 50%)" aria-label="Negro y oro"></button>
-<button data-t="rojo" style="background:linear-gradient(135deg,#060404 50%,#E3212F 50%)" aria-label="Negro y rojo"></button>
-<button data-t="vino" style="background:linear-gradient(135deg,#3a0a14 50%,#D4AF37 50%)" aria-label="Vino y oro"></button>
-<button data-t="champan" style="background:linear-gradient(135deg,#161411 50%,#C9A27A 50%)" aria-label="Grafito y champán"></button></div>
-<script>(function(){var bs=document.querySelectorAll('.tema button');function mark(){var t=document.documentElement.dataset.tema||'oro';bs.forEach(function(b){b.classList.toggle('sel',b.dataset.t===t);});}
-bs.forEach(function(b){b.onclick=function(){var t=b.dataset.t;if(t==='oro')delete document.documentElement.dataset.tema;else document.documentElement.dataset.tema=t;var u=new URL(location.href);if(t==='oro')u.searchParams.delete('tema');else u.searchParams.set('tema',t);history.replaceState(null,'',u);mark();if(window.__fxTheme)window.__fxTheme();};});mark();})();</script>
 <div class="sb" id="sb" aria-hidden="true">
   <div class="sb-t"><b><svg class="p-ic"><use href="#i-gift"/></svg>Regalo en todos los pedidos</b>Pagas al recibir · Envío discreto</div>
   <a href="#ep-offer-widget" data-cta="sticky">Ver ofertas</a>

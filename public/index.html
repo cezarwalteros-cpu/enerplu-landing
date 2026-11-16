@@ -5095,7 +5095,6 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
 <script>
-/* Imágenes de los planes (cesar 16-11): las 1:1 del CRM (Supabase, product-confirmation-images), reducidas a 192 px. */
 /* Selector de ofertas con el diseño del selector v13 (tarjetas horizontales).
    Reemplaza el dibujo del selector del formulario; la lógica (plan elegido, total, carrito, pedido) sigue igual.
    Precio = el del checkout (se actualiza solo). Tachado = precio de 1 caja × cajas. */
@@ -5103,9 +5102,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
   var R = window.EP_RENDER;
   if (!R) return;
   var LOOK = {
-    dominio: { tag: "★ El más pedido", rec: true, inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Dominio%20Total%20Enerplu.png?width=192&height=192&resize=contain&quality=80" },
-    elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Elite_%20Maximo%20Ahorro.png?width=192&height=192&resize=contain&quality=80" },
-    inicial: { tag: "Para probar", inc: [], basic: true, img: "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Basico%20Enerplu.png?width=192&height=192&resize=contain&quality=80" }
+    dominio: { tag: "★ El más pedido", rec: true, inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/DOMINIO.webp?v=1793468717&width=700" },
+    elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=700" },
+    inicial: { tag: "Para probar", inc: [], basic: true, img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=700" }
   };
   /* E-06 · Oferta A (cesar 2026-11-12): mismos planes y precios, sin tachados ni %, precio por tableta,
      una línea con lo que incluye cada plan. Solo en /oferta-a (window.EP_OFERTA_A). */

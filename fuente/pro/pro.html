@@ -161,7 +161,7 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 .glow-card::before{content:"";position:absolute;inset:-60%;background:conic-gradient(from 0deg,transparent 0 70%,var(--gold) 80%,var(--red) 88%,transparent 96%);animation:spin 5s linear infinite}
 .glow-card>div{position:relative;border-radius:19px;background:var(--k2);padding:22px}
 .inv{display:flex;align-items:center;gap:18px}
-.inv img{width:96px;height:auto;border-radius:10px;background:#fff;padding:6px}
+.inv img{width:104px;height:104px;border-radius:50%;object-fit:cover;transform:scale(1.02);box-shadow:0 0 0 1px rgba(var(--g-rgb),.4),0 0 30px rgba(var(--g-rgb),.35)}
 .inv b{display:block;font:900 22px/1.05 var(--disp);font-stretch:80%;text-transform:uppercase}
 .inv span{display:block;margin-top:6px;color:var(--gold);font-family:var(--mono);font-size:12px;letter-spacing:.08em}
 .zero{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -220,6 +220,12 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 #ep-order #ckn .sug button{color:#0D0D0D;border-bottom-color:#E7E3DC}
 #ep-order #ckn .sum{background:#000;border-color:rgba(var(--g-rgb),.3)}
 #ep-order #ckn .hero{border:1px solid rgba(var(--g-rgb),.3)}
+#ep-order #ckn .logos img{background:#fff;border-radius:6px;padding:4px 7px;height:28px!important;box-sizing:border-box}
+#ep-order #ckn .logos img.bc{height:28px!important;padding:5px 8px}
+#ep-order #ckn .plan{grid-template-columns:22px 92px minmax(0,1fr) auto;padding:14px 12px}
+#ep-order #ckn .thumb{width:92px;height:92px;border-radius:12px;background:#F3F3F1}
+#ep-order #ckn .thumb img{object-fit:cover;object-position:center}
+#ep-order #ckn .hero .ph img{object-fit:cover;background:#F3F3F1}
 #ep-order #ckn .okc2{background:var(--k2);color:var(--tx)}
 #ep-order #ckn .top{border-bottom-color:rgba(var(--g-rgb),.3)}
 
@@ -320,7 +326,7 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
   <canvas id="fx" aria-hidden="true"></canvas>
   <div class="w hero-in">
     <div class="h-top">
-      <img class="h-logo" src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,h_80/v1775103361/logo_enerplu_fgdhwk.webp" alt="ENERPLU" width="120" height="30">
+      <img class="h-logo" src="/img/pro-logo.png" alt="ENERPLU" width="120" height="30">
       <a class="h-rate" href="#resenas"><span class="stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><b>4.9/5.0</b></a>
     </div>
     <div class="h-col">
@@ -386,7 +392,7 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
         <div class="p-st"><span class="n mono">02</span><h3>Evita el “efecto de primer paso hepático” que destruye las cápsulas en el estómago.</h3></div>
         <div class="p-st"><span class="n mono">03</span><h3>Absorción avalada por la ciencia vascular para un bombeo masivo en 5 minutos.</h3></div>
       </div>
-      <div class="mech-img rv"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_900,f_auto,q_auto/v1774025718/ENEPLU_MECANISMO_fextu4.webp" alt="Mecanismo ENERPLU" loading="lazy"></div>
+      <div class="mech-img rv"><img src="/img/pro-mecanismo.webp" alt="Mecanismo ENERPLU" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -396,7 +402,7 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
     <span class="p-tag mono rv">Respaldo</span>
     <h2 class="disp rv d1">Potencia brutal. <span class="gold-t">100 % legal y segura.</span></h2>
     <div class="safe-grid">
-      <div class="glow-card rv d1"><div class="inv"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_300,f_auto,q_auto/v1775097830/RINVIMA_ENERPLU_kqmwhs.webp" alt="INVIMA" loading="lazy"><div><b>Registro sanitario INVIMA</b><span>NSA-2314-2025</span></div></div></div>
+      <div class="glow-card rv d1"><div class="inv"><img src="/img/pro-invima.webp" alt="INVIMA" loading="lazy"><div><b>Registro sanitario INVIMA</b><span>NSA-2314-2025</span></div></div></div>
       <div class="zero rv d2">
         <div><svg class="p-ic"><use href="#i-heart"/></svg><b>Cero</b><span>Taquicardia</span></div>
         <div><svg class="p-ic"><use href="#i-head"/></svg><b>Cero</b><span>Dolor de cabeza</span></div>
@@ -439,12 +445,19 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 </section>
 
 <footer class="foot">
-  <img src="https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,h_80/v1775103361/logo_enerplu_fgdhwk.webp" alt="ENERPLU" width="112" height="28" loading="lazy">
+  <img src="/img/pro-logo.png" alt="ENERPLU" width="112" height="28" loading="lazy">
   <p>DESCARGO DE RESPONSABILIDAD: Suplemento alimenticio. No es medicamento. Resultados pueden variar. No afiliado a Facebook.</p>
   <nav><a href="/terminos">Política de Privacidad</a><a href="/terminos">Términos de Servicio</a></nav>
   <p>© 2026 Enerplu Colombia. Todos los derechos reservados.</p>
 </footer>
 
+<script>
+/* fotos cuadradas de cada plan (las que subió cesar) en el selector de ofertas */
+(function(){var r=/\/img\/ck\/(basico|dominio|elite)\.jpg/;
+function fix(root){(root||document).querySelectorAll('#ckn img').forEach(function(i){var s=i.getAttribute('src')||'';if(r.test(s))i.setAttribute('src',s.replace(r,'/img/pro-plan-$1.webp'));});}
+function go(){var c=document.getElementById('ckn');if(!c)return;fix(c);new MutationObserver(function(){fix(c);}).observe(c,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go();})();
+</script>
 <div class="sb" id="sb" aria-hidden="true">
   <div class="sb-t"><b><svg class="p-ic"><use href="#i-gift"/></svg>Regalo en todos los pedidos</b>Pagas al recibir · Envío discreto</div>
   <a href="#ep-offer-widget" data-cta="sticky">Ver ofertas</a>

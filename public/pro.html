@@ -127,6 +127,15 @@ h1.h-t{margin-top:10px;font-size:clamp(44px,13.4vw,128px)}
 @media (min-width:900px){.rs-grid{grid-template-columns:repeat(5,1fr)}.rs-w{grid-column:auto;flex-direction:column;align-items:flex-start}.rs-w .rs-n{position:static}}
 @media (prefers-reduced-motion:reduce){.rs-i svg *{stroke-dashoffset:0}}
 
+/* franja de cine: pareja + "Más duro. Más firme. Más control." con parallax */
+.cine{position:relative;height:clamp(520px,128vw,820px);overflow:hidden;margin-top:56px;isolation:isolate}
+.cine img{position:absolute;left:0;top:-12%;width:100%;height:124%;object-fit:cover;will-change:transform;z-index:-2}
+.cine::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,var(--k) 0%,rgba(5,5,5,.25) 28%,rgba(5,5,5,0) 55%,rgba(5,5,5,.55) 82%,var(--k) 100%)}
+.cine-t{position:absolute;left:0;right:0;top:9%;text-align:left}
+.cine-t .disp{font-size:clamp(46px,14vw,110px);line-height:.88}
+.cine-t .disp span{display:block}
+.cine-t .disp span:nth-child(2){color:var(--gold)}
+
 /* mecanismo */
 .mech{background:radial-gradient(70% 40% at 100% 0%,rgba(var(--g-rgb),.1),transparent 70%),var(--k)}
 .mech h2 .tm{font-size:.42em;vertical-align:top;letter-spacing:0}
@@ -499,6 +508,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   </div>
 </section>
 
+<section class="cine" id="cine" aria-label="Más duro. Más firme. Más control.">
+  <img src="/img/pro-pareja.webp" alt="" loading="lazy" id="cineImg">
+  <div class="w cine-t"><div class="disp rv"><span>Más duro.</span><span>Más firme.</span><span>Más control.</span></div></div>
+</section>
+
 <section class="p-sec mech" id="mecanismo">
   <div class="w mech-wrap">
     <div>
@@ -824,6 +838,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 function fix(root){(root||document).querySelectorAll('#ckn img').forEach(function(i){var s=i.getAttribute('src')||'';if(r.test(s))i.setAttribute('src',s.replace(r,'/img/pro-plan-$1.webp'));});}
 function go(){var c=document.getElementById('ckn');if(!c)return;fix(c);new MutationObserver(function(){fix(c);}).observe(c,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go();})();
+</script>
+<script>
+/* parallax suave de la franja de cine */
+(function(){var c=document.getElementById('cine'),im=document.getElementById('cineImg');if(!c||!im||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var fo=new URLSearchParams(location.search).get('foto');if(/^[123]$/.test(fo||''))im.src='/img/pro-pareja-'+fo+'.webp';
+var t=false;function f(){t=false;var r=c.getBoundingClientRect(),vh=innerHeight;if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/(vh+r.height);im.style.transform='translate3d(0,'+(p*-18).toFixed(2)+'%,0)';}
+addEventListener('scroll',function(){if(!t){t=true;requestAnimationFrame(f);}},{passive:true});f();})();
 </script>
 <div class="sb" id="sb" aria-hidden="true">
   <div class="sb-t"><b><svg class="p-ic"><use href="#i-gift"/></svg>Regalo en todos los pedidos</b>Pagas al recibir · Envío discreto</div>

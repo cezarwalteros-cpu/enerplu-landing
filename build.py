@@ -409,7 +409,7 @@ if AB_E06 and not HERO_V2:
 # contra la misma página con el checkout nuevo dentro (B, "/ofertas"): planes Dominio, Élite, Básico, 3 pasos, logos de pago.
 # Todo lo de arriba de la sección de pedido es igual. Asignación: localStorage ep_e07 (50/50, fija por navegador); ?ab7=A|B fuerza.
 # B no lleva el popup de 5 % (el checkout nuevo no aplica el código). AB_E07 = False apaga la prueba (todos ven A).
-AB_E07 = True
+AB_E07 = False   # 15-11 8:02 pm: la reemplaza E-08 (cesar 'listo de 3')
 AB7_HEAD = AB5_HEAD.replace("ab5=", "ab7=").replace("ep_e05", "ep_e07").replace("'/octubre'", "'/ofertas'")
 if not HERO_V2:
     import sys as _sys; _sys.path.insert(0, str(ROOT / 'tools')); import vieja_checkout as _vc
@@ -612,6 +612,38 @@ assert len(_arr) == 120, len(_arr)
 prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=False, separators=(',', ':')) + prod[_k + _n:]
 (OUT / 'producto.html').write_text(must(prod, '<main ', ocultar + gate + '\n<main '))
 (OUT / 'terminos.html').write_text((ROOT / 'fuente' / 'producto' / 'terminos.html').read_text())
+
+# E-08 (cesar 2026-11-15 8:02 pm, "listo de 3"): página de siempre (A, /siempre = copia de index.html) contra /pro (B)
+# contra /nueva (C), un tercio cada una en TODAS las entradas. El reparto lo hace middleware.js en el servidor (cookie ep_e08).
+# Cada página sabe qué variante es: guarda la cookie (por si el servidor no la dejó) y manda ab_assign {exp:'E08', v}
+# + etiqueta e08 en Clarity. Medición: ab_assign E08 por sid + checkout_attempts.session_id. Desde 2026-11-16 4:00 am.
+AB_E08 = True
+E08_INICIO_MS = 1794819600000   # 2026-11-16T09:00:00Z
+def e08_js(v):
+    return ("<!--E08--><script>(function(){try{if(Date.now()<%d)return;var q=new URLSearchParams(location.search);"
+            "if(!/(?:^|; )ep_e08=/.test(document.cookie))document.cookie='ep_e08=%s; Path=/; Max-Age=2592000; SameSite=Lax; Secure';"
+            "try{window.clarity&&clarity('set','e08','%s')}catch(e){}"
+            "if(q.get('ep_test')==='1')return;"
+            "var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}"
+            "if(!sid){if(n++<20)setTimeout(go,300);return;}"
+            "var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',"
+            "utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),"
+            "extra:{exp:'E08',v:'%s'}});var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';"
+            "try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))"
+            "fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}})();"
+            "}catch(e){}})();</script><!--/E08-->\n") % (E08_INICIO_MS, v, v, v)
+import subprocess as _sp
+_sp.run(['python3', str(ROOT / 'tools' / 'pro_page.py')] + (['--live'] if AB_E08 else []), check=True)
+for _f, _v in (('index.html', 'A'), ('nueva.html', 'C'), ('pro.html', 'B')):
+    _t = re.sub(r'<!--E08-->.*?<!--/E08-->\n', '', (OUT / _f).read_text(), flags=re.S)
+    if AB_E08:
+        _t = must(_t, '</body>', e08_js(_v) + '</body>')
+    (OUT / _f).write_text(_t)
+_s = OUT / 'siempre.html'
+if AB_E08:
+    _s.write_text((OUT / 'index.html').read_text().replace('<head>', '<head>\n<meta name="robots" content="noindex">', 1))
+elif _s.exists():
+    _s.unlink()
 (ROOT / 'vercel.json').write_text(json.dumps({
     "framework": None,
     # copia a nuestro servidor las imágenes de Shopify y el CSS/fuentes de losgomosos.lat (si falla, deja el enlace original)

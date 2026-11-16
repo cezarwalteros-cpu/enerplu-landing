@@ -3,7 +3,7 @@
 // pedido.enerplu.com/ y /nueva, losgomosos.lat/ /products/* /collections/*. Fijo por persona con la cookie ep_e08 (30 días).
 // ?ab8=A|B|C fuerza la variante (pruebas). Antes de INICIO no hace nada. Para apagarla: ACTIVA = false (o borrar este archivo).
 const ACTIVA = true;
-const INICIO = Date.parse('2026-11-16T09:00:00Z'); // 4:00 am Bogotá
+const INICIO = Date.parse('2026-11-16T05:00:00Z'); // 12:00 am Bogotá (cesar 15-11 11:03 pm)
 const DESTINO = { A: '/siempre', B: '/pro', C: '/nueva' };
 const HOSTS = ['pedido.enerplu.com', 'losgomosos.lat', 'www.losgomosos.lat'];
 

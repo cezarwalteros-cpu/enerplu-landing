@@ -40,6 +40,40 @@
         (L.incA ? '<span class="eph-c-gift eph-c-inc' + (L.basic ? ' is-miss' : '') + '"><span>' + R.esc(L.incA) + '</span></span>' : '') +
       '</label>';
     }).join('');
+    /* Tarjetas v2 (cesar 16-11 12:09 pm: "no es de imágenes, es cómo se ve la tarjeta completa"):
+       Dominio grande y obvio, Élite distinto (menor precio por tableta), Básico compacto y sin regalos. */
+    return R.ordered(cfg).map(function (p) {
+      var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
+      var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
+      var badge = '<span class="t2-x">x' + p.boxes + '</span>';
+      var head = '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>';
+      var img = '<span class="eph-c-img t2-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async">' + badge + '</span>';
+      var qty = p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas';
+      var cls = 'ep-sel-opt eph-card eph-c t2 t2-' + p.id + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '');
+      if (L.rec) return '<label class="' + cls + '" data-pack="' + p.id + '">' + head +
+        '<span class="t2-ribbon">★ El más pedido · el que más eligen</span>' +
+        '<span class="eph-c-row"><span class="eph-check" aria-hidden="true"></span>' + img +
+          '<span class="eph-c-info"><span class="eph-name">' + R.esc(p.name) + '</span><span class="eph-qty">' + qty + '</span>' +
+          '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por ocasión</span></span>' +
+          '<span class="eph-c-price"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
+        '</span>' +
+        '<span class="t2-list"><span>✓ Retardante 30 ml <b>gratis</b></span><span>✓ Velvet <b>gratis</b></span>' + (save > 0 ? '<span class="t2-save">Ahorras ' + R.money(save) + '</span>' : '') + '</span>' +
+      '</label>';
+      if (L.basic) return '<label class="' + cls + '" data-pack="' + p.id + '">' + head +
+        '<span class="eph-c-row"><span class="eph-check" aria-hidden="true"></span>' + img +
+          '<span class="eph-c-info"><span class="eph-name">' + R.esc(p.name) + ' <small>· para probar</small></span><span class="eph-qty">' + qty + '</span>' +
+          '<span class="t2-miss">Sin retardante ni Velvet</span></span>' +
+          '<span class="eph-c-price"><span class="eph-price">' + R.money(p.price) + '</span></span>' +
+        '</span></label>';
+      return '<label class="' + cls + '" data-pack="' + p.id + '">' + head +
+        (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
+        '<span class="eph-c-row"><span class="eph-check" aria-hidden="true"></span>' + img +
+          '<span class="eph-c-info"><span class="eph-name">' + R.esc(p.name) + '</span><span class="eph-qty">' + qty + '</span>' +
+          '<span class="t2-best">El menor precio: ' + R.money(p.price / p.tablets) + ' por ocasión</span>' +
+          '<span class="t2-same">+ los mismos regalos del Dominio</span></span>' +
+          '<span class="eph-c-price"><span class="eph-price">' + R.money(p.price) + '</span>' + (save > 0 ? '<span class="eph-was">' + R.money(was) + '</span>' : '') + '</span>' +
+        '</span></label>';
+    }).join('');
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;

@@ -55,31 +55,49 @@ def imagen(el):
     return fig
 
 
-def recorrer(nodo):
+def visible(t):
+    """GemPages esconde por equipo con --d / --d-tablet / --d-mobile:none (celular <768, tableta 768-1023, PC >=1024)."""
+    st = t.get('style') or ''
+    d = dict(re.findall(r'--d(-tablet|-mobile)?:\s*([\w-]+)', st))
+    pc = d.get('', 'block') != 'none'
+    return (d.get('-mobile', d.get('', 'block')) != 'none', d.get('-tablet', d.get('', 'block')) != 'none', pc)
+
+
+def destino_para(t, destino):
+    m, ta, pc = visible(t)
+    if m and ta and pc:
+        return destino
+    caja = soup.new_tag('div', attrs={'class': ' '.join(c for c, v in (('ep-no-m', m), ('ep-no-t', ta), ('ep-no-d', pc)) if not v)})
+    destino.append(caja)
+    return caja
+
+
+def recorrer(nodo, destino):
     for hijo in list(nodo.contents):
         if not getattr(hijo, 'name', None):
             if isinstance(hijo, Comment) or not str(hijo).strip():
                 continue
-            nuevo.append(hijo.extract()); continue
+            destino.append(hijo.extract()); continue
         if es_basura(hijo):
             continue
         if 'gp-custom-code' in (hijo.get('class') or []):
+            dst = destino_para(hijo, destino)
             # el "custom code" trae un <div> sin atributos con el HTML propio
             for n in list(hijo.contents):
                 if getattr(n, 'name', None) == 'div' and not n.attrs:
                     for m in list(n.contents):
-                        nuevo.append(m.extract())
+                        dst.append(m.extract())
                 elif getattr(n, 'name', None):
-                    nuevo.append(n.extract())
+                    dst.append(n.extract())
         elif hijo.get('data-id') == 'gpGrrwtDmE':
-            nuevo.append(imagen(hijo))
+            destino_para(hijo, destino).append(imagen(hijo))
         elif es_gp(hijo):
-            recorrer(hijo)
+            recorrer(hijo, destino_para(hijo, destino))
         else:
-            nuevo.append(hijo.extract())
+            destino.append(hijo.extract())
 
 
-recorrer(main)
+recorrer(main, nuevo)
 main.replace_with(nuevo)
 
 # los estilos que GemPages metía dentro del cuerpo: solo se quedan los propios
@@ -94,7 +112,11 @@ for c in soup.find_all(string=lambda x: isinstance(x, Comment)):
         c.extract()
 
 css_extra = soup.new_tag('style')
-css_extra.string = ('.ep-resultados{background:#000;text-align:center;line-height:0}'
+css_extra.string = ('.ep-no-m,.ep-no-t,.ep-no-d{display:contents}'
+                    '@media(max-width:767px){.ep-no-m{display:none!important}}'
+                    '@media(min-width:768px) and (max-width:1023px){.ep-no-t{display:none!important}}'
+                    '@media(min-width:1024px){.ep-no-d{display:none!important}}'
+                    '.ep-resultados{background:#000;text-align:center;line-height:0}'
                     '.ep-resultados img{display:block;width:100%;max-width:1024px;height:auto;margin:0 auto}')
 head.append(css_extra)
 

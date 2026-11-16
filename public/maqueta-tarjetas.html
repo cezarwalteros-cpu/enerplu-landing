@@ -16,85 +16,89 @@ body{margin:0;background:#000;color:#fff;font-family:Inter,-apple-system,Roboto,
 .lab-sub{color:#9a9a9a;font-size:13px;margin:0 0 16px;line-height:1.4}
 .hr{height:1px;background:#222;margin:34px 0 0}
 .h{font-size:22px;font-weight:800;text-align:center;margin:0 0 4px}
-.sub{font-size:13px;color:#cfcfcf;text-align:center;margin:0 0 14px}
+.sub{font-size:13px;color:#cfcfcf;text-align:center;margin:0 0 14px;line-height:1.4}
 img{display:block;max-width:100%}
-.g{color:#d4af37}
 .money{font-variant-numeric:tabular-nums}
 .strike{text-decoration:line-through;color:#8a8a8a}
+/* colores por plan: Básico gris, Dominio dorado, Élite naranja */
+.c-bas{--c:#9a9a9a;--bg:#141414}
+.c-dom{--c:#d4af37;--bg:#1d1709}
+.c-eli{--c:#ff7a00;--bg:#1f1206}
 
-/* ---------- A: tarjeta héroe ---------- */
-.a-list{display:flex;flex-direction:column;gap:12px}
-.a-card{position:relative;border-radius:16px;border:1.5px solid #2a2a2a;background:#0d0d0d;padding:12px;cursor:pointer}
-.a-card.on{border-color:#d4af37;box-shadow:0 0 0 3px rgba(212,175,55,.18)}
-.a-hero{border:2px solid #d4af37;background:linear-gradient(180deg,#1d1709,#0d0d0d 65%);padding:0 0 14px;overflow:hidden}
-.a-rib{background:#d4af37;color:#111;text-align:center;font-weight:900;font-size:12.5px;letter-spacing:.8px;padding:7px;text-transform:uppercase}
-.a-top{display:flex;gap:12px;padding:14px 14px 0;align-items:center}
-.a-img{flex:0 0 104px;height:104px;border-radius:12px;background:#fff;overflow:hidden;position:relative}
-.a-img img{width:100%;height:100%;object-fit:cover}
-.a-n{font-size:20px;font-weight:900;line-height:1.1}
-.a-q{font-size:13px;color:#d6d6d6;margin-top:3px}
-.a-p{font-size:30px;font-weight:900;color:#35d04a;margin-top:6px;line-height:1}
-.a-w{font-size:13px;margin-top:3px}
-.a-inc{margin:12px 14px 0;border-top:1px dashed #3a3320;padding-top:10px;display:grid;gap:6px;font-size:13.5px}
-.a-inc div::before{content:"✓ ";color:#35d04a;font-weight:900}
-.a-save{margin:12px 14px 0;background:#123d1c;border:1px solid #1fa64a;color:#7fe08f;font-weight:800;text-align:center;border-radius:10px;padding:8px;font-size:14px}
-.a-row{display:flex;align-items:center;gap:10px}
-.a-sm{flex:0 0 52px;height:52px;border-radius:9px;background:#fff;overflow:hidden}
+/* ---------- A v2: acordeón, el elegido se abre ---------- */
+.a-list{display:flex;flex-direction:column;gap:10px}
+.a-card{position:relative;border-radius:16px;border:1.5px solid #2a2a2a;background:#0d0d0d;cursor:pointer;overflow:hidden;transition:border-color .2s}
+.a-card.on{border:2.5px solid var(--c);background:linear-gradient(180deg,var(--bg),#0d0d0d 70%);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 22%,transparent)}
+.a-tag{display:block;background:#1fa64a;color:#fff;text-align:center;font-weight:900;font-size:11.5px;letter-spacing:.7px;padding:5px;text-transform:uppercase}
+.a-row{display:flex;align-items:center;gap:10px;padding:11px 12px}
+.a-radio{flex:0 0 26px;height:26px;border-radius:50%;border:2px solid #555;display:grid;place-items:center;font-size:15px;font-weight:900;color:transparent}
+.a-card.on .a-radio{background:var(--c);border-color:var(--c);color:#111}
+.a-sm{flex:0 0 54px;height:54px;border-radius:9px;background:#fff;overflow:hidden}
 .a-sm img{width:100%;height:100%;object-fit:cover}
 .a-mid{flex:1;min-width:0}
-.a-mid b{font-size:15px}
-.a-mid div{font-size:12px;color:#a8a8a8;margin-top:2px}
-.a-r{text-align:right;font-weight:800;font-size:18px}
-.a-r small{display:block;font-size:11px;color:#ffb066;font-weight:700}
-.a-dot{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid #555;display:grid;place-items:center}
-.a-card.on .a-dot{border-color:#d4af37}
-.a-card.on .a-dot::after{content:"";width:10px;height:10px;border-radius:50%;background:#d4af37}
-.a-hero .a-dot{position:absolute;top:44px;right:14px}
+.a-mid b{font-size:16px;display:block}
+.a-mid span{font-size:12px;color:#a8a8a8}
+.a-r{text-align:right;font-weight:900;font-size:19px}
+.a-card.on .a-r{color:var(--c)}
+.a-r small{display:block;font-size:11px;color:#8a8a8a;font-weight:600}
+.a-sel{display:none;position:absolute;top:8px;right:10px;background:var(--c);color:#111;font-size:10px;font-weight:900;padding:2px 7px;border-radius:10px;letter-spacing:.4px}
+.a-det{display:none;padding:0 14px 14px}
+.a-card.on .a-det{display:block}
+.a-det ul{list-style:none;margin:0;padding:10px 0 0;border-top:1px dashed #333;display:grid;gap:6px;font-size:13.5px}
+.a-det li::before{content:"✓ ";color:#35d04a;font-weight:900}
+.a-det li.no{color:#777}.a-det li.no::before{content:"✕ ";color:#777}
+.a-save{margin-top:10px;background:#123d1c;border:1px solid #1fa64a;color:#7fe08f;font-weight:800;text-align:center;border-radius:10px;padding:8px;font-size:14px}
+.a-elegiste{margin-top:10px;text-align:center;font-size:13px;color:#ddd}
+.a-elegiste b{color:var(--c)}
 
-/* ---------- B: tabla comparativa ---------- */
-.b-t{display:grid;grid-template-columns:1fr 1.18fr 1fr;align-items:end;gap:6px}
-.b-col{border:1.5px solid #2a2a2a;border-radius:14px;background:#0d0d0d;padding:10px 6px 10px;text-align:center;cursor:pointer;position:relative}
-.b-col.mid{border:2px solid #d4af37;background:linear-gradient(180deg,#1d1709,#0d0d0d 60%);padding-top:28px;padding-bottom:14px}
-.b-col.on{box-shadow:0 0 0 3px rgba(212,175,55,.22)}
-.b-col .tg{position:absolute;top:0;left:0;right:0;background:#d4af37;color:#111;font-size:10px;font-weight:900;letter-spacing:.5px;padding:5px 2px;border-radius:12px 12px 0 0;text-transform:uppercase}
-.b-col img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:9px;background:#fff}
-.b-n{font-weight:900;font-size:15px;margin-top:7px}
-.b-mid .b-n{font-size:17px}
-.b-c{font-size:11.5px;color:#cfcfcf}
-.b-p{font-weight:900;font-size:18px;margin-top:6px}
-.b-col.mid .b-p{color:#35d04a;font-size:22px}
-.b-w{font-size:11px}
+/* ---------- B v2: tabla con identidad por plan, sin fotos ---------- */
+.b-t{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:end;gap:6px}
+.b-col{border:2px solid #2a2a2a;border-radius:14px;background:#0d0d0d;padding:10px 6px;text-align:center;cursor:pointer;position:relative}
+.b-col .bar{height:6px;border-radius:4px;background:var(--c);margin:0 8px 9px}
+.b-col.mid{padding-top:26px}
+.b-col .tg{position:absolute;top:0;left:0;right:0;background:#1fa64a;color:#fff;font-size:10px;font-weight:900;letter-spacing:.5px;padding:5px 2px;border-radius:11px 11px 0 0;text-transform:uppercase}
+.b-col.on{border-color:var(--c);background:linear-gradient(180deg,var(--bg),#0d0d0d 70%)}
+.b-boxes{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;min-height:46px;align-content:center}
+.b-boxes i{width:16px;height:20px;border-radius:3px;background:var(--c);display:block;box-shadow:inset 0 -5px 0 rgba(0,0,0,.25)}
+.b-big{font-size:26px;font-weight:900;color:var(--c);line-height:1;margin-top:6px}
+.b-big small{display:block;font-size:11px;color:#bbb;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+.b-n{font-weight:800;font-size:12.5px;margin-top:6px;color:#ddd}
+.b-p{font-weight:900;font-size:18px;margin-top:4px}
+.b-w{font-size:11px;min-height:14px}
 .b-btn{margin-top:8px;font-size:12px;font-weight:800;border-radius:8px;padding:7px 4px;background:#1a1a1a;color:#ddd;border:1px solid #333}
-.b-col.on .b-btn{background:#d4af37;color:#111;border-color:#d4af37}
+.b-col.on .b-btn{background:var(--c);color:#111;border-color:var(--c)}
 .b-tab{margin-top:12px;border:1px solid #222;border-radius:12px;overflow:hidden;font-size:12.5px}
-.b-tab .r{display:grid;grid-template-columns:1.3fr 1fr 1.18fr 1fr;border-top:1px solid #1d1d1d}
-.b-tab .r:first-child{border-top:0;background:#111;font-weight:800;color:#d4af37}
+.b-tab .r{display:grid;grid-template-columns:1.25fr 1fr 1.15fr 1fr;border-top:1px solid #1d1d1d}
+.b-tab .r:first-child{border-top:0;font-weight:900}
 .b-tab .r>div{padding:8px 4px;text-align:center}
 .b-tab .r>div:first-child{text-align:left;padding-left:9px;color:#bdbdbd}
-.b-tab .r>div:nth-child(3){background:#17130a;font-weight:800}
+.b-tab .r:first-child>div:nth-child(2){color:#bbb}
+.b-tab .r:first-child>div:nth-child(3){color:#d4af37}
+.b-tab .r:first-child>div:nth-child(4){color:#ff7a00}
+.b-tab .hl{background:#191919}
 .ok{color:#35d04a;font-weight:900}
 .no{color:#666}
 
-/* ---------- C: selector de cajas ---------- */
-.c-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#111;border:1px solid #2a2a2a;border-radius:14px;padding:5px}
-.c-seg button{all:unset;cursor:pointer;text-align:center;border-radius:10px;padding:9px 4px;position:relative}
-.c-seg button b{display:block;font-size:20px;font-weight:900}
-.c-seg button span{font-size:11px;color:#aaa}
-.c-seg button.on{background:#d4af37;color:#111}
-.c-seg button.on span{color:#3a2f0a}
-.c-seg .pop{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:#1fa64a;color:#fff;font-size:9.5px;font-weight:900;padding:2px 6px;border-radius:10px;white-space:nowrap;letter-spacing:.3px}
-.c-card{margin-top:12px;border:2px solid #d4af37;border-radius:16px;background:linear-gradient(180deg,#1d1709,#0d0d0d 60%);padding:14px;text-align:center}
-.c-card img{width:170px;height:170px;object-fit:cover;border-radius:14px;background:#fff;margin:0 auto}
-.c-n{font-size:21px;font-weight:900;margin-top:10px}
-.c-q{font-size:13px;color:#d0d0d0;margin-top:2px}
-.c-p{font-size:34px;font-weight:900;color:#35d04a;margin-top:8px;line-height:1}
-.c-w{font-size:13px;margin-top:4px}
-.c-u{font-size:12.5px;color:#ffb066;font-weight:700;margin-top:4px}
-.c-inc{text-align:left;margin:12px auto 0;max-width:300px;display:grid;gap:6px;font-size:13.5px}
+/* ---------- C v2: 3 baldosas con precio, todas visibles ---------- */
+.c-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.c-seg button{all:unset;cursor:pointer;text-align:center;border-radius:14px;padding:16px 4px 10px;position:relative;border:2px solid #2a2a2a;background:#0d0d0d}
+.c-seg button .q{display:block;font-size:30px;font-weight:900;line-height:1;color:var(--c)}
+.c-seg button .u{display:block;font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-top:2px}
+.c-seg button .p{display:block;font-size:16px;font-weight:900;margin-top:8px}
+.c-seg button .o{display:block;font-size:10.5px;color:#9a9a9a;margin-top:2px}
+.c-seg button.on{border-color:var(--c);background:linear-gradient(180deg,var(--bg),#0d0d0d 80%);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.c-seg button.on .p{color:var(--c)}
+.c-seg .pop{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:9.5px;font-weight:900;padding:3px 7px;border-radius:10px;white-space:nowrap;letter-spacing:.3px;color:#fff}
+.c-card{margin-top:12px;border:2px solid var(--c);border-radius:16px;background:linear-gradient(180deg,var(--bg),#0d0d0d 60%);padding:14px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s}
+.c-card img{flex:0 0 110px;width:110px;height:110px;object-fit:cover;border-radius:12px;background:#fff}
+.c-txt{flex:1;min-width:0}
+.c-n{font-size:18px;font-weight:900}
+.c-pr{font-size:24px;font-weight:900;color:var(--c);margin-top:2px}
+.c-pr .strike{font-size:12px;font-weight:600;margin-left:4px}
+.c-inc{margin-top:8px;display:grid;gap:4px;font-size:12.5px}
 .c-inc .y::before{content:"✓ ";color:#35d04a;font-weight:900}
-.c-inc .n{color:#777}
-.c-inc .n::before{content:"✕ ";color:#777;font-weight:900}
-.c-save{margin-top:12px;display:inline-block;background:#123d1c;border:1px solid #1fa64a;color:#7fe08f;font-weight:800;border-radius:20px;padding:6px 12px;font-size:13.5px}
+.c-inc .n{color:#777}.c-inc .n::before{content:"✕ ";color:#777;font-weight:900}
+.c-save{margin-top:8px;display:inline-block;background:#123d1c;border:1px solid #1fa64a;color:#7fe08f;font-weight:800;border-radius:20px;padding:4px 10px;font-size:12.5px}
 .c-save:empty{display:none}
 
 .cta{margin-top:14px;background:#e00000;color:#fff;font-weight:900;text-align:center;border-radius:12px;padding:15px;font-size:15px;letter-spacing:.3px}
@@ -103,86 +107,84 @@ img{display:block;max-width:100%}
 </head>
 <body>
 <div class="wrap">
-  <p class="h">Maquetas de las tarjetas de planes</p>
-  <p class="sub">3 opciones distintas. Mismos precios y regalos de hoy (Básico: sachet Velvet; Dominio y Élite: sachet + spray retardante). Toca para elegir plan en cada una.</p>
+  <p class="h">Maquetas de las tarjetas de planes · v2</p>
+  <p class="sub">Toca los planes en cada una. Cada plan tiene su color: Básico gris, Dominio dorado, Élite naranja. Todos traen sachet Velvet; Dominio y Élite además el spray retardante.</p>
 
   <!-- ===================== A ===================== -->
-  <div class="lab"><b>A</b><span>Dominio protagonista</span></div>
-  <p class="lab-sub">Dominio es una tarjeta grande con todo lo que trae. Élite y Básico quedan pequeños, como alternativas.</p>
+  <div class="lab"><b>A</b><span>El plan elegido se abre</span></div>
+  <p class="lab-sub">Arreglo: el plan que eliges se agranda con su color, una marca ✓ y el detalle de lo que trae. Los otros quedan cerrados. Abajo dice qué elegiste.</p>
   <div class="a-list" data-group="a">
-    <div class="a-card a-hero on" data-p="dominio">
-      <div class="a-rib">★ El más pedido</div>
-      <span class="a-dot"></span>
-      <div class="a-top">
-        <div class="a-img"><img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Dominio%20Total%20Enerplu.png?width=240&height=240&resize=contain&quality=80" alt="Plan Dominio"></div>
-        <div>
-          <div class="a-n">Plan Dominio</div>
-          <div class="a-q">2 cajas · 20 tabletas</div>
-          <div class="a-p money">$129.900</div>
-          <div class="a-w"><span class="strike money">$179.800</span> · <span class="g">$6.495 por ocasión</span></div>
-        </div>
-      </div>
-      <div class="a-inc">
-        <div>2 cajas de ENERPLU (20 tabletas)</div>
-        <div>Spray retardante 30 ml <b class="g">gratis</b></div>
-        <div>Sachet Velvet de obsequio</div>
-        <div>Envío gratis y pagas al recibir</div>
-      </div>
-      <div class="a-save">Ahorras $49.900</div>
-    </div>
-    <div class="a-card" data-p="elite">
+    <div class="a-card c-dom on" data-p="dominio">
+      <span class="a-tag">★ El más pedido</span>
       <div class="a-row">
-        <span class="a-dot"></span>
+        <span class="a-radio">✓</span>
+        <div class="a-sm"><img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Dominio%20Total%20Enerplu.png?width=120&height=120&resize=contain&quality=80" alt="Plan Dominio"></div>
+        <div class="a-mid"><b>Dominio · 2 cajas</b><span>20 tabletas · $6.495 por ocasión</span></div>
+        <div class="a-r money">$129.900<small class="strike">$179.800</small></div>
+      </div>
+      <div class="a-det"><ul><li>2 cajas de ENERPLU (20 tabletas)</li><li>Spray retardante 30 ml gratis</li><li>Sachet Velvet de obsequio</li><li>Envío gratis y pagas al recibir</li></ul><div class="a-save">Ahorras $49.900</div></div>
+    </div>
+    <div class="a-card c-eli" data-p="elite">
+      <div class="a-row">
+        <span class="a-radio">✓</span>
         <div class="a-sm"><img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Elite_%20Maximo%20Ahorro.png?width=120&height=120&resize=contain&quality=80" alt="Plan Élite"></div>
-        <div class="a-mid"><b>Élite · 4 cajas</b><div>40 tabletas + spray retardante + sachet Velvet</div></div>
-        <div class="a-r money">$159.900<small>$3.998 por ocasión</small></div>
+        <div class="a-mid"><b>Élite · 4 cajas</b><span>40 tabletas · $3.998 por ocasión</span></div>
+        <div class="a-r money">$159.900<small class="strike">$359.600</small></div>
       </div>
+      <div class="a-det"><ul><li>4 cajas de ENERPLU (40 tabletas)</li><li>Spray retardante 30 ml gratis</li><li>Sachet Velvet de obsequio</li><li>El menor precio por ocasión</li></ul><div class="a-save">Ahorras $199.700</div></div>
     </div>
-    <div class="a-card" data-p="basico">
+    <div class="a-card c-bas" data-p="basico">
       <div class="a-row">
-        <span class="a-dot"></span>
+        <span class="a-radio">✓</span>
         <div class="a-sm"><img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Basico%20Enerplu.png?width=120&height=120&resize=contain&quality=80" alt="Plan Básico"></div>
-        <div class="a-mid"><b>Básico · 1 caja</b><div>10 tabletas + sachet Velvet, para probar</div></div>
-        <div class="a-r money">$89.900</div>
+        <div class="a-mid"><b>Básico · 1 caja</b><span>10 tabletas · para probar</span></div>
+        <div class="a-r money">$89.900<small>&nbsp;</small></div>
       </div>
+      <div class="a-det"><ul><li>1 caja de ENERPLU (10 tabletas)</li><li>Sachet Velvet de obsequio</li><li class="no">Sin spray retardante</li></ul></div>
     </div>
   </div>
+  <div class="a-elegiste c-dom" id="a-el">Elegiste: <b>Dominio · 2 cajas · $129.900</b></div>
   <div class="cta">PEDIR AHORA · PAGAS AL RECIBIR</div>
 
   <div class="hr"></div>
 
   <!-- ===================== B ===================== -->
   <div class="lab"><b>B</b><span>Tabla comparativa</span></div>
-  <p class="lab-sub">Los 3 planes lado a lado, Dominio en el centro y más alto. Debajo, una tabla que muestra en 2 segundos qué trae cada uno.</p>
+  <p class="lab-sub">Arreglo: sin las fotos (que se parecían). Cada plan tiene su color y muestra sus cajas dibujadas: 1, 2 y 4. Se nota la diferencia de un vistazo.</p>
   <div class="b-t" data-group="b">
-    <div class="b-col" data-p="basico">
-      <img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Basico%20Enerplu.png?width=200&height=200&resize=contain&quality=80" alt="Básico">
-      <div class="b-n">Básico</div><div class="b-c">1 caja</div>
+    <div class="b-col c-bas" data-p="basico">
+      <div class="bar"></div>
+      <div class="b-boxes"><i></i></div>
+      <div class="b-big">1<small>caja</small></div>
+      <div class="b-n">Básico</div>
       <div class="b-p money">$89.900</div><div class="b-w">&nbsp;</div>
       <div class="b-btn">Elegir</div>
     </div>
-    <div class="b-col mid on" data-p="dominio">
+    <div class="b-col c-dom mid on" data-p="dominio">
       <div class="tg">★ El más pedido</div>
-      <img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Dominio%20Total%20Enerplu.png?width=240&height=240&resize=contain&quality=80" alt="Dominio">
-      <div class="b-n">Dominio</div><div class="b-c">2 cajas</div>
+      <div class="bar"></div>
+      <div class="b-boxes"><i></i><i></i></div>
+      <div class="b-big">2<small>cajas</small></div>
+      <div class="b-n">Dominio</div>
       <div class="b-p money">$129.900</div><div class="b-w strike money">$179.800</div>
-      <div class="b-btn">Elegido</div>
+      <div class="b-btn">✓ Elegido</div>
     </div>
-    <div class="b-col" data-p="elite">
-      <img src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Elite_%20Maximo%20Ahorro.png?width=200&height=200&resize=contain&quality=80" alt="Élite">
-      <div class="b-n">Élite</div><div class="b-c">4 cajas</div>
+    <div class="b-col c-eli" data-p="elite">
+      <div class="bar"></div>
+      <div class="b-boxes"><i></i><i></i><i></i><i></i></div>
+      <div class="b-big">4<small>cajas</small></div>
+      <div class="b-n">Élite</div>
       <div class="b-p money">$159.900</div><div class="b-w strike money">$359.600</div>
       <div class="b-btn">Elegir</div>
     </div>
   </div>
   <div class="b-tab">
     <div class="r"><div></div><div>Básico</div><div>Dominio</div><div>Élite</div></div>
-    <div class="r"><div>Tabletas</div><div>10</div><div>20</div><div>40</div></div>
-    <div class="r"><div>Por ocasión</div><div class="money">$8.990</div><div class="money">$6.495</div><div class="money">$3.998</div></div>
-    <div class="r"><div>Spray retardante 30 ml</div><div class="no">✕</div><div class="ok">✓ gratis</div><div class="ok">✓ gratis</div></div>
-    <div class="r"><div>Sachet Velvet</div><div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div></div>
-    <div class="r"><div>3 guías digitales</div><div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div></div>
-    <div class="r"><div>Ahorras</div><div class="no">–</div><div class="money ok">$49.900</div><div class="money ok">$199.700</div></div>
+    <div class="r"><div>Tabletas</div><div>10</div><div class="hl">20</div><div>40</div></div>
+    <div class="r"><div>Por ocasión</div><div class="money">$8.990</div><div class="money hl">$6.495</div><div class="money">$3.998</div></div>
+    <div class="r"><div>Spray retardante</div><div class="no">✕</div><div class="ok hl">✓ gratis</div><div class="ok">✓ gratis</div></div>
+    <div class="r"><div>Sachet Velvet</div><div class="ok">✓</div><div class="ok hl">✓</div><div class="ok">✓</div></div>
+    <div class="r"><div>Ahorras</div><div class="no">–</div><div class="money ok hl">$49.900</div><div class="money ok">$199.700</div></div>
   </div>
   <div class="cta">PEDIR AHORA · PAGAS AL RECIBIR</div>
 
@@ -190,55 +192,52 @@ img{display:block;max-width:100%}
 
   <!-- ===================== C ===================== -->
   <div class="lab"><b>C</b><span>Elige cuántas cajas</span></div>
-  <p class="lab-sub">Un solo botón de 3 opciones (1, 2 o 4 cajas) y una sola tarjeta grande que cambia. Nunca se ven dos tarjetas parecidas a la vez.</p>
+  <p class="lab-sub">Arreglo: las 3 opciones son baldosas grandes con su precio a la vista, así se ve que hay 3 planes. Abajo, el detalle del que elijas, con su color.</p>
   <div class="c-seg" data-group="c">
-    <button data-p="basico"><b>1</b><span>caja</span></button>
-    <button data-p="dominio" class="on"><span class="pop">MÁS PEDIDO</span><b>2</b><span>cajas</span></button>
-    <button data-p="elite"><b>4</b><span>cajas</span></button>
+    <button class="c-bas" data-p="basico"><span class="q">1</span><span class="u">caja</span><span class="p money">$89.900</span><span class="o">$8.990 c/u</span></button>
+    <button class="c-dom on" data-p="dominio"><span class="pop" style="background:#1fa64a">MÁS PEDIDO</span><span class="q">2</span><span class="u">cajas</span><span class="p money">$129.900</span><span class="o">$6.495 c/u</span></button>
+    <button class="c-eli" data-p="elite"><span class="pop" style="background:#ff7a00">MÁS AHORRO</span><span class="q">4</span><span class="u">cajas</span><span class="p money">$159.900</span><span class="o">$3.998 c/u</span></button>
   </div>
-  <div class="c-card">
-    <img id="c-img" src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Dominio%20Total%20Enerplu.png?width=340&height=340&resize=contain&quality=80" alt="Plan">
-    <div class="c-n" id="c-n">Plan Dominio</div>
-    <div class="c-q" id="c-q">2 cajas · 20 tabletas</div>
-    <div class="c-p money" id="c-p">$129.900</div>
-    <div class="c-w" id="c-w"><span class="strike money">$179.800</span></div>
-    <div class="c-u" id="c-u">$6.495 por ocasión</div>
-    <div class="c-inc" id="c-inc"></div>
-    <div class="c-save" id="c-save">Ahorras $49.900</div>
+  <div class="c-card c-dom" id="c-card">
+    <img id="c-img" src="https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Dominio%20Total%20Enerplu.png?width=240&height=240&resize=contain&quality=80" alt="Plan">
+    <div class="c-txt">
+      <div class="c-n" id="c-n">Plan Dominio</div>
+      <div class="c-pr money" id="c-pr"></div>
+      <div class="c-inc" id="c-inc"></div>
+      <div class="c-save" id="c-save"></div>
+    </div>
   </div>
   <div class="cta">PEDIR AHORA · PAGAS AL RECIBIR</div>
-  <p class="note">Maqueta sin tráfico. Los botones no hacen pedidos.</p>
+  <p class="note">"c/u" = precio por ocasión (por tableta). Maqueta sin tráfico. Los botones no hacen pedidos.</p>
 </div>
 <script>
-var IMG = {
-  basico: 'Plan%20Basico%20Enerplu.png', dominio: 'Plan%20Dominio%20Total%20Enerplu.png', elite: 'Plan%20Elite_%20Maximo%20Ahorro.png'
-};
+var IMG = { basico: 'Plan%20Basico%20Enerplu.png', dominio: 'Plan%20Dominio%20Total%20Enerplu.png', elite: 'Plan%20Elite_%20Maximo%20Ahorro.png' };
 var P = {
-  basico:  { n: 'Plan Básico', q: '1 caja · 10 tabletas', p: '$89.900', w: '', u: '$8.990 por ocasión', s: '', spray: false },
-  dominio: { n: 'Plan Dominio', q: '2 cajas · 20 tabletas', p: '$129.900', w: '$179.800', u: '$6.495 por ocasión', s: 'Ahorras $49.900', spray: true },
-  elite:   { n: 'Plan Élite', q: '4 cajas · 40 tabletas', p: '$159.900', w: '$359.600', u: '$3.998 por ocasión · el menor precio', s: 'Ahorras $199.700', spray: true }
+  basico:  { cls: 'c-bas', n: 'Plan Básico', q: '1 caja · 10 tabletas', p: '$89.900', w: '', s: '', spray: false },
+  dominio: { cls: 'c-dom', n: 'Plan Dominio', q: '2 cajas · 20 tabletas', p: '$129.900', w: '$179.800', s: 'Ahorras $49.900', spray: true },
+  elite:   { cls: 'c-eli', n: 'Plan Élite', q: '4 cajas · 40 tabletas', p: '$159.900', w: '$359.600', s: 'Ahorras $199.700', spray: true }
 };
 function pintaC(k) {
-  var d = P[k];
-  document.getElementById('c-img').src = 'https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/' + IMG[k] + '?width=340&height=340&resize=contain&quality=80';
+  var d = P[k], card = document.getElementById('c-card');
+  card.className = 'c-card ' + d.cls;
+  document.getElementById('c-img').src = 'https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/' + IMG[k] + '?width=240&height=240&resize=contain&quality=80';
   document.getElementById('c-n').textContent = d.n;
-  document.getElementById('c-q').textContent = d.q;
-  document.getElementById('c-p').textContent = d.p;
-  document.getElementById('c-w').innerHTML = d.w ? '<span class="strike money">' + d.w + '</span>' : '&nbsp;';
-  document.getElementById('c-u').textContent = d.u;
+  document.getElementById('c-pr').innerHTML = d.p + (d.w ? '<span class="strike">' + d.w + '</span>' : '');
   document.getElementById('c-save').textContent = d.s;
-  document.getElementById('c-inc').innerHTML =
-    '<div class="y">' + d.q.replace(' · ', ' de ENERPLU (') + ')</div>' +
-    (d.spray ? '<div class="y">Spray retardante 30 ml gratis</div>' : '<div class="n">Spray retardante (viene desde 2 cajas)</div>') +
-    '<div class="y">Sachet Velvet de obsequio</div><div class="y">3 guías digitales de regalo</div><div class="y">Envío gratis y pagas al recibir</div>';
+  document.getElementById('c-inc').innerHTML = '<div class="y">' + d.q + '</div>' +
+    (d.spray ? '<div class="y">Spray retardante 30 ml gratis</div>' : '<div class="n">Sin spray retardante</div>') +
+    '<div class="y">Sachet Velvet de obsequio</div><div class="y">Envío gratis · pagas al recibir</div>';
 }
 pintaC('dominio');
+var NOM = { basico: ['c-bas', 'Básico · 1 caja · $89.900'], dominio: ['c-dom', 'Dominio · 2 cajas · $129.900'], elite: ['c-eli', 'Élite · 4 cajas · $159.900'] };
 document.querySelectorAll('[data-group]').forEach(function (g) {
   g.addEventListener('click', function (e) {
     var t = e.target.closest('[data-p]'); if (!t) return;
     g.querySelectorAll('[data-p]').forEach(function (x) { x.classList.toggle('on', x === t); });
-    if (g.dataset.group === 'b') g.querySelectorAll('.b-btn').forEach(function (b) { b.textContent = b.closest('[data-p]') === t ? 'Elegido' : 'Elegir'; });
-    if (g.dataset.group === 'c') pintaC(t.dataset.p);
+    var k = t.dataset.p;
+    if (g.dataset.group === 'a') { var el = document.getElementById('a-el'); el.className = 'a-elegiste ' + NOM[k][0]; el.innerHTML = 'Elegiste: <b>' + NOM[k][1] + '</b>'; }
+    if (g.dataset.group === 'b') g.querySelectorAll('.b-btn').forEach(function (b) { b.textContent = b.closest('[data-p]') === t ? '✓ Elegido' : 'Elegir'; });
+    if (g.dataset.group === 'c') pintaC(k);
   });
 });
 </script>

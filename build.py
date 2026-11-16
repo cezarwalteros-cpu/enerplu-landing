@@ -618,7 +618,7 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
 # Cada página sabe qué variante es: guarda la cookie (por si el servidor no la dejó) y manda ab_assign {exp:'E08', v}
 # + etiqueta e08 en Clarity. Medición: ab_assign E08 por sid + checkout_attempts.session_id. Desde 2026-11-16 4:00 am.
 AB_E08 = True
-E08_INICIO_MS = 1794819600000   # 2026-11-16T09:00:00Z
+E08_INICIO_MS = 1794805200000   # 2026-11-16T05:00:00Z = 12:00 am Bogotá
 def e08_js(v):
     return ("<!--E08--><script>(function(){try{if(Date.now()<%d)return;var q=new URLSearchParams(location.search);"
             "if(!/(?:^|; )ep_e08=/.test(document.cookie))document.cookie='ep_e08=%s; Path=/; Max-Age=2592000; SameSite=Lax; Secure';"

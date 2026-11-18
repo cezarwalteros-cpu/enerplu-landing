@@ -1509,7 +1509,9 @@ html,body{margin:0;padding:0;background:#000}
 .ep-root .ep-pay-badge { position: absolute; top: -10px; right: 12px; background: var(--ep-ok); color: #FFFFFF; font: 800 10.5px/1 var(--ep-body); letter-spacing: .05em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; z-index: 1; }
 .ep-root .ep-pay-save b { display: block; font-size: 17px; color: var(--ep-ok); font-variant-numeric: tabular-nums; }
 .ep-root .ep-pay-save s { display: block; font-size: 12px; color: var(--ep-muted); }
-.ep-root .ep-pay-save.is-cod b { color: inherit; font-size: 15px; }
+.ep-root .ep-pay-save.is-cod b { color: var(--ep-text); font-size: 15px; }
+.ep-root .ep-pay-logo.is-img.is-visa, .ep-root .ep-pay-logo.is-img.is-mc, .ep-root .ep-pay-logo.is-img.is-amex, .ep-root .ep-pay-logo.is-img.is-pse, .ep-root .ep-pay-logo.is-img.is-nequi { padding: 0; border: 0; background: none; height: 26px; }
+.ep-root .ep-pay-logo.is-img.is-visa img, .ep-root .ep-pay-logo.is-img.is-mc img, .ep-root .ep-pay-logo.is-img.is-amex img, .ep-root .ep-pay-logo.is-img.is-pse img, .ep-root .ep-pay-logo.is-img.is-nequi img { height: 26px; max-width: none; }
 .ep-root .ep-pay-secure { display: flex; gap: 8px; align-items: center; margin: 0; font-size: 12.5px; line-height: 1.4; color: var(--ep-muted); }
 .ep-root .ep-pay-secure svg { flex: 0 0 auto; }
 .ep-root .ep-pay-trust { display: grid; grid-template-columns: 60px 1fr; gap: 12px; align-items: center; border-top: 1px solid var(--ep-line); padding-top: 12px; }

@@ -213,21 +213,24 @@
       (ex ? row('priority', ex.title || 'Express', '+' + R.money(ex.price), ex.text || '') : '');
   };
   /* forma de pago: contra entrega (por defecto), Bold y transferencia/llave Bancolombia */
-  R.logos = function (list) {
-    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-' + k[0] + '">' + k[1] + '</span>'; }).join('') + '</span>';
+  R.payImg = { visa: '/img/pay/visa.svg', mc: '/img/pay/master.svg', amex: '/img/pay/american_express.svg', pse: '/img/pay/pse.svg', nequi: '/img/pay/nequi.svg', bc: '/img/pay-bancolombia.webp', breb: '/img/pay-breb.webp' };
+  R.logos = function (list) {   /* logos oficiales (cesar 17-nov: nada de etiquetas de texto) */
+    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-img is-' + k[0] + '"><img src="' + R.payImg[k[0]] + '" alt="' + k[1] + '" height="16" loading="lazy" decoding="async"></span>'; }).join('') + '</span>';
   };
   R.pay = function (cfg, opt, prepaidCity) {
     var co = cfg.checkout, disc = prepaidCity ? 0 : (co.payDiscount || 0);
-    var save = disc ? '<span class="ep-ship-price ep-pay-save">Ahorras<br>' + R.money(disc) + '</span>' : '<span></span>';
+    /* precio final con el descuento (lo llena update() según el plan elegido) + sello de ahorro */
+    var save = disc ? '<span class="ep-ship-price ep-pay-save"><b data-ep-pay-final></b><s data-ep-pay-list></s></span>' : '<span></span>';
+    var tag = disc ? '<span class="ep-pay-badge">Ahorra ' + R.money(disc) + '</span>' : '';
     var row = function (val, name, text, extra, right, off) {
-      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '"><input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
+      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '">' + (val !== 'cod' ? tag : '') + '<input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
         '<span class="ep-pack-dot" aria-hidden="true"></span><span class="ep-ship-main"><b>' + name + '</b><small>' + text + '</small>' + (extra || '') + '</span>' + right + '</label>';
     };
-    return row('cod', 'Pagar al recibir (Contraentrega)', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', '<span></span>', prepaidCity) +
-      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Pago seguro con Bold. Tu pedido pasa directo a despacho.',
+    return row('cod', 'Pagar al recibir (Contraentrega)', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', disc ? '<span class="ep-ship-price ep-pay-save is-cod"><b data-ep-pay-cod></b></span>' : '<span></span>', prepaidCity) +
+      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Tu pedido pasa directo a despacho.',
         R.logos([['visa', 'VISA'], ['mc', 'Mastercard'], ['pse', 'PSE'], ['nequi', 'Nequi']]), save) : '') +
       (co.payTransfer ? row('transfer', 'Transferencia o llave Bancolombia', 'Te damos los datos al terminar y nos envías el comprobante por WhatsApp.',
-        R.logos([['bc', 'Bancolombia']]), save) : '');
+        R.logos([['bc', 'Bancolombia'], ['breb', 'Bre-B']]), save) : '');
   };
   R.bump = function (cfg, on) {
     var b = cfg.checkout.bump;
@@ -735,6 +738,12 @@
       var t = R.totals(C, st);
       var n = qs('[data-ep-nudge]'); if (n) n.innerHTML = R.nudge(C, state.pack);
       var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, st);
+      /* paso de pago: cuánto paga en cada opción con el plan elegido */
+      var codT = R.totals(C, { pack: st.pack, bump: st.bump, ship: st.ship, disc: 0, pay: '', cup: st.cup }).total, pc = this.st.city, pdisc = pc && pc.prepaid ? 0 : (C.checkout.payDiscount || 0);
+      var preT = R.totals(C, { pack: st.pack, bump: st.bump, ship: st.ship, disc: pdisc, pay: 'bold', cup: st.cup }).total;
+      qsa('[data-ep-pay-final]').forEach(function (el) { el.textContent = R.money(preT); });
+      qsa('[data-ep-pay-list]').forEach(function (el) { el.textContent = preT < codT ? R.money(codT) : ''; });
+      qsa('[data-ep-pay-cod]').forEach(function (el) { el.textContent = R.money(codT); });
       qsa('[data-ep-bind="total"]').forEach(function (el) { el.textContent = R.money(t.total); });
       var x = R.extraGifts(t.p);
       qsa('[data-ep-bind="featured-name"]').forEach(function (el) { el.textContent = R.short(t.p) + (t.p.badge ? ' · ' + t.p.badge : ''); });

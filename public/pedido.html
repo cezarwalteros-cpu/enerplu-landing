@@ -719,6 +719,23 @@ html,body{margin:0;padding:0;background:#000}
 .ep-root .ep-tr-wa .ep-ico { width: 18px; height: 18px; }
 .ep-root .ep-tr-note { margin: 10px 0 0; font-size: 13px; color: var(--ep-muted); }
 
+/* paso de pago con confianza (17-nov): logos oficiales, precio final, sello de ahorro, candado Bold, INVIMA + garantía */
+.ep-root .ep-pay-logo.is-img { background: #FFFFFF; border: 1px solid #DDDDDD; padding: 3px 6px; height: 24px; display: inline-flex; align-items: center; }
+.ep-root .ep-pay-logo.is-img img { height: 16px; width: auto; display: block; max-width: 64px; }
+.ep-root .ep-pay-opt { position: relative; }
+.ep-root .ep-pay-badge { position: absolute; top: -10px; right: 12px; background: var(--ep-ok); color: #FFFFFF; font: 800 10.5px/1 var(--ep-body); letter-spacing: .05em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; z-index: 1; }
+.ep-root .ep-pay-save b { display: block; font-size: 17px; color: var(--ep-ok); font-variant-numeric: tabular-nums; }
+.ep-root .ep-pay-save s { display: block; font-size: 12px; color: var(--ep-muted); }
+.ep-root .ep-pay-save.is-cod b { color: var(--ep-text); font-size: 15px; }
+.ep-root .ep-pay-logo.is-img.is-visa, .ep-root .ep-pay-logo.is-img.is-mc, .ep-root .ep-pay-logo.is-img.is-amex, .ep-root .ep-pay-logo.is-img.is-pse, .ep-root .ep-pay-logo.is-img.is-nequi { padding: 0; border: 0; background: none; height: 26px; }
+.ep-root .ep-pay-logo.is-img.is-visa img, .ep-root .ep-pay-logo.is-img.is-mc img, .ep-root .ep-pay-logo.is-img.is-amex img, .ep-root .ep-pay-logo.is-img.is-pse img, .ep-root .ep-pay-logo.is-img.is-nequi img { height: 26px; max-width: none; }
+.ep-root .ep-pay-secure { display: flex; gap: 8px; align-items: center; margin: 0; font-size: 12.5px; line-height: 1.4; color: var(--ep-muted); }
+.ep-root .ep-pay-secure svg { flex: 0 0 auto; }
+.ep-root .ep-pay-trust { display: grid; grid-template-columns: 60px 1fr; gap: 12px; align-items: center; border-top: 1px solid var(--ep-line); padding-top: 12px; }
+.ep-root .ep-pay-trust img { width: 60px; height: 60px; }
+.ep-root .ep-pay-trust p { margin: 0; font-size: 13px; line-height: 1.45; color: var(--ep-muted); }
+.ep-root .ep-pay-trust a { color: inherit; text-decoration: underline; }
+
 /* Oferta + formulario con el diseño del selector v13: fondo negro, Inter, dorado para destacar,
    verde solo en el precio, rojo solo en el botón. Campos en blanco con texto gris oscuro. */
 .ep-root .eph-order { background: #000; padding-block: 28px 44px; scroll-margin-top: 8px; }
@@ -1372,6 +1389,8 @@ a.pdg { display: block; text-decoration: none; border: 0; background: #0D0D0D; }
       <fieldset class="ep-of-block" data-ep-pay-block hidden>
         <legend class="ep-of-legend"><span class="ck3-n">3</span>¿Cómo quieres pagar?</legend>
         <div class="ep-ship" data-ep-render="pay"></div>
+        <p class="ep-pay-secure"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Pago procesado por la pasarela segura de Bold. No vemos ni guardamos los datos de tu tarjeta.</span></p>
+        <div class="ep-pay-trust"><img src="/img/pro-invima.webp" alt="Registro INVIMA" width="60" height="60" loading="lazy" decoding="async"><p>Producto con registro INVIMA <b data-ep-invima>NSA2314-2025</b> · Garantía Real en los planes Dominio Total y Élite. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a></p></div>
       </fieldset>
 
       <div data-ep-render="bump"></div>
@@ -1387,7 +1406,7 @@ a.pdg { display: block; text-decoration: none; border: 0; background: #0D0D0D; }
       <p class="ep-pay-hint" data-ep-pay-hint hidden></p>
       <div class="ep-pay-accept" data-ep-pay-logos hidden>
         <p>Medios de pago aceptados</p>
-        <span class="ep-pay-logos"><span class="ep-pay-logo is-visa">VISA</span><span class="ep-pay-logo is-mc">Mastercard</span><span class="ep-pay-logo is-amex">AMEX</span><span class="ep-pay-logo is-pse">PSE</span><span class="ep-pay-logo is-nequi">Nequi</span><span class="ep-pay-logo is-bc">Bancolombia</span><span class="ep-pay-logo is-cod">Contraentrega</span></span>
+        <span class="ep-pay-logos"><span class="ep-pay-logo is-img is-visa"><img src="/img/pay/visa.svg" alt="Visa" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-mc"><img src="/img/pay/master.svg" alt="Mastercard" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-amex"><img src="/img/pay/american_express.svg" alt="AMEX" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-pse"><img src="/img/pay/pse.svg" alt="PSE" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-nequi"><img src="/img/pay/nequi.svg" alt="Nequi" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-bc"><img src="/img/pay-bancolombia.webp" alt="Bancolombia" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-breb"><img src="/img/pay-breb.webp" alt="Bre-B" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-cod">Contraentrega</span></span>
         <small>Tarjeta, PSE y Nequi se pagan en la pasarela segura de Bold. No guardamos datos de tu tarjeta.</small>
       </div>
 
@@ -1840,21 +1859,24 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       (ex ? row('priority', ex.title || 'Express', '+' + R.money(ex.price), ex.text || '') : '');
   };
   /* forma de pago: contra entrega (por defecto), Bold y transferencia/llave Bancolombia */
-  R.logos = function (list) {
-    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-' + k[0] + '">' + k[1] + '</span>'; }).join('') + '</span>';
+  R.payImg = { visa: '/img/pay/visa.svg', mc: '/img/pay/master.svg', amex: '/img/pay/american_express.svg', pse: '/img/pay/pse.svg', nequi: '/img/pay/nequi.svg', bc: '/img/pay-bancolombia.webp', breb: '/img/pay-breb.webp' };
+  R.logos = function (list) {   /* logos oficiales (cesar 17-nov: nada de etiquetas de texto) */
+    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-img is-' + k[0] + '"><img src="' + R.payImg[k[0]] + '" alt="' + k[1] + '" height="16" loading="lazy" decoding="async"></span>'; }).join('') + '</span>';
   };
   R.pay = function (cfg, opt, prepaidCity) {
     var co = cfg.checkout, disc = prepaidCity ? 0 : (co.payDiscount || 0);
-    var save = disc ? '<span class="ep-ship-price ep-pay-save">Ahorras<br>' + R.money(disc) + '</span>' : '<span></span>';
+    /* precio final con el descuento (lo llena update() según el plan elegido) + sello de ahorro */
+    var save = disc ? '<span class="ep-ship-price ep-pay-save"><b data-ep-pay-final></b><s data-ep-pay-list></s></span>' : '<span></span>';
+    var tag = disc ? '<span class="ep-pay-badge">Ahorra ' + R.money(disc) + '</span>' : '';
     var row = function (val, name, text, extra, right, off) {
-      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '"><input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
+      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '">' + (val !== 'cod' ? tag : '') + '<input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
         '<span class="ep-pack-dot" aria-hidden="true"></span><span class="ep-ship-main"><b>' + name + '</b><small>' + text + '</small>' + (extra || '') + '</span>' + right + '</label>';
     };
-    return row('cod', 'Pagar al recibir (Contraentrega)', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', '<span></span>', prepaidCity) +
-      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Pago seguro con Bold. Tu pedido pasa directo a despacho.',
+    return row('cod', 'Pagar al recibir (Contraentrega)', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', disc ? '<span class="ep-ship-price ep-pay-save is-cod"><b data-ep-pay-cod></b></span>' : '<span></span>', prepaidCity) +
+      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Tu pedido pasa directo a despacho.',
         R.logos([['visa', 'VISA'], ['mc', 'Mastercard'], ['pse', 'PSE'], ['nequi', 'Nequi']]), save) : '') +
       (co.payTransfer ? row('transfer', 'Transferencia o llave Bancolombia', 'Te damos los datos al terminar y nos envías el comprobante por WhatsApp.',
-        R.logos([['bc', 'Bancolombia']]), save) : '');
+        R.logos([['bc', 'Bancolombia'], ['breb', 'Bre-B']]), save) : '');
   };
   R.bump = function (cfg, on) {
     var b = cfg.checkout.bump;
@@ -2362,6 +2384,12 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var t = R.totals(C, st);
       var n = qs('[data-ep-nudge]'); if (n) n.innerHTML = R.nudge(C, state.pack);
       var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, st);
+      /* paso de pago: cuánto paga en cada opción con el plan elegido */
+      var codT = R.totals(C, { pack: st.pack, bump: st.bump, ship: st.ship, disc: 0, pay: '', cup: st.cup }).total, pc = this.st.city, pdisc = pc && pc.prepaid ? 0 : (C.checkout.payDiscount || 0);
+      var preT = R.totals(C, { pack: st.pack, bump: st.bump, ship: st.ship, disc: pdisc, pay: 'bold', cup: st.cup }).total;
+      qsa('[data-ep-pay-final]').forEach(function (el) { el.textContent = R.money(preT); });
+      qsa('[data-ep-pay-list]').forEach(function (el) { el.textContent = preT < codT ? R.money(codT) : ''; });
+      qsa('[data-ep-pay-cod]').forEach(function (el) { el.textContent = R.money(codT); });
       qsa('[data-ep-bind="total"]').forEach(function (el) { el.textContent = R.money(t.total); });
       var x = R.extraGifts(t.p);
       qsa('[data-ep-bind="featured-name"]').forEach(function (el) { el.textContent = R.short(t.p) + (t.p.badge ? ' · ' + t.p.badge : ''); });

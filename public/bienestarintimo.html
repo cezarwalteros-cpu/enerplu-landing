@@ -446,7 +446,7 @@ footer p{margin:0 0 8px}
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
 </svg>
 
-<div class="ann"><div class="w"><span><b>Envío gratis</b> a toda Colombia</span><span>Entrega en bolsa negra</span><span>Distribuidor oficial SEXLO</span></div></div>
+<div class="ann"><div class="w"><span id="ann-bono" hidden><b>Tienes un bono de cliente frecuente:</b> se descuenta al hacer tu pedido</span><span><b>Envío gratis</b> a toda Colombia</span><span>Entrega en bolsa negra</span><span>Distribuidor oficial SEXLO</span></div></div>
 
 <header class="top">
   <div class="w">
@@ -575,7 +575,7 @@ footer p{margin:0 0 8px}
     <div class="exp-line"><i id="exp-bar"></i></div>
     <div class="exp" id="exp">
       <div><span class="t">Paso 1</span><h3>Eliges</h3><ul><li>De 3 a 6 frascos de 30 ml</li><li>Mezclas líneas y sabores como quieras</li><li>Si quieres, sumas el anillo o una caja de ENERPLU</li></ul></div>
-      <div><span class="t">Paso 2</span><h3>Pagas en línea</h3><ul><li>Esta tienda es solo con pago anticipado</li><li>El envío va por cuenta nuestra</li><li>Te confirmamos el pedido por WhatsApp</li></ul></div>
+      <div><span class="t">Paso 2</span><h3>Eliges cómo pagar</h3><ul><li>En línea, o en efectivo al recibir por $9.100 más</li><li>El envío va por cuenta nuestra</li><li>Te confirmamos el pedido por WhatsApp</li></ul></div>
       <div><span class="t">Paso 3</span><h3>Lo recibes</h3><ul><li>Bolsa negra sellada</li><li>Sin el nombre del producto por fuera</li><li>Listo para estrenar esa misma noche</li></ul></div>
     </div>
   </div>
@@ -618,7 +618,7 @@ footer p{margin:0 0 8px}
     <div class="faq">
       <details><summary>¿Puedo pedir un solo frasco?<svg class="ico"><use href="#i-down"/></svg></summary><p>No. Se venden desde 3 frascos, y puedes llevar hasta 6 por pedido. Puedes mezclar los que quieras o repetir el mismo.</p></details>
       <details><summary>¿Cuánto cuesta?<svg class="ico"><use href="#i-down"/></svg></summary><p>3 frascos $89.900, 4 frascos $118.400, 5 frascos $146.900 y 6 frascos $175.400. El envío es gratis.</p></details>
-      <details><summary>¿Cómo pago?<svg class="ico"><use href="#i-down"/></svg></summary><p>En línea, al terminar tu pedido. Esta tienda funciona solo con pago anticipado, no hay pago al recibir.</p></details>
+      <details><summary>¿Cómo pago?<svg class="ico"><use href="#i-down"/></svg></summary><p>En línea al terminar tu pedido, con tarjeta, PSE, Nequi o transferencia Bancolombia. También puedes pagar en efectivo al recibir: con ese medio el combo vale $9.100 más.</p></details>
       <details><summary>¿Cómo llega el paquete?<svg class="ico"><use href="#i-down"/></svg></summary><p>En una bolsa negra sellada y con empaque discreto. Por fuera no dice qué es.</p></details>
       <details><summary>¿Cuáles sirven para sexo oral?<svg class="ico"><use href="#i-down"/></svg></summary><p>Los de sabor de las líneas fría y caliente, y Mix Cum. Anal Duo y Virgyflower no son para sexo oral.</p></details>
       <details><summary>¿Puedo sumar ENERPLU a mi pedido?<svg class="ico"><use href="#i-down"/></svg></summary><p>Sí. Dentro de tu combo puedes agregar cajas de ENERPLU a $39.900 cada una y el anillo vibrador Thor a $18.000.</p></details>
@@ -757,6 +757,9 @@ footer p{margin:0 0 8px}
       d.querySelectorAll('.pc').forEach(function (el) { el.hidden = ch.dataset.f !== 'todos' && el.dataset.cat !== ch.dataset.f; if (!el.hidden) el.classList.add('in'); });
     });
   });
+
+  // Bono por enlace (?bono=CODIGO): solo se avisa aquí; el valor lo valida y lo descuenta el checkout.
+  if (/[?&]bono=[A-Za-z0-9]{4,}/.test(location.search)) { var ab = d.getElementById('ann-bono'); if (ab) ab.hidden = false; }
 
   // Continuar: lleva al checkout aparte (/pedido-intimo) con el combo, los adicionales y los parámetros de campaña.
   function goPay(e) {

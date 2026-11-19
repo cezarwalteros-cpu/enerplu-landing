@@ -6338,6 +6338,14 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         if (r.ok && j.success && j.payment_required) { self.payOpen(j); return; }
         if (r.ok && j.success) { self.success(j, body); return; }
         var map = j.fields || {}, shown = false;
+        /* cuotas Bancolombia: el error es del medio de pago, no de la ciudad; se muestra arriba del botón y se ofrecen los otros medios */
+        if (body.payment_method === 'wompi_bnpl' && (map.payment_method || !Object.keys(map).length)) {
+          self.formError(map.payment_method || j.error || 'Bancolombia no pudo abrir tus cuotas. Elige otro medio de pago.');
+          if (self.payFallback) self.payFallback();
+          track('OrderError', { status: r.status, fields: 'payment_method' });
+          Funnel.send('pay_result', { status: j.bnpl_rejected ? 'bnpl_rechazado' : 'error', method: 'wompi_bnpl' });
+          return;
+        }
         Object.keys(map).forEach(function (k) {
           var key = k === 'full_name' ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
           if (self.fields.indexOf(key) >= 0) { self.err(key, map[k]); shown = true; }

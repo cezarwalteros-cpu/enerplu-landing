@@ -5863,14 +5863,25 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     },
     validPhone: function (v) { return /^3\d{9}$/.test(v); },
     /* ---- carrito abandonado: el bot de recuperación le escribe si no termina ---- */
-    queueCart: function () {
+    /* Todo lo que el cliente alcanzó a escribir (ciudad, dirección, barrio, cédula) va al carrito,
+       para que la IA de recuperación no se lo vuelva a pedir. */
+    cartAddress: function () {
+      var v = function (n, max) { var i = this.el(n); return i ? String(i.value || '').replace(/\s+/g, ' ').trim().slice(0, max) : ''; }.bind(this);
+      var c = this.st.city || null;
+      return { city_text: v('city', 80), city: c ? c.municipio : '', department: c ? c.departamento : '', address1: v('address1', 160), additional: v('additional', 160), document: v('document', 20) };
+    },
+    queueCart: function (now) {
       var self = this; clearTimeout(this.cartTimer);
       if (this.test || this.done) return;
-      this.cartTimer = setTimeout(function () {
+      var send = function () {
         var ph = self.phone(); if (!self.validPhone(ph) || self.st.phoneBlock || self.done) return;
         var nm = ((self.el('first_name').value || '') + ' ' + (self.el('last_name').value || '')).trim();
-        self.api('POST', '', { action: 'cart', slug: C.checkout.slug, phone: ph, name: nm, offer_key: packById(state.pack).offerKey, bump: !!self.st.bump, session_id: self.sid, tracking: self.tracking() }, true).catch(function () {});
-      }, 1500);
+        var body = { action: 'cart', slug: C.checkout.slug, phone: ph, name: nm, offer_key: packById(state.pack).offerKey, bump: !!self.st.bump, session_id: self.sid, tracking: self.tracking(), address: self.cartAddress() };
+        var key = JSON.stringify([ph, nm, body.offer_key, body.bump, body.address]);
+        if (key === self.cartKey) return; self.cartKey = key;
+        self.api('POST', '', body, true).catch(function () {});
+      };
+      if (now) send(); else this.cartTimer = setTimeout(send, 1500);
     },
     checkPhone: function () {
       var self = this, ph = this.phone();
@@ -5965,6 +5976,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var inp = this.el('city'), list = qs('#ep-f-city-list');
       this.st.city = { municipio: c.municipio, departamento: c.departamento, prepaid: !!c.solo_pago_anticipado };
       inp.value = c.municipio + (c.departamento !== c.municipio ? ' / ' + c.departamento : ''); this.cityLabel = inp.value;
+      this.queueCart();
       list.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant');
       var add = this.el('additional');
       if (c.alias && add && !String(add.value || '').trim()) add.value = c.alias;   /* el corregimiento o la localidad quedan en "barrio y detalles" */
@@ -6224,6 +6236,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         fmIo.observe(f);
       }
       global.addEventListener('pagehide', function () {
+        self.queueCart(true);
         if (!fmStarted || self.done || fmGone) return; fmGone = true;
         Funnel.send('form_field', { field: '_salida', ultimo: fmLast, completos: Object.keys(fmDone), plan: state.pack, t: fmT() });
       });
@@ -6272,7 +6285,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
             self.err('first_name', ''); self.err('last_name', '');
           }
         }
-        if (t.name === 'first_name' || t.name === 'last_name' || t.name === 'phone') self.queueCart();
+        if (['first_name', 'last_name', 'phone', 'city', 'address1', 'additional', 'document'].indexOf(t.name) >= 0) self.queueCart();
       });
       cityInp.addEventListener('focus', function () {
         if (global.innerWidth > 700) return;

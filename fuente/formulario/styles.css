@@ -720,3 +720,9 @@
 .ep-root .ep-pay-trust img { width: 60px; height: 60px; }
 .ep-root .ep-pay-trust p { margin: 0; font-size: 13px; line-height: 1.45; color: var(--ep-muted); }
 .ep-root .ep-pay-trust a { color: inherit; text-decoration: underline; }
+/* cuotas Bancolombia (Wompi) */
+.ep-root .ep-pay-badge.is-new { background: #FDDA24; color: #111; }
+.ep-root .ep-pay-bnpl.is-off { opacity: .6; }
+.ep-root .ep-pay-bnpl.is-off .ep-pay-badge { display: none; }
+.ep-root .ep-pay-bnpl .ep-pay-save b { white-space: nowrap; }
+.ep-root .ep-bnpl-tot { display: block; font-size: 12px; color: var(--ep-muted); }

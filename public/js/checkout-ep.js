@@ -61,7 +61,7 @@
     try { fetch(CFG.funnel, { method: "POST", body: body, keepalive: true, headers: { "Content-Type": "text/plain" } }).catch(function () {}); } catch (e) {}
   }
   var api = function (body) {
-    return fetch(CFG.api, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ slug: CFG.slug, session_id: SID }, body)) })
+    return fetch(CFG.api, { method: "POST", keepalive: body.action === "cart", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ slug: CFG.slug, session_id: SID }, body)) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j.status = j.status || r.status; return j; }); });
   };
 
@@ -186,7 +186,7 @@
     i.addEventListener("input", function () {
       if (k === "tel") { var d = i.value.replace(/\D/g, "").slice(0, 10); i.value = d.replace(/(\d{3})(\d{0,3})(\d{0,4})/, function (m, a, b, c) { return [a, b, c].filter(Boolean).join(" "); }); phoneBlock = null; errBox.classList.remove("show"); }
       if (k !== "city") { var ok = mark(k, false); if (ok && !done1[k]) { done1[k] = 1; funnel("form_field", { field: k }); } }
-      check(); if (k === "tel" || k === "name") queueCart();
+      check(); queueCart();
     });
     if (k !== "city") i.addEventListener("blur", function () { mark(k, true); });
   });
@@ -253,7 +253,7 @@
     if (prepaidCity && !boldOn && !transferOn) { city = null; prepaidCity = false; mark("city", true); fieldOf("city").querySelector(".hint").textContent = "En " + c.municipio + " no tenemos pago al recibir por ahora."; check(); return; }
     if (prepaidCity && pay === "cod") pay = boldOn ? "bold" : "transfer";
     mark("city", false); if (!done1.city) { done1.city = 1; funnel("form_field", { field: "city" }); }
-    render();
+    render(); queueCart();
   }
   function autoCity() {
     if (city || !items.length) return !!city;
@@ -294,9 +294,11 @@
   function sendCart() {
     var p = phone10(F.tel.value);
     if (TEST || ordered || !/^3\d{9}$/.test(p)) return;
-    var name = clean(F.name.value), key = [p, name, plan.key].join("|");
+    /* todo lo que alcanzó a escribir va al carrito, para que la IA no se lo vuelva a pedir */
+    var address = { city_text: clean(F.city.value).slice(0, 80), city: city ? city.municipio : "", department: city ? city.departamento : "", address1: clean(F.addr.value).slice(0, 160), additional: clean(F.opt ? F.opt.value : "").slice(0, 160) };
+    var name = clean(F.name.value), key = JSON.stringify([p, name, plan.key, address]);
     if (key === cartKey) return; cartKey = key;
-    api({ action: "cart", phone: p, name: name, offer_key: plan.key, bump: false, tracking: tracking() }).catch(function () {});
+    api({ action: "cart", phone: p, name: name, offer_key: plan.key, bump: false, tracking: tracking(), address: address }).catch(function () {});
   }
   window.addEventListener("pagehide", sendCart);
 

@@ -808,9 +808,9 @@
         C.checkout.payBold = !!(c.online_payment && c.online_payment.live && !c.online_payment.prepaid_only);
         C.checkout.payTransfer = !C.checkout.payPrepaid && !!c.transfer;
         C.checkout.payDiscount = C.checkout.payBold ? (c.online_payment.discount || 0) : (c.transfer ? c.transfer.discount || 0 : 0);
-        /* cuotas Bancolombia (Wompi): visible si está en vivo; con ?ep_test=1 también antes de salir en vivo */
+        /* cuotas Bancolombia (Wompi): visible si está en vivo; antes, con ?ep_test=1 (simulado) o ?cuotas=1 (pago real, solo celulares de prueba) */
         var wb = c.wompi_bnpl;
-        C.checkout.payBnpl = !C.checkout.payPrepaid && wb && (wb.live || self.test) ? { label: wb.label, sublabel: wb.sublabel, min: wb.min_cop || 100000, discounts: wb.discounts || {}, terms: wb.terms_url || '' } : null;
+        C.checkout.payBnpl = !C.checkout.payPrepaid && wb && (wb.live || self.test || /[?&]cuotas=1/.test(global.location.search)) ? { label: wb.label, sublabel: wb.sublabel, min: wb.min_cop || 100000, discounts: wb.discounts || {}, terms: wb.terms_url || '' } : null;
         self.payMode();
         if (changed) {
           var sig = 'live' + Date.now();

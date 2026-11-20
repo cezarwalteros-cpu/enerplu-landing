@@ -11,7 +11,7 @@ s, n = re.subn(r'<div[^>]*eph-bonus--libros[^>]*><div class="eph-libros"><img[^>
 if n != 1 or re.search(r'Orgasmo|guías digitales', s):
     sys.exit('no se pudo quitar el bloque de las guías')
 
-s, n = re.subn(r'<div class="ep-resultados"><img[^>]*resultados_enerplu[^>]*/?>\s*</div>', '', s, count=1)
+s, n = re.subn(r'<div class="ep-resultados"><img[^>]*(?:resultados_enerplu|resultados-v2)[^>]*/?>\s*</div>', '', s, count=1)
 if n != 1:
     sys.exit('bloque resultados no coincide')
 

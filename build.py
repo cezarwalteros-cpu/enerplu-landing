@@ -672,3 +672,6 @@ elif _s.exists():
                 {"source": "/guias/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}]}]
 }, indent=2))
 print('ok', len(html))
+
+# cesar 20-nov: metadata neutra (título, descripción y vista previa negra) en todas las páginas de ENERPLU
+_sp.run([sys.executable, str(ROOT / "tools" / "meta_neutra.py")], check=True)

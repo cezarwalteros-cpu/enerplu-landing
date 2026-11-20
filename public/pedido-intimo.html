@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* Checkout de Bienestar Íntimo (2026-11-13). Mismo diseño de /pedido: cabecera negra con logo y candado, barra de 3 pasos,
-   tarjetas blancas sobre gris claro, botón negro con precio dorado, bloque de confianza y pie con logo. Pago en línea, transferencia o contra entrega (combo + $9.100). */
+   tarjetas blancas sobre gris claro, botón negro con precio dorado, bloque de confianza y pie con logo. Pago en línea, transferencia o contra entrega; $10.000 menos por pago anticipado o por bono, no se suman. */
 :root{--bg:#F3F3F0;--ink:#0D0D0D;--mut:#4B5563;--faint:#6B7280;--line:#E5E7EB;--gold:#D4AF37;--gold-d:#8A6410;--gold-bg:#FDF8EC;--ok:#15803D;--no:#B42318;
   --disp:Archivo,Inter,system-ui,sans-serif;--txt:Inter,system-ui,-apple-system,sans-serif}
 *{box-sizing:border-box}
@@ -106,6 +106,8 @@ button,input{font:inherit;color:inherit}
 .sum li small{color:var(--faint);font-size:13px}
 .sum li b{white-space:nowrap;font-variant-numeric:tabular-nums}
 .sum li b.g{color:var(--ok)}
+.ahorro{color:var(--ok);font-weight:700;white-space:nowrap}
+.con-bono .ahorro,.con-bono .sin-bono{display:none}
 .sum-tot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 .sum-tot span{font:800 17px/1.2 var(--txt)}
 .sum-tot b{font:800 28px/1 var(--disp);color:var(--ok);font-variant-numeric:tabular-nums}
@@ -212,7 +214,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
   <section class="card" id="s1">
     <h2 class="step"><i>1</i>Tu combo</h2>
     <ul class="items" id="items"></ul>
-    <div class="combo-row"><span><span id="combo-name">Combo de 3 frascos</span><small id="combo-save"></small></span><b id="combo-price">$89.900</b></div>
+    <div class="combo-row"><span><span id="combo-name">Combo de 3 frascos</span><small id="combo-save"></small></span><b id="combo-price">$99.000</b></div>
     <a class="edit" href="/bienestarintimo#combo" id="edit">Cambiar mis frascos</a>
   </section>
 
@@ -248,10 +250,10 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
 
   <section class="card" id="s3">
     <h2 class="step"><i>3</i>¿Cómo quieres pagar?</h2>
-    <p class="note" style="margin-bottom:12px">Paga en línea y <b>ahorra $9.100</b>, o paga en efectivo cuando recibas tu pedido.</p>
-    <label class="opt"><input type="radio" name="pago" value="linea" checked><span class="dot"></span><span><strong>Tarjeta, PSE o Nequi</strong><small>Pago en línea seguro con Bold.</small><span class="logos"><img src="/img/pay/visa.svg" alt="Visa" width="42" height="27"><img src="/img/pay/master.svg" alt="Mastercard" width="42" height="27"><img src="/img/pay/pse.svg" alt="PSE" width="42" height="27"><img src="/img/pay/nequi.svg" alt="Nequi" width="42" height="27"></span></span><span></span></label>
-    <label class="opt"><input type="radio" name="pago" value="bancolombia"><span class="dot"></span><span><strong>Transferencia o llave Bancolombia</strong><small>Te damos la cuenta y la llave al terminar, y nos envías el comprobante por WhatsApp.</small><span class="logos"><img class="bc" src="/img/pay-bancolombia.webp" alt="Bancolombia" width="240" height="57"><img class="bc" src="/img/pay-breb.webp" alt="Bre-B" height="24"></span></span><span></span></label>
-    <label class="opt"><input type="radio" name="pago" value="cod"><span class="dot"></span><span><strong>Pago contra entrega</strong><small>Pagas en efectivo al recibir. Con este medio el combo vale $9.100 más.</small></span><span></span></label>
+    <p class="note" style="margin-bottom:12px">Paga en efectivo cuando recibas tu pedido<span class="sin-bono">, o paga en línea y <b>ahorra $10.000</b></span>.</p>
+    <label class="opt"><input type="radio" name="pago" value="linea" checked><span class="dot"></span><span><strong>Tarjeta, PSE o Nequi</strong><small>Pago en línea seguro con Bold. <b class="ahorro">Ahorras $10.000.</b></small><span class="logos"><img src="/img/pay/visa.svg" alt="Visa" width="42" height="27"><img src="/img/pay/master.svg" alt="Mastercard" width="42" height="27"><img src="/img/pay/pse.svg" alt="PSE" width="42" height="27"><img src="/img/pay/nequi.svg" alt="Nequi" width="42" height="27"></span></span><span></span></label>
+    <label class="opt"><input type="radio" name="pago" value="bancolombia"><span class="dot"></span><span><strong>Transferencia o llave Bancolombia</strong><small>Te damos la cuenta y la llave al terminar, y nos envías el comprobante por WhatsApp. <b class="ahorro">Ahorras $10.000.</b></small><span class="logos"><img class="bc" src="/img/pay-bancolombia.webp" alt="Bancolombia" width="240" height="57"><img class="bc" src="/img/pay-breb.webp" alt="Bre-B" height="24"></span></span><span></span></label>
+    <label class="opt"><input type="radio" name="pago" value="cod"><span class="dot"></span><span><strong>Pago contra entrega</strong><small>Pagas en efectivo al recibir tu pedido.</small></span><span></span></label>
     <div class="fld" id="fld-mail" style="margin-top:14px"><label for="f-mail">Correo electrónico</label><input id="f-mail" name="correo" type="email" inputmode="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" data-req data-mail><span class="err">Escribe un correo válido.</span><p class="hint">Ahí te llega el comprobante del pago.</p></div>
   </section>
 
@@ -283,7 +285,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
 
 <section class="faq" id="faq" hidden>
   <h2>Preguntas frecuentes</h2>
-  <details><summary>¿Cómo pago?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>En línea, con tarjeta, PSE, Nequi o transferencia Bancolombia. También puedes pagar en efectivo al recibir: con ese medio el combo vale $9.100 más.</p></details>
+  <details><summary>¿Cómo pago?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>En línea, con tarjeta, PSE, Nequi o transferencia Bancolombia. También puedes pagar en efectivo al recibir. Si pagas en línea o por transferencia te descontamos $10.000.</p></details>
   <details><summary>¿Cómo llega el paquete?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>En una bolsa negra sellada y con empaque discreto. Por fuera no dice qué es.</p></details>
   <details><summary>¿Me cobran algo más?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>No. El envío es gratis y el total del resumen es lo único que pagas.</p></details>
   <details><summary>¿Puedo cambiar los frascos?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Sí. Antes de pagar toca "Cambiar mis frascos" y vuelves a la tienda con tu combo como lo dejaste.</p></details>
@@ -299,7 +301,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
 (function () {
   var d = document, $ = function (id) { return d.getElementById(id); };
   var N = { velvet: ['Club Velvet', 'Retardante en spray'], sandia: ['Sandía', 'Frío'], chocolate: ['Chocolate', 'Caliente'], fresa: ['Fresa', 'Caliente'], uva: ['Uva', 'Frío'], chicle: ['Chicle', 'Caliente'], bombon: ['Bombón', 'Frío'], lecherita: ['Lecherita', 'Caliente'], arequipe: ['Arequipe', 'Caliente'], tequila: ['Tequila Naranja', 'Frío'], caramelo: ['Caramelo', 'Caliente'], cafe: ['Crema de Café', 'Caliente'], cholao: ['Cholao', 'Frío'], anis: ['Anís', 'Caliente'], mantecado: ['Mantecado', 'Caliente'], lubrimax: ['Lubrimax', 'Neutro, base agua'], virgy: ['Virgyflower', 'Estrechante'], analduo: ['Anal Duo', 'Lubrica y dilata'], mixcum: ['Mix Cum', 'Textura acuosa'] };
-  var MIN = 3, MAX = 6, BASE = 89900, EXTRA = 28500, UNIT = 39900, COD_EXTRA = 9100, ADS = { anillo: ['Anillo vibrador Thor', 18000], caja: ['Caja de ENERPLU', 39900] };
+  var MIN = 3, MAX = 6, BASE = 99000, EXTRA = 28500, UNIT = 39900, ANTICIPADO = 10000, ADS = { anillo: ['Anillo vibrador Thor', 18000], caja: ['Caja de ENERPLU', 39900] };
   var API = 'https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-native', SLUG = 'enerplu-intimo';
   var TEST = /[?&]ep_test=1(&|$)/.test(location.search);
   // Regreso de Bold (?bold-order-id=…): el combo y los datos se recuperan de lo guardado antes de abrir el pago.
@@ -316,7 +318,9 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
   var kit = BASE + (c - MIN) * EXTRA;
   // Bono por enlace (?bono=CODIGO): el servidor dice cuánto vale; si no es válido, no se muestra nada.
   var BONO = (q.get('bono') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 30), bono = 0;
-  function total() { return kit - bono + (pago() === 'cod' ? COD_EXTRA : 0) + ads.anillo * ADS.anillo[1] + ads.caja * ADS.caja[1]; }
+  // Un solo descuento: con bono no hay descuento por pago anticipado (igual que el servidor).
+  function antic() { return !bono && pago() !== 'cod' ? ANTICIPADO : 0; }
+  function total() { return kit - bono - antic() + ads.anillo * ADS.anillo[1] + ads.caja * ADS.caja[1]; }
   function backUrl() { var p = new URLSearchParams(q); p.set('anillo', ads.anillo); p.set('caja', ads.caja); return '/bienestarintimo?' + p.toString() + '#combo'; }
 
   if (c < MIN) { $('vacio').hidden = false; d.querySelector('.bar').hidden = true; return; }
@@ -336,9 +340,10 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     });
     var rows = ['<li><span>Combo de ' + c + ' frascos <small>30 ml c/u</small></span><b>' + pesos(kit) + '</b></li>'];
     for (var k in ads) if (ads[k]) rows.push('<li><span>' + ads[k] + ' × ' + ADS[k][0] + '</span><b>' + pesos(ads[k] * ADS[k][1]) + '</b></li>');
-    if (pago() === 'cod') rows.push('<li><span>Pago contra entrega</span><b>' + pesos(COD_EXTRA) + '</b></li>');
+    if (antic()) rows.push('<li><span>Descuento por pago anticipado</span><b class="g">− ' + pesos(antic()) + '</b></li>');
     if (bono) rows.push('<li><span>Bono de cliente frecuente</span><b class="g">− ' + pesos(bono) + '</b></li>');
     rows.push('<li><span>Envío a toda Colombia</span><b class="g">Gratis</b></li>');
+    $('form').classList.toggle('con-bono', !!bono);
     $('total-l').textContent = pago() === 'cod' ? 'Total a pagar al recibir' : 'Total a pagar hoy';
     $('sum').innerHTML = rows.join('');
     $('total').textContent = $('pay-p').textContent = pesos(total());

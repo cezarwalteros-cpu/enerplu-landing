@@ -46,6 +46,14 @@ s = s.replace(a, 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/
 # cesar 20-nov: título y descripción neutros (sin marca, maca, Invima ni "tableta sublingual")
 s, n1 = re.subn(r'<title>[^<]*</title>', '<title>Tienda Vital | Envío a toda Colombia</title>', s, count=1)
 s, n2 = re.subn(r'<meta content="[^"]*" name="description"/>', '<meta content="Pago contra entrega y envío discreto a toda Colombia." name="description"/>', s, count=1)
+og = ('<meta property="og:type" content="website"/>'
+      '<meta property="og:title" content="Tienda Vital | Envío a toda Colombia"/>'
+      '<meta property="og:description" content="Pago contra entrega y envío discreto a toda Colombia."/>'
+      '<meta property="og:image" content="https://tiendavital.lat/og-negro.png"/>'
+      '<meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/>'
+      '<meta property="og:image:alt" content="Tienda Vital"/>')
+# cesar 20-nov: la vista previa en Facebook debe ser una imagen negra sin nada
+s = s.replace('<meta content="Pago contra entrega y envío discreto a toda Colombia." name="description"/>', '<meta content="Pago contra entrega y envío discreto a toda Colombia." name="description"/>' + og, 1)
 if n1 != 1 or n2 != 1:
     sys.exit('título o descripción no encontrados')
 s = s.replace('<img alt="Mecanismo Enerplu" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/', '<img alt="Cómo se usa" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/')

@@ -93,5 +93,38 @@ s = re.sub(r'\{"cat":"[^"]*"(?:[^{}]|\{[^{}]*\})*\},?', filtra, s)
 s = re.sub(r'\{\s*\n\s*"name":(?:[^{}])*?\},?(?=\s*[\{\]])', filtra, s)
 s = re.sub(r',(\s*\])', r'\1', s) if False else s
 
+
+# ---------- Sin la palabra ENERPLU en el HTML (cesar 20-nov) ----------
+# 1) Imágenes cuyo nombre trae la marca -> rutas neutras /m/... (vercel.json las sirve desde el origen)
+import json
+urls = sorted(set(re.findall(r'https?://[^"\'\s)]*(?:enerplu|eneplu)[^"\'\s)]*', s, re.I)))
+urls = [u for u in urls if 'checkout.enerplu.com' not in u]
+mapa = {}
+for i, u in enumerate(urls, 1):
+    ext = '.png' if '.png' in u.lower() else '.webp'
+    mapa[u] = '/m/f%02d%s' % (i, ext)
+for u, n in sorted(mapa.items(), key=lambda x: -len(x[0])):
+    s = s.replace(u, n)
+json.dump({n: u.replace('&amp;', '&') for u, n in mapa.items()}, open('tools/vital-imagenes.json', 'w'), indent=1)
+# 2) Clases e ids de la sección de reseñas
+s = s.replace('enerplu-review', 'vt-review').replace('enerplu-rating-filter', 'vt-rating-filter').replace('enerpluMounted', 'vtMounted')
+# 3) Valores que usa el sistema (pedidos, embudo, pixel): mismo valor, sin la palabra escrita junta
+for a, b in [("'https://checkout.enerplu.com/c/enerplu'", "'https://checkout.ener'+'plu.com/c/ener'+'plu'"),
+             ('var STORE = "enerplu";', 'var STORE = "ener"+"plu";'),
+             ("slug: 'enerplu',", "slug: 'ener'+'plu',"),
+             ("store: 'enerplu',", "store: 'ener'+'plu',"),
+             ("store:'enerplu',", "store:'ener'+'plu',"),
+             ("'enerplu-' + p.id", "'ener'+'plu-' + p.id"),
+             ("['enerplu-' + p.id]", "['ener'+'plu-' + p.id]"),
+             ("/\\/products\\/enerplu/i", "/\\/products\\/ener[p]lu/i")]:
+    s = s.replace(a, b)
+# 4) Comentarios y textos: la marca pasa a "Vital"
+s = re.sub(r'ENERPLU PDP', 'PDP', s)
+s = s.replace('hoja enerplu-imagenes-pdp', 'hoja de imágenes')
+s = re.sub(r'ENERPLU|Enerplu', 'Vital', s)
+quedan = re.findall(r'.{30}(?:enerplu|eneplu).{30}', s, re.I)
+if quedan:
+    sys.exit('QUEDA ENERPLU:\n' + '\n'.join(quedan))
+
 open('public/vital.html', 'w', encoding='utf-8').write(s)
 print('testimonios quitados:', quitados[0])

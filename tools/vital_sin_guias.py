@@ -43,5 +43,12 @@ if s.count(a) != 1:
     sys.exit('NO ENCONTRADO: foto mecanismo')
 s = s.replace(a, 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp')
 
+# cesar 20-nov: título y descripción neutros (sin marca, maca, Invima ni "tableta sublingual")
+s, n1 = re.subn(r'<title>[^<]*</title>', '<title>Tienda Vital | Envío a toda Colombia</title>', s, count=1)
+s, n2 = re.subn(r'<meta content="[^"]*" name="description"/>', '<meta content="Pago contra entrega y envío discreto a toda Colombia." name="description"/>', s, count=1)
+if n1 != 1 or n2 != 1:
+    sys.exit('título o descripción no encontrados')
+s = s.replace('<img alt="Mecanismo Enerplu" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/', '<img alt="Cómo se usa" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/')
+
 open('public/vital.html', 'w', encoding='utf-8').write(s)
 print('testimonios quitados:', quitados[0])

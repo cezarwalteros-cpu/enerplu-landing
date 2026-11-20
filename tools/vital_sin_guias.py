@@ -46,6 +46,7 @@ s = s.replace(a, 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/
 # cesar 20-nov: título y descripción neutros (sin marca, maca, Invima ni "tableta sublingual")
 s, n1 = re.subn(r'<title>[^<]*</title>', '<title>Tienda Vital | Envío a toda Colombia</title>', s, count=1)
 s, n2 = re.subn(r'<meta content="[^"]*" name="description"/>', '<meta content="Pago contra entrega y envío discreto a toda Colombia." name="description"/>', s, count=1)
+s = re.sub(r'\s*<meta property="og:[^"]*"[^>]*>', '', s)  # siempre ya trae og relativas (tools/meta_neutra.py)
 og = ('<meta property="og:type" content="website"/>'
       '<meta property="og:title" content="Tienda Vital | Envío a toda Colombia"/>'
       '<meta property="og:description" content="Pago contra entrega y envío discreto a toda Colombia."/>'

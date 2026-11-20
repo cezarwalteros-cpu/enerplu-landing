@@ -37,5 +37,11 @@ def filtra(m):
 s = re.sub(r'\{"cat":"[^"]*"(?:[^{}]|\{[^{}]*\})*\},?', filtra, s)
 s = re.sub(r'\{\s*\n\s*"name":(?:[^{}])*?\},?(?=\s*[\{\]])', filtra, s)
 
+# cesar 20-nov: la foto de la cara con la tableta ("10x MAX-POWER") se cambia por la de "cómo se usa"
+a = 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1774025718/ENEPLU_MECANISMO_fextu4.webp'
+if s.count(a) != 1:
+    sys.exit('NO ENCONTRADO: foto mecanismo')
+s = s.replace(a, 'https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp')
+
 open('public/vital.html', 'w', encoding='utf-8').write(s)
 print('testimonios quitados:', quitados[0])

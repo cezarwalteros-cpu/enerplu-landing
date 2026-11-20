@@ -47,7 +47,7 @@ ul.chk li:before{content:"✓";position:absolute;left:4px;top:8px;color:var(--ct
 .foot a{color:var(--muted)}
 @media(min-width:700px){h1{font-size:34px}}
 .scr{display:none}.scr.on{display:block}
-.prog{height:6px;background:#eee7d8;border-radius:99px;overflow:hidden;margin:6px 0 18px}.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.prog{height:6px;background:#eee7d8;border-radius:99px;overflow:hidden;margin:6px 0 18px}.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}#lbar{transition:width 1.4s ease}
 .qn{font-size:13px;color:var(--muted);font-weight:600}
 .opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:15px 16px;margin:0 0 10px;font:600 16.5px Inter,sans-serif;color:var(--ink);cursor:pointer}
 .opt:active,.opt.sel{border-color:var(--accent);background:#faf5e8}
@@ -75,31 +75,55 @@ ul.chk li:before{content:"✓";position:absolute;left:4px;top:8px;color:var(--ct
   <div id="qo"></div>
 </section>
 
+<section class="scr" id="sl">
+  <div style="text-align:center;padding:60px 0">
+    <div class="res">Analizando tus respuestas…</div>
+    <div class="prog" style="max-width:320px;margin:18px auto"><i id="lbar"></i></div>
+    <p class="note">Comparando con hombres de tu edad</p>
+  </div>
+</section>
+
 <section class="scr" id="sr">
   <div class="cat">Tu resultado</div>
   <div class="res" id="rt"></div>
   <div class="meter" id="rm"></div>
   <p class="note" style="text-align:left;margin-bottom:14px" id="rl"></p>
   <p id="rp"></p>
-  <h2>Lo que recomendamos</h2>
-  <ul class="chk"><li>Dormir a la misma hora y soltar el celular 30 minutos antes.</li><li>Moverte 20 minutos al día (caminar rápido sirve).</li><li>Un apoyo natural con maca negra para los momentos que importan.</li></ul>
-  <div class="box">
-    <div class="prod">
-      <img src="/img/pro-caja.webp" alt="Caja de ENERPLU" loading="lazy" width="120" height="120">
-      <div>
-        <p style="margin:0 0 6px"><b>ENERPLU</b> es una tableta masticable con maca negra. Se mastica y se deja disolver bajo la lengua, sin agua, de 5 a 15 minutos antes del momento.</p>
-        <p style="margin:0;font-size:14.5px;color:var(--muted)">Suplemento natural, no es medicamento.</p>
-      </div>
-    </div>
-    <div class="badges"><span>✓ Registro INVIMA</span><span>✓ Pagas al recibir</span><span>✓ Envío gratis</span><span>✓ Empaque 100% discreto</span></div>
+
+  <div class="box" style="border-color:#c9a13a;background:#fffaf0">
+    <h3>Lo que hacen los hombres con tu resultado</h3>
+    <p style="margin:0">La mayoría no quiere tomar pastillas todos los días ni andar con jarabes. Lo que más están usando en Colombia es una <b>tableta de maca negra que se deja disolver bajo la lengua</b>, solo cuando la necesitas.</p>
   </div>
-  <p>Más de 3.500 hombres en Colombia ya lo pidieron. Llega en bolsa negra sellada y pagas en efectivo cuando lo tienes en la mano.</p>
-  <a class="cta js-go" href="/vital">Ver ENERPLU y sus precios →<small>Pagas al recibir · Envío gratis a toda Colombia</small></a>
-  <p class="note">Sin pagar nada por adelantado. Ves las opciones y decides.</p>
+
+  <h2>¿Por qué bajo la lengua?</h2>
+  <p>Una cápsula tiene que pasar por el estómago y puede tardar horas. Bajo la lengua hay muchas venitas que la absorben directo. Por eso se toma de <b>5 a 15 minutos antes</b> del momento, sin agua y sin que nadie lo note: parece un dulce de menta.</p>
+
+  <div class="box">
+    <h3>Cápsulas y jarabes vs. la tableta</h3>
+    <ul class="chk" style="margin:0">
+      <li>Sin agua y sin pausas incómodas.</li>
+      <li>Hace efecto en minutos, no en horas.</li>
+      <li>Solo cuando la necesitas, no todos los días.</li>
+      <li>Natural, con registro INVIMA. No es medicamento.</li>
+    </ul>
+  </div>
+
+  <h2>Y lo más importante: cero riesgo</h2>
+  <ul class="chk">
+    <li><b>Pagas al recibir</b>, en efectivo, cuando la tienes en la mano.</li>
+    <li><b>Envío gratis</b> a toda Colombia.</li>
+    <li><b>Empaque 100% discreto</b>: bolsa negra sellada, sin nombre del producto por fuera.</li>
+    <li>Garantía en los combos de varias cajas.</li>
+  </ul>
+  <p>Más de 3.500 hombres en Colombia ya la pidieron. Precios desde $89.900 y no pagas nada por adelantado.</p>
+
+  <a class="cta js-go" href="/vital">Ver la tableta y los precios →<small>Pagas al recibir · Envío gratis y discreto</small></a>
+  <p class="note">Ves las opciones y decides. Sin compromiso.</p>
 </section>
+<div class="sticky" id="sticky"><a class="cta js-go" href="/vital">Ver precios · Pagas al recibir →</a></div>
 
   <div class="foot">
-    Este test es orientativo y no reemplaza la consulta médica. ENERPLU es un suplemento alimenticio, no es medicamento; los resultados pueden variar. Si tienes una condición médica o tomas medicamentos, consulta a tu médico. Este sitio no está afiliado a Facebook ni a Meta.
+    Este test es orientativo y no reemplaza la consulta médica. El producto recomendado es un suplemento alimenticio, no es medicamento; los resultados pueden variar. Si tienes una condición médica o tomas medicamentos, consulta a tu médico. Este sitio no está afiliado a Facebook ni a Meta.
     <br><a href="/terminos">Términos y privacidad</a> · <a href="/garantia">Garantía</a>
   </div>
 </main>
@@ -138,7 +162,9 @@ ul.chk li:before{content:"✓";position:absolute;left:4px;top:8px;color:var(--ct
     $('rm').innerHTML = [1,2,3].map(function(n){ return '<i class="' + (n <= 4 - lvl ? 'f' : '') + '"></i>'; }).join('');
     $('bar').style.width = '100%';
     track('PuenteResultado', {nivel: lvl, puntos: pts});
-    show('sr');
+    show('sl'); setTimeout(function(){ $('lbar').style.width = '100%'; }, 50);
+    setTimeout(function(){ show('sr'); $('sticky').style.display = 'none';
+      window.addEventListener('scroll', function(){ $('sticky').style.display = window.scrollY > 500 ? 'block' : 'none'; }, {passive:true}); }, 1600);
   }
   $('start').onclick = function(e){ e.preventDefault(); track('PuenteInicio'); show('sq'); ask(); };
   /* El botón lleva a /vital con las mismas UTM del anuncio y marca que vino del test (via=test, queda en el pedido). */

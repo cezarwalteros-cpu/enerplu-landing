@@ -34,6 +34,10 @@
   ],
   "rewrites": [
     {
+      "source": "/vital",
+      "destination": "/siempre"
+    },
+    {
       "source": "/products/:p*",
       "has": [
         {

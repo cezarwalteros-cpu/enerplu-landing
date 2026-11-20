@@ -47,6 +47,17 @@ if n != 1: sys.exit('bloque resultados no coincide')
 rep('https://res.cloudinary.com/dzlys7ftg/image/upload/v1774025718/ENEPLU_MECANISMO_fextu4.webp',
     'https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/enerplu-galeria-4-como-se-usa_nigqgb.webp')
 
+# Promesas de salud riesgosas para Meta
+rep('Es el mismo método de emergencia rápida usado en cardiología.', 'Se disuelve bajo la lengua, sin agua.')
+rep('Absorción avalada por la ciencia vascular para un bombeo masivo en 5 minutos.', 'La sientes en 5 a 15 minutos.')
+# Foto del héroe ("Sin pena si ella la ve") -> foto de ingredientes
+rep('https://res.cloudinary.com/dzlys7ftg/image/upload/v1793076270/Energ%C3%ADa_discreta_con_maca_negra_bt78tl.webp',
+    'https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135586/enerplu-galeria-5-ingredientes_t4ggjs.webp')
+# Galería: fuera la foto del hombre sin camisa ("máxima potencia") y la del plan con el spray
+s = re.sub(r"\n\s*\{ type: 'img', src: '[^']*enerplu-galeria-1-producto[^']*'[^}]*\},", '', s)
+s = re.sub(r"\n\s*\{ type: 'img', src: '[^']*enerplu-galeria-3-tableta-mano_zvzebz[^']*'[^}]*\},", '', s)
+if 'galeria-1-producto' in s: sys.exit('galeria-1 sigue')
+
 # Uso
 rep('Mastica una tableta de 5 a 15 minutos antes del encuentro', 'Mastica una tableta de 5 a 15 minutos antes de cuando la necesites')
 rep("'De 5 a 15 minutos antes del encuentro. No necesitas agua.'", "'De 5 a 15 minutos antes de cuando la necesites. No necesitas agua.'")

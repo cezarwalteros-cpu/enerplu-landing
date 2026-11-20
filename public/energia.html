@@ -135,10 +135,10 @@ ul.chk li:before{content:"✓";position:absolute;left:4px;top:8px;color:var(--ct
     setTimeout(function(){ show('sr'); }, 900);
   }
   $('start').onclick = function(e){ e.preventDefault(); track('PuenteInicio'); show('sq'); ask(); };
-  /* El botón lleva a /vital con las mismas UTM del anuncio y marca que vino del test (via=test, queda en el pedido). */
+  /* El botón lleva a /tienda con las mismas UTM del anuncio y marca que vino del test (via=test, queda en el pedido). */
   var q = new URLSearchParams(location.search); q.set('via','test');
   document.querySelectorAll('.js-go').forEach(function(a){
-    a.href = '/vital?' + q.toString();
+    a.href = '/tienda?' + q.toString();
     a.addEventListener('click', function(){ track('PuenteClick', {pagina:'test'}); });
   });
 })();

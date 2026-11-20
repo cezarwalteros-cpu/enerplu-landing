@@ -51,4 +51,6 @@ if n1 != 1 or n2 != 1:
 s = s.replace('<img alt="Mecanismo Enerplu" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/', '<img alt="Cómo se usa" src="https://res.cloudinary.com/dzlys7ftg/image/upload/v1793135585/')
 
 open('public/vital.html', 'w', encoding='utf-8').write(s)
+# cesar 20-nov: la dirección principal es /tienda; /vital queda igual para enlaces viejos
+open('public/tienda.html', 'w', encoding='utf-8').write(s)
 print('testimonios quitados:', quitados[0])

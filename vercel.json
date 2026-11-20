@@ -30,6 +30,28 @@
       ],
       "destination": "/nueva",
       "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "tiendavital.lat"
+        }
+      ],
+      "destination": "/energia",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.tiendavital.lat"
+        }
+      ],
+      "destination": "/energia",
+      "permanent": false
     }
   ],
   "rewrites": [

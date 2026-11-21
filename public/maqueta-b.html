@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="es">
-<head>
+<head><!-- UTM:INI --><script>(function(){try{
+var K=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id'],D=7*864e5;
+var u=new URL(location.href),q=u.searchParams,tiene=K.some(function(k){return q.get(k);});
+var g=null;try{g=JSON.parse(localStorage.getItem('ep_utm')||'null');}catch(e){}
+if(tiene){var o={t:Date.now(),p:{}};K.forEach(function(k){var v=q.get(k);if(v)o.p[k]=v;});
+ if(/^sin_utm/.test(o.p.utm_source||'')||/_recordado$/.test(o.p.utm_medium||''))return;try{localStorage.setItem('ep_utm',JSON.stringify(o));}catch(e){}return;}
+if(g&&g.p&&Date.now()-g.t<D){Object.keys(g.p).forEach(function(k){q.set(k,g.p[k]);});q.set('utm_medium',(g.p.utm_medium||'paid')+'_recordado');}
+else{var r='';try{r=document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):'';}catch(e){}
+ if(r===location.hostname)r='';q.set('utm_source',q.get('fbclid')?'sin_utm_fbclic':(r?'sin_utm_'+r.slice(0,40):'sin_utm_directo'));}
+history.replaceState(history.state,'',u.pathname+'?'+q.toString()+u.hash);
+}catch(e){}})();</script><!-- UTM:FIN -->
 <meta name="robots" content="noindex,nofollow">
 <script>
 (function(){if(!/[?&]ep_test=1(&|$)/.test(location.search)){var q=location.search?location.search+'&ep_test=1':'?ep_test=1';history.replaceState(null,'',location.pathname+q+location.hash);}

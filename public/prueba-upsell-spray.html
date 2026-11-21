@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="es">
-<head>
+<head><!-- UTM:INI --><script>(function(){try{
+var K=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id'],D=7*864e5;
+var u=new URL(location.href),q=u.searchParams,tiene=K.some(function(k){return q.get(k);});
+var g=null;try{g=JSON.parse(localStorage.getItem('ep_utm')||'null');}catch(e){}
+if(tiene){var o={t:Date.now(),p:{}};K.forEach(function(k){var v=q.get(k);if(v)o.p[k]=v;});
+ if(/^sin_utm/.test(o.p.utm_source||'')||/_recordado$/.test(o.p.utm_medium||''))return;try{localStorage.setItem('ep_utm',JSON.stringify(o));}catch(e){}return;}
+if(g&&g.p&&Date.now()-g.t<D){Object.keys(g.p).forEach(function(k){q.set(k,g.p[k]);});q.set('utm_medium',(g.p.utm_medium||'paid')+'_recordado');}
+else{var r='';try{r=document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):'';}catch(e){}
+ if(r===location.hostname)r='';q.set('utm_source',q.get('fbclid')?'sin_utm_fbclic':(r?'sin_utm_'+r.slice(0,40):'sin_utm_directo'));}
+history.replaceState(history.state,'',u.pathname+'?'+q.toString()+u.hash);
+}catch(e){}})();</script><!-- UTM:FIN -->
 <meta name="robots" content="noindex">
 <script>window.EP_PREVIEW_UPSELL={"upsell": {"key": "retardante", "only": "inicial", "price": 24900, "compare": 49900, "title": "Spray Retardante Club Velvet 30 ml", "image": "https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_500/v1794346291/Botella_Club_Velvet_Retardante_Premium_qj3ihr.webp", "eyebrow": "Espera, antes de confirmar", "headline": "Lleva la experiencia al nivel de control absoluto", "text": "Ya tienes la firmeza y resistencia con tu pedido por dentro; el spray Velvet te da el control exacto del reloj por fuera. El combo de blindaje definitivo.", "bullets": ["Olvídate de la tensión mental de tener que aguantar", "Disfruta del ritmo intenso sin miedo a terminar antes", "Llega en el mismo paquete 100% discreto y sin costo de envío adicional"]}, "bump": {"title": "Gel Estrechante Virgyflower (30 ml)", "contain": true, "image": "https://res.cloudinary.com/dzlys7ftg/image/upload/v1794344899/ESTRECHANTE_tg6at5.webp", "text": "Efecto astringente y lubricante inmediato: mayor fricción y sensación más intensa para ambos. Fórmula suave en frasco de 30 ml. Se despacha en el mismo paquete 100% discreto."}};try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=N')}catch(e){}</script>
 <meta charset="utf-8">

@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+<head><!-- UTM:INI --><script>(function(){try{
+var K=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id'],D=7*864e5;
+var u=new URL(location.href),q=u.searchParams,tiene=K.some(function(k){return q.get(k);});
+var g=null;try{g=JSON.parse(localStorage.getItem('ep_utm')||'null');}catch(e){}
+if(tiene){var o={t:Date.now(),p:{}};K.forEach(function(k){var v=q.get(k);if(v)o.p[k]=v;});
+ if(/^sin_utm/.test(o.p.utm_source||'')||/_recordado$/.test(o.p.utm_medium||''))return;try{localStorage.setItem('ep_utm',JSON.stringify(o));}catch(e){}return;}
+if(g&&g.p&&Date.now()-g.t<D){Object.keys(g.p).forEach(function(k){q.set(k,g.p[k]);});q.set('utm_medium',(g.p.utm_medium||'paid')+'_recordado');}
+else{var r='';try{r=document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):'';}catch(e){}
+ if(r===location.hostname)r='';q.set('utm_source',q.get('fbclid')?'sin_utm_fbclic':(r?'sin_utm_'+r.slice(0,40):'sin_utm_directo'));}
+history.replaceState(history.state,'',u.pathname+'?'+q.toString()+u.hash);
+}catch(e){}})();</script><!-- UTM:FIN -->
 <meta name="robots" content="noindex">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
@@ -5398,6 +5408,7 @@ window.EP_POPUP_MODE = 'off';
   var a=document.querySelector('a[href="#ep-offer-widget"]');if(!a)return;e.preventDefault();a.click();
 },false);})();</script>
 <!--E08--><script>(function(){try{var T=Date.now();if(T<1794805200000||(T>=1794834900000&&T<4070908800000))return;var q=new URLSearchParams(location.search);if(!/(?:^|; )ep_e08=/.test(document.cookie))document.cookie='ep_e08=A; Path=/; Max-Age=2592000; SameSite=Lax; Secure';try{window.clarity&&clarity('set','e08','A')}catch(e){}if(q.get('ep_test')==='1')return;var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}if(!sid){if(n++<20)setTimeout(go,300);return;}var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E08',v:'A'}});var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}})();}catch(e){}})();</script><!--/E08-->
+
 
 
 

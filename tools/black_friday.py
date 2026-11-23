@@ -12,7 +12,7 @@ PAGINAS = ["index", "siempre", "tienda", "vital", "producto", "ofertas", "oferta
            "checkout-blanco", "pedido", "pro"]
 INI, FIN = "<!-- BF:INI -->", "<!-- BF:FIN -->"
 
-AB_INI_MS = 1795447200000  # E-09 arranca 23-nov 10:20am Bogotá (cesar 'si ofrecer la oferta black aun')
+AB_INI_MS = 4070908800000  # E-09 PAUSADA 23-nov 10:31am (cesar: Mastershop no ha aprobado los productos Black, no se pueden cargar pedidos)
 
 BLOQUE = INI + r"""
 <style id="bf-css">

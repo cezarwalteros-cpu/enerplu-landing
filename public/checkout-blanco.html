@@ -7046,6 +7046,8 @@ html.bf-on .bf-txt small{font-size:12px;font-weight:700;opacity:.75;margin-top:1
   var INICIO = Date.UTC(2026,10,27,5,0,0); /* 27-nov 00:00 Colombia */
   /* E-09: antes del 27, la mitad del tráfico ve la oferta Black (cookie ep_e09 A/B 30 días). AB_INI = cuando arranca la prueba. */
   var AB_INI = 1795448700000;
+  /* cesar 23-nov 11:06am: "por 3 horas que todo el tiempo se vea" -> todas las visitas ven el Black 11:10am-2:15pm (excluir esta ventana al medir E-09) */
+  var TODOS = [Date.UTC(2026,10,23,16,10,0), Date.UTC(2026,10,23,19,15,0)];
   var ahora = Date.now(), q = new URLSearchParams(location.search);
   var forzar = q.get("bf") === "1" || q.get("ab9") === "B";
   var enVentana = ahora >= INICIO && ahora <= FIN;
@@ -7064,7 +7066,8 @@ html.bf-on .bf-txt small{font-size:12px;font-weight:700;opacity:.75;margin-top:1
       try { if (!(navigator.sendBeacon && navigator.sendBeacon(U, new Blob([b], {type:"text/plain"})))) fetch(U, {method:"POST", body:b, keepalive:true, headers:{"Content-Type":"text/plain"}}); } catch (e) {}
     })(0);
   }
-  if (!forzar && !enVentana && v !== "B") return;
+  var todos = ahora >= TODOS[0] && ahora < TODOS[1];
+  if (!forzar && !enVentana && v !== "B" && !todos) return;
   document.documentElement.classList.add("bf-on");
   /* los pedidos Black van con su propia oferta en el CRM (3 y 6 cajas) */
   (function claves(n){

@@ -12,7 +12,7 @@ PAGINAS = ["index", "siempre", "tienda", "vital", "producto", "ofertas", "oferta
            "checkout-blanco", "pedido", "pro"]
 INI, FIN = "<!-- BF:INI -->", "<!-- BF:FIN -->"
 
-AB_INI_MS = 4070908800000  # E-09 apagada hasta que cesar la apruebe; poner el ms de arranque
+AB_INI_MS = 1795447200000  # E-09 arranca 23-nov 10:20am Bogotá (cesar 'si ofrecer la oferta black aun')
 
 BLOQUE = INI + r"""
 <style id="bf-css">

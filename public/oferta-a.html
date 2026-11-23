@@ -6893,6 +6893,7 @@ window.EP_POPUP_MODE = 'off';
 
 
 
+
 <!-- BF:INI -->
 <style id="bf-css">
 .bf-banner{display:none}
@@ -6933,7 +6934,7 @@ html.bf-on .bf-txt small{font-size:12px;font-weight:700;opacity:.75;margin-top:1
   var FIN = Date.UTC(2026,11,1,4,59,59);   /* 30-nov 23:59:59 Colombia */
   var INICIO = Date.UTC(2026,10,27,5,0,0); /* 27-nov 00:00 Colombia */
   /* E-09: antes del 27, la mitad del tráfico ve la oferta Black (cookie ep_e09 A/B 30 días). AB_INI = cuando arranca la prueba. */
-  var AB_INI = 4070908800000;
+  var AB_INI = 1795447200000;
   var ahora = Date.now(), q = new URLSearchParams(location.search);
   var forzar = q.get("bf") === "1" || q.get("ab9") === "B";
   var enVentana = ahora >= INICIO && ahora <= FIN;

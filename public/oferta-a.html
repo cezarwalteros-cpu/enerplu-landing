@@ -7160,7 +7160,7 @@ html .ep-root .eph-order.fc3 .eph-title{background:none!important;color:#111!imp
     /* ---- nombre completo ---- */
     var grid=first.closest('.ep-of-grid')||first.closest('.ep-f');
     var nd=document.createElement('div'); nd.className='ep-f fc-name';
-    nd.innerHTML='<label for="fc-nombre">Nombre completo</label><input id="fc-nombre" type="text" autocomplete="name" autocapitalize="words" maxlength="120" placeholder="Tu nombre y apellido"><p class="ep-f-err" id="fc-nombre-err" hidden></p>';
+    nd.innerHTML='<label for="fc-nombre">Nombre completo</label><input id="fc-nombre" type="text" autocomplete="name" autocapitalize="words" maxlength="120" placeholder="Ej: Carlos Gómez"><p class="ep-f-err" id="fc-nombre-err" hidden></p>';
     grid.parentNode.insertBefore(nd,grid); grid.style.display='none';
     var nom=document.getElementById('fc-nombre'), nerr=document.getElementById('fc-nombre-err');
     function repartir(){

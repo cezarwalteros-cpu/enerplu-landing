@@ -38,7 +38,7 @@ def embed(old, ck):
     sc = sc.replace('#ckn::before{', '#ckn .nope::before{')   # la franja negra del notch solo en el checkout aparte
     extra = """
     #ckn{padding:8px 0 0;border-radius:0;font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    #ckn .cta{position:sticky;bottom:0}
+    #ckn .cta{position:static}
     #ckn .ckn-top{top:0}
     #ckn .ft{display:none}
     """

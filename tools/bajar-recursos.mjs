@@ -40,7 +40,7 @@ function localCL(u) {
 }
 const varianteCL = (b, w) => b.replace('/upload/', `/upload/w_${w}/f_auto/q_auto/`);
 
-const pages = readdirSync(PUB).filter(f => f.endsWith('.html'));
+const pages = readdirSync(PUB, { recursive: true }).map(String).filter(f => f.endsWith('.html') && !f.startsWith('rec'));   // también subcarpetas (public/guias/...)
 const htmls = Object.fromEntries(pages.map(f => [f, readFileSync(join(PUB, f), 'utf8')]));
 const urls = new Set();
 for (const s of Object.values(htmls)) for (const m of s.matchAll(RE)) if (!m[0].endsWith('/')) urls.add(m[0]);

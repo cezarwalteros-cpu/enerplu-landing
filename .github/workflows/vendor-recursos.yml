@@ -1,6 +1,7 @@
 # Una sola vez (o cuando haga falta): copia al repo las imágenes, CSS y fuentes que las páginas
 # todavía cargan desde Shopify o Cloudinary, y guarda el mapa en tools/rec-mapa.json. Desde ahí el build ya no depende de Shopify.
 name: vendor-recursos
+# 2026-11-24: también copia las imágenes de Cloudinary (public/rec/cl).
 on:
   workflow_dispatch:
   push:

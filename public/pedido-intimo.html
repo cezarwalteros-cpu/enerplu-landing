@@ -236,12 +236,12 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     <h2 class="step"><i>2</i>¿A dónde te lo enviamos?</h2>
     <div class="fields">
       <div class="grid2">
-        <div class="fld"><label for="f-nom">Nombre</label><input id="f-nom" name="nombre" autocomplete="given-name" placeholder="Tu nombre" data-req><span class="err">Escribe tu nombre.</span></div>
-        <div class="fld"><label for="f-ape">Apellido</label><input id="f-ape" name="apellido" autocomplete="family-name" placeholder="Tu apellido" data-req><span class="err">Escribe tu apellido.</span></div>
+        <div class="fld"><label for="f-nom">Nombre</label><input id="f-nom" name="nombre" autocomplete="given-name" placeholder="Tu nombre" data-req aria-describedby="e-nom"><span class="err" id="e-nom">Escribe tu nombre para recibir el pedido</span></div>
+        <div class="fld"><label for="f-ape">Apellido</label><input id="f-ape" name="apellido" autocomplete="family-name" placeholder="Tu apellido"></div>
       </div>
-      <div class="fld"><label for="f-cel">Celular (WhatsApp)</label><div class="tel"><span>+57</span><input id="f-cel" name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="300 123 4567" maxlength="12" data-req data-tel></div><p class="hint">Por aquí te confirmamos el pedido antes de enviarlo.</p><span class="err">Escribe un celular de 10 dígitos que empiece por 3.</span></div>
-      <div class="fld"><label for="f-ciu">Ciudad o municipio</label><input id="f-ciu" name="ciudad" autocomplete="off" placeholder="Escribe y elige: Itagüí, Bogotá, Cali..." data-req data-city role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ciu-list"><ul class="cities" id="ciu-list" role="listbox" hidden></ul><span class="err">Escribe tu ciudad y elígela de la lista.</span></div>
-      <div class="fld"><label for="f-dir">Dirección</label><input id="f-dir" name="direccion" autocomplete="street-address" placeholder="Ej: Calle 10 # 20-30" data-req><span class="err">Escribe la dirección de entrega.</span></div>
+      <div class="fld"><label for="f-cel">Celular (WhatsApp)</label><div class="tel"><span>+57</span><input id="f-cel" name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="300 123 4567" maxlength="20" data-req data-tel aria-describedby="e-cel"></div><p class="hint">Por aquí te confirmamos el pedido antes de enviarlo.</p><span class="err" id="e-cel">Ingresa los 10 dígitos de tu celular</span></div>
+      <div class="fld"><label for="f-ciu">Ciudad o municipio</label><input id="f-ciu" name="ciudad" autocomplete="off" placeholder="Escribe y elige: Itagüí, Bogotá, Cali..." data-req data-city role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ciu-list"><ul class="cities" id="ciu-list" role="listbox" hidden></ul><span class="err" id="e-ciu">Selecciona tu ciudad de la lista</span></div>
+      <div class="fld"><label for="f-dir">Dirección</label><input id="f-dir" name="direccion" autocomplete="street-address" placeholder="Ej: Calle 10 # 20-30" data-req aria-describedby="e-dir"><span class="err" id="e-dir">Escribe la dirección donde recibirás tu pedido</span></div>
       <div class="fld"><label for="f-bar">Barrio y detalles (opcional)</label><input id="f-bar" name="barrio" placeholder="Barrio, apto, casa o una referencia"></div>
     </div>
     <p class="sub">Envío</p>
@@ -374,18 +374,27 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
 
   // validación
   var city = null;   // {municipio, departamento} elegido de la lista
+  /* P0 (cesar 23-11): celular tolerante (3001234567, 300 123 4567, +57 3001234567, 0057…, 0300…) y un solo nombre basta */
+  function phone10(v) { var x = String(v || '').replace(/\D/g, ''); if (x.indexOf('0057') === 0) x = x.slice(4); else if (x.length > 10 && x.indexOf('57') === 0) x = x.slice(2); if (x.length === 11 && x.charAt(0) === '0') x = x.slice(1); return x.slice(0, 10); }
+  function newKey() { try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {} return 'k' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 12); }
+  var IDEM = null; try { IDEM = sessionStorage.getItem('epi_idem'); } catch (e) {}
+  function setIdem(k) { IDEM = k; try { sessionStorage.setItem('epi_idem', k); } catch (e) {} }
+  if (!IDEM) setIdem(newKey());
   function ok(i) {
     var v = i.value.trim();
-    if (i.hasAttribute('data-tel')) return /^3\d{9}$/.test(v.replace(/\D/g, ''));
+    if (i.hasAttribute('data-tel')) { var p10 = phone10(v), e = i.closest('.fld').querySelector('.err'); if (e) e.textContent = p10.length < 10 ? 'Ingresa los 10 dígitos de tu celular' : 'Revisa tu número de celular colombiano'; return /^3\d{9}$/.test(p10); }
+    if (i.id === 'f-nom') return /[A-Za-zÀ-ÿ]{2}/.test(v);
     if (i.hasAttribute('data-mail')) return true; /* correo fuera del formulario (cesar 2026-11-14) */
     if (i.hasAttribute('data-city')) return !!city;
     if (i.id === 'f-dir') return v.length >= 5;
     return v.length >= 2;
   }
   function api(method, qs, body) {
-    var opt = { method: method };
+    var opt = { method: method }, t = 0;
     if (body) { opt.body = JSON.stringify(body); opt.headers = { 'Content-Type': 'application/json' }; }
-    return fetch(API + (qs || ''), opt).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j || {} }; }); });
+    /* el pedido tiene límite de 25 s: con mala señal el botón vuelve y se puede reintentar (misma clave: nunca dos pedidos) */
+    if (body && body.action === 'order' && window.AbortController) { var ctl = new AbortController(); opt.signal = ctl.signal; t = setTimeout(function () { ctl.abort(); }, 25000); }
+    return fetch(API + (qs || ''), opt).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { clearTimeout(t); return { ok: r.ok, j: j || {} }; }); }, function (e) { clearTimeout(t); throw e; });
   }
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
 
@@ -416,7 +425,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     var t = cityNorm(ciu.value), m = cRows.filter(function (r) { return cityNorm(r.municipio) === t; });
     if (cRows.length === 1) { cityPick(cRows[0]); return true; }
     if (m.length === 1) { cityPick(m[0]); return true; }
-    list.hidden = false; ciu.setAttribute('aria-expanded', 'true'); cErr.textContent = 'Toca tu ciudad en la lista.'; ciu.closest('.fld').classList.add('bad');
+    list.hidden = false; ciu.setAttribute('aria-expanded', 'true'); cErr.textContent = 'Selecciona tu ciudad de la lista'; ciu.closest('.fld').classList.add('bad');
     return false;
   }
   d.addEventListener('click', function (e) { if (!list.hidden && e.target !== ciu && !list.contains(e.target) && !e.target.closest('#pay')) cityShow([]); });
@@ -443,8 +452,12 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
   d.querySelectorAll('[data-req]').forEach(function (i) {
     i.addEventListener('blur', function () { if (i.value.trim()) { var g = ok(i); i.closest('.fld').classList.toggle('bad', !g); if (g && !i._ep) { i._ep = 1; epSend('form_field', { field: i.name || i.id }); } } });
     i.addEventListener('input', function () { epSend('form_start'); epClarity('empezo_formulario'); }, { once: true });
-    i.addEventListener('input', function () { if (ok(i)) i.closest('.fld').classList.remove('bad'); });
+    i.addEventListener('input', function () { if (ok(i)) { i.closest('.fld').classList.remove('bad'); i.removeAttribute('aria-invalid'); } });
   });
+  /* celular: se limpia mientras escribe (+57, espacios, guiones) y queda 300 123 4567 */
+  $('f-cel').addEventListener('input', function () { var x = phone10(this.value); this.value = x.replace(/^(\d{3})(\d{0,3})(\d{0,4}).*/, function (m, a, b, c2) { return [a, b, c2].filter(Boolean).join(' '); }); });
+  /* lo escrito se guarda en la pestaña y vuelve si la página se recarga o falla la conexión */
+  ['f-nom', 'f-ape', 'f-cel', 'f-ciu', 'f-dir', 'f-bar'].forEach(function (id) { $(id).addEventListener('input', function () { clearTimeout(saveDraft._t); saveDraft._t = setTimeout(saveDraft, 300); }); });
   function busy(on, txt) {
     var b = $('pay'); b.disabled = on;
     if (on) { b._t = b._t || b.querySelector('.l').firstChild.nodeValue; b.querySelector('.l').firstChild.nodeValue = txt || 'Un momento…'; }
@@ -546,7 +559,7 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     if ($('pay').disabled) return;
     var w = $('warn'), bad = [];
     if (!city) cityAuto();
-    d.querySelectorAll('[data-req]').forEach(function (i) { var b = !ok(i); i.closest('.fld').classList.toggle('bad', b); if (b) bad.push(i); });
+    d.querySelectorAll('[data-req]').forEach(function (i) { var b = !ok(i); i.closest('.fld').classList.toggle('bad', b); if (b) { bad.push(i); i.setAttribute('aria-invalid', 'true'); } else i.removeAttribute('aria-invalid'); });
     if (bad.length) {
       w.hidden = false; w.className = 'warn'; w.textContent = bad.length === 1 ? 'Te falta 1 dato para enviarte el pedido.' : 'Te faltan ' + bad.length + ' datos para enviarte el pedido.';
       epSend('form_error', { fields: bad.map(function (i) { return i.name || i.id; }), plan: 'combo' + c });
@@ -560,7 +573,8 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     epClarity('toco_pagar_pedido');
     var body = {
       action: 'order', slug: SLUG, session_id: sid, website: '',
-      customer: { first_name: val('f-nom'), last_name: val('f-ape'), phone: val('f-cel').replace(/\D/g, ''), email: undefined },
+      customer: { first_name: val('f-nom'), last_name: val('f-ape'), phone: phone10(val('f-cel')), email: undefined },
+      idempotency_key: IDEM,
       address: { department: city.departamento, city: city.municipio, address1: val('f-dir'), additional: val('f-bar') || 'Sin referencia' },
       combo: cant, addons: { anillo: ads.anillo, caja: ads.caja },
       payment_method: linea ? 'bold' : cod ? 'cod' : 'transfer', tracking: tracking()
@@ -572,8 +586,9 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
     api('POST', '', body).then(function (r) {
       var j = r.j || {};
       if (r.ok && j.success && j.payment_required) { payOpen(j); return; }
+      if (r.ok && j.success && !j.order_number) { busy(false); warn('No pudimos registrar tu pedido. Inténtalo nuevamente.'); return; }
       if (r.ok && j.success) {
-        busy(false);
+        busy(false); setIdem(newKey());
         if (!linea && !j.dry_run) purchase(j);
         epSend('pay_result', { status: linea ? 'prueba' : cod ? 'contra_entrega' : 'transferencia_pendiente', total: j.total_cop });
         thanks(j, linea ? 'paid' : cod ? 'cod' : 'transfer'); return;
@@ -586,15 +601,17 @@ details p{margin:0 2px 16px;color:var(--mut);font-size:15px}
         first = first || el;
       });
       epSend('form_error', { fields: Object.keys(map), servidor: true, plan: 'combo' + c });
-      warn(first ? 'Revisa los datos marcados en rojo.' : (map.offer || map.payment_method || j.error || 'No pudimos registrar tu pedido. Intenta de nuevo.'));
+      warn(first ? 'Revisa los datos marcados en rojo.' : (map.offer || map.payment_method || j.error || 'No pudimos registrar tu pedido. Inténtalo nuevamente.'));
       if (first) first.scrollIntoView({ block: 'center' });
-    }, function () { busy(false); warn('No pudimos conectar. Revisa tu internet y toca el botón otra vez.'); });
+    }, function () { busy(false); saveDraft(); warn('No pudimos enviar el pedido. Tus datos siguen guardados. Intenta nuevamente.'); });
   });
 
   if (BONO) api('POST', '', { action: 'coupon', slug: SLUG, code: BONO }).then(function (r) {
     var j = r.j || {}; if (r.ok && j.success && j.discount > 0) { bono = Math.min(+j.discount, kit); render(); }
   }, function () {});
   if (boldRef) payResume(boldRef, boldTx);
+  /* recarga normal: vuelve lo que la persona ya había escrito */
+  else if (draft && draft.v) { Object.keys(draft.v).forEach(function (id) { if ($(id) && !$(id).value) $(id).value = draft.v[id]; }); if (draft.city && draft.city.municipio && /,/.test($('f-ciu').value)) city = draft.city; }
 })();
 </script>
 </body>

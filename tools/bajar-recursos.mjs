@@ -15,11 +15,38 @@ const GUARDAR = process.env.GUARDAR_REC === '1'; // solo el workflow vendor-recu
 const MIRROR = process.env.BAJAR_MIRROR || ''; // solo para pruebas locales: http://localhost:9999
 const RE = /(?:https?:)?\/\/(?:cdn\.shopify\.com\/s\/files|(?:www\.)?losgomosos\.lat\/cdn\/(?:shop|fonts))\/[^"'\s)\\<>,]+/g;
 const TIPOS = { '.css': 'css', '.woff2': 'fonts', '.woff': 'fonts' };
+// Cloudinary (cesar 2026-11-24: "no depender de Cloudinary"): las imágenes de res.cloudinary.com también se copian a public/rec/cl/.
+// Cada imagen queda además en los anchos que antes generaba Cloudinary (w_N/f_auto/q_auto), como <archivo>.wN.<ext>;
+// R.cdn (fuente/formulario/app.js) pide esos archivos cuando la imagen ya es local.
+const RE_CL = /https:\/\/res\.cloudinary\.com\/dzlys7ftg\/image\/upload\/[^"'\s)\\<>]+?\.(?:webp|jpe?g|png|avif|gif)(?=["'\s)\\<>,&]|$)/g;
+const ANCHOS_CL = [120, 160, 200, 540, 600, 720, 800, 1080];
+const esCL = u => u.startsWith('https://res.cloudinary.com/');
+function partesCL(u) {
+  const seg = u.split('/upload/')[1].split('/');
+  const iv = seg.findIndex(x => /^v\d+$/.test(x));
+  let tr = seg.slice(0, Math.max(iv, 0)).join('/');
+  const resto = seg.slice(Math.max(iv, 0)).join('/');
+  const m = tr.match(/^w_(\d+)\/f_auto\/q_auto(?:\/|$)/);
+  const ancho = m ? Number(m[1]) : 0;
+  if (m) tr = tr.slice(m[0].length);
+  return { tr, resto, ancho, base: u.split('/upload/')[0] + '/upload/' + (tr ? tr + '/' : '') + resto };
+}
+function localCL(u) {
+  const { tr, resto, ancho } = partesCL(u);
+  const ext = extname(resto).toLowerCase();
+  const name = decodeURIComponent(basename(resto, extname(resto))).normalize('NFD').replace(/[^A-Za-z0-9_-]+/g, '-').slice(0, 60);
+  const h = createHash('sha1').update(tr + '/' + resto).digest('hex').slice(0, 8);
+  return `/rec/cl/${name}-${h}${ancho ? '.w' + ancho : ''}${ext}`;
+}
+const varianteCL = (b, w) => b.replace('/upload/', `/upload/w_${w}/f_auto/q_auto/`);
 
 const pages = readdirSync(PUB).filter(f => f.endsWith('.html'));
 const htmls = Object.fromEntries(pages.map(f => [f, readFileSync(join(PUB, f), 'utf8')]));
 const urls = new Set();
 for (const s of Object.values(htmls)) for (const m of s.matchAll(RE)) if (!m[0].endsWith('/')) urls.add(m[0]);
+const basesCL = new Set();
+for (const s of Object.values(htmls)) for (const m of s.matchAll(RE_CL)) { urls.add(m[0]); basesCL.add(partesCL(m[0]).base); }
+for (const b of basesCL) { urls.add(b); for (const w of ANCHOS_CL) urls.add(varianteCL(b, w)); }
 
 // losgomosos.lat pasa a Vercel (cesar 2026-11-14): sus archivos se bajan directo del CDN de Shopify (tienda 74894180397)
 function shopify(a) {
@@ -28,6 +55,7 @@ function shopify(a) {
 }
 function absUrl(u) { return shopify((u.startsWith('//') ? 'https:' + u : u).replace(/&amp;/g, '&')); }
 function localPath(u) {
+  if (esCL(u)) return localCL(u);
   const a = new URL(absUrl(u));
   const ext = extname(a.pathname).toLowerCase() || '.bin';
   const dir = TIPOS[ext] || 'img';
@@ -42,7 +70,7 @@ async function bajar(u) {
   const src = MIRROR ? MIRROR + new URL(a).pathname + new URL(a).search : a;
   const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 20000);
   try {
-    const r = await fetch(src, { signal: ctl.signal, headers: { 'user-agent': 'Mozilla/5.0 (build enerplu)' } });
+    const r = await fetch(src, { signal: ctl.signal, headers: { 'user-agent': 'Mozilla/5.0 (build enerplu)', ...(esCL(a) ? { accept: 'image/webp,image/*;q=0.8' } : {}) } });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const ct = r.headers.get('content-type') || '';
     if (/text\/html/.test(ct)) throw new Error('html');
@@ -66,10 +94,13 @@ const lista = [...urls]; const res = [];
 for (let i = 0; i < lista.length; i += 8) res.push(...await Promise.all(lista.slice(i, i + 8).map(bajar)));
 const ok = res.filter(r => r[1]); const mal = res.filter(r => !r[1]);
 const mapa = new Map(ok.map(r => [r[0], r[1]]));
+// Una imagen de Cloudinary solo se cambia por la copia local si están ella y todos sus anchos; si falta alguno, se deja el enlace original.
+const completaCL = b => mapa.has(b) && ANCHOS_CL.every(w => mapa.has(varianteCL(b, w)));
 
 for (const f of pages) {
   let s = htmls[f];
   s = s.replace(RE, m => mapa.get(m) || (/losgomosos\.lat/.test(m) ? absUrl(m) : m));
+  s = s.replace(RE_CL, m => (completaCL(partesCL(m).base) && mapa.get(m)) || m);
   // sin recursos pendientes de esos dominios, el preconnect sobra
   for (const host of ['losgomosos.lat', 'cdn.shopify.com']) {
     const re = new RegExp(`//${host.replace('.', '\\.')}/(?:cdn|s/files)/`);

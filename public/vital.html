@@ -3594,6 +3594,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
   };
   /* Cloudinary: formato y calidad automáticos + ancho justo para cada uso */
   R.cdn = function (cfg, url, w) {
+    if (cfg.cdnOptimize && url && url.indexOf('/rec/cl/') === 0) return [120, 160, 200, 540, 600, 720, 800, 1080].indexOf(w) >= 0 ? url.replace(/(\.[a-z0-9]+)$/i, '.w' + w + '$1') : url;   /* copia local (tools/bajar-recursos.mjs): mismo archivo en el ancho pedido */
     if (!cfg.cdnOptimize || !url || url.indexOf('res.cloudinary.com/') < 0 || url.indexOf('/upload/') < 0) return url;
     return url.replace('/upload/', '/upload/' + (w ? 'w_' + w + '/' : '') + 'f_auto/q_auto/');   /* transformaciones encadenadas con / (sin comas: Vite/Bolt rompe las comas dentro de srcset) */
   };

@@ -211,14 +211,13 @@
   setInterval(guias, 800);
 
   /* recuadro de confianza bajo el botón de ofertas: guías digitales de obsequio, pequeño (cesar 2026-11-10) */
-  var CL = 'https://res.cloudinary.com/dzlys7ftg/image/upload/w_120,f_auto,q_auto/v179415142';
   var trust = document.querySelector('#ep-offer-widget .ep-trust'), gt = null;
   if (trust) {
     gt = document.createElement('div'); gt.className = 'ep-trust-line oc-trust-guias';
     gt.innerHTML = '<span class="oc-tg-covers">' +
-      '<img src="' + CL + '1/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Maestro del Orgasmo">' +
-      '<img src="' + CL + '2/Portada_Secretos_sexuales__edici%C3%B3n_de_lujo_tnnyoz.webp" alt="Secretos Sexuales">' +
-      '<img src="' + CL + '1/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Genio del Sexo"></span>' +
+      '<img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Maestro del Orgasmo">' +
+      '<img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120,f_auto,q_auto/v1794151422/Portada_Secretos_sexuales__edici%C3%B3n_de_lujo_tnnyoz.webp" alt="Secretos Sexuales">' +
+      '<img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_120,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Genio del Sexo"></span>' +
       '<span>Obsequio: 3 guías digitales</span>';
     trust.insertBefore(gt, trust.firstChild);
   }

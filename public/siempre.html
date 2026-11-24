@@ -5670,12 +5670,12 @@ html .ep-root .eph-order.fc3 .eph-title{background:none!important;color:#111!imp
 <script id="e10-js">
 (function(){
   try{
-  var INI=1795477200000, FIN=1795485600000, ahora=Date.now(), q=new URLSearchParams(location.search), f=q.get('fc'), v=null;
+  var INI=1795485600000, FIN=4102444800000, ahora=Date.now(), q=new URLSearchParams(location.search), f=q.get('fc'), v=null;
   if(f==='1')v='B'; else if(f==='0')v='A';
   else{
     if(ahora<INI||ahora>FIN)return;
     var m=document.cookie.match(/(?:^|; )ep_e10=([AB])/);
-    v=m?m[1]:(Math.random()<0.5?'A':'B');
+    v=true?'B':(m?m[1]:(Math.random()<0.5?'A':'B'));
     document.cookie='ep_e10='+v+'; Path=/; Max-Age=86400; SameSite=Lax; Secure';
     if(q.get('ep_test')!=='1'){
       var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}if(!sid){if(n++<20)setTimeout(go,300);return;}

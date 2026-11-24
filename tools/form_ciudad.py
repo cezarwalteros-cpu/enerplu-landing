@@ -8,7 +8,7 @@ Versión B (mitad del tráfico, cookie ep_e10 A/B):
 Versión A: la página de siempre.
 Ventana: entre INI y FIN (ms UTC). Fuera de la ventana todos ven A. Vista previa: ?fc=1 (B) o ?fc=0 (A).
 Medición: funnel_events ab_assign {exp:'E10', v} por sesión + checkout_attempts.session_id.
-Uso: python3 tools/form_ciudad.py <INI_ms> <FIN_ms>   (idempotente: reemplaza el bloque entre marcadores)
+Uso: python3 tools/form_ciudad.py <INI_ms> <FIN_ms> [todos]   (idempotente: reemplaza el bloque entre marcadores)
 """
 import pathlib, re, sys, json
 
@@ -18,6 +18,7 @@ PAGINAS = ["index", "siempre", "tienda", "vital", "producto", "oferta-a", "check
 INI_M, FIN_M = "<!-- E10:INI -->", "<!-- E10:FIN -->"
 
 INI_MS, FIN_MS = int(sys.argv[1]), int(sys.argv[2])
+TODOS = len(sys.argv) > 3 and sys.argv[3] == "todos"   # todos ven B (cesar 23-nov 9:02pm "Nuevo al 100%")
 
 deps = {}
 for bloque in (ROOT / "tools" / "municipios.txt").read_text(encoding="utf-8").strip().split("|"):
@@ -46,7 +47,7 @@ JS = r"""
   else{
     if(ahora<INI||ahora>FIN)return;
     var m=document.cookie.match(/(?:^|; )ep_e10=([AB])/);
-    v=m?m[1]:(Math.random()<0.5?'A':'B');
+    v=__TODOS__?'B':(m?m[1]:(Math.random()<0.5?'A':'B'));
     document.cookie='ep_e10='+v+'; Path=/; Max-Age=86400; SameSite=Lax; Secure';
     if(q.get('ep_test')!=='1'){
       var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}if(!sid){if(n++<20)setTimeout(go,300);return;}
@@ -132,7 +133,7 @@ JS = r"""
 """
 
 BLOQUE = INI_M + "\n<style id=\"e10-css\">\n" + CSS + "\n</style>\n<script id=\"e10-js\">" + \
-    JS.replace("__INI__", str(INI_MS)).replace("__FIN__", str(FIN_MS)).replace("__DEPS__", json.dumps(deps, ensure_ascii=False, separators=(",", ":"))) + \
+    JS.replace("__TODOS__", "true" if TODOS else "false").replace("__INI__", str(INI_MS)).replace("__FIN__", str(FIN_MS)).replace("__DEPS__", json.dumps(deps, ensure_ascii=False, separators=(",", ":"))) + \
     "</script>\n" + FIN_M
 
 for p in PAGINAS:

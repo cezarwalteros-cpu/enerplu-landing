@@ -1,10 +1,11 @@
 # Una sola vez (o cuando haga falta): copia al repo las imágenes, CSS y fuentes que las páginas
-# todavía cargan desde Shopify, y guarda el mapa en tools/rec-mapa.json. Desde ahí el build ya no depende de Shopify.
+# todavía cargan desde Shopify o Cloudinary, y guarda el mapa en tools/rec-mapa.json. Desde ahí el build ya no depende de Shopify.
 name: vendor-recursos
+# 2026-11-24: también copia las imágenes de Cloudinary (public/rec/cl).
 on:
   workflow_dispatch:
   push:
-    branches: [claude/project-thread-3kwnjg-imagenes]
+    branches: [claude/project-thread-3kwnjg-imagenes, claude/project-thread-9n88og]
     paths: [.github/workflows/vendor-recursos.yml]
 permissions:
   contents: write
@@ -25,5 +26,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f public/rec tools/rec-mapa.json
           git diff --cached --quiet && echo "nada nuevo" && exit 0
-          git commit -m "Recursos de Shopify guardados en el repo (public/rec + tools/rec-mapa.json)"
+          git commit -m "Recursos externos guardados en el repo (public/rec + tools/rec-mapa.json)"
           git push

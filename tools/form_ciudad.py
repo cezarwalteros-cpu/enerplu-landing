@@ -72,14 +72,15 @@ JS = r"""
     grid.parentNode.insertBefore(nd,grid); grid.style.display='none';
     var nom=document.getElementById('fc-nombre'), nerr=document.getElementById('fc-nombre-err');
     function repartir(){
+      if(!String(nom.value||'').trim()&&first.value){nom.value=(first.value+' '+last.value).trim();return;}
       var p=String(nom.value||'').trim().split(/\s+/).filter(Boolean), cut=p.length>=4?2:1;
       first.value=p.length?p.slice(0,cut).join(' '):''; last.value=p.length>=2?p.slice(cut).join(' '):'';
     }
-    nom.addEventListener('input',function(){repartir(); if(!nerr.hidden&&first.value.length>=2&&last.value.length>=2){nerr.hidden=true;nerr.textContent='';nom.removeAttribute('aria-invalid');}});
+    nom.addEventListener('input',function(){repartir(); if(!nerr.hidden&&first.value.length>=2){nerr.hidden=true;nerr.textContent='';nom.removeAttribute('aria-invalid');}});
     nom.addEventListener('blur',function(){repartir(); fo(first); fo(last);});
     function espejo(){
       var e1=document.querySelector('[data-ep-err="first_name"]'), e2=document.querySelector('[data-ep-err="last_name"]'), t='';
-      if(e1&&!e1.hidden&&e1.textContent)t=e1.textContent; else if(e2&&!e2.hidden&&e2.textContent)t='Escribe tu nombre y apellido';
+      if(e1&&!e1.hidden&&e1.textContent)t=e1.textContent; else if(e2&&!e2.hidden&&e2.textContent)t='Escribe tu nombre para recibir el pedido';
       nerr.textContent=t; nerr.hidden=!t; if(t)nom.setAttribute('aria-invalid','true'); else nom.removeAttribute('aria-invalid');
     }
     ['first_name','last_name'].forEach(function(k){var e=document.querySelector('[data-ep-err="'+k+'"]'); if(e)new MutationObserver(espejo).observe(e,{attributes:true,childList:true,characterData:true,subtree:true});});
@@ -98,9 +99,11 @@ JS = r"""
     function verTexto(val){
       lab.style.display=''; city.style.display=''; mun.closest('div')&&0;
       document.querySelector('label[for="fc-mun"]').style.display='none'; mun.style.display='none'; document.getElementById('fc-mun-h').style.display='none';
-      if(val!=null){city.value=val; ev(city,'input');}
-      setTimeout(function(){try{city.focus()}catch(e){}},50);
+      if(val!=null&&val!==false){city.value=val; ev(city,'input');}
+      if(val!==false)setTimeout(function(){try{city.focus()}catch(e){}},50);
     }
+    /* recarga con datos guardados: se muestran el nombre y la ciudad que ya había escrito */
+    setTimeout(function(){repartir(); if(city.value&&!dep.value)verTexto(false);},900);
     dep.addEventListener('change',function(){
       dep.classList.toggle('fc-vacio',!dep.value);
       var ms=DEPS[dep.value]||[];

@@ -26,7 +26,8 @@
   var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
   var fmt = function (n) { return "$" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "."); };
   var clean = function (v) { return String(v || "").replace(/\s+/g, " ").trim(); };
-  var phone10 = function (v) { var d = String(v || "").replace(/\D/g, ""); if (d.length === 12 && d.indexOf("57") === 0) d = d.slice(2); return d; };
+  /* P0 (cesar 23-11): acepta 3001234567, 300 123 4567, +57 3001234567, 0057… y 0300…; siempre deja los 10 dígitos */
+  var phone10 = function (v) { var d = String(v || "").replace(/\D/g, ""); if (d.indexOf("0057") === 0) d = d.slice(4); else if (d.length > 10 && d.indexOf("57") === 0) d = d.slice(2); if (d.length === 11 && d.charAt(0) === "0") d = d.slice(1); return d.slice(0, 10); };
   var esc = function (t) { return String(t == null ? "" : t).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var norm = function (s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim(); };
   var ico = function (n) { return '<svg class="i"><use href="#' + n + '"/></svg>'; };
@@ -60,10 +61,25 @@
     try { if (navigator.sendBeacon && navigator.sendBeacon(CFG.funnel, new Blob([body], { type: "text/plain" }))) return; } catch (e) {}
     try { fetch(CFG.funnel, { method: "POST", body: body, keepalive: true, headers: { "Content-Type": "text/plain" } }).catch(function () {}); } catch (e) {}
   }
+  /* P0 (cesar 23-11): el pedido tiene límite de 25 s y lleva clave de idempotencia (un reintento nunca crea dos pedidos) */
   var api = function (body) {
-    return fetch(CFG.api, { method: "POST", keepalive: body.action === "cart", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ slug: CFG.slug, session_id: SID }, body)) })
-      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j.status = j.status || r.status; return j; }); });
+    var ctl = body.action === "order" && window.AbortController ? new AbortController() : null;
+    var t = ctl ? setTimeout(function () { ctl.abort(); }, 25000) : 0;
+    var opt = { method: "POST", keepalive: body.action === "cart", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ slug: CFG.slug, session_id: SID }, body)) };
+    if (ctl) opt.signal = ctl.signal;
+    var done = function (x) { clearTimeout(t); return x; };
+    return fetch(CFG.api, opt)
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j.status = j.status || r.status; return j; }); })
+      .then(done, function (e) { clearTimeout(t); throw e; });
   };
+  var newKey = function () { try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {} return "k" + Date.now().toString(36) + Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 12); };
+  var IDEM = null;
+  try { IDEM = sessionStorage.getItem("ep_ck_idem"); } catch (e) {}
+  var setIdem = function (k) { IDEM = k; try { sessionStorage.setItem("ep_ck_idem", k); } catch (e) {} };
+  if (!IDEM) setIdem(newKey());
+  /* errores de JavaScript reales (navegador de Facebook / Instagram): quedan en el embudo para poder revisarlos */
+  var jsErrs = 0;
+  window.addEventListener("error", function (e) { if (jsErrs++ < 3) funnel("js_error", { msg: String((e && e.message) || "").slice(0, 160), src: String((e && e.filename) || "").slice(-60), line: e && e.lineno }); });
 
   /* ---------- estado ---------- */
   var alias = { basico: "basico", "básico": "basico", x1: "basico", inicial: "basico", dominio: "dominio", elite: "elite", "élite": "elite" };
@@ -149,21 +165,42 @@
   /* ---------- campos ---------- */
   var F = { name: $("#n"), tel: $("#t"), city: $("#c"), addr: $("#a"), opt: $("#b") };
   var RULES = {
-    name: function (v) { return clean(v).split(" ").length >= 2 && clean(v).length >= 5; },
+    /* P0 #1 (cesar 23-11): un solo nombre basta; el apellido ya no bloquea el pedido */
+    name: function (v) { return /[A-Za-zÀ-ÿ]{2}/.test(clean(v)); },
     tel: function (v) { return /^3\d{9}$/.test(phone10(v)) && !phoneBlock; },
     city: function () { return !!city; },
     addr: function (v) { return clean(v).length >= 5; }
   };
-  var MSG = { name: "Escribe nombre y apellido", tel: "Debe empezar por 3 y tener 10 números", city: "Escribe tu ciudad y elígela de la lista", addr: "Escribe la dirección o el punto de entrega" };
+  /* mensajes exactos de cesar (23-11) */
+  var MSG = { name: "Escribe tu nombre para recibir el pedido", tel: "Revisa tu número de celular colombiano", city: "Selecciona tu ciudad de la lista", addr: "Escribe la dirección donde recibirás tu pedido" };
+  var EMPTY = { name: MSG.name, tel: "Ingresa los 10 dígitos de tu celular", city: MSG.city, addr: MSG.addr };
+  var LABEL = { name: "tu nombre", tel: "tu celular", city: "tu ciudad", addr: "tu dirección" };
+  var telMsg = function () { return phoneBlock ? phoneBlock : phone10(F.tel.value).length < 10 ? EMPTY.tel : MSG.tel; };
   var fieldOf = function (k) { return F[k].closest(".f"); };
-  var hints = {}; Object.keys(F).forEach(function (k) { var h = fieldOf(k).querySelector(".hint"); hints[k] = h ? h.textContent : ""; });
-  function mark(k, show) {
+  var hints = {}; Object.keys(F).forEach(function (k) {
+    if (!F[k]) return;
+    var h = fieldOf(k).querySelector(".hint"); hints[k] = h ? h.textContent : "";
+    /* el error queda unido a su campo para lectores de pantalla */
+    if (h) { h.id = h.id || "h-" + k; h.setAttribute("aria-live", "polite"); F[k].setAttribute("aria-describedby", h.id); }
+  });
+  /* show: marcar si el dato está mal; force: marcar también si está vacío (al tocar el botón) */
+  function mark(k, show, force) {
     var f = fieldOf(k), ok = RULES[k] ? RULES[k](F[k].value) : clean(F[k].value).length > 0, h = f.querySelector(".hint");
+    var empty = !clean(F[k].value);
     f.classList.toggle("good", ok);
-    var bad = show && !ok && (k === "city" || F[k].value);
+    var bad = show && !ok && (k === "city" || !empty || force);
     f.classList.toggle("bad", !!bad);
-    if (h) h.textContent = bad ? (k === "tel" && phoneBlock ? phoneBlock : MSG[k]) : hints[k];
+    if (bad) F[k].setAttribute("aria-invalid", "true"); else F[k].removeAttribute("aria-invalid");
+    if (h) h.textContent = bad ? (k === "tel" ? telMsg() : empty ? EMPTY[k] : MSG[k]) : hints[k];
     return ok;
+  }
+  /* aviso junto al botón: todo toque en "Pedir" deja una reacción visible aunque el campo ya esté en pantalla */
+  var missShown = false;
+  function missMsg(bad) {
+    if (!bad.length) { if (missShown) { errBox.classList.remove("show"); errBox.textContent = ""; missShown = false; } return; }
+    var n = bad.map(function (k) { return LABEL[k]; });
+    errBox.textContent = bad.length >= 4 ? "Completa tus datos de envío para hacer el pedido." : "Te falta " + (n.length > 1 ? n.slice(0, -1).join(", ") + " y " + n[n.length - 1] : n[0]) + ".";
+    errBox.classList.add("show"); missShown = true;
   }
   var missing = function () { return Object.keys(RULES).filter(function (k) { return !RULES[k](F[k].value); }); };
   function check() {
@@ -184,9 +221,10 @@
       pixel("InitiateCheckout", { value: plan.price, currency: "COP", num_items: plan.boxes, content_ids: ["enerplu-" + plan.id], content_type: "product" });
     });
     i.addEventListener("input", function () {
-      if (k === "tel") { var d = i.value.replace(/\D/g, "").slice(0, 10); i.value = d.replace(/(\d{3})(\d{0,3})(\d{0,4})/, function (m, a, b, c) { return [a, b, c].filter(Boolean).join(" "); }); phoneBlock = null; errBox.classList.remove("show"); }
+      if (k === "tel") { var d = phone10(i.value); i.value = d.replace(/(\d{3})(\d{0,3})(\d{0,4})/, function (m, a, b, c) { return [a, b, c].filter(Boolean).join(" "); }); phoneBlock = null; errBox.classList.remove("show"); }
       if (k !== "city") { var ok = mark(k, false); if (ok && !done1[k]) { done1[k] = 1; funnel("form_field", { field: k }); } }
-      check(); queueCart();
+      if (missShown) missMsg(missing());
+      check(); queueCart(); saveDraft();
     });
     if (k !== "city") i.addEventListener("blur", function () { mark(k, true); });
   });
@@ -194,6 +232,7 @@
   /* revisión del celular (lista negra / pedido en las últimas 24 h) */
   var errBox = $("#err");
   function showErr(txt, j) {
+    missShown = false;
     errBox.textContent = txt;
     var wa = j && j.recent_order ? String(j.whatsapp || "").replace(/\D/g, "") : "";
     if (wa) {
@@ -253,7 +292,8 @@
     if (prepaidCity && !boldOn && !transferOn) { city = null; prepaidCity = false; mark("city", true); fieldOf("city").querySelector(".hint").textContent = "En " + c.municipio + " no tenemos pago al recibir por ahora."; check(); return; }
     if (prepaidCity && pay === "cod") pay = boldOn ? "bold" : "transfer";
     mark("city", false); if (!done1.city) { done1.city = 1; funnel("form_field", { field: "city" }); }
-    render(); queueCart();
+    if (missShown) missMsg(missing());
+    render(); queueCart(); saveDraft();
   }
   function autoCity() {
     if (city || !items.length) return !!city;
@@ -263,7 +303,8 @@
     if (items.length === 1) { pickCity(items[0]); return true; }
     if (exact.length === 1) { pickCity(exact[0]); return true; }
     sug.hidden = false;
-    fieldOf("city").querySelector(".hint").textContent = "Toca tu ciudad en la lista";
+    fieldOf("city").classList.add("bad");
+    fieldOf("city").querySelector(".hint").textContent = "Selecciona tu ciudad de la lista";
     return false;
   }
   F.city.addEventListener("input", function () {
@@ -286,6 +327,24 @@
   function resolveCity() {
     if (city || !clean(F.city.value)) return Promise.resolve();
     return search(F.city.value).then(function () { autoCity(); }).catch(function () {});
+  }
+
+  /* P0 #7 (cesar 23-11): lo escrito se guarda en la pestaña y vuelve si la página se recarga o falla la conexión.
+     Se borra al quedar hecho el pedido. */
+  function saveDraft() {
+    try { sessionStorage.setItem("ep_ck_draft", JSON.stringify({ n: F.name.value, t: F.tel.value, c: city, ct: F.city.value, a: F.addr.value, b: F.opt ? F.opt.value : "" })); } catch (e) {}
+  }
+  function clearDraft() { try { sessionStorage.removeItem("ep_ck_draft"); } catch (e) {} }
+  function loadDraft() {
+    var d = null; try { d = JSON.parse(sessionStorage.getItem("ep_ck_draft") || "null"); } catch (e) {}
+    if (!d) return;
+    if (d.n && !F.name.value) F.name.value = d.n;
+    if (d.t && !F.tel.value) F.tel.value = d.t;
+    if (d.a && !F.addr.value) F.addr.value = d.a;
+    if (d.b && F.opt && !F.opt.value) F.opt.value = d.b;
+    if (!F.city.value) { if (d.c && d.c.municipio) { done1.city = 1; pickCity(d.c); } else if (d.ct) F.city.value = d.ct; }
+    ["name", "tel", "addr"].forEach(function (k) { if (clean(F[k].value)) { done1[k] = 1; mark(k, false); } });
+    check();
   }
 
   /* ---------- carrito abandonado (en cuanto hay celular válido) ---------- */
@@ -311,24 +370,27 @@
   });
   function splitName(full) { var w = clean(full).split(" "); return { first: w[0] || "", last: w.slice(1).join(" ") || "" }; }
   function submit() {
+    if (sending) return;   /* varios toques seguidos: resolveCity es asíncrono y antes dejaba pasar cada toque como un envío */
     var bad = missing();
     funnel("submit_click", { ok: !bad.length, pago: pay, plan: plan.id });
     if (bad.length) {
       funnel("form_error", { fields: bad, city: bad.indexOf("city") >= 0 ? String(F.city.value || "").slice(0, 40) : null, plan: plan.id, pago: pay });
-      bad.forEach(function (k) { mark(k, true); });
+      bad.forEach(function (k) { mark(k, true, true); });
+      missMsg(bad);
       var f = fieldOf(bad[0]); f.classList.add("bad");
-      f.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(function () { F[bad[0]].focus({ preventScroll: true }); }, 400);
+      try { F[bad[0]].focus({ preventScroll: true }); } catch (e) { try { F[bad[0]].focus(); } catch (e2) {} }
+      try { f.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) { try { f.scrollIntoView(); } catch (e2) {} }
       return;
     }
-    sending = true; var b = $("#go"); b.disabled = true; $("#goTx").textContent = "Enviando tu pedido…";
+    missMsg([]);
+    sending = true; var b = $("#go"); b.disabled = true; b.setAttribute("aria-busy", "true"); $("#goTx").textContent = "Enviando tu pedido…";
     var nm = splitName(F.name.value), addr = clean(F.addr.value);
     var body = {
       action: "order", offer_key: plan.key, bump: false, upsell: false,
       customer: { first_name: nm.first, last_name: nm.last, phone: phone10(F.tel.value) },
       address: { department: city.departamento, city: city.municipio, address1: addr, additional: clean(F.opt.value) || "Sin barrio: confirmar por WhatsApp",
         notes: /\d/.test(addr) ? undefined : "Dirección sin número: confirmar punto de entrega por WhatsApp" },
-      shipping_option: "standard", payment_method: pay, website: $("#hp").value, tracking: tracking()
+      shipping_option: "standard", payment_method: pay, idempotency_key: IDEM, website: $("#hp").value, tracking: tracking()
     };
     if (pay === "bold") body.return_url = location.origin + location.pathname;
     if (TEST) body.dry_run = true;
@@ -339,20 +401,22 @@
         var map = { full_name: "name", first_name: "name", last_name: "name", phone: "tel", city: "city", department: "city", address1: "addr" };
         var firstF = null;
         if (j.fields) Object.keys(j.fields).forEach(function (k) { var fk = map[k]; if (fk) { var f = fieldOf(fk); f.classList.add("bad"); var h = f.querySelector(".hint"); if (h) h.textContent = j.fields[k]; firstF = firstF || f; } });
-        showErr((j.fields && j.fields[Object.keys(j.fields)[0]]) || j.error || j.message || "No pudimos registrar tu pedido. Intenta de nuevo.", j);
+        showErr((j.fields && j.fields[Object.keys(j.fields)[0]]) || j.error || j.message || "No pudimos registrar tu pedido. Inténtalo nuevamente.", j);
         funnel("form_error", { server: 1, fields: j.fields ? Object.keys(j.fields) : [], msg: String(errBox.textContent).slice(0, 120), status: j.status });
         (firstF || errBox).scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
-      ordered = true; clearTimeout(cartTimer);
+      if (!j.order_number) { showErr("No pudimos registrar tu pedido. Inténtalo nuevamente."); funnel("form_error", { server: 1, sin_numero: 1, status: j.status }); return; }
+      ordered = true; clearTimeout(cartTimer); clearDraft(); setIdem(newKey());
       var tot = j.total_cop || total();
       if (!TEST && !j.dry_run && j.event_id) pixel("Purchase", { value: tot, currency: "COP", num_items: plan.boxes, content_ids: ["enerplu-" + plan.id], content_type: "product", order_id: j.order_number }, { eventID: j.event_id });
       funnel("order_ok", { plan: plan.id, pago: pay });
       showDone(j, { total: tot, paid: false });
     }).catch(function () {
-      showErr("No pudimos registrar tu pedido. Revisa tu conexión e inténtalo de nuevo.");
+      saveDraft();
+      showErr("No pudimos enviar el pedido. Tus datos siguen guardados. Intenta nuevamente.");
       funnel("form_error", { server: 1, red: 1 });
-    }).then(function () { sending = false; b.disabled = false; check(); });
+    }).then(function () { sending = false; b.disabled = false; b.removeAttribute("aria-busy"); check(); });
   }
 
   /* ---------- gracias ---------- */
@@ -429,5 +493,5 @@
     poll();
   })();
 
-  paintPlans(); render();
+  paintPlans(); render(); loadDraft();
 })();

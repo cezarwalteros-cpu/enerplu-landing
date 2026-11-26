@@ -17,7 +17,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 PUB = ROOT / "public"
 
 # ------------------------------------------------------------------ configuración
-LIVE = False                       # True solo cuando el CRM tenga el slug y cesar dé el OK
+LIVE = True                        # cesar 25-nov 11:03pm: "conecta igual, aún no vamos a prender campañas"
 SLUG = "zafir"
 PIXEL = "534952895765160"          # el pixel que usan las campañas viejas de ZAFIR
 DELAY = 120                        # cesar 25-nov: lo de debajo del video aparece a los 120 segundos de verlo (tiempo real)

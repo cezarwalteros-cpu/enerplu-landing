@@ -6,7 +6,7 @@
     funnel: "/api/f",
     slug: "zafir",
     pixel: "534952895765160",
-    live: false
+    live: true
   };
   var PLANS = [{"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}, {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 116000, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": true, "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}, {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}];
   var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };

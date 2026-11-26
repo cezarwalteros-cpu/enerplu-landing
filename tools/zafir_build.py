@@ -79,7 +79,7 @@ cambia_re(r"function paintPlans\(\) \{.*?\n  \}\n\n  function render\(\) \{", r'
       return '<label class="plan' + (p.hot ? " hot" : "") + '" data-i="' + i + '"><input type="radio" name="plan">' +
         '<span class="ptag">' + esc(p.tag) + "</span>" +
         '<span class="pbody"><span class="radio"></span>' +
-        '<img class="pim" src="/img/zafir/b' + p.boxes + '.png" alt="" width="72" height="72">' +
+        '<img class="pim" src="/img/b' + p.boxes + '.webp" alt="" width="72" height="72">' +
         '<span class="pm"><div class="pn">' + esc(p.name) + '</div><div class="pg">' + ico("gift") + "<span>" + esc(p.gift) + "</span></div></span>" +
         '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><small>AHORA</small><strong>" + fmt(p.price) + "</strong></span></span></label>";
     }).join("");

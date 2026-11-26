@@ -80,10 +80,12 @@
 
   function paintPlans() {
     $("#plans").innerHTML = PLANS.map(function (p, i) {
-      return '<label class="plan' + (p.hot ? " hot" : "") + '" data-i="' + i + '"><input type="radio" name="plan"><span class="radio"></span>' +
-        '<img class="pim" src="/img/zafir/b' + p.boxes + '.png" alt="" width="60" height="60">' +
-        '<span class="pm"><span class="ptag">' + esc(p.tag) + '</span><div class="pn">' + esc(p.name) + "</div></span>" +
-        '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><strong>AHORA " + fmt(p.price) + "</strong></span></label>";
+      return '<label class="plan' + (p.hot ? " hot" : "") + '" data-i="' + i + '"><input type="radio" name="plan">' +
+        '<span class="ptag">' + esc(p.tag) + "</span>" +
+        '<span class="pbody"><span class="radio"></span>' +
+        '<img class="pim" src="/img/zafir/b' + p.boxes + '.png" alt="" width="72" height="72">' +
+        '<span class="pm"><div class="pn">' + esc(p.name) + '</div><div class="pg">' + ico("gift") + "<span>" + esc(p.gift) + "</span></div></span>" +
+        '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><small>AHORA</small><strong>" + fmt(p.price) + "</strong></span></span></label>";
     }).join("");
   }
 
@@ -187,8 +189,7 @@
     $("#s2").classList.toggle("on", touched);
     $("#s3").classList.toggle("on", !m.length);
     b.classList.toggle("miss", !!m.length);
-    $("#goTx").innerHTML = m.length ? "Faltan " + m.length + " " + (m.length > 1 ? "datos" : "dato") + " · <em>completa tu envío</em>"
-      : pay === "cod" ? "REALIZAR PEDIDO<small>Paga al recibir</small>" : pay === "bold" ? "PAGAR " + fmt(total()) + " EN LÍNEA" : "PEDIR Y PAGAR POR TRANSFERENCIA";
+    $("#goTx").innerHTML = pay === "cod" ? "PEDIR Y PAGAR AL RECIBIR" : pay === "bold" ? "PAGAR " + fmt(total()) + " EN LÍNEA" : "PEDIR Y PAGAR POR TRANSFERENCIA";
   }
   var started = false, done1 = {};
   Object.keys(F).forEach(function (k) {

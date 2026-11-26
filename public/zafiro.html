@@ -408,6 +408,30 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
 .pch{font:600 15px var(--cond);letter-spacing:.08em;color:#111}
 .pch i{background:var(--rojo);box-shadow:0 0 0 4px rgba(255,31,61,.2)}
 @media (min-width:960px){.vsl h1{font-size:46px}}
+/* ===== tarjetas de oferta v3 (cesar 25-nov: "mejora las tarjetas de ofertas") ===== */
+.tabla{background:none;border:0;box-shadow:none;border-radius:0;overflow:visible}
+.th{display:none}
+.plans{gap:16px;display:flex;flex-direction:column}
+.plan,.plan.sel{display:block;position:relative;padding:0;border-radius:18px;border:2px solid #3A2F12;background:linear-gradient(160deg,#1C1608,#0C0A05 70%);color:#fff;overflow:hidden;box-shadow:none!important;transition:border-color .2s,transform .15s}
+.plan:last-child{border-bottom:2px solid #3A2F12}
+.plan.sel,.plan.sel:last-child{border-color:#F7D774;background:linear-gradient(160deg,#2B2009,#120D04 70%);box-shadow:0 0 0 3px rgba(247,215,116,.22),0 0 44px -6px rgba(247,215,116,.7)!important}
+.ptag{display:block;margin:0;border-radius:0;padding:8px 14px;text-align:center;font:600 13px/1.2 var(--cond);letter-spacing:.1em;background:#2A220D;color:#F7D774}
+.plan.hot .ptag{background:linear-gradient(90deg,#C8001E,#FF1F3D,#C8001E);color:#fff}
+.plan.sel:not(.hot) .ptag{background:var(--oro);color:#111}
+.pbody{display:grid;grid-template-columns:26px 72px minmax(0,1fr) auto;gap:12px;align-items:center;padding:16px 14px}
+.plan .radio{width:26px;height:26px;background:transparent;border:2px solid #7A6A3A}
+.plan.sel .radio{border-color:#F7D774;background:#F7D774}
+.plan .radio::after{width:12px;height:12px;background:#111}
+.pim{width:72px;height:72px;border-radius:12px;border:0;background:#fff;padding:3px}
+.pn{font:700 19px/1.15 var(--cond);letter-spacing:.02em;color:#fff;text-transform:uppercase}
+.pg{color:#F7D774;font:600 12px/1.3 Inter,sans-serif;margin-top:6px}
+.pg svg{width:14px;height:14px;flex:none;color:#F7D774}
+.pr{text-align:right}
+.pr s{font:600 12px Inter,sans-serif;color:#9A9383}
+.pr small{display:block;font:600 11px var(--cond);letter-spacing:.14em;color:#F7D774;margin-top:4px}
+.pr strong,.plan.hot .pr strong{display:block;font:700 27px/1 var(--cond);color:#fff;letter-spacing:0}
+.plan.sel .pr strong{background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{min-height:76px;font:700 23px/1.1 var(--cond)}
 </style>
 </head>
 <body>
@@ -486,7 +510,6 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
   <section class="sec" id="paso1">
     <div class="h"><div class="num">1</div><h2>PASO 1. SELECCIONA LA OFERTA</h2></div>
     <div class="tabla"><div class="th"><span>OFERTAS</span><span>PRECIOS</span></div><div class="plans" id="plans"></div></div>
-    <label class="bump"><input type="checkbox" id="bp"><span><b>Sí, 🔥 Envío Nacional prioritario con seguro por $5.000.</b><small>Tu paquete será EMPACADO con prioridad al solicitar esta opción (El tiempo de entrega puede ser de 2 a 4 días dependiendo de la transportadora)</small></span></label>
     <div class="incl">
       <h3>Tu pedido incluye</h3>
       <ul class="list" id="incl"></ul>
@@ -559,7 +582,7 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
 
   <div class="cta"><div class="in">
     <div class="err" id="err" role="alert"></div>
-    <button class="btn" id="go" type="button"><span id="goTx">REALIZAR PEDIDO<small>Paga al recibir</small></span><svg class="i"><use href="#arrow"/></svg></button>
+    <button class="btn" id="go" type="button"><span id="goTx">PEDIR Y PAGAR AL RECIBIR</span><svg class="i"><use href="#arrow"/></svg></button>
     <div class="sub" id="goSub"><svg class="i"><use href="#shield"/></svg><span>Pago 100% seguro contra entrega. Pagas al recibir en la puerta de tu casa</span></div>
   </div></div>
 
@@ -568,7 +591,7 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
     <div class="sello"><svg class="i"><use href="#shield"/></svg><b>CALIDAD PREMIUM</b></div>
     <div class="sello"><svg class="i"><use href="#check"/></svg><b>PRODUCTO GARANTIZADO</b></div>
   </div>
-  <div class="pce"><div class="pch"><i></i>PAGO CONTRAENTREGA</div><p>Haz clic en REALIZAR PEDIDO para completar tu compra. Solo pagarás el pedido una vez que se entregue en tu domicilio.</p></div>
+  <div class="pce"><div class="pch"><i></i>PAGO CONTRAENTREGA</div><p>Haz clic en PEDIR Y PAGAR AL RECIBIR para completar tu compra. Solo pagarás el pedido una vez que se entregue en tu domicilio.</p></div>
 
   <footer class="ft"><p>ZAFIR · Pago contra entrega en Colombia.</p></footer>
  </aside>

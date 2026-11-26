@@ -68,16 +68,19 @@ cambia('funnel("selector_view");\n', '')
 cambia('})[0] || PLANS[0];', '})[0] || PLANS[1];')
 cambia('var total = function () { return plan.price - disc(); };', 'var bump = false, BUMP = %d;\n  var total = function () { return plan.price - disc() + (bump ? BUMP : 0); };' % BUMP)
 cambia('bump: false', 'bump: bump', 0)
-cambia('"PÍDELO YA - Pagas al recibir"', '"REALIZAR PEDIDO<small>Paga al recibir</small>"')
+cambia('"PÍDELO YA - Pagas al recibir"', '"PEDIR Y PAGAR AL RECIBIR"')
+cambia_re(r'm\.length \? "Faltan " \+ m\.length.*?</em>"\s*: pay === "cod"', 'pay === "cod"')   # cesar 25-nov: nada de "Faltan 4 datos", el botón siempre dice lo mismo
 cambia('"Hoy no pagas nada · Envío gratis"', '"Pago 100% seguro contra entrega. Pagas al recibir en la puerta de tu casa"')
 
 # tarjetas de los paquetes: tarros en vez de cajas y tabletas, sin foto hasta tener las del producto
 cambia_re(r"function paintPlans\(\) \{.*?\n  \}\n\n  function render\(\) \{", r'''function paintPlans() {
     $("#plans").innerHTML = PLANS.map(function (p, i) {
-      return '<label class="plan' + (p.hot ? " hot" : "") + '" data-i="' + i + '"><input type="radio" name="plan"><span class="radio"></span>' +
-        '<img class="pim" src="/img/zafir/b' + p.boxes + '.png" alt="" width="60" height="60">' +
-        '<span class="pm"><span class="ptag">' + esc(p.tag) + '</span><div class="pn">' + esc(p.name) + "</div></span>" +
-        '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><strong>AHORA " + fmt(p.price) + "</strong></span></label>";
+      return '<label class="plan' + (p.hot ? " hot" : "") + '" data-i="' + i + '"><input type="radio" name="plan">' +
+        '<span class="ptag">' + esc(p.tag) + "</span>" +
+        '<span class="pbody"><span class="radio"></span>' +
+        '<img class="pim" src="/img/zafir/b' + p.boxes + '.png" alt="" width="72" height="72">' +
+        '<span class="pm"><div class="pn">' + esc(p.name) + '</div><div class="pg">' + ico("gift") + "<span>" + esc(p.gift) + "</span></div></span>" +
+        '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><small>AHORA</small><strong>" + fmt(p.price) + "</strong></span></span></label>";
     }).join("");
   }
 
@@ -198,10 +201,9 @@ html_re(r'<section class="hero">.*?</section>\s*', "")
 html_cambia("Bolsa negra sellada y discreta", "Empaque discreto")
 html_cambia("Elige tu plan<small>Entre más cajas, menos pagas por cada tableta</small>", "PASO 1. SELECCIONA LA OFERTA")
 html_cambia("¿A dónde te lo enviamos?<small>Solo 4 datos. Toma menos de 1 minuto.</small>", "PASO 2. DIGITA TUS DATOS DE ENVÍO")
-html_cambia('<div class="plans" id="plans"></div>', '''<div class="tabla"><div class="th"><span>OFERTAS</span><span>PRECIOS</span></div><div class="plans" id="plans"></div></div>
-    <label class="bump"><input type="checkbox" id="bp"><span><b>Sí, 🔥 Envío Nacional prioritario con seguro por $5.000.</b><small>Tu paquete será EMPACADO con prioridad al solicitar esta opción (El tiempo de entrega puede ser de 2 a 4 días dependiendo de la transportadora)</small></span></label>''')
+html_cambia('<div class="plans" id="plans"></div>', '''<div class="tabla"><div class="th"><span>OFERTAS</span><span>PRECIOS</span></div><div class="plans" id="plans"></div></div>''')
 html_cambia("<h3>Resumen</h3>", "<h3>RESUMEN DE PEDIDO</h3>")
-html_cambia("PÍDELO YA - Pagas al recibir", "REALIZAR PEDIDO<small>Paga al recibir</small>")
+html_cambia("PÍDELO YA - Pagas al recibir", "PEDIR Y PAGAR AL RECIBIR")
 html_cambia("Hoy no pagas nada · Envío gratis", "Pago 100% seguro contra entrega. Pagas al recibir en la puerta de tu casa")
 html_cambia('<span id="sumName">Plan Dominio Total</span><span id="sumSub">$129.900</span>', '<span id="sumName">2 Botellas de ZAFIR</span><span id="sumSub">$113.250</span>')
 html_cambia('<strong id="tot">$129.900</strong>', '<strong id="tot">$113.250</strong>')
@@ -210,7 +212,7 @@ html_re(r'<div class="trust">.*?</div>\s*</div>', '''<div class="sellos">
     <div class="sello"><svg class="i"><use href="#shield"/></svg><b>CALIDAD PREMIUM</b></div>
     <div class="sello"><svg class="i"><use href="#check"/></svg><b>PRODUCTO GARANTIZADO</b></div>
   </div>
-  <div class="pce"><div class="pch"><i></i>PAGO CONTRAENTREGA</div><p>Haz clic en REALIZAR PEDIDO para completar tu compra. Solo pagarás el pedido una vez que se entregue en tu domicilio.</p></div>''')
+  <div class="pce"><div class="pch"><i></i>PAGO CONTRAENTREGA</div><p>Haz clic en PEDIR Y PAGAR AL RECIBIR para completar tu compra. Solo pagarás el pedido una vez que se entregue en tu domicilio.</p></div>''')
 html_re(r'<footer class="ft">.*?</footer>', '<footer class="ft"><p>ZAFIR · Pago contra entrega en Colombia.</p></footer>')
 assert "ENERPLU" not in main and "/garantia" not in main
 
@@ -408,6 +410,30 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
 .pch{font:600 15px var(--cond);letter-spacing:.08em;color:#111}
 .pch i{background:var(--rojo);box-shadow:0 0 0 4px rgba(255,31,61,.2)}
 @media (min-width:960px){.vsl h1{font-size:46px}}
+/* ===== tarjetas de oferta v3 (cesar 25-nov: "mejora las tarjetas de ofertas") ===== */
+.tabla{background:none;border:0;box-shadow:none;border-radius:0;overflow:visible}
+.th{display:none}
+.plans{gap:16px;display:flex;flex-direction:column}
+.plan,.plan.sel{display:block;position:relative;padding:0;border-radius:18px;border:2px solid #3A2F12;background:linear-gradient(160deg,#1C1608,#0C0A05 70%);color:#fff;overflow:hidden;box-shadow:none!important;transition:border-color .2s,transform .15s}
+.plan:last-child{border-bottom:2px solid #3A2F12}
+.plan.sel,.plan.sel:last-child{border-color:#F7D774;background:linear-gradient(160deg,#2B2009,#120D04 70%);box-shadow:0 0 0 3px rgba(247,215,116,.22),0 0 44px -6px rgba(247,215,116,.7)!important}
+.ptag{display:block;margin:0;border-radius:0;padding:8px 14px;text-align:center;font:600 13px/1.2 var(--cond);letter-spacing:.1em;background:#2A220D;color:#F7D774}
+.plan.hot .ptag{background:linear-gradient(90deg,#C8001E,#FF1F3D,#C8001E);color:#fff}
+.plan.sel:not(.hot) .ptag{background:var(--oro);color:#111}
+.pbody{display:grid;grid-template-columns:26px 72px minmax(0,1fr) auto;gap:12px;align-items:center;padding:16px 14px}
+.plan .radio{width:26px;height:26px;background:transparent;border:2px solid #7A6A3A}
+.plan.sel .radio{border-color:#F7D774;background:#F7D774}
+.plan .radio::after{width:12px;height:12px;background:#111}
+.pim{width:72px;height:72px;border-radius:12px;border:0;background:#fff;padding:3px}
+.pn{font:700 19px/1.15 var(--cond);letter-spacing:.02em;color:#fff;text-transform:uppercase}
+.pg{color:#F7D774;font:600 12px/1.3 Inter,sans-serif;margin-top:6px}
+.pg svg{width:14px;height:14px;flex:none;color:#F7D774}
+.pr{text-align:right}
+.pr s{font:600 12px Inter,sans-serif;color:#9A9383}
+.pr small{display:block;font:600 11px var(--cond);letter-spacing:.14em;color:#F7D774;margin-top:4px}
+.pr strong,.plan.hot .pr strong{display:block;font:700 27px/1 var(--cond);color:#fff;letter-spacing:0}
+.plan.sel .pr strong{background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{min-height:76px;font:700 23px/1.1 var(--cond)}
 """
 
 VSL_JS = r"""

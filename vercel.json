@@ -8,6 +8,240 @@
       "source": "/b",
       "destination": "/",
       "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "tiendavital.lat"
+        }
+      ],
+      "destination": "/energia",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.tiendavital.lat"
+        }
+      ],
+      "destination": "/energia",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/m/f01.png",
+      "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Basico%20Enerplu.png?width=192&height=192&resize=contain&quality=80"
+    },
+    {
+      "source": "/m/f02.png",
+      "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Dominio%20Total%20Enerplu.png?width=192&height=192&resize=contain&quality=80"
+    },
+    {
+      "source": "/m/f03.webp",
+      "destination": "/rec/cl/enerplu_maca_negra_qxhy5r-1b0e2ee4.webp"
+    },
+    {
+      "source": "/m/f04.webp",
+      "destination": "/rec/cl/RINVIMA_ENERPLU_kqmwhs-fd37937a.webp"
+    },
+    {
+      "source": "/m/f05.webp",
+      "destination": "/rec/cl/enerplu-galeria-4-como-se-usa_nigqgb-926d0003.webp"
+    },
+    {
+      "source": "/m/f06.webp",
+      "destination": "/rec/cl/enerplu-galeria-5-ingredientes_t4ggjs-95bc463c.webp"
+    },
+    {
+      "source": "/m/f07.webp",
+      "destination": "/rec/cl/enerplu-galeria-6-asi-llega_ygbfax-53e83a68.webp"
+    },
+    {
+      "source": "/m/f08.webp",
+      "destination": "/rec/cl/enerplu-ingrediente-arginina_ahzrk9-ea166c75.webp"
+    },
+    {
+      "source": "/m/f09.webp",
+      "destination": "/rec/cl/enerplu-ingrediente-ginseng_gjdpt5-0e9fbab5.webp"
+    },
+    {
+      "source": "/m/f10.webp",
+      "destination": "/rec/cl/enerplu-ingrediente-inositol_fgikup-46df0b66.webp"
+    },
+    {
+      "source": "/m/f11.webp",
+      "destination": "/rec/cl/enerplu-ingrediente-maca_z2rcwq-08473f15.webp"
+    },
+    {
+      "source": "/m/f12.webp",
+      "destination": "/rec/cl/enerplu-ingrediente-magnesio_vmmlua-5a25b2fa.webp"
+    },
+    {
+      "source": "/m/f13.webp",
+      "destination": "/rec/cl/enerplu-paso-1-tableta_vwsbmb-f02ebb13.webp"
+    },
+    {
+      "source": "/m/f14.webp",
+      "destination": "/rec/cl/enerplu-paso-2-boca_gwtwy3-7cf77996.webp"
+    },
+    {
+      "source": "/m/f15.webp",
+      "destination": "/rec/cl/enerplu-plan-basico_qgrtmm-796b6eea.webp"
+    },
+    {
+      "source": "/m/f16.webp",
+      "destination": "/rec/cl/enerplu-plan-dominio_tk8ac0-217236f6.webp"
+    },
+    {
+      "source": "/m/f17.webp",
+      "destination": "/rec/cl/enerplu-plan-elite_jxkwtq-f9a14348.webp"
+    },
+    {
+      "source": "/m/f18.webp",
+      "destination": "/rec/cl/enerplu-video-asi-llega_r4gaca-92ad668c.webp"
+    },
+    {
+      "source": "/m/f19.webp",
+      "destination": "/rec/cl/enerplu-paso-3-reloj_f5gtsu-d9931f49.webp"
+    },
+    {
+      "source": "/m/f20.webp",
+      "destination": "/rec/cl/enerplu-comparativa-enerplu_qwyrfu-db46dcf6.webp"
+    },
+    {
+      "source": "/m/f21.webp",
+      "destination": "/rec/cl/enerplu-galeria-3-tableta-mano-webp_ldiboe-fecbc26f.webp"
+    },
+    {
+      "source": "/vital",
+      "destination": "/siempre"
+    },
+    {
+      "source": "/products/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/collections/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/cdn/shop/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "https://cdn.shopify.com/s/files/1/0748/9418/0397/:p*"
+    },
+    {
+      "source": "/cdn/fonts/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "https://fonts.shopifycdn.com/:p*"
+    },
+    {
+      "source": "/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/products/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/collections/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
+    },
+    {
+      "source": "/cdn/shop/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "https://cdn.shopify.com/s/files/1/0748/9418/0397/:p*"
+    },
+    {
+      "source": "/cdn/fonts/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "https://fonts.shopifycdn.com/:p*"
+    },
+    {
+      "source": "/:p*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.losgomosos.lat"
+        }
+      ],
+      "destination": "/nueva"
     }
   ],
   "headers": [

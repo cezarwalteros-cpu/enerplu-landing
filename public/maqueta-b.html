@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="es">
-<head>
+<head><!-- UTM:INI --><script>(function(){try{
+var K=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id'],D=7*864e5;
+var u=new URL(location.href),q=u.searchParams,tiene=K.some(function(k){return q.get(k);});
+var g=null;try{g=JSON.parse(localStorage.getItem('ep_utm')||'null');}catch(e){}
+if(tiene){var o={t:Date.now(),p:{}};K.forEach(function(k){var v=q.get(k);if(v)o.p[k]=v;});
+ if(/^sin_utm/.test(o.p.utm_source||'')||/_recordado$/.test(o.p.utm_medium||''))return;try{localStorage.setItem('ep_utm',JSON.stringify(o));}catch(e){}return;}
+if(g&&g.p&&Date.now()-g.t<D){Object.keys(g.p).forEach(function(k){q.set(k,g.p[k]);});q.set('utm_medium',(g.p.utm_medium||'paid')+'_recordado');}
+else{var r='';try{r=document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):'';}catch(e){}
+ if(r===location.hostname)r='';q.set('utm_source',q.get('fbclid')?'sin_utm_fbclic':(r?'sin_utm_'+r.slice(0,40):'sin_utm_directo'));}
+history.replaceState(history.state,'',u.pathname+'?'+q.toString()+u.hash);
+}catch(e){}})();</script><!-- UTM:FIN -->
 <meta name="robots" content="noindex,nofollow">
 <script>
 (function(){if(!/[?&]ep_test=1(&|$)/.test(location.search)){var q=location.search?location.search+'&ep_test=1':'?ep_test=1';history.replaceState(null,'',location.pathname+q+location.hash);}
@@ -8,8 +18,14 @@ var c;Object.defineProperty(window,'EP_CONFIG',{configurable:true,get:function()
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Enerplu | Energía, Resistencia, Firmeza Suplemento Natural ™</title>
-<meta name="description" content="ENERPLU, tableta masticable sublingual. Registro Invima NSA2314-2025. Pago contra entrega y envío discreto a toda Colombia.">
+<title>Tienda Vital | Envío a toda Colombia</title>
+<meta content="Pago contra entrega y envío discreto a toda Colombia." name="description"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Tienda Vital | Envío a toda Colombia"/>
+<meta property="og:description" content="Pago contra entrega y envío discreto a toda Colombia."/>
+<meta property="og:image" content="/og-negro.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://losgomosos.lat" crossorigin>
 <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
@@ -2423,7 +2439,7 @@ fbq('track', 'PageView');
       
       
       
-      <img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948" srcset="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948&amp;width=480 768w, https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948&amp;width=1024 1024w, https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948&amp;width=1024 1440w" sizes="(max-width: 1024px) 50vw, 100vw" loading="lazy" fetchpriority="low" alt="" width="100%" style="--aspect:auto;--aspect-tablet:auto;--aspect-mobile:auto;--objf:cover;--w:100%;--w-tablet:100%;--w-mobile:100%;--h:auto;--h-tablet:auto;--h-mobile:auto;--b:none;--bc:#000000;--bw:1px 1px 1px 1px;--radiusType:none;--shadow:none" class="gp-inline-block gp-w-full gp-max-w-full">
+      <img alt="Resultados que se notan de inmediato" decoding="async" height="1024" width="1024" loading="lazy" src="/img/resultados-v2.webp"/>
     
     </picture>
   
@@ -3447,7 +3463,7 @@ fbq('track', 'PageView');
           <details><summary>¿Cómo llega el paquete?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>En una bolsa negra sellada y con empaque discreto.</p></div></details>
           <details><summary>¿Cómo se usa?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Mastica una tableta de 5 a 15 minutos antes del encuentro y déjala disolver bajo la lengua. No necesitas agua. Una tableta por ocasión; no la tomes todos los días.</p></div></details>
           <details><summary>¿Cuántos usos trae cada caja?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Cada caja trae 10 tabletas, es decir, 10 ocasiones. Por eso los combos de 2 y 4 cajas te salen más baratos por tableta.</p></div></details>
-          <details><summary>¿Me cobran algo más?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>No. El envío estándar es gratis y pagas solo el valor de tu pedido. El envío express es opcional.</p></div></details>
+          <details><summary>¿Me cobran algo más?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>No. El envío es gratis y pagas solo el valor de tu pedido.</p></div></details>
           <details><summary>¿Es seguro?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>ENERPLU es un suplemento alimenticio con registro INVIMA NSA-2314-2025, no un medicamento. Si tienes una condición del corazón, presión alta o tomas medicamentos, consulta antes con tu médico.</p></div></details>
         </div>
       </div>
@@ -5059,6 +5075,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
   };
   /* Cloudinary: formato y calidad automáticos + ancho justo para cada uso */
   R.cdn = function (cfg, url, w) {
+    if (cfg.cdnOptimize && url && url.indexOf('/rec/cl/') === 0) return [120, 160, 200, 540, 600, 720, 800, 1080].indexOf(w) >= 0 ? url.replace(/(\.[a-z0-9]+)$/i, '.w' + w + '$1') : url;   /* copia local (tools/bajar-recursos.mjs): mismo archivo en el ancho pedido */
     if (!cfg.cdnOptimize || !url || url.indexOf('res.cloudinary.com/') < 0 || url.indexOf('/upload/') < 0) return url;
     return url.replace('/upload/', '/upload/' + (w ? 'w_' + w + '/' : '') + 'f_auto/q_auto/');   /* transformaciones encadenadas con / (sin comas: Vite/Bolt rompe las comas dentro de srcset) */
   };

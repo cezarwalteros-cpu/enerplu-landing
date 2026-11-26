@@ -160,6 +160,13 @@ pixel = f"""<script>
 !function(f,b,e,v,n,t,s){{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)}};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '{PIXEL}');
 fbq('track', 'PageView');
+</script>
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){{
+c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};
+t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+}})(window, document, "clarity", "script", "aj18t0em8h");
 </script>"""
 if TIKTOK_PIXEL:
     pixel += f"""
@@ -190,6 +197,7 @@ html = f"""<!doctype html>
 {base_css}
 {head_styles}
 <style>
+html,body{{margin:0;padding:0;background:#000}}
 {ep_css}
 {oferta_css}
 {popup_css}
@@ -265,7 +273,7 @@ def ab_send(v, exp='E04'):
 # E-05 (cesar 2026-11-10 10:47 pm, "Test A/B 50/50"): página actual (A, "/") contra la réplica de octubre (B, "/octubre").
 # Asignación: localStorage ep_e05 (50/50, fija por navegador); ?ab5=A|B fuerza la variante. B se redirige antes de cargar el píxel.
 # Medición: funnel_events ab_assign {exp:'E05', v} por sesión + checkout_attempts.session_id. AB_E05 = False apaga la prueba (todos ven A).
-AB_E05 = True
+AB_E05 = False   # 13-nov: E-05 cerrada; la página actual queda como control de E-06
 AB5_HEAD = """<script>
 (function(){try{
   var p=location.pathname; if(p!=='/'&&p!=='/index'&&p!=='/index.html') return;
@@ -279,10 +287,60 @@ AB5_HEAD = """<script>
 </script>"""
 # Popup de 5% en la primera compra (fuente/popup5.js, prueba "popup5" A vs B, código ENERPLU5 en el CRM). Sale en "/" y en "/b".
 # POPUP5 = False lo apaga. Necesita discount_codes ENERPLU5 + checkout_pages.show_coupon en el CRM.
-POPUP5 = True
+POPUP5 = False   # 15-nov cesar 'Sí, apagarlo': en 5 días no subió pedidos (N 1,27 % / A 1,44 % / B 1,31 %) y E-07 queda sin popup en ambas
 if POPUP5:
     html = must(html, '</head>', '<style>' + (ROOT / 'fuente' / 'popup5.css').read_text() + '</style>\n</head>')
     html = must(html, '</body>', '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n</body>')
+
+# Imagen "RESULTADOS VISIBLES DE INMEDIATO" (data-id gpGrrwtDmE): era lo más tocado de la página en Clarity (33 toques en 3 días)
+# y no hacía nada. Al tocarla hace lo mismo que "VER OFERTAS" (aprobado por cesar 2026-11-13 12:54 pm). Sale en "/" y "/oferta-a".
+IMG_A_OFERTAS = True
+
+# Puente embudo -> Clarity (aprobado por cesar 2026-11-13 5:41 pm): etiqueta cada sesión de Clarity con anuncio, campaña,
+# conjunto, variante y sid, y marca los pasos del embudo como eventos de Clarity, para filtrar grabaciones por anuncio,
+# variante y paso. Lee lo que ya envían los scripts del embudo (sendBeacon/fetch a funnel-track) y el push 'ep_purchase';
+# no cambia nada de lo que se envía al CRM. Sin datos personales. CLARITY_PUENTE = False lo apaga.
+CLARITY_PUENTE = True
+if CLARITY_PUENTE:
+    html = must(html, '</head>', """<script>(function(){
+  if(window.__epClar)return;window.__epClar=1;
+  function c(){try{window.clarity.apply(null,arguments)}catch(e){}}
+  var q=new URLSearchParams(location.search),p=location.pathname.replace(/\\/+$/,'')||'/';
+  [['anuncio','utm_term'],['campana','utm_campaign'],['conjunto','utm_content'],['fuente','utm_source']].forEach(function(k){var v=q.get(k[1]);if(v)c('set',k[0],v.slice(0,100));});
+  c('set','pagina',p);
+  if(p==='/'||p==='/ofertas')c('set','e07',p==='/ofertas'?'B':'A');
+  var sidOk=0;
+  var N={selector_view:'vio_ofertas',cta_click:'toco_comprar',plan_select:'eligio_plan',form_start:'empezo_formulario',
+    form_error:'error_formulario',pay_select:'eligio_pago',plan_click:'toco_confirmar',upsell_view:'vio_upsell',pay_fallback_cod:'pago_a_contraentrega'};
+  var hecho={};
+  function ev(n){if(!hecho[n]){hecho[n]=1;c('event',n);}}
+  function leer(body){try{
+    if(typeof body!=='string')return;var b=JSON.parse(body);if(!b||!b.ev)return;var x=b.extra||{};
+    if(b.sid&&!sidOk){sidOk=1;c('set','sid',String(b.sid).slice(0,40));}
+    if(x.plan)c('set','plan',String(x.plan).slice(0,40));
+    if(b.ev==='form_field'){
+      if(x.field==='_visto')ev('vio_formulario');
+      else if(x.field==='_salida'){ if(!(x.completos||[]).length)ev('salio_sin_escribir'); if(x.ultimo)c('set','ultimo_campo',String(x.ultimo).slice(0,30)); }
+      else ev('escribio_dato');
+      return;}
+    if(N[b.ev])ev(N[b.ev]);
+  }catch(e){}}
+  function esEmbudo(u){return /funnel-track/.test(String(u||''));}
+  try{var sb=navigator.sendBeacon&&navigator.sendBeacon.bind(navigator);
+    if(sb)navigator.sendBeacon=function(u,d){if(esEmbudo(u)){if(typeof d==='string')leer(d);else if(d&&d.text)d.text().then(leer).catch(function(){});}return sb(u,d);};}catch(e){}
+  try{var f=window.fetch&&window.fetch.bind(window);
+    if(f)window.fetch=function(u,o){if(esEmbudo(u)&&o&&typeof o.body==='string')leer(o.body);return f(u,o);};}catch(e){}
+  var dl=window.dataLayer=window.dataLayer||[],push=dl.push.bind(dl);
+  dl.push=function(o){try{if(o&&o.event==='ep_purchase'){ev('pedido');c('upgrade','pedido');}}catch(e){}return push.apply(null,arguments);};
+})();</script>
+</head>""")
+if IMG_A_OFERTAS:
+    html = must(html, '</head>', '<style>[data-id="gpGrrwtDmE"] img{cursor:pointer}</style>\n</head>')
+    html = must(html, '</body>', """<script>(function(){document.addEventListener('click',function(e){
+  var img=e.target.closest&&e.target.closest('[data-id="gpGrrwtDmE"] img');if(!img)return;
+  var a=document.querySelector('a[href="#ep-offer-widget"]');if(!a)return;e.preventDefault();a.click();
+},false);})();</script>
+</body>""")
 
 # /octubre · réplica de la página de octubre (pedido de cesar 2026-11-10): textos y botones de entonces, testimonios de WhatsApp,
 # selector de planes en la página y el formulario en una ventana (estilo Releasit), con el mismo checkout de hoy.
@@ -315,6 +373,160 @@ if AB_E04 and not HERO_V2:
 if AB_E05 and not HERO_V2:
     index_html = must(index_html, '<head>', '<head>\n' + AB5_HEAD)
     index_html = must(index_html, '</body>', ab_send('A', 'E05') + '\n</body>')
+# E-06 (cesar 2026-11-12 10:14 pm, "publica para mañana con la ganadora de E-05"): página actual (A, "/") contra la
+# Oferta A (B, "/oferta-a"): mismos 3 planes y precios, sin tachados ni %, precio por tableta, qué incluye cada plan,
+# garantía explicada debajo de los planes, sin "hasta 56 % de descuento" en la barra.
+# Asignación: localStorage ep_e06 (50/50, fija por navegador); ?ab6=A|B fuerza la variante. AB_E06 = False apaga la prueba.
+AB_E06 = False   # 15-nov: cesar la da por contaminada de tráfico basura; la reemplaza E-07 (checkout nuevo dentro de la página)
+AB6_HEAD = AB5_HEAD.replace("ab5=", "ab6=").replace("ep_e05", "ep_e06").replace("'/octubre'", "'/oferta-a'")
+if not HERO_V2:
+    _ofa = html
+    _ofa = must(_ofa, '<head>', '<head>\n<script>window.EP_OFERTA_A=true</script>')
+    _ofa = must(_ofa, 'Tenemos 3 ofertas disponibles hoy</h2>', 'Elige tu plan</h2>', 2)   # sección + teaser de la ventana (apagada)
+    _ofa = must(_ofa, '<p class="eph-sub">🚚 Envío gratis · 💵 Pago al recibir · 📦 Discreto</p>', '<p class="eph-sub">Pagas al recibir · Envío gratis · Paquete discreto</p>')
+    _ofa = re.sub(r'\s*<div class="eph-garantia">.*?</div>\s*</div>', '', _ofa, count=1, flags=re.S)
+    assert 'eph-garantia' not in _ofa.split('ep-offer-widget')[1].split('</form>')[0], 'oferta-a: quedó el sello de garantía'
+    _ofa = must(_ofa, '🎁 <b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.',
+                'En todos los planes recibes <b>3 guías digitales</b> por WhatsApp al recibir.')
+    _GA = ('<div class="eph-ga"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+           '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>'
+           '<div><b>Garantía Real · Dominio y Élite</b><br>Prueba una caja. Si decides no continuar, te devolvemos el valor correspondiente a las cajas sin abrir.<br>'
+           'Tienes 15 días desde la entrega. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a></div></div>')
+    _ofa = must(_ofa, '<div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>',
+                '<div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>\n        ' + _GA)
+    # barra superior: sin "hasta 56 % de descuento"
+    _ofa = _ofa.replace('<span class="epb-item"><i>🔥</i>Oferta hasta <b>%d %% de descuento</b></span>' % PCT, '<span class="epb-item"><b>Paquete discreto</b></span>')
+    _ofa = must(_ofa, 'Oferta hasta %d %% de descuento. Pagas al recibir.' % PCT, 'Paquete discreto. Pagas al recibir.')
+    assert 'Oferta hasta' not in _ofa, 'oferta-a: quedó "Oferta hasta X % de descuento"'
+    _ofa_base = _ofa
+    if AB_E06:
+        _ofa = must(_ofa, '</body>', ab_send('B', 'E06') + '\n</body>')
+    (OUT / 'oferta-a.html').write_text(_ofa)
+if AB_E06 and not HERO_V2:
+    index_html = must(index_html, '<head>', '<head>\n' + AB6_HEAD)
+    index_html = must(index_html, '</body>', ab_send('A', 'E06') + '\n</body>')
+# E-07 (cesar 2026-11-15 1:17 pm, "ME GUSTA IMPLEMENTEMOSLO" sobre la vista previa /vieja-checkout): página actual (A, "/")
+# contra la misma página con el checkout nuevo dentro (B, "/ofertas"): planes Dominio, Élite, Básico, 3 pasos, logos de pago.
+# Todo lo de arriba de la sección de pedido es igual. Asignación: localStorage ep_e07 (50/50, fija por navegador); ?ab7=A|B fuerza.
+# B no lleva el popup de 5 % (el checkout nuevo no aplica el código). AB_E07 = False apaga la prueba (todos ven A).
+AB_E07 = False   # 15-11 8:02 pm: la reemplaza E-08 (cesar 'listo de 3')
+AB7_HEAD = AB5_HEAD.replace("ab5=", "ab7=").replace("ep_e05", "ep_e07").replace("'/octubre'", "'/ofertas'")
+if not HERO_V2:
+    import sys as _sys; _sys.path.insert(0, str(ROOT / 'tools')); import vieja_checkout as _vc
+    _ofc = html
+    if POPUP5:
+        _ofc = must(_ofc, '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n', '')
+    _ofc = _vc.embed(_ofc, (OUT / 'checkout.html').read_text())
+    if AB_E07:
+        _ofc = must(_ofc, '</body>', ab_send('B', 'E07') + '\n</body>')
+    (OUT / 'ofertas.html').write_text(_ofc)
+if AB_E07 and not HERO_V2:
+    index_html = must(index_html, '<head>', '<head>\n' + AB7_HEAD)
+    index_html = must(index_html, '</body>', ab_send('A', 'E07') + '\n</body>')
+# E-07 en losgomosos.lat (cesar 2026-11-15 2:59 pm, "publica"): las visitas a losgomosos.lat/products/* y /collections/*
+# (hoy ven /nueva por rewrite) entran también al 50/50: A sigue en /nueva, B va a /ofertas del mismo dominio (mismo
+# localStorage ep_e07 y sid). /nueva en pedido.enerplu.com y /propuesta no cambian. AB_E07_LG = False lo quita.
+AB_E07_LG = False   # 15-11 5:43 pm cesar 'Quitarlo ya en losgomosos': BT15 sin ventas 3:05-5:40 pm (0/166, las dos mitades)
+_nv = (OUT / 'nueva.html').read_text()
+_nv = re.sub(r'<head>\n<!--E07LG-->.*?<!--/E07LG-->\n', '<head>', _nv, count=1, flags=re.S)
+_nv = re.sub(r'<!--E07LG-->.*?<!--/E07LG-->\n', '', _nv, flags=re.S)
+if AB_E07 and AB_E07_LG and not HERO_V2:
+    _lg_cond = "/(^|\\.)losgomosos\\.lat$/.test(location.hostname)&&/^\\/(products|collections)\\//.test(location.pathname)"
+    _lg_head = ("<!--E07LG--><script>\n(function(){try{\n  if(!(" + _lg_cond + ")) return;\n"
+                "  var q=location.search; if(/[?&]ep_test=1(&|$)/.test(q)) return;\n"
+                "  var v=(q.match(/[?&]ab7=([AB])/)||[])[1];\n"
+                "  if(!v){try{v=localStorage.getItem('ep_e07')}catch(e){}}\n"
+                "  if(v!=='A'&&v!=='B'){v=Math.random()<0.5?'A':'B'}\n"
+                "  try{localStorage.setItem('ep_e07',v)}catch(e){}\n"
+                "  if(v==='B'){location.replace('/ofertas'+q+location.hash);}\n"
+                "}catch(e){}})();\n</script><!--/E07LG-->\n")
+    _lg_send = ab_send('A', 'E07').replace("(function(){\n", "(function(){\n  if(!(" + _lg_cond + ")) return;\n", 1)
+    assert _lg_send != ab_send('A', 'E07')
+    _nv = must(_nv, '<head>', '<head>\n' + _lg_head)
+    _nv = must(_nv, '</body>', '<!--E07LG-->' + _lg_send + '<!--/E07LG-->\n</body>')
+(OUT / 'nueva.html').write_text(_nv)
+# Checkout blanco en 3 pasos (cesar 2026-11-13 7:40 pm, "blanco crealo", maqueta https://claude.ai/artifact/3Lq26TgYytzKKBAoma1Nf1).
+# Página aparte /checkout-blanco (igual a "/" con la sección de oferta + formulario en blanco, barra 1 Plan · 2 Entrega · 3 Pago,
+# número en cada paso y el envío dentro del paso 2). Mismos planes, precios, campos, bump, resumen y botón.
+# Todavía NO entra en ninguna prueba A/B: nadie llega aquí salvo con el enlace. CHECKOUT_BLANCO = False la quita.
+CHECKOUT_BLANCO = True
+if CHECKOUT_BLANCO and not HERO_V2:
+    _ck = html
+    _ck = must(_ck, '<section class="ep-order eph-order" id="ep-order"', '<section class="ep-order eph-order ck3" id="ep-order"')
+    _ck = must(_ck, '<div class="ep-wrap ep-wrap--form">', '<div class="ep-wrap ep-wrap--form">\n    <div class="ck3-bar" aria-hidden="true"><span>1 Plan</span><span>2 Entrega</span><span>3 Pago</span></div>')
+    _ck = must(_ck, '<div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>',
+               '<p class="ck3-step"><span class="ck3-n">1</span>Elige tu plan</p>\n        <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>')
+    _ck = must(_ck, '<fieldset class="ep-of-block">\n        <legend class="ep-of-legend">¿A dónde te lo enviamos?</legend>',
+               '<fieldset class="ep-of-block ck3-addr">\n        <legend class="ep-of-legend"><span class="ck3-n">2</span>¿A dónde te lo enviamos?</legend>')
+    _ck = must(_ck, '<fieldset class="ep-of-block" data-ep-ship-block>', '<fieldset class="ep-of-block ck3-ship" data-ep-ship-block>')
+    _ck = must(_ck, '<legend class="ep-of-legend">¿Cómo quieres pagar?</legend>', '<legend class="ep-of-legend"><span class="ck3-n">3</span>¿Cómo quieres pagar?</legend>')
+    _ck = must(_ck, '</head>', '<style>\n' + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.css').read_text() + '</style>\n</head>')
+    _ck = must(_ck, '</body>', '<script>\n' + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.js').read_text() + '</script>\n</body>')
+    (OUT / 'checkout-blanco.html').write_text(_ck)
+
+# Checkout en página aparte (cesar 2026-11-13 10:15 pm: "construir un checkout en una página aparte, para que sea dinámico y
+# no se vaya a la antigua página"). /pedido = solo plan + entrega + pago: la sección de pedido de la Oferta A (sin tachados)
+# con el fondo blanco en 3 pasos; el resto de la página antigua no se muestra. Llega desde /nueva con ?plan=basico|dominio|elite.
+# Sin tráfico: nadie llega aquí salvo desde /nueva (vista previa). PEDIDO_APARTE = False la quita.
+PEDIDO_APARTE = True
+if PEDIDO_APARTE and CHECKOUT_BLANCO and not HERO_V2:
+    _pd = _ofa_base
+    _pd = must(_pd, '<div class="ep-root" data-ep-theme="negro">\n<section class="ep-order eph-order" id="ep-order"',
+               '<div class="ep-root ck-keep" data-ep-theme="negro">\n' + (ROOT / 'fuente' / 'pedido' / 'cabecera.html').read_text() + '\n<section class="ep-order eph-order ck3" id="ep-order"')
+    _pd = must(_pd, '<div class="ep-wrap ep-wrap--form">', '<div class="ep-wrap ep-wrap--form">\n    <div class="ck3-bar" aria-hidden="true"><span>1 Plan</span><span>2 Entrega</span><span>3 Pago</span></div>')
+    _pd = must(_pd, '<div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>',
+               '<p class="ck3-step"><span class="ck3-n">1</span>Elige tu plan</p>\n        <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>')
+    _pd = must(_pd, '<fieldset class="ep-of-block">\n        <legend class="ep-of-legend">¿A dónde te lo enviamos?</legend>',
+               '<fieldset class="ep-of-block ck3-addr">\n        <legend class="ep-of-legend"><span class="ck3-n">2</span>¿A dónde te lo enviamos?</legend>')
+    _pd = must(_pd, '<fieldset class="ep-of-block" data-ep-ship-block>', '<fieldset class="ep-of-block ck3-ship" data-ep-ship-block>')
+    _pd = must(_pd, '<legend class="ep-of-legend">¿Cómo quieres pagar?</legend>', '<legend class="ep-of-legend"><span class="ck3-n">3</span>¿Cómo quieres pagar?</legend>')
+    _pd = must(_pd, _GA, (ROOT / 'fuente' / 'pedido' / 'garantia.html').read_text())
+    # sin popup de 5% en el checkout aparte (tapaba el formulario y se quedaba con el botón atrás)
+    if POPUP5:
+        _pd = must(_pd, '<script>' + (ROOT / 'fuente' / 'popup5.js').read_text() + '</script>\n', '')
+    # el plan del enlace (?plan=) vale desde el arranque, para que ViewContent salga con el plan correcto
+    _pd = must(_pd, 'var state = { pack: C.defaultPack };', "var state = { pack: ({ basico: 'inicial', inicial: 'inicial', dominio: 'dominio', elite: 'elite' })[(new URLSearchParams(location.search).get('plan') || '').toLowerCase()] || C.defaultPack };")
+    _pd, _n = re.subn(r'<div class="eph-libros">.*?</div>', '<div class="eph-libros pd-libros"><img src="/img/guias-libros.webp" alt="Guías Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" width="1200" height="805" loading="lazy"></div>', _pd, count=1, flags=re.S)
+    assert _n == 1, 'pedido: guias'
+    _pd, _n = re.subn(r'<p class="eph-trust">.*?</p>', lambda m: (ROOT / 'fuente' / 'pedido' / 'confianza.html').read_text(), _pd, count=1, flags=re.S)
+    assert _n == 1, 'pedido: no se encontró el texto de confianza bajo el botón'
+    _i = _pd.index('</section>', _pd.index('id="ep-order"')) + len('</section>')
+    _pd = _pd[:_i] + '\n' + (ROOT / 'fuente' / 'pedido' / 'pie.html').read_text() + _pd[_i:]
+    _pd = re.sub('[\U0001F381\U0001F69A\U0001F4B5\U0001F4E6\U0001F4AC\U0001F6E1\U0001F525]\uFE0F? ?', '', _pd)   # sin emojis en esta página
+    _pd = must(_pd, '</head>', '<meta name="robots" content="noindex">\n<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&display=swap" rel="stylesheet">\n<style>\n'
+               + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.css').read_text() + (ROOT / 'fuente' / 'pedido' / 'pedido.css').read_text() + '</style>\n</head>')
+    _pd = must(_pd, '</body>', '<script>\n' + (ROOT / 'fuente' / 'checkout-blanco' / 'ck.js').read_text() + (ROOT / 'fuente' / 'pedido' / 'pedido.js').read_text() + '</script>\n</body>')
+    # las fotos de la página vieja (ocultas aquí) no se descargan: quedan en carga diferida
+    _a = _pd.index('<div class="ep-root ck-keep"'); _b = _pd.index('</footer>', _a)
+    _lz = lambda h: re.sub(r'<img(?![^>]*\bloading=)', '<img loading="lazy"', h)
+    _pd = _lz(_pd[:_a]) + _pd[_a:_b] + _lz(_pd[_b:])
+    # /pedido liviano (cesar 2026-11-14 9 am: "tiene que cargar instantáneo"; la página vieja escondida no va):
+    # el cuerpo queda solo con el checkout (.ck-keep) y salen las hojas de estilo de Shopify/GemPages y el popup.
+    # El contador del embudo (funnel-track) pasa a la cabecera para registrar la visita desde el primer momento.
+    _a = _pd.index('<div class="ep-root ck-keep"')
+    _depth = 0
+    for _m in re.finditer(r'<(/?)div\b[^>]*>', _pd[_a:]):
+        _depth += -1 if _m.group(1) else 1
+        if _depth == 0:
+            _keep = _pd[_a:_a + _m.end()]
+            break
+    _fm = re.search(r'<script>\s*\(function \(\) \{\s*if \(window\.__epFunnel\) return;[\s\S]*?</script>', _pd)
+    assert _fm, 'pedido: no se encontró el contador del embudo'
+    _mo = re.search(r'<main\b[^>]*id="MainContent"[^>]*>', _pd)
+    _me = _pd.index('</main>', _mo.end())
+    _pd = _pd[:_mo.end()] + '\n' + _keep + '\n' + _pd[_me:]
+    _pd = must(_pd, '</head>', _fm.group(0) + '\n</head>')
+    for _pat in [r'<link[^>]*losgomosos\.lat/cdn/shop/[^>]*base\.css[^>]*>\s*',
+                 r'<link rel="preconnect" href="https://(?:losgomosos\.lat|cdn\.shopify\.com)"[^>]*>\s*',
+                 r'<style data-shopify="">[\s\S]*?</style>\s*',
+                 r'<style>\s*\.gps \*[\s\S]*?</style>\s*',
+                 r'<style>\s*\.gps\{--g-h1[\s\S]*?</style>\s*',
+                 r'<style>\s*button\._rsi-buy-now-button[\s\S]*?</style>\s*',
+                 r'<style>\s*/\* Popup de 5%[\s\S]*?</style>\s*',
+                 r'<style>\[data-id="gpGrrwtDmE"\] img\{cursor:pointer\}</style>\s*']:
+        _pd, _n = re.subn(_pat, '', _pd)
+        assert _n >= 1 or (not POPUP5 and 'Popup de 5%' in _pat), 'pedido liviano: no se encontró ' + _pat
+    (OUT / 'pedido.html').write_text(_pd)
 (OUT / 'index.html').write_text(index_html)
 if AB_E04 and not HERO_V2:
     with tempfile.TemporaryDirectory() as tmp:
@@ -400,6 +612,41 @@ assert len(_arr) == 120, len(_arr)
 prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=False, separators=(',', ':')) + prod[_k + _n:]
 (OUT / 'producto.html').write_text(must(prod, '<main ', ocultar + gate + '\n<main '))
 (OUT / 'terminos.html').write_text((ROOT / 'fuente' / 'producto' / 'terminos.html').read_text())
+
+# E-08 (cesar 2026-11-15 8:02 pm, "listo de 3"): página de siempre (A, /siempre = copia de index.html) contra /pro (B)
+# contra /nueva (C), un tercio cada una en TODAS las entradas. El reparto lo hace middleware.js en el servidor (cookie ep_e08).
+# Cada página sabe qué variante es: guarda la cookie (por si el servidor no la dejó) y manda ab_assign {exp:'E08', v}
+# + etiqueta e08 en Clarity. Medición: ab_assign E08 por sid + checkout_attempts.session_id. Desde 2026-11-16 4:00 am.
+AB_E08 = True
+E08_INICIO_MS = 1794805200000   # 2026-11-16T05:00:00Z = 12:00 am Bogotá
+E08_PAUSA_MS = (1794834900000, 4070908800000)  # desde 16-11 13:15Z hasta que cesar diga: todo a la de siempre, no cuenta (igual que middleware.js)
+def e08_js(v):
+    return ("<!--E08--><script>(function(){try{var T=Date.now();if(T<%d||(T>=%d&&T<%d))return;var q=new URLSearchParams(location.search);"
+            "if(!/(?:^|; )ep_e08=/.test(document.cookie))document.cookie='ep_e08=%s; Path=/; Max-Age=2592000; SameSite=Lax; Secure';"
+            "try{window.clarity&&clarity('set','e08','%s')}catch(e){}"
+            "if(q.get('ep_test')==='1')return;"
+            "var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}"
+            "if(!sid){if(n++<20)setTimeout(go,300);return;}"
+            "var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',"
+            "utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),"
+            "extra:{exp:'E08',v:'%s'}});var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';"
+            "try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))"
+            "fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}})();"
+            "}catch(e){}})();</script><!--/E08-->\n") % (E08_INICIO_MS, E08_PAUSA_MS[0], E08_PAUSA_MS[1], v, v, v)
+import subprocess as _sp
+_sp.run(['python3', str(ROOT / 'tools' / 'pro_page.py')] + (['--live'] if AB_E08 else []), check=True)
+for _f, _v in (('index.html', 'A'), ('nueva.html', 'C'), ('pro.html', 'B')):
+    _t = re.sub(r'<!--E08-->.*?<!--/E08-->\n', '', (OUT / _f).read_text(), flags=re.S)
+    if AB_E08:
+        _t = must(_t, '</body>', e08_js(_v) + '</body>')
+    (OUT / _f).write_text(_t)
+# página de siempre LIMPIA (cesar 16-11 10:44 am "Ok publica"): sin envoltorios de GemPages ni CSS de Shopify, mismo diseño
+_sp.run(['python3', str(ROOT / 'tools' / 'limpiar_siempre.py'), str(OUT / 'index.html'), str(OUT / 'index.html')], check=True)
+_s = OUT / 'siempre.html'
+if AB_E08:
+    _s.write_text((OUT / 'index.html').read_text().replace('<head>', '<head>\n<meta name="robots" content="noindex">', 1))
+elif _s.exists():
+    _s.unlink()
 (ROOT / 'vercel.json').write_text(json.dumps({
     "framework": None,
     # copia a nuestro servidor las imágenes de Shopify y el CSS/fuentes de losgomosos.lat (si falla, deja el enlace original)
@@ -407,9 +654,27 @@ prod = prod[:_k] + json.dumps([_arr[i] for i in RESENAS_PRODUCTO], ensure_ascii=
     "outputDirectory": "public",
     "cleanUrls": True,
     # con la prueba E-04 apagada, quien llegue a /b vuelve a la página principal (conserva los parámetros del anuncio)
-    "redirects": ([] if AB_E04 else [{"source": "/b", "destination": "/", "permanent": False}]),
+    "redirects": ([] if AB_E04 else [{"source": "/b", "destination": "/", "permanent": False}])
+                 # la portada de losgomosos.lat va a /nueva (index.html existe, así que un rewrite no aplicaría)
+                 + [{"source": "/", "has": [{"type": "host", "value": h}], "destination": "/nueva", "permanent": False}
+                    for h in ("losgomosos.lat", "www.losgomosos.lat")],
+    # losgomosos.lat (antes Shopify) muestra la landing /nueva: los anuncios viejos a /products/enerplu caen ahí con sus UTM
+    "rewrites": [r for h in ("losgomosos.lat", "www.losgomosos.lat") for r in (
+        {"source": "/products/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
+        {"source": "/collections/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
+        {"source": "/cdn/shop/:p*", "has": [{"type": "host", "value": h}], "destination": "https://cdn.shopify.com/s/files/1/0748/9418/0397/:p*"},
+        {"source": "/cdn/fonts/:p*", "has": [{"type": "host", "value": h}], "destination": "https://fonts.shopifycdn.com/:p*"},
+        # cualquier otra dirección vieja de la tienda (/propuesta, /pages/...) también muestra /nueva (cesar 2026-11-14)
+        {"source": "/:p*", "has": [{"type": "host", "value": h}], "destination": "/nueva"},
+    )],
     "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}]},
                 {"source": "/rec/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800, immutable"}]},
                 {"source": "/guias/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}]}]
 }, indent=2))
 print('ok', len(html))
+
+# cesar 20-nov: metadata neutra (título, descripción y vista previa negra) en todas las páginas de ENERPLU
+_sp.run([sys.executable, str(ROOT / "tools" / "meta_neutra.py")], check=True)
+_sp.run([sys.executable, str(ROOT / "tools" / "resultados_v2.py")], check=True)
+_sp.run([sys.executable, str(ROOT / "tools" / "utm_memoria.py")], check=True)
+_sp.run([sys.executable, str(ROOT / "tools" / "black_friday.py")], check=True)

@@ -77,6 +77,7 @@
   };
   /* Cloudinary: formato y calidad automáticos + ancho justo para cada uso */
   R.cdn = function (cfg, url, w) {
+    if (cfg.cdnOptimize && url && url.indexOf('/rec/cl/') === 0) return [120, 160, 200, 540, 600, 720, 800, 1080].indexOf(w) >= 0 ? url.replace(/(\.[a-z0-9]+)$/i, '.w' + w + '$1') : url;   /* copia local (tools/bajar-recursos.mjs): mismo archivo en el ancho pedido */
     if (!cfg.cdnOptimize || !url || url.indexOf('res.cloudinary.com/') < 0 || url.indexOf('/upload/') < 0) return url;
     return url.replace('/upload/', '/upload/' + (w ? 'w_' + w + '/' : '') + 'f_auto/q_auto/');   /* transformaciones encadenadas con / (sin comas: Vite/Bolt rompe las comas dentro de srcset) */
   };
@@ -213,21 +214,34 @@
       (ex ? row('priority', ex.title || 'Express', '+' + R.money(ex.price), ex.text || '') : '');
   };
   /* forma de pago: contra entrega (por defecto), Bold y transferencia/llave Bancolombia */
-  R.logos = function (list) {
-    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-' + k[0] + '">' + k[1] + '</span>'; }).join('') + '</span>';
+  R.payImg = { visa: '/img/pay/visa.svg', mc: '/img/pay/master.svg', amex: '/img/pay/american_express.svg', pse: '/img/pay/pse.svg', nequi: '/img/pay/nequi.svg', bc: '/img/pay-bancolombia.webp', breb: '/img/pay-breb.webp' };
+  R.logos = function (list) {   /* logos oficiales (cesar 17-nov: nada de etiquetas de texto) */
+    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-img is-' + k[0] + '"><img src="' + R.payImg[k[0]] + '" alt="' + k[1] + '" height="16" loading="lazy" decoding="async"></span>'; }).join('') + '</span>';
   };
-  R.pay = function (cfg, opt, prepaidCity) {
+  R.pay = function (cfg, opt, prepaidCity, bnplOk) {
     var co = cfg.checkout, disc = prepaidCity ? 0 : (co.payDiscount || 0);
-    var save = disc ? '<span class="ep-ship-price ep-pay-save">Ahorras<br>' + R.money(disc) + '</span>' : '<span></span>';
+    /* precio final con el descuento (lo llena update() según el plan elegido) + sello de ahorro */
+    var save = disc ? '<span class="ep-ship-price ep-pay-save"><b data-ep-pay-final></b><s data-ep-pay-list></s></span>' : '<span></span>';
+    var tag = disc ? '<span class="ep-pay-badge">Ahorra ' + R.money(disc) + '</span>' : '';
     var row = function (val, name, text, extra, right, off) {
-      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '"><input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
+      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '">' + (val !== 'cod' ? tag : '') + '<input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
         '<span class="ep-pack-dot" aria-hidden="true"></span><span class="ep-ship-main"><b>' + name + '</b><small>' + text + '</small>' + (extra || '') + '</span>' + right + '</label>';
     };
-    return row('cod', 'Pagar al recibir (Contraentrega)', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', '<span></span>', prepaidCity) +
-      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Pago seguro con Bold. Tu pedido pasa directo a despacho.',
+    return row('cod', 'Pagar al recibir (Contraentrega)', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', disc ? '<span class="ep-ship-price ep-pay-save is-cod"><b data-ep-pay-cod></b></span>' : '<span></span>', prepaidCity) +
+      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Tu pedido pasa directo a despacho.',
         R.logos([['visa', 'VISA'], ['mc', 'Mastercard'], ['pse', 'PSE'], ['nequi', 'Nequi']]), save) : '') +
       (co.payTransfer ? row('transfer', 'Transferencia o llave Bancolombia', 'Te damos los datos al terminar y nos envías el comprobante por WhatsApp.',
-        R.logos([['bc', 'Bancolombia']]), save) : '');
+        R.logos([['bc', 'Bancolombia'], ['breb', 'Bre-B']]), save) : '') +
+      (co.payBnpl && bnplOk !== null ? R.payBnplRow(co.payBnpl, opt, !!bnplOk, prepaidCity) : '');
+  };
+  /* cuotas con Bancolombia (Wompi, Compra y Paga Después): solo desde el mínimo (Dominio y Élite) */
+  R.payBnplRow = function (b, opt, ok, prepaidCity) {
+    var on = opt === 'wompi_bnpl' && ok;
+    return '<label class="ep-ship-opt ep-pay-opt ep-pay-bnpl' + (on ? ' is-on' : '') + (ok ? '' : ' is-off') + '"><span class="ep-pay-badge is-new">Nuevo</span>' +
+      '<input type="radio" name="ep-pay" value="wompi_bnpl"' + (on ? ' checked' : '') + (ok ? '' : ' disabled') + '>' +
+      '<span class="ep-pack-dot" aria-hidden="true"></span><span class="ep-ship-main"><b>' + R.esc(b.label) + '</b><small data-ep-bnpl-text>' +
+      (ok ? R.esc(b.sublabel) : 'Desde ' + R.money(b.min) + ': elige Dominio Total o Élite.') + '</small>' + R.logos([['bc', 'Bancolombia']]) + '</span>' +
+      '<span class="ep-ship-price ep-pay-save"><b data-ep-bnpl-final></b><small class="ep-bnpl-tot" data-ep-bnpl-list></small></span></label>';
   };
   R.bump = function (cfg, on) {
     var b = cfg.checkout.bump;
@@ -272,8 +286,8 @@
     h += line('Envío' + (t.ship ? ' express' : ''), t.ship ? R.money(t.ship) : 'Gratis', t.ship ? '' : 'is-gift');
     if (t.cup) h += line('Descuento primera compra ' + st.cup + '%' + (st.cupCode ? ' <small>' + R.esc(st.cupCode) + '</small>' : ''), '−' + R.money(t.cup), 'is-gift is-cup');
     if (t.disc) h += line('Descuento pago anticipado', '−' + R.money(t.disc), 'is-gift');
-    var label = st.pay === 'transfer' ? 'Total a transferir' : st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir';
-    var eta = st.pay === 'transfer' ? ' Sale a despacho apenas verifiquemos tu transferencia.' : st.pay ? ' Ya pagado, sale directo a despacho.' : ' Pagas en efectivo cuando lo recibes.';
+    var label = st.pay === 'transfer' ? 'Total a transferir' : st.pay === 'wompi_bnpl' ? 'Total en 4 cuotas Bancolombia' : st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir';
+    var eta = st.pay === 'transfer' ? ' Sale a despacho apenas verifiquemos tu transferencia.' : st.pay === 'wompi_bnpl' ? ' Apenas Bancolombia apruebe tus cuotas, sale directo a despacho.' : st.pay ? ' Ya pagado, sale directo a despacho.' : ' Pagas en efectivo cuando lo recibes.';
     return '<p class="ep-sum-title">Resumen de tu pedido</p><ul class="ep-sum-list">' + h + '</ul>' +
       '<div class="ep-sum-total"><span>' + label + '</span><b>' + R.money(t.total) + '</b></div>' +
       (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + ' en este pedido</p>' : '') +
@@ -706,6 +720,7 @@
       this.paint(); this.bind();
       var bq = new URLSearchParams(global.location.search), bref = bq.get('bold-order-id');
       if (bref) this.payResume(bref, bq.get('bold-tx-status'));
+      else if (bq.get('wompi_ref')) this.payResume(String(bq.get('wompi_ref')).split('?')[0], null, 'wompi_bnpl');
       var self = this, sec = qs('#ep-order');
       if (sec && 'IntersectionObserver' in global) {   /* la configuración real se pide cuando el cliente se acerca al formulario */
         var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { self.loadConfig(); io.disconnect(); } }); }, { rootMargin: '900px 0px' });
@@ -720,11 +735,18 @@
       this.paintPay();
       this.update();
     },
-    payChoice: function () { return !C.checkout.payPrepaid && !!(C.checkout.payBold || C.checkout.payTransfer); },
+    payChoice: function () { return !C.checkout.payPrepaid && !!(C.checkout.payBold || C.checkout.payTransfer || C.checkout.payBnpl); },
+    /* cuotas Bancolombia: hay config, el formulario tiene campo de cédula y el total del plan llega al mínimo */
+    bnplTotal: function () {
+      var b = C.checkout.payBnpl, cp = this.coupon(), c = this.st.city; if (!b) return 0;
+      var p = packById(state.pack), d = c && c.prepaid ? 0 : ((b.discounts || {})[p.offerKey] || 0);
+      return R.totals(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship, disc: d, pay: 'wompi_bnpl', cup: cp ? cp.pct : 0 }).total;
+    },
+    bnplOk: function () { var b = C.checkout.payBnpl; return !!(b && this.el('document') && this.bnplTotal() >= b.min); },
     paintPay: function () {
       var on = this.payChoice(), c = this.st.city, pre = !!(c && c.prepaid);
       var blk = qs('[data-ep-pay-block]'); if (blk) blk.hidden = !on;
-      if (on) renderInto('[data-ep-render="pay"]', R.pay(C, this.method(), pre), 'x' + Math.random());
+      if (on) renderInto('[data-ep-render="pay"]', R.pay(C, this.method(), pre, this.el('document') ? this.bnplOk() : null), 'x' + Math.random());
       var d = C.checkout.payDiscount || 0, hint = qs('[data-ep-pay-hint]');
       if (hint) { hint.hidden = !on || !d; hint.innerHTML = 'Paga al recibir, o paga ahora y ahorra <b>' + R.money(d) + '</b>'; }
       var lg = qs('[data-ep-pay-logos]'); if (lg) lg.hidden = !on;
@@ -735,6 +757,19 @@
       var t = R.totals(C, st);
       var n = qs('[data-ep-nudge]'); if (n) n.innerHTML = R.nudge(C, state.pack);
       var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, st);
+      /* paso de pago: cuánto paga en cada opción con el plan elegido */
+      var codT = R.totals(C, { pack: st.pack, bump: st.bump, ship: st.ship, disc: 0, pay: '', cup: st.cup }).total, pc = this.st.city, pdisc = pc && pc.prepaid ? 0 : (C.checkout.payDiscount || 0);
+      var preT = R.totals(C, { pack: st.pack, bump: st.bump, ship: st.ship, disc: pdisc, pay: 'bold', cup: st.cup }).total;
+      qsa('[data-ep-pay-final]').forEach(function (el) { el.textContent = R.money(preT); });
+      qsa('[data-ep-pay-list]').forEach(function (el) { el.textContent = preT < codT ? R.money(codT) : ''; });
+      qsa('[data-ep-pay-cod]').forEach(function (el) { el.textContent = R.money(codT); });
+      if (C.checkout.payBnpl) {
+        var bt = this.bnplTotal(), bok = this.bnplOk();
+        qsa('[data-ep-bnpl-final]').forEach(function (el) { el.textContent = bok ? '4 x ' + R.money(Math.ceil(bt / 4)) : ''; });
+        qsa('[data-ep-bnpl-list]').forEach(function (el) { el.textContent = bok ? 'Total ' + R.money(bt) : ''; });
+        if (this.bnplWas !== undefined && this.bnplWas !== bok) { this.bnplWas = bok; this.payWas = ''; this.payMode(); return; }
+        this.bnplWas = bok;
+      }
       qsa('[data-ep-bind="total"]').forEach(function (el) { el.textContent = R.money(t.total); });
       var x = R.extraGifts(t.p);
       qsa('[data-ep-bind="featured-name"]').forEach(function (el) { el.textContent = R.short(t.p) + (t.p.badge ? ' · ' + t.p.badge : ''); });
@@ -774,6 +809,9 @@
         C.checkout.payBold = !!(c.online_payment && c.online_payment.live && !c.online_payment.prepaid_only);
         C.checkout.payTransfer = !C.checkout.payPrepaid && !!c.transfer;
         C.checkout.payDiscount = C.checkout.payBold ? (c.online_payment.discount || 0) : (c.transfer ? c.transfer.discount || 0 : 0);
+        /* cuotas Bancolombia (Wompi): visible si está en vivo; antes, con ?ep_test=1 (simulado) o ?cuotas=1 (pago real, solo celulares de prueba) */
+        var wb = c.wompi_bnpl;
+        C.checkout.payBnpl = !C.checkout.payPrepaid && wb && (wb.live || self.test || /[?&]cuotas=1/.test(global.location.search)) ? { label: wb.label, sublabel: wb.sublabel, min: wb.min_cop || 100000, discounts: wb.discounts || {}, terms: wb.terms_url || '' } : null;
         self.payMode();
         if (changed) {
           var sig = 'live' + Date.now();
@@ -833,14 +871,25 @@
     },
     validPhone: function (v) { return /^3\d{9}$/.test(v); },
     /* ---- carrito abandonado: el bot de recuperación le escribe si no termina ---- */
-    queueCart: function () {
+    /* Todo lo que el cliente alcanzó a escribir (ciudad, dirección, barrio, cédula) va al carrito,
+       para que la IA de recuperación no se lo vuelva a pedir. */
+    cartAddress: function () {
+      var v = function (n, max) { var i = this.el(n); return i ? String(i.value || '').replace(/\s+/g, ' ').trim().slice(0, max) : ''; }.bind(this);
+      var c = this.st.city || null;
+      return { city_text: v('city', 80), city: c ? c.municipio : '', department: c ? c.departamento : '', address1: v('address1', 160), additional: v('additional', 160), document: v('document', 20) };
+    },
+    queueCart: function (now) {
       var self = this; clearTimeout(this.cartTimer);
       if (this.test || this.done) return;
-      this.cartTimer = setTimeout(function () {
+      var send = function () {
         var ph = self.phone(); if (!self.validPhone(ph) || self.st.phoneBlock || self.done) return;
         var nm = ((self.el('first_name').value || '') + ' ' + (self.el('last_name').value || '')).trim();
-        self.api('POST', '', { action: 'cart', slug: C.checkout.slug, phone: ph, name: nm, offer_key: packById(state.pack).offerKey, bump: !!self.st.bump, session_id: self.sid, tracking: self.tracking() }, true).catch(function () {});
-      }, 1500);
+        var body = { action: 'cart', slug: C.checkout.slug, phone: ph, name: nm, offer_key: packById(state.pack).offerKey, bump: !!self.st.bump, session_id: self.sid, tracking: self.tracking(), address: self.cartAddress() };
+        var key = JSON.stringify([ph, nm, body.offer_key, body.bump, body.address]);
+        if (key === self.cartKey) return; self.cartKey = key;
+        self.api('POST', '', body, true).catch(function () {});
+      };
+      if (now) send(); else this.cartTimer = setTimeout(send, 1500);
     },
     checkPhone: function () {
       var self = this, ph = this.phone();
@@ -861,8 +910,10 @@
        - "Colombia" y "D.C." no cuentan ("Bogotá, Colombia")
        - corregimientos, localidades y comunas conocidas llevan a su municipio ("San Antonio de Prado" → Medellín) */
     cityParts: function (raw) {
-      var parts = String(raw || '').split(/[,\/|]/);
+      /* cesar 15-11: "Ciuda /Turbo Antioquia" o "Ciudad: Turbo" buscaban "ciuda". Se quita la palabra de relleno ("Ciudad Bolívar" sigue igual) */
+      var s = String(raw || '').replace(/^\s*(ciudad\s+o\s+municipio|ciudad\s*[:\-\/,]|ciuda[sd]?\b(?!\s+bol)|municipio\b|mpio\b|mcpio\b)[\s:\-.]*/i, '');
       var clean = function (x) { return R.norm(x).replace(/\b(colombia|col|d c|dc)\b/g, ' ').replace(/\s+/g, ' ').trim(); };
+      var parts = s.split(/[,\/|]/).filter(function (x) { return clean(x); });
       return { q: clean(parts[0]), dep: clean(parts.slice(1).join(' ')) };
     },
     cityAliases: function (q) {
@@ -874,8 +925,12 @@
       });
       return out.slice(0, 4);
     },
-    citySearchNow: function (raw) {
+    citySearchNow: function (raw, cut) {
       var self = this, pr = this.cityParts(raw), seq = (this.citySeq = (this.citySeq || 0) + 1);
+      /* cesar 15-11: "Sopetran Antioquia La Ofisina Interapidi" no encontraba nada. Sin resultados, se prueba quitando palabras del final
+         (y esas palabras sirven para filtrar por departamento): "sopetran antioquia" → "sopetran". */
+      if (cut) { var w = pr.q.split(' '); pr.dep = (w.slice(w.length - cut).join(' ') + ' ' + pr.dep).trim(); pr.q = w.slice(0, w.length - cut).join(' '); }
+      this.cityQ = pr.q;
       clearTimeout(this.cityTimer);
       if (pr.q.length < 2) { this.cityList([], ''); return Promise.resolve([]); }
       var aliases = this.cityAliases(pr.q);
@@ -883,11 +938,13 @@
         var rows = (r.j && r.j.ciudades) || [];
         if (pr.dep) {   /* escribió el departamento: se queda con los que coinciden */
           var f = rows.filter(function (c) { var d = R.norm(c.departamento); return d.indexOf(pr.dep) === 0 || pr.dep.indexOf(d) === 0; });
+          if (!f.length && cut) f = rows.filter(function (c) { var d = R.norm(c.departamento); return pr.dep.indexOf(d) >= 0; });
           if (f.length) rows = f;
         }
         var all = aliases.concat(rows.filter(function (c) { return !aliases.some(function (a) { return a.municipio === c.municipio && a.departamento === c.departamento && !a.alias; }); }));
+        if (!all.length && pr.q.indexOf(' ') > 0 && seq === self.citySeq) return self.citySearchNow(raw, (cut || 0) + 1);
         if (!all.length && pr.q.length >= 4 && C.checkout.cityFuzzyApi) {   /* mal escrito: se sugieren los más parecidos */
-          return fetch(C.checkout.cityFuzzyApi, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: C.checkout.publicKey }, body: JSON.stringify({ q: pr.q }) })
+          return fetch(C.checkout.cityFuzzyApi, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: C.checkout.publicKey }, body: JSON.stringify({ q: cut ? self.cityParts(raw).q : pr.q }) })
             .then(function (r) { return r.ok ? r.json() : []; }, function () { return []; })
             .then(function (list) {
               var fz = (Array.isArray(list) ? list : []).map(function (c) { return { municipio: c.municipio, departamento: c.departamento, solo_pago_anticipado: !!c.solo_pago_anticipado, fuzzy: true }; });
@@ -927,6 +984,7 @@
       var inp = this.el('city'), list = qs('#ep-f-city-list');
       this.st.city = { municipio: c.municipio, departamento: c.departamento, prepaid: !!c.solo_pago_anticipado };
       inp.value = c.municipio + (c.departamento !== c.municipio ? ' / ' + c.departamento : ''); this.cityLabel = inp.value;
+      this.queueCart();
       list.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant');
       var add = this.el('additional');
       if (c.alias && add && !String(add.value || '').trim()) add.value = c.alias;   /* el corregimiento o la localidad quedan en "barrio y detalles" */
@@ -944,6 +1002,7 @@
     /* escribió la ciudad y no tocó la lista: se elige sola si hay una coincidencia clara */
     cityAuto: function () {
       var rows = this.cityRows || [], pr = this.cityParts(this.el('city').value);
+      if (this.cityQ && pr.q.indexOf(this.cityQ) === 0) pr.q = this.cityQ;   /* se buscó con menos palabras */
       if (!pr.q) return false;
       var base = function (x) { return R.norm(x).replace(/\b(d c|dc)\b/g, ' ').replace(/\s+/g, ' ').trim(); };
       var exact = rows.filter(function (c) { return c.alias ? base(c.alias.replace(/\(.*?\)/g, ' ')) === pr.q : base(c.municipio) === pr.q; });
@@ -970,21 +1029,31 @@
       var c = this.st.city, pre = !!(c && c.prepaid), co = C.checkout;
       if (co.payPrepaid) return pre ? 'bold' : 'cod';
       var m = this.st.pay || 'cod';
-      if ((m === 'bold' && !co.payBold) || (m === 'transfer' && !co.payTransfer)) m = 'cod';
+      if ((m === 'bold' && !co.payBold) || (m === 'transfer' && !co.payTransfer) || (m === 'wompi_bnpl' && !this.bnplOk())) m = 'cod';
       if (pre && m === 'cod') m = co.payBold ? 'bold' : co.payTransfer ? 'transfer' : 'cod';
       return m;
     },
     /* el descuento no aplica en municipios de solo pago anticipado (igual que el servidor) */
     /* cupón del popup de 5% (fuente/popup5.js): lo valida y lo aplica el CRM; aquí solo se muestra y se manda el código */
     coupon: function () { var c = this.st.coupon; if (c && c.exp && c.exp < Date.now()) { this.st.coupon = c = null; } return c || null; },
-    discount: function () { var c = this.st.city; return this.method() !== 'cod' && !(c && c.prepaid) ? (C.checkout.payDiscount || 0) : 0; },
+    discount: function () {
+      var c = this.st.city, m = this.method(); if (m === 'cod' || (c && c.prepaid)) return 0;
+      if (m === 'wompi_bnpl') return (C.checkout.payBnpl.discounts || {})[packById(state.pack).offerKey] || 0;
+      return C.checkout.payDiscount || 0;
+    },
     payMode: function () {
       if (!this.form) return;
       var on = this.payOnline(), row = qs('[data-ep-email-row]', this.form), em = this.el('email');
-      if (row) row.hidden = !on;
-      if (em) { if (on) em.setAttribute('required', ''); else { em.removeAttribute('required'); this.err('email', ''); } }
-      var m = this.method(), sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = m === 'bold' ? 'Pago seguro en línea con Bold' : m === 'transfer' ? 'Pagas por transferencia' : 'Pagas en efectivo al recibir';
-      var key = m + (this.st.city && this.st.city.prepaid ? '1' : '0');
+      /* correo fuera del formulario, también para pago en línea (cesar 2026-11-14: "quitar el correo del formulario") */
+      /* excepto cuotas Bancolombia: Wompi pide correo y cédula */
+      var bn = this.method() === 'wompi_bnpl', drow = qs('[data-ep-doc-row]', this.form), eh = qs('#ep-f-email-h', this.form);
+      if (row) row.hidden = !bn;
+      if (drow) drow.hidden = !bn;
+      if (eh) eh.textContent = bn ? 'Bancolombia te envía ahí tu plan de cuotas.' : 'Bold te envía ahí el comprobante del pago.';
+      if (em) { if (bn) em.setAttribute('required', ''); else { em.removeAttribute('required'); this.err('email', ''); } }
+      if (!bn) this.err('document', '');
+      var m = this.method(), sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = m === 'bold' ? 'Pago seguro en línea con Bold' : m === 'transfer' ? 'Pagas por transferencia' : m === 'wompi_bnpl' ? '4 cuotas sin interés con Bancolombia' : 'Pagas en efectivo al recibir';
+      var key = m + (this.st.city && this.st.city.prepaid ? '1' : '0') + (this.bnplOk() ? 'b' : '');
       if (this.payWas !== key) { this.payWas = key; this.paintPay(); this.update(); }
       if (!this.sending) this.busy(false);
     },
@@ -1005,12 +1074,35 @@
       try { sessionStorage.setItem('ep_pay_ref', j.payment_ref); } catch (e) {}
       this.draftSave();
       track('PaymentStart', { ref: j.payment_ref, value: j.total_cop });
+      if (j.provider === 'wompi') return this.bnplOpen(j);
       return this.loadBold().then(function () {
         var checkout = new global.BoldCheckout(j.payment);
         checkout.open();
       }, function () {
         self.formError('No pudimos abrir el pago en línea. Revisa tu conexión y toca el botón otra vez.');
       });
+    },
+    /* cuotas Bancolombia: Wompi crea la transacción y en unos segundos entrega la URL de Bancolombia; se redirige ahí */
+    bnplOpen: function (j) {
+      var self = this, tries = 0;
+      this.done = true; this.busy(true);
+      var l = qs('[data-ep-submit] .ep-cta-label b', this.form); if (l) l.textContent = 'Abriendo Bancolombia…';
+      var go = function (url) { global.location.href = url; };
+      if (j.redirect_url) { go(j.redirect_url); return Promise.resolve(); }
+      var poll = function () {
+        tries++;
+        self.api('POST', '', { action: 'payment_status', payment_ref: j.payment_ref }).then(function (r) {
+          var x = r.j || {};
+          if (x.redirect_url) { go(x.redirect_url); return; }
+          if (!/^(rejected|failed|voided)$/.test(x.status || '') && tries < 10) { setTimeout(poll, 2000); return; }
+          self.done = false; self.busy(false);
+          self.formError('Bancolombia no pudo abrir tus cuotas. Intenta de nuevo, elige otro medio de pago o pide y paga al recibir:');
+          self.payFallback();
+          Funnel.send('pay_result', { status: x.status || 'sin_url', method: 'wompi_bnpl' });
+        }, function () { if (tries < 10) setTimeout(poll, 3000); });
+      };
+      poll();
+      return Promise.resolve();
     },
     /* datos del formulario guardados antes de abrir Bold: si el pago se rechaza, el cliente no vuelve a escribir todo */
     draftSave: function () {
@@ -1047,9 +1139,9 @@
       box.appendChild(b);
     },
     /* regreso de Bold: ?bold-order-id=…&bold-tx-status=…; el estado real lo confirma el servidor */
-    payResume: function (ref, txStatus) {
+    payResume: function (ref, txStatus, via) {
       var self = this, tries = 0, sec = qs('#ep-order');
-      this.st.pay = 'bold'; this.draftLoad();
+      this.st.pay = via || 'bold'; this.draftLoad();
       if (sec) setTimeout(function () { scrollToEl(sec); }, 300);
       this.done = true; this.busy(true);
       var l = qs('[data-ep-submit] .ep-cta-label b', this.form); if (l) l.textContent = 'Confirmando tu pago…';
@@ -1064,11 +1156,12 @@
             return;
           }
           var final = /^(rejected|failed|voided)$/.test(j.status || '');
-          if (!final && tries < 12) { setTimeout(poll, tries < 4 ? 2500 : 5000); return; }
+          if (!final && tries < (via ? 24 : 12)) { setTimeout(poll, tries < 4 ? 2500 : 5000); return; }
           self.done = false; self.busy(false);
           var rejected = final || /rejected|failed/.test(txStatus || '');
           self.formError(rejected
             ? 'El pago no se aprobó. Puedes intentarlo otra vez con otro medio de pago, o hacer tu pedido y pagar en efectivo cuando lo recibas:'
+            : via === 'wompi_bnpl' ? 'Bancolombia aún está revisando tus cuotas. Apenas las apruebe te escribimos por WhatsApp con tu pedido.'
             : 'Aún no vemos tu pago confirmado. Si ya pagaste, te escribimos por WhatsApp apenas Bold lo apruebe.');
           if (rejected) self.payFallback();
           track('PaymentResult', { ref: ref, status: j.status || txStatus || 'unknown' });
@@ -1101,18 +1194,21 @@
     },
     check: function (name) {
       var v = function (n) { var e = Order.el(n); return e ? String(e.value || '').trim() : ''; };
-      if (name === 'first_name') return v('first_name').length < 2 ? 'Escribe tu nombre' : '';
-      if (name === 'last_name') return v('last_name').length < 2 ? 'Escribe tu apellido' : '';
-      if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return p.length && p.charAt(0) !== '3' ? 'Debe ser un celular (empieza por 3). Por ahí te confirmamos el pedido' : (p.length ? 'Te faltan ' + (10 - p.length) + ' números: el celular tiene 10 dígitos' : 'Escribe tu celular (10 dígitos, empieza por 3)'); return this.st.phoneMsg || ''; }
-      if (name === 'city') { if (!this.st.city) return !v('city') ? 'Escribe tu ciudad o municipio' : this.cityAmbiguous ? 'Hay varios municipios con ese nombre: toca el tuyo en la lista' : this.cityFuzzy ? '¿Quisiste decir ' + (this.cityRows || []).slice(0, 2).map(function (c) { return c.municipio; }).join(' o ') + '? Tócalo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
+      /* P0 (cesar 23-11): un solo nombre basta, el apellido ya no bloquea el pedido. Mensajes exactos de cesar. */
+      if (name === 'first_name') return /[A-Za-zÀ-ÿ]{2}/.test(v('first_name')) ? '' : 'Escribe tu nombre para recibir el pedido';
+      if (name === 'last_name') return '';
+      if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return p.length < 10 ? 'Ingresa los 10 dígitos de tu celular' : 'Revisa tu número de celular colombiano'; return this.st.phoneMsg || ''; }
+      if (name === 'city') { if (!this.st.city) return !v('city') ? 'Selecciona tu ciudad de la lista' : this.cityAmbiguous ? 'Selecciona tu ciudad de la lista' : this.cityFuzzy ? '¿Quisiste decir ' + (this.cityRows || []).slice(0, 2).map(function (c) { return c.municipio; }).join(' o ') + '? Tócalo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
       /* dirección flexible: veredas, fincas, oficinas de transportadora o direcciones sin nomenclatura pasan;
          sin número, el pedido queda marcado en las notas para confirmar el punto por WhatsApp */
-      if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección o el punto de entrega' : '';
+      if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección donde recibirás tu pedido' : '';
       if (name === 'additional') return '';   /* barrio opcional (2026-11-08): si viene vacío se confirma por WhatsApp */
-      if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
+      var bn = this.method() === 'wompi_bnpl';
+      if (name === 'email') return bn && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v('email')) ? 'Escribe tu correo: Bancolombia te envía ahí tu plan de cuotas' : '';
+      if (name === 'document') return bn && !/^\d{5,11}$/.test(v('document').replace(/\D/g, '')) ? 'Escribe tu cédula (solo números)' : '';
       return '';
     },
-    fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'address1', 'additional'],
+    fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'document', 'address1', 'additional'],
     validate: function () {
       var self = this, bad = [];
       this.fields.forEach(function (f) { var m = self.check(f); self.err(f, m); if (m) bad.push(f); });
@@ -1129,6 +1225,30 @@
     bind: function () {
       var self = this, f = this.form, cityInp = this.el('city'), list = qs('#ep-f-city-list');
       f.addEventListener('focusin', function (e) { var t = e.target; if (t && /^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName) && t.type !== 'radio' && t.type !== 'checkbox') self.formStart(); });
+      /* medición del formulario campo por campo (cesar 2026-11-12): vio el formulario, primer campo, cada campo completo, y en cuál se fue */
+      var fmT = function () { try { return Math.round(performance.now() / 1000); } catch (e) { return null; } };
+      var fmDone = {}, fmLast = '', fmStarted = false, fmGone = false;
+      f.addEventListener('focusin', function (e) {
+        var t = e.target, n = t && t.name;
+        if (!n || self.fields.indexOf(n) < 0) return;
+        fmLast = n;
+        if (!fmStarted) { fmStarted = true; Funnel.send('form_start', { field: n, plan: state.pack, t: fmT() }); }
+      });
+      f.addEventListener('focusout', function (e) {
+        var t = e.target, n = t && t.name;
+        if (!n || self.fields.indexOf(n) < 0 || fmDone[n]) return;
+        var val = String(t.value || '').trim();
+        if (val && !self.check(n)) { fmDone[n] = true; Funnel.send('form_field', { field: n, t: fmT() }); }
+      });
+      if ('IntersectionObserver' in global) {
+        var fmIo = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { fmIo.disconnect(); Funnel.send('form_field', { field: '_visto', plan: state.pack, t: fmT() }); } }); }, { threshold: .1 });
+        fmIo.observe(f);
+      }
+      global.addEventListener('pagehide', function () {
+        self.queueCart(true);
+        if (!fmStarted || self.done || fmGone) return; fmGone = true;
+        Funnel.send('form_field', { field: '_salida', ultimo: fmLast, completos: Object.keys(fmDone), plan: state.pack, t: fmT() });
+      });
       f.addEventListener('change', function (e) {
         var t = e.target;
         if (t.name === 'ep-ship') { self.st.ship = t.value; qsa('.ep-ship-opt', f).forEach(function (l) { l.classList.toggle('is-on', qs('input', l).checked); }); self.update(); }
@@ -1145,7 +1265,7 @@
           var ph = self.phone(); if (t.value !== ph) t.value = ph;
           if (ph !== self.st.lastPhone) { self.st.phoneBlock = false; self.st.phoneMsg = ''; self.st.recent = null; }
           if (self.validPhone(ph)) { self.err('phone', ''); self.checkPhone(); }
-          else if (self.touched.phone) self.err('phone', ph.length >= 10 ? 'El celular debe empezar por 3' : '');
+          else if (self.touched.phone) self.err('phone', ph.length >= 10 ? 'Revisa tu número de celular colombiano' : '');
         } else if (t.name === 'city') {
           if (t.value !== self.cityLabel) { self.st.city = null; self.cityAmbiguous = false; self.cityFuzzy = false; self.err('city', ''); self.cityShow(); self.payMode(); }
           self.citySearch();
@@ -1174,7 +1294,7 @@
             self.err('first_name', ''); self.err('last_name', '');
           }
         }
-        if (t.name === 'first_name' || t.name === 'last_name' || t.name === 'phone') self.queueCart();
+        if (['first_name', 'last_name', 'phone', 'city', 'address1', 'additional', 'document'].indexOf(t.name) >= 0) self.queueCart();
       });
       cityInp.addEventListener('focus', function () {
         if (global.innerWidth > 700) return;
@@ -1192,8 +1312,44 @@
         else if (e.key === 'Escape') { list.hidden = true; cityInp.setAttribute('aria-expanded', 'false'); }
       });
       f.addEventListener('submit', function (e) { e.preventDefault(); self.submit(); });
+      /* P0: el aviso de "Te falta…" se actualiza al corregir, y lo escrito queda guardado en la pestaña */
+      f.addEventListener('input', function () {
+        if (self.missShown) self.missMsg(self.fields.filter(function (n) { return !!self.check(n); }));
+        clearTimeout(self.fdTimer); self.fdTimer = setTimeout(function () { self.formDraftSave(); }, 300);
+      });
+      this.formDraftLoad();
     },
-    formError: function (msg) { var b = qs('[data-ep-form-error]', this.form); if (b) { b.textContent = msg || ''; b.hidden = !msg; } },
+    formError: function (msg) { this.missShown = false; var b = qs('[data-ep-form-error]', this.form); if (b) { b.textContent = msg || ''; b.hidden = !msg; } },
+    /* aviso junto al botón: todo toque en "Confirmar mi pedido" deja una reacción visible */
+    missMsg: function (bad) {
+      var L = { first_name: 'tu nombre', phone: 'tu celular', city: 'tu ciudad', address1: 'tu dirección', email: 'tu correo', document: 'tu cédula' };
+      if (!bad.length) { if (this.missShown) this.formError(''); return; }
+      var n = bad.map(function (k) { return L[k] || k; });
+      this.formError(bad.length >= 4 ? 'Completa tus datos de envío para hacer el pedido.' : 'Te falta ' + (n.length > 1 ? n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1] : n[0]) + '.');
+      this.missShown = true;
+    },
+    /* P0 #7: lo escrito se guarda en la pestaña (no el plan) y vuelve si la página se recarga; se borra con el pedido hecho */
+    formDraftSave: function () {
+      if (this.done) return;
+      var self = this, d = { city: this.st.city, cityLabel: this.cityLabel || '', v: {} };
+      this.fields.forEach(function (n) { var e = self.el(n); if (e) d.v[n] = String(e.value || ''); });
+      try { sessionStorage.setItem('ep_form_draft', JSON.stringify(d)); } catch (e) {}
+    },
+    formDraftLoad: function () {
+      var d = null; try { d = JSON.parse(sessionStorage.getItem('ep_form_draft') || 'null'); } catch (e) {}
+      if (!d || !d.v) return;
+      var self = this, any = false;
+      Object.keys(d.v).forEach(function (n) { var e = self.el(n); if (e && d.v[n] && !String(e.value || '').trim()) { e.value = d.v[n]; any = true; } });
+      if (d.city && d.city.municipio && d.cityLabel && this.el('city') && this.el('city').value === d.cityLabel) { this.st.city = d.city; this.cityLabel = d.cityLabel; try { this.cityShow(); this.payMode(); } catch (e) {} }
+      if (any) try { this.paint(); } catch (e) {}
+    },
+    idem: function () {
+      var k = null; try { k = sessionStorage.getItem('ep_idem'); } catch (e) {}
+      if (!k) { k = this.idemK || ''; }
+      if (!k) { try { k = global.crypto && crypto.randomUUID ? crypto.randomUUID() : ''; } catch (e) {} if (!k) k = 'k' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 12); this.idemK = k; try { sessionStorage.setItem('ep_idem', k); } catch (e) {} }
+      return k;
+    },
+    idemNew: function () { this.idemK = ''; try { sessionStorage.removeItem('ep_idem'); sessionStorage.removeItem('ep_form_draft'); } catch (e) {} },
     busy: function (on) {
       var b = qs('[data-ep-submit]', this.form); if (!b) return;
       if (on) b.setAttribute('aria-busy', 'true'); else b.removeAttribute('aria-busy');
@@ -1213,7 +1369,9 @@
         track('FormInvalid', { fields: bad.join(',') });
         var cityTxt = bad.indexOf('city') >= 0 ? String(this.el('city').value || '').slice(0, 40) : null;
         Funnel.send('form_error', { fields: bad, city: cityTxt, plan: p.checkoutPlan || p.id });
-        var first = this.el(bad[0]); if (first) { first.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); setTimeout(function () { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, reduce ? 0 : 350); }
+        this.missMsg(bad);
+        /* el foco va dentro del mismo toque (así el celular abre el teclado, también en Facebook / Instagram) */
+        var first = this.el(bad[0]); if (first) { try { first.focus({ preventScroll: true }); } catch (e) { try { first.focus(); } catch (e2) {} } try { first.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); } catch (e) { try { first.scrollIntoView(); } catch (e2) {} } }
         return;
       }
       /* upsell: el pedido se guarda PRIMERO; el spray se ofrece después y solo se suma si dice que sí (cesar 11-nov) */
@@ -1221,14 +1379,16 @@
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
-        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
+        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(),
+          email: this.method() === 'wompi_bnpl' ? v('email') : undefined, document: this.method() === 'wompi_bnpl' ? v('document').replace(/\D/g, '') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') || 'Sin barrio: confirmar por WhatsApp', notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
-        payment_method: this.method(), tracking: this.tracking()
+        payment_method: this.method(), tracking: this.tracking(), idempotency_key: this.idem()
       };
       var cp = this.coupon(); if (cp && !cp.demo) body.coupon_code = cp.code;
       if (body.payment_method === 'bold') body.return_url = global.location.origin + global.location.pathname;
+      if (body.payment_method === 'wompi_bnpl') body.return_url = global.location.origin + global.location.pathname + '?wompi_ref=';
       if (this.test) body.dry_run = true;
       this.sending = true; this.busy(true);
       track('SubmitOrder', payload(p));
@@ -1236,19 +1396,29 @@
       this.api('POST', '', body).then(function (r) {
         var j = r.j || {};
         if (r.ok && j.success && j.payment_required) { self.payOpen(j); return; }
-        if (r.ok && j.success) { self.success(j, body); if (upAfter && j.order_id && !j.duplicate && !j.dry_run) self.upsellOpen(up, j, body); return; }
+        if (r.ok && j.success && !j.order_number) { self.formError('No pudimos registrar tu pedido. Inténtalo nuevamente.'); track('OrderError', { status: r.status, fields: 'sin_numero' }); return; }
+        if (r.ok && j.success) { self.idemNew(); self.success(j, body); return; }
         var map = j.fields || {}, shown = false;
+        /* cuotas Bancolombia: el error es del medio de pago, no de la ciudad; se muestra arriba del botón y se ofrecen los otros medios */
+        if (body.payment_method === 'wompi_bnpl' && (map.payment_method || !Object.keys(map).length)) {
+          self.formError(map.payment_method || j.error || 'Bancolombia no pudo abrir tus cuotas. Elige otro medio de pago.');
+          if (self.payFallback) self.payFallback();
+          track('OrderError', { status: r.status, fields: 'payment_method' });
+          Funnel.send('pay_result', { status: j.bnpl_rejected ? 'bnpl_rechazado' : 'error', method: 'wompi_bnpl' });
+          return;
+        }
         Object.keys(map).forEach(function (k) {
           var key = k === 'full_name' ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
           if (self.fields.indexOf(key) >= 0) { self.err(key, map[k]); shown = true; }
         });
         if (j.recent_order || j.blocked) { self.st.recent = j.recent_order ? { n: j.order_number || '', wa: j.whatsapp || '' } : null; self.st.phoneBlock = true; self.st.phoneMsg = j.error || map.phone || ''; self.err('phone', self.st.phoneMsg); shown = true; }
-        self.formError(shown ? 'Revisa los datos marcados en rojo.' : (j.error || 'No pudimos registrar tu pedido. Intenta de nuevo.'));
+        self.formError(shown ? 'Revisa los datos marcados en rojo.' : (j.error || 'No pudimos registrar tu pedido. Inténtalo nuevamente.'));
         track('OrderError', { status: r.status, fields: Object.keys(map).join(',') });
         var firstBad = qs('[aria-invalid="true"]', self.form) || qs('[data-ep-form-error]', self.form);
         if (firstBad) firstBad.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
       }, function () {
-        self.formError('No pudimos enviar tu pedido. Revisa tu conexión y toca el botón otra vez.');
+        self.formDraftSave();
+        self.formError('No pudimos enviar el pedido. Tus datos siguen guardados. Intenta nuevamente.');
         track('OrderError', { status: 0 });
       }).then(function () { self.sending = false; if (!self.done) self.busy(false); });
     },

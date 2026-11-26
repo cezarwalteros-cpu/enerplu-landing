@@ -1,13 +1,28 @@
 <!doctype html>
 <html lang="es">
-<head>
+<head><!-- UTM:INI --><script>(function(){try{
+var K=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id'],D=7*864e5;
+var u=new URL(location.href),q=u.searchParams,tiene=K.some(function(k){return q.get(k);});
+var g=null;try{g=JSON.parse(localStorage.getItem('ep_utm')||'null');}catch(e){}
+if(tiene){var o={t:Date.now(),p:{}};K.forEach(function(k){var v=q.get(k);if(v)o.p[k]=v;});
+ if(/^sin_utm/.test(o.p.utm_source||'')||/_recordado$/.test(o.p.utm_medium||''))return;try{localStorage.setItem('ep_utm',JSON.stringify(o));}catch(e){}return;}
+if(g&&g.p&&Date.now()-g.t<D){Object.keys(g.p).forEach(function(k){q.set(k,g.p[k]);});q.set('utm_medium',(g.p.utm_medium||'paid')+'_recordado');}
+else{var r='';try{r=document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):'';}catch(e){}
+ if(r===location.hostname)r='';q.set('utm_source',q.get('fbclid')?'sin_utm_fbclic':(r?'sin_utm_'+r.slice(0,40):'sin_utm_directo'));}
+history.replaceState(history.state,'',u.pathname+'?'+q.toString()+u.hash);
+}catch(e){}})();</script><!-- UTM:FIN -->
 <meta name="robots" content="noindex">
 <script>window.EP_PREVIEW_UPSELL={"upsell": {"key": "retardante", "only": "inicial", "price": 24900, "compare": 49900, "title": "Spray Retardante Club Velvet 30 ml", "image": "https://res.cloudinary.com/dzlys7ftg/image/upload/f_auto,q_auto,w_500/v1794346291/Botella_Club_Velvet_Retardante_Premium_qj3ihr.webp", "eyebrow": "Espera, antes de confirmar", "headline": "Lleva la experiencia al nivel de control absoluto", "text": "Ya tienes la firmeza y resistencia con tu pedido por dentro; el spray Velvet te da el control exacto del reloj por fuera. El combo de blindaje definitivo.", "bullets": ["Olvídate de la tensión mental de tener que aguantar", "Disfruta del ritmo intenso sin miedo a terminar antes", "Llega en el mismo paquete 100% discreto y sin costo de envío adicional"]}, "bump": {"title": "Gel Estrechante Virgyflower (30 ml)", "contain": true, "image": "https://res.cloudinary.com/dzlys7ftg/image/upload/v1794344899/ESTRECHANTE_tg6at5.webp", "text": "Efecto astringente y lubricante inmediato: mayor fricción y sensación más intensa para ambos. Fórmula suave en frasco de 30 ml. Se despacha en el mismo paquete 100% discreto."}};try{history.replaceState(null,'',location.pathname+'?ep_test=1&pop=N')}catch(e){}</script>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Enerplu | Energía, Resistencia, Firmeza Suplemento Natural ™</title>
-<meta name="description" content="ENERPLU, tableta masticable sublingual. Registro Invima NSA2314-2025. Pago contra entrega y envío discreto a toda Colombia.">
+<title>Tienda Vital | Envío a toda Colombia</title>
+<meta content="Pago contra entrega y envío discreto a toda Colombia." name="description"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Tienda Vital | Envío a toda Colombia"/>
+<meta property="og:description" content="Pago contra entrega y envío discreto a toda Colombia."/>
+<meta property="og:image" content="/og-negro.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://losgomosos.lat" crossorigin>
 <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
@@ -782,6 +797,7 @@ display: none;
 }
 </style>
 <style>
+html,body{margin:0;padding:0;background:#000}
 /* =====================================================================
    ENERPLU PDP — estilos encapsulados en .ep-root (no tocan Funnelish)
    Temas: claro (blanco/negro/rojo, por defecto) · negro (negro/rojo) ·
@@ -1195,6 +1211,8 @@ display: none;
 .ep-root .ep-cta--ghost { background: var(--ep-surface); color: var(--ep-text); border: 1.5px solid var(--ep-line-strong); box-shadow: none; min-height: 50px; font-size: 15.5px; }
 .ep-root .ep-cta--ghost:hover { box-shadow: none; border-color: var(--ep-text); }
 .ep-root .ep-cta--ghost .ep-cta-sep { background: var(--ep-line-strong); }
+.ep-root [data-ep-submit] { background: linear-gradient(180deg,#34C267,#1FA34A 60%,#178A3D); color: #fff; box-shadow: 0 16px 30px -14px rgba(31,163,74,.6),inset 0 1px 0 rgba(255,255,255,.2); }
+.ep-root [data-ep-submit] .ep-cta-sep { background: rgba(255,255,255,.35); }
 /* Básico: tarjeta reducida, sin foto, precio más pequeño */
 .ep-root .ep-card--lite { padding: 16px 16px 14px; gap: 10px; box-shadow: none; background: var(--ep-bg-2); }
 .ep-root .ep-card--lite .ep-card-name { font-size: 18px; }
@@ -1488,6 +1506,29 @@ display: none;
 .ep-root .ep-tr-wa .ep-ico { width: 18px; height: 18px; }
 .ep-root .ep-tr-note { margin: 10px 0 0; font-size: 13px; color: var(--ep-muted); }
 
+/* paso de pago con confianza (17-nov): logos oficiales, precio final, sello de ahorro, candado Bold, INVIMA + garantía */
+.ep-root .ep-pay-logo.is-img { background: #FFFFFF; border: 1px solid #DDDDDD; padding: 3px 6px; height: 24px; display: inline-flex; align-items: center; }
+.ep-root .ep-pay-logo.is-img img { height: 16px; width: auto; display: block; max-width: 64px; }
+.ep-root .ep-pay-opt { position: relative; }
+.ep-root .ep-pay-badge { position: absolute; top: -10px; right: 12px; background: var(--ep-ok); color: #FFFFFF; font: 800 10.5px/1 var(--ep-body); letter-spacing: .05em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; z-index: 1; }
+.ep-root .ep-pay-save b { display: block; font-size: 17px; color: var(--ep-ok); font-variant-numeric: tabular-nums; }
+.ep-root .ep-pay-save s { display: block; font-size: 12px; color: var(--ep-muted); }
+.ep-root .ep-pay-save.is-cod b { color: var(--ep-text); font-size: 15px; }
+.ep-root .ep-pay-logo.is-img.is-visa, .ep-root .ep-pay-logo.is-img.is-mc, .ep-root .ep-pay-logo.is-img.is-amex, .ep-root .ep-pay-logo.is-img.is-pse, .ep-root .ep-pay-logo.is-img.is-nequi { padding: 0; border: 0; background: none; height: 26px; }
+.ep-root .ep-pay-logo.is-img.is-visa img, .ep-root .ep-pay-logo.is-img.is-mc img, .ep-root .ep-pay-logo.is-img.is-amex img, .ep-root .ep-pay-logo.is-img.is-pse img, .ep-root .ep-pay-logo.is-img.is-nequi img { height: 26px; max-width: none; }
+.ep-root .ep-pay-secure { display: flex; gap: 8px; align-items: center; margin: 0; font-size: 12.5px; line-height: 1.4; color: var(--ep-muted); }
+.ep-root .ep-pay-secure svg { flex: 0 0 auto; }
+.ep-root .ep-pay-trust { display: grid; grid-template-columns: 60px 1fr; gap: 12px; align-items: center; border-top: 1px solid var(--ep-line); padding-top: 12px; }
+.ep-root .ep-pay-trust img { width: 60px; height: 60px; }
+.ep-root .ep-pay-trust p { margin: 0; font-size: 13px; line-height: 1.45; color: var(--ep-muted); }
+.ep-root .ep-pay-trust a { color: inherit; text-decoration: underline; }
+/* cuotas Bancolombia (Wompi) */
+.ep-root .ep-pay-badge.is-new { background: #FDDA24; color: #111; }
+.ep-root .ep-pay-bnpl.is-off { opacity: .6; }
+.ep-root .ep-pay-bnpl.is-off .ep-pay-badge { display: none; }
+.ep-root .ep-pay-bnpl .ep-pay-save b { white-space: nowrap; }
+.ep-root .ep-bnpl-tot { display: block; font-size: 12px; color: var(--ep-muted); }
+
 /* Oferta + formulario con el diseño del selector v13: fondo negro, Inter, dorado para destacar,
    verde solo en el precio, rojo solo en el botón. Campos en blanco con texto gris oscuro. */
 .ep-root .eph-order { background: #000; padding-block: 28px 44px; scroll-margin-top: 8px; }
@@ -1632,14 +1673,17 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 
 /* Regalo con las 3 portadas de las guías (cesar 2026-11-08) */
 .ep-root .eph-bonus--libros { padding: 10px 12px 9px; }
-.ep-root .eph-libros { display: flex; justify-content: center; gap: 8px; margin-bottom: 7px; }
-.ep-root .eph-libros img { width: 66px; height: 86px; object-fit: cover; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.45); background: #222; }
-.ep-root .eph-libros img:nth-child(1) { transform: rotate(-5deg); }
-.ep-root .eph-libros img:nth-child(3) { transform: rotate(5deg); }
+.ep-root .eph-libros { display: flex; justify-content: center; margin-bottom: 7px; }
+/* Foto real de las 3 guías (cesar 16-11: las carátulas sueltas se veían mal) */
+.ep-root .eph-libros img { display: block; width: 100%; max-width: 260px; height: auto; border-radius: 6px; }
 .ep-root .eph-bonus--libros p { margin: 0; }
-.ep-root .eph-libro-txt { width: 66px; height: 86px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,.45); background: radial-gradient(120% 90% at 50% 20%, #5a0f17, #1d0407); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 4px; box-sizing: border-box; }
-.ep-root .eph-libro-txt b { font: 700 10.5px/1.05 Georgia, 'Times New Roman', serif; color: #e2c48a; letter-spacing: .3px; }
-.ep-root .eph-libro-txt i { font: italic 7px/1.2 Georgia, serif; color: #c9a86a; margin-top: 4px; }
+
+/* E-06 · Oferta A */
+.ep-root .eph-c-inc.is-miss span { color: #9a9a9a; }
+.ep-root .eph-ga { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 10px; padding: 12px; border: 1.5px solid #d4af37; border-radius: 12px; background: #11100c; color: #e8e8e8; font-size: 13px; line-height: 1.4; text-align: left; }
+.ep-root .eph-ga svg { flex: 0 0 30px; width: 30px; height: 30px; }
+.ep-root .eph-ga b { color: #d4af37; }
+.ep-root .eph-ga a { color: #d4af37; text-decoration: underline; }
 
 /* E-03 · ventana de ofertas + pedido (variante B). Mismo look negro/dorado del formulario. */
 .ep-pop-lock, .ep-pop-lock body { overflow: hidden !important; }
@@ -1731,6 +1775,13 @@ html.ep-in-order .ep-hc-sticky { transform: translateY(110%) !important; pointer
 fbq('init', '1248121626590977');
 fbq('track', 'PageView');
 </script>
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "aj18t0em8h");
+</script>
 <script>
 !function (w, d, t) {
   w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=d.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=d.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
@@ -1738,57 +1789,38 @@ fbq('track', 'PageView');
   ttq.page();
 }(window, document, 'ttq');
 </script>
-<style>/* Popup de 5% (prueba A/B popup5). Estilo ENERPLU: negro y dorado. */
-.epp{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:flex-end;justify-content:center;padding:10px;background:rgba(0,0,0,.74);opacity:0;transition:opacity .25s;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-.epp.on{opacity:1}
-.epp[data-v="B"]{align-items:center}
-.epp *{box-sizing:border-box}
-.epp-card{position:relative;width:100%;max-width:400px;max-height:calc(100dvh - 20px);overflow:auto;border-radius:22px;background:#0b0b0b;color:#f5f5f5;box-shadow:0 18px 44px rgba(0,0,0,.6);border:1px solid rgba(232,185,49,.32);transform:translateY(22px);transition:transform .3s ease-out}
-.epp.on .epp-card{transform:none}
-.epp-hero{position:relative;height:200px;background:#0b0b0b 62% 46%/cover no-repeat}
-.epp-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,11,.15) 0%,rgba(11,11,11,0) 40%,rgba(11,11,11,.75) 84%,#0b0b0b 100%)}
-.epp-mark{position:absolute;left:18px;top:16px;z-index:1;font:800 11px/1 Archivo,Inter,sans-serif;letter-spacing:.22em;color:#f5f5f5;display:flex;align-items:center;gap:8px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
-.epp-mark i{width:18px;height:2px;background:#e8b931;display:block}
-.epp-x{position:absolute;top:8px;right:8px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid rgba(245,245,245,.3);background:rgba(11,11,11,.55);color:#f5f5f5;display:grid;place-items:center;cursor:pointer;padding:0}
-.epp-x svg{width:14px;height:14px}
-.epp-body{padding:0 20px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:13px;margin-top:-14px;position:relative;z-index:1}
-.epp-eye{font:700 10.5px/1.2 Inter,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#e8b931;margin:0}
-.epp-t{font-family:Archivo,Inter,sans-serif;font-weight:800;font-size:26px;line-height:1.1;margin:0;letter-spacing:-.01em;color:#fff;text-wrap:balance}
-.epp-t em{font-style:normal;color:#e8b931}
-.epp-p{margin:0;font-size:14px;line-height:1.5;color:#b5b5b5}
-.epp-p b{color:#f5f5f5;font-weight:600}
-.epp-cup{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;border:1px solid rgba(232,185,49,.45);border-radius:14px;padding:11px 14px;background:linear-gradient(135deg,rgba(232,185,49,.16),rgba(232,185,49,.03))}
-.epp-pct{font-family:Archivo,Inter,sans-serif;font-weight:800;font-size:34px;line-height:1;color:#e8b931;letter-spacing:-.02em}
-.epp-pct sup{font-size:.5em;vertical-align:.7em;margin-left:1px}
-.epp-mid{border-left:1px dashed rgba(232,185,49,.5);padding-left:14px}
-.epp-mid small{display:block;font-size:10px;color:#8a8a8a;letter-spacing:.14em;text-transform:uppercase}
-.epp-mid b{font:700 15px/1.3 Inter,system-ui,sans-serif;letter-spacing:.14em;color:#f5f5f5}
-.epp-tm{font:600 12.5px/1 Inter,system-ui,sans-serif;color:#f5f5f5;font-variant-numeric:tabular-nums;white-space:nowrap;display:flex;align-items:center;gap:5px}
-.epp-tm svg{width:13px;height:13px;stroke:#e8b931}
-.epp-tm.s{font-weight:500;font-size:11px;color:#8a8a8a;letter-spacing:.06em;text-transform:uppercase}
-.epp-go{border:0;border-radius:12px;background:linear-gradient(180deg,#f3cd55,#e8b931);color:#0b0b0b;font:800 15px/1 Archivo,Inter,sans-serif;padding:17px 16px;cursor:pointer;width:100%;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 18px rgba(232,185,49,.28)}
-.epp-go svg{width:16px;height:16px}
-.epp-go:disabled{opacity:.7}
-.epp-tr{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:10.5px;color:#8a8a8a;margin:0;padding:0;list-style:none}
-.epp-tr li{display:flex;align-items:center;gap:5px;white-space:nowrap}
-.epp-tr svg{width:12px;height:12px;stroke:#e8b931}
-.epp-no{border:0;background:none;color:#8a8a8a;font:500 13px/1 Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;justify-self:center;padding:8px}
-.epp-x:focus-visible,.epp-go:focus-visible,.epp-no:focus-visible,.epp-bar:focus-visible{outline:2px solid #e8b931;outline-offset:2px}
-html.epp-lock{overflow:hidden}
-/* Barra de la versión B: queda arriba después de ver el popup */
-.epp-bar{display:block;width:100%;border:0;cursor:pointer;background:#0b0b0b;color:#f5f5f5;font:600 11.5px/1.2 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;text-align:center;border-bottom:1px solid rgba(232,185,49,.35)}
-.epp-bar b{color:#e8b931;font-weight:700}
-/* Aviso de cupón aplicado encima del formulario */
-.epp-ok{display:flex;align-items:center;gap:10px;background:#0b0b0b;color:#f5f5f5;border:1px solid rgba(232,185,49,.55);border-radius:12px;padding:11px 13px;margin:0 0 12px;font-family:Inter,system-ui,sans-serif;scroll-margin-top:12px}
-.epp-ok>svg{width:20px;height:20px;flex:none;stroke:#e8b931}
-.epp-ok b{display:block;font-size:14px;line-height:1.25;color:#e8b931;font-weight:700}
-.epp-ok small{display:block;font-size:11.5px;line-height:1.3;color:#b5b5b5}
-.epp-ok .epp-tm{margin-left:auto}
-/* Línea del cupón en el resumen del formulario */
-.ep-sum-list li.is-cup span:last-child{color:#1a8f4c;font-weight:700}
-.ep-sum-list li.is-cup small{letter-spacing:.06em}
-@media (prefers-reduced-motion:reduce){.epp,.epp-card{transition:none}}
-</style>
+<script>(function(){
+  if(window.__epClar)return;window.__epClar=1;
+  function c(){try{window.clarity.apply(null,arguments)}catch(e){}}
+  var q=new URLSearchParams(location.search),p=location.pathname.replace(/\/+$/,'')||'/';
+  [['anuncio','utm_term'],['campana','utm_campaign'],['conjunto','utm_content'],['fuente','utm_source']].forEach(function(k){var v=q.get(k[1]);if(v)c('set',k[0],v.slice(0,100));});
+  c('set','pagina',p);
+  if(p==='/'||p==='/ofertas')c('set','e07',p==='/ofertas'?'B':'A');
+  var sidOk=0;
+  var N={selector_view:'vio_ofertas',cta_click:'toco_comprar',plan_select:'eligio_plan',form_start:'empezo_formulario',
+    form_error:'error_formulario',pay_select:'eligio_pago',plan_click:'toco_confirmar',upsell_view:'vio_upsell',pay_fallback_cod:'pago_a_contraentrega'};
+  var hecho={};
+  function ev(n){if(!hecho[n]){hecho[n]=1;c('event',n);}}
+  function leer(body){try{
+    if(typeof body!=='string')return;var b=JSON.parse(body);if(!b||!b.ev)return;var x=b.extra||{};
+    if(b.sid&&!sidOk){sidOk=1;c('set','sid',String(b.sid).slice(0,40));}
+    if(x.plan)c('set','plan',String(x.plan).slice(0,40));
+    if(b.ev==='form_field'){
+      if(x.field==='_visto')ev('vio_formulario');
+      else if(x.field==='_salida'){ if(!(x.completos||[]).length)ev('salio_sin_escribir'); if(x.ultimo)c('set','ultimo_campo',String(x.ultimo).slice(0,30)); }
+      else ev('escribio_dato');
+      return;}
+    if(N[b.ev])ev(N[b.ev]);
+  }catch(e){}}
+  function esEmbudo(u){return /funnel-track/.test(String(u||''));}
+  try{var sb=navigator.sendBeacon&&navigator.sendBeacon.bind(navigator);
+    if(sb)navigator.sendBeacon=function(u,d){if(esEmbudo(u)){if(typeof d==='string')leer(d);else if(d&&d.text)d.text().then(leer).catch(function(){});}return sb(u,d);};}catch(e){}
+  try{var f=window.fetch&&window.fetch.bind(window);
+    if(f)window.fetch=function(u,o){if(esEmbudo(u)&&o&&typeof o.body==='string')leer(o.body);return f(u,o);};}catch(e){}
+  var dl=window.dataLayer=window.dataLayer||[],push=dl.push.bind(dl);
+  dl.push=function(o){try{if(o&&o.event==='ep_purchase'){ev('pedido');c('upgrade','pedido');}}catch(e){}return push.apply(null,arguments);};
+})();</script>
+<style>[data-id="gpGrrwtDmE"] img{cursor:pointer}</style>
 </head>
 <body class="page-width-narrow card-hover-effect-none">
 <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1248121626590977&ev=PageView&noscript=1"></noscript>
@@ -2369,7 +2401,7 @@ html.epp-lock{overflow:hidden}
       
       
       
-      <img src="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948" srcset="https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948&amp;width=480 768w, https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948&amp;width=1024 1024w, https://cdn.shopify.com/s/files/1/0748/9418/0397/files/resultados_enerplu.avif?v=1785760948&amp;width=1024 1440w" sizes="(max-width: 1024px) 50vw, 100vw" loading="lazy" fetchpriority="low" alt="" width="100%" style="--aspect:auto;--aspect-tablet:auto;--aspect-mobile:auto;--objf:cover;--w:100%;--w-tablet:100%;--w-mobile:100%;--h:auto;--h-tablet:auto;--h-mobile:auto;--b:none;--bc:#000000;--bw:1px 1px 1px 1px;--radiusType:none;--shadow:none" class="gp-inline-block gp-w-full gp-max-w-full">
+      <img alt="Resultados que se notan de inmediato" decoding="async" height="1024" width="1024" loading="lazy" src="/img/resultados-v2.webp"/>
     
     </picture>
   
@@ -3302,7 +3334,7 @@ html.epp-lock{overflow:hidden}
           <div><b>Garantía Real o te devolvemos tu dinero*</b>
           <a href="/garantia" target="_blank" rel="noopener">*Aplican términos y condiciones</a></div>
         </div>
-        <div class="eph-bonus eph-bonus--libros"><div class="eph-libros"><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Maestro_del_Orgasmo__Edici%C3%B3n_C%C3%B3smica_smufbu.webp" alt="Guía Maestro del Orgasmo" width="66" height="86" loading="lazy"><span class="eph-libro-txt" role="img" aria-label="Guía Secretos Sexuales"><b>SECRETOS</b><b>SEXUALES</b><i>Edición de lujo</i></span><img src="https://res.cloudinary.com/dzlys7ftg/image/upload/w_200,f_auto,q_auto/v1794151421/Portada_Genio_del_Sexo_ipiu7i.webp" alt="Guía Genio del Sexo" width="66" height="86" loading="lazy"></div><p>🎁 <b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
+        <div class="eph-bonus eph-bonus--libros"><div class="eph-libros"><img src="/img/guias-libros-600.webp" alt="Guías Maestro del Orgasmo, Secretos Sexuales y Genio del Sexo" width="600" height="403" loading="lazy" decoding="async"></div><p>🎁 <b>Regalo: 3 guías digitales</b> para potenciar tus encuentros. Te llegan por WhatsApp cuando recibes tu pedido.</p></div>
         <div class="eph-list" role="radiogroup" aria-label="Ofertas" data-ep-render="selector"></div>
       </div>
 
@@ -3340,6 +3372,12 @@ html.epp-lock{overflow:hidden}
           <p class="ep-f-help" id="ep-f-email-h">Bold te envía ahí el comprobante del pago.</p>
           <p class="ep-f-err" data-ep-err="email" hidden></p>
         </div>
+        <div class="ep-f" data-ep-doc-row hidden>
+          <label for="ep-f-doc">Cédula</label>
+          <input id="ep-f-doc" name="document" type="text" inputmode="numeric" autocomplete="off" maxlength="16" placeholder="Solo números" aria-describedby="ep-f-doc-h">
+          <p class="ep-f-help" id="ep-f-doc-h">Bancolombia la pide para aprobar tus cuotas.</p>
+          <p class="ep-f-err" data-ep-err="document" hidden></p>
+        </div>
         <div class="ep-f">
           <label for="ep-f-addr">Dirección</label>
           <input id="ep-f-addr" name="address1" type="text" autocomplete="address-line1" maxlength="160" placeholder="Ej: Calle 45 # 23-10" required>
@@ -3361,6 +3399,8 @@ html.epp-lock{overflow:hidden}
       <fieldset class="ep-of-block" data-ep-pay-block hidden>
         <legend class="ep-of-legend">¿Cómo quieres pagar?</legend>
         <div class="ep-ship" data-ep-render="pay"></div>
+        <p class="ep-pay-secure"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Pago procesado por la pasarela segura de Bold. No vemos ni guardamos los datos de tu tarjeta.</span></p>
+        <div class="ep-pay-trust"><img src="/img/pro-invima.webp" alt="Registro INVIMA" width="60" height="60" loading="lazy" decoding="async"><p>Producto con registro INVIMA <b data-ep-invima>NSA2314-2025</b> · Garantía Real en los planes Dominio Total y Élite. <a href="/garantia" target="_blank" rel="noopener">Ver condiciones</a></p></div>
       </fieldset>
 
       <div data-ep-render="bump"></div>
@@ -3376,7 +3416,7 @@ html.epp-lock{overflow:hidden}
       <p class="ep-pay-hint" data-ep-pay-hint hidden></p>
       <div class="ep-pay-accept" data-ep-pay-logos hidden>
         <p>Medios de pago aceptados</p>
-        <span class="ep-pay-logos"><span class="ep-pay-logo is-visa">VISA</span><span class="ep-pay-logo is-mc">Mastercard</span><span class="ep-pay-logo is-amex">AMEX</span><span class="ep-pay-logo is-pse">PSE</span><span class="ep-pay-logo is-nequi">Nequi</span><span class="ep-pay-logo is-bc">Bancolombia</span><span class="ep-pay-logo is-cod">Contraentrega</span></span>
+        <span class="ep-pay-logos"><span class="ep-pay-logo is-img is-visa"><img src="/img/pay/visa.svg" alt="Visa" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-mc"><img src="/img/pay/master.svg" alt="Mastercard" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-amex"><img src="/img/pay/american_express.svg" alt="AMEX" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-pse"><img src="/img/pay/pse.svg" alt="PSE" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-nequi"><img src="/img/pay/nequi.svg" alt="Nequi" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-bc"><img src="/img/pay-bancolombia.webp" alt="Bancolombia" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-img is-breb"><img src="/img/pay-breb.webp" alt="Bre-B" height="16" loading="lazy" decoding="async"></span><span class="ep-pay-logo is-cod">Contraentrega</span></span>
         <small>Tarjeta, PSE y Nequi se pagan en la pasarela segura de Bold. No guardamos datos de tu tarjeta.</small>
       </div>
 
@@ -3392,7 +3432,7 @@ html.epp-lock{overflow:hidden}
           <details><summary>¿Cómo llega el paquete?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>En una bolsa negra sellada y con empaque discreto.</p></div></details>
           <details><summary>¿Cómo se usa?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Mastica una tableta de 5 a 15 minutos antes del encuentro y déjala disolver bajo la lengua. No necesitas agua. Una tableta por ocasión; no la tomes todos los días.</p></div></details>
           <details><summary>¿Cuántos usos trae cada caja?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>Cada caja trae 10 tabletas, es decir, 10 ocasiones. Por eso los combos de 2 y 4 cajas te salen más baratos por tableta.</p></div></details>
-          <details><summary>¿Me cobran algo más?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>No. El envío estándar es gratis y pagas solo el valor de tu pedido. El envío express es opcional.</p></div></details>
+          <details><summary>¿Me cobran algo más?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>No. El envío es gratis y pagas solo el valor de tu pedido.</p></div></details>
           <details><summary>¿Es seguro?<svg class="ep-ico" aria-hidden="true"><use href="#ep-i-down"/></svg></summary><div><p>ENERPLU es un suplemento alimenticio con registro INVIMA NSA-2314-2025, no un medicamento. Si tienes una condición del corazón, presión alta o tomas medicamentos, consulta antes con tu médico.</p></div></details>
         </div>
       </div>
@@ -4891,7 +4931,7 @@ window.EP_CONFIG = {
               eyebrow: 'Tu pedido ya quedó registrado · oferta solo ahora', headline: 'Lleva la experiencia al nivel de control absoluto',
               text: 'Ya tienes la firmeza y resistencia con tu pedido por dentro; el spray Velvet te da el control exacto del reloj por fuera. El combo de blindaje definitivo.',
               bullets: ['Olvídate de la tensión mental de tener que aguantar', 'Disfruta del ritmo intenso sin miedo a terminar antes', 'Llega en el mismo paquete 100% discreto y sin costo de envío adicional'] },
-    express: { price: 5000, title: 'Express', text: 'Despacho con prioridad y envío asegurado' },
+    express: null,   /* sin envío express (cesar 2026-11-14: "eso no se cumple") */
     thanksTitle: '¡Pedido recibido!',
     thanksText: 'Te escribiremos por WhatsApp para confirmar tu pedido. Ten tu celular a la mano.',
     deliveryDays: [3, 4],
@@ -5013,6 +5053,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
   };
   /* Cloudinary: formato y calidad automáticos + ancho justo para cada uso */
   R.cdn = function (cfg, url, w) {
+    if (cfg.cdnOptimize && url && url.indexOf('/rec/cl/') === 0) return [120, 160, 200, 540, 600, 720, 800, 1080].indexOf(w) >= 0 ? url.replace(/(\.[a-z0-9]+)$/i, '.w' + w + '$1') : url;   /* copia local (tools/bajar-recursos.mjs): mismo archivo en el ancho pedido */
     if (!cfg.cdnOptimize || !url || url.indexOf('res.cloudinary.com/') < 0 || url.indexOf('/upload/') < 0) return url;
     return url.replace('/upload/', '/upload/' + (w ? 'w_' + w + '/' : '') + 'f_auto/q_auto/');   /* transformaciones encadenadas con / (sin comas: Vite/Bolt rompe las comas dentro de srcset) */
   };
@@ -5149,21 +5190,34 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       (ex ? row('priority', ex.title || 'Express', '+' + R.money(ex.price), ex.text || '') : '');
   };
   /* forma de pago: contra entrega (por defecto), Bold y transferencia/llave Bancolombia */
-  R.logos = function (list) {
-    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-' + k[0] + '">' + k[1] + '</span>'; }).join('') + '</span>';
+  R.payImg = { visa: '/img/pay/visa.svg', mc: '/img/pay/master.svg', amex: '/img/pay/american_express.svg', pse: '/img/pay/pse.svg', nequi: '/img/pay/nequi.svg', bc: '/img/pay-bancolombia.webp', breb: '/img/pay-breb.webp' };
+  R.logos = function (list) {   /* logos oficiales (cesar 17-nov: nada de etiquetas de texto) */
+    return '<span class="ep-pay-logos">' + list.map(function (k) { return '<span class="ep-pay-logo is-img is-' + k[0] + '"><img src="' + R.payImg[k[0]] + '" alt="' + k[1] + '" height="16" loading="lazy" decoding="async"></span>'; }).join('') + '</span>';
   };
-  R.pay = function (cfg, opt, prepaidCity) {
+  R.pay = function (cfg, opt, prepaidCity, bnplOk) {
     var co = cfg.checkout, disc = prepaidCity ? 0 : (co.payDiscount || 0);
-    var save = disc ? '<span class="ep-ship-price ep-pay-save">Ahorras<br>' + R.money(disc) + '</span>' : '<span></span>';
+    /* precio final con el descuento (lo llena update() según el plan elegido) + sello de ahorro */
+    var save = disc ? '<span class="ep-ship-price ep-pay-save"><b data-ep-pay-final></b><s data-ep-pay-list></s></span>' : '<span></span>';
+    var tag = disc ? '<span class="ep-pay-badge">Ahorra ' + R.money(disc) + '</span>' : '';
     var row = function (val, name, text, extra, right, off) {
-      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '"><input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
+      return '<label class="ep-ship-opt ep-pay-opt' + (opt === val ? ' is-on' : '') + (off ? ' is-off' : '') + '">' + (val !== 'cod' ? tag : '') + '<input type="radio" name="ep-pay" value="' + val + '"' + (opt === val ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
         '<span class="ep-pack-dot" aria-hidden="true"></span><span class="ep-ship-main"><b>' + name + '</b><small>' + text + '</small>' + (extra || '') + '</span>' + right + '</label>';
     };
-    return row('cod', 'Pagar al recibir (Contraentrega)', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', '<span></span>', prepaidCity) +
-      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Pago seguro con Bold. Tu pedido pasa directo a despacho.',
+    return row('cod', 'Pagar al recibir (Contraentrega)', prepaidCity ? 'No disponible en tu municipio.' : 'Pagas en efectivo cuando llega tu pedido.', '', disc ? '<span class="ep-ship-price ep-pay-save is-cod"><b data-ep-pay-cod></b></span>' : '<span></span>', prepaidCity) +
+      (co.payBold ? row('bold', 'Pagar ahora con tarjeta, PSE o Nequi', 'Tu pedido pasa directo a despacho.',
         R.logos([['visa', 'VISA'], ['mc', 'Mastercard'], ['pse', 'PSE'], ['nequi', 'Nequi']]), save) : '') +
       (co.payTransfer ? row('transfer', 'Transferencia o llave Bancolombia', 'Te damos los datos al terminar y nos envías el comprobante por WhatsApp.',
-        R.logos([['bc', 'Bancolombia']]), save) : '');
+        R.logos([['bc', 'Bancolombia'], ['breb', 'Bre-B']]), save) : '') +
+      (co.payBnpl && bnplOk !== null ? R.payBnplRow(co.payBnpl, opt, !!bnplOk, prepaidCity) : '');
+  };
+  /* cuotas con Bancolombia (Wompi, Compra y Paga Después): solo desde el mínimo (Dominio y Élite) */
+  R.payBnplRow = function (b, opt, ok, prepaidCity) {
+    var on = opt === 'wompi_bnpl' && ok;
+    return '<label class="ep-ship-opt ep-pay-opt ep-pay-bnpl' + (on ? ' is-on' : '') + (ok ? '' : ' is-off') + '"><span class="ep-pay-badge is-new">Nuevo</span>' +
+      '<input type="radio" name="ep-pay" value="wompi_bnpl"' + (on ? ' checked' : '') + (ok ? '' : ' disabled') + '>' +
+      '<span class="ep-pack-dot" aria-hidden="true"></span><span class="ep-ship-main"><b>' + R.esc(b.label) + '</b><small data-ep-bnpl-text>' +
+      (ok ? R.esc(b.sublabel) : 'Desde ' + R.money(b.min) + ': elige Dominio Total o Élite.') + '</small>' + R.logos([['bc', 'Bancolombia']]) + '</span>' +
+      '<span class="ep-ship-price ep-pay-save"><b data-ep-bnpl-final></b><small class="ep-bnpl-tot" data-ep-bnpl-list></small></span></label>';
   };
   R.bump = function (cfg, on) {
     var b = cfg.checkout.bump;
@@ -5208,8 +5262,8 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     h += line('Envío' + (t.ship ? ' express' : ''), t.ship ? R.money(t.ship) : 'Gratis', t.ship ? '' : 'is-gift');
     if (t.cup) h += line('Descuento primera compra ' + st.cup + '%' + (st.cupCode ? ' <small>' + R.esc(st.cupCode) + '</small>' : ''), '−' + R.money(t.cup), 'is-gift is-cup');
     if (t.disc) h += line('Descuento pago anticipado', '−' + R.money(t.disc), 'is-gift');
-    var label = st.pay === 'transfer' ? 'Total a transferir' : st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir';
-    var eta = st.pay === 'transfer' ? ' Sale a despacho apenas verifiquemos tu transferencia.' : st.pay ? ' Ya pagado, sale directo a despacho.' : ' Pagas en efectivo cuando lo recibes.';
+    var label = st.pay === 'transfer' ? 'Total a transferir' : st.pay === 'wompi_bnpl' ? 'Total en 4 cuotas Bancolombia' : st.pay ? 'Total a pagar en línea' : 'Total a pagar al recibir';
+    var eta = st.pay === 'transfer' ? ' Sale a despacho apenas verifiquemos tu transferencia.' : st.pay === 'wompi_bnpl' ? ' Apenas Bancolombia apruebe tus cuotas, sale directo a despacho.' : st.pay ? ' Ya pagado, sale directo a despacho.' : ' Pagas en efectivo cuando lo recibes.';
     return '<p class="ep-sum-title">Resumen de tu pedido</p><ul class="ep-sum-list">' + h + '</ul>' +
       '<div class="ep-sum-total"><span>' + label + '</span><b>' + R.money(t.total) + '</b></div>' +
       (t.save > 0 ? '<p class="ep-sum-save">Ahorras ' + R.money(t.save) + ' en este pedido</p>' : '') +
@@ -5642,6 +5696,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       this.paint(); this.bind();
       var bq = new URLSearchParams(global.location.search), bref = bq.get('bold-order-id');
       if (bref) this.payResume(bref, bq.get('bold-tx-status'));
+      else if (bq.get('wompi_ref')) this.payResume(String(bq.get('wompi_ref')).split('?')[0], null, 'wompi_bnpl');
       var self = this, sec = qs('#ep-order');
       if (sec && 'IntersectionObserver' in global) {   /* la configuración real se pide cuando el cliente se acerca al formulario */
         var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { self.loadConfig(); io.disconnect(); } }); }, { rootMargin: '900px 0px' });
@@ -5656,11 +5711,18 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       this.paintPay();
       this.update();
     },
-    payChoice: function () { return !C.checkout.payPrepaid && !!(C.checkout.payBold || C.checkout.payTransfer); },
+    payChoice: function () { return !C.checkout.payPrepaid && !!(C.checkout.payBold || C.checkout.payTransfer || C.checkout.payBnpl); },
+    /* cuotas Bancolombia: hay config, el formulario tiene campo de cédula y el total del plan llega al mínimo */
+    bnplTotal: function () {
+      var b = C.checkout.payBnpl, cp = this.coupon(), c = this.st.city; if (!b) return 0;
+      var p = packById(state.pack), d = c && c.prepaid ? 0 : ((b.discounts || {})[p.offerKey] || 0);
+      return R.totals(C, { pack: state.pack, bump: this.st.bump, ship: this.st.ship, disc: d, pay: 'wompi_bnpl', cup: cp ? cp.pct : 0 }).total;
+    },
+    bnplOk: function () { var b = C.checkout.payBnpl; return !!(b && this.el('document') && this.bnplTotal() >= b.min); },
     paintPay: function () {
       var on = this.payChoice(), c = this.st.city, pre = !!(c && c.prepaid);
       var blk = qs('[data-ep-pay-block]'); if (blk) blk.hidden = !on;
-      if (on) renderInto('[data-ep-render="pay"]', R.pay(C, this.method(), pre), 'x' + Math.random());
+      if (on) renderInto('[data-ep-render="pay"]', R.pay(C, this.method(), pre, this.el('document') ? this.bnplOk() : null), 'x' + Math.random());
       var d = C.checkout.payDiscount || 0, hint = qs('[data-ep-pay-hint]');
       if (hint) { hint.hidden = !on || !d; hint.innerHTML = 'Paga al recibir, o paga ahora y ahorra <b>' + R.money(d) + '</b>'; }
       var lg = qs('[data-ep-pay-logos]'); if (lg) lg.hidden = !on;
@@ -5671,6 +5733,19 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var t = R.totals(C, st);
       var n = qs('[data-ep-nudge]'); if (n) n.innerHTML = R.nudge(C, state.pack);
       var sm = qs('[data-ep-summary]'); if (sm) sm.innerHTML = R.summary(C, st);
+      /* paso de pago: cuánto paga en cada opción con el plan elegido */
+      var codT = R.totals(C, { pack: st.pack, bump: st.bump, ship: st.ship, disc: 0, pay: '', cup: st.cup }).total, pc = this.st.city, pdisc = pc && pc.prepaid ? 0 : (C.checkout.payDiscount || 0);
+      var preT = R.totals(C, { pack: st.pack, bump: st.bump, ship: st.ship, disc: pdisc, pay: 'bold', cup: st.cup }).total;
+      qsa('[data-ep-pay-final]').forEach(function (el) { el.textContent = R.money(preT); });
+      qsa('[data-ep-pay-list]').forEach(function (el) { el.textContent = preT < codT ? R.money(codT) : ''; });
+      qsa('[data-ep-pay-cod]').forEach(function (el) { el.textContent = R.money(codT); });
+      if (C.checkout.payBnpl) {
+        var bt = this.bnplTotal(), bok = this.bnplOk();
+        qsa('[data-ep-bnpl-final]').forEach(function (el) { el.textContent = bok ? '4 x ' + R.money(Math.ceil(bt / 4)) : ''; });
+        qsa('[data-ep-bnpl-list]').forEach(function (el) { el.textContent = bok ? 'Total ' + R.money(bt) : ''; });
+        if (this.bnplWas !== undefined && this.bnplWas !== bok) { this.bnplWas = bok; this.payWas = ''; this.payMode(); return; }
+        this.bnplWas = bok;
+      }
       qsa('[data-ep-bind="total"]').forEach(function (el) { el.textContent = R.money(t.total); });
       var x = R.extraGifts(t.p);
       qsa('[data-ep-bind="featured-name"]').forEach(function (el) { el.textContent = R.short(t.p) + (t.p.badge ? ' · ' + t.p.badge : ''); });
@@ -5710,6 +5785,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         C.checkout.payBold = !!(c.online_payment && c.online_payment.live && !c.online_payment.prepaid_only);
         C.checkout.payTransfer = !C.checkout.payPrepaid && !!c.transfer;
         C.checkout.payDiscount = C.checkout.payBold ? (c.online_payment.discount || 0) : (c.transfer ? c.transfer.discount || 0 : 0);
+        /* cuotas Bancolombia (Wompi): visible si está en vivo; antes, con ?ep_test=1 (simulado) o ?cuotas=1 (pago real, solo celulares de prueba) */
+        var wb = c.wompi_bnpl;
+        C.checkout.payBnpl = !C.checkout.payPrepaid && wb && (wb.live || self.test || /[?&]cuotas=1/.test(global.location.search)) ? { label: wb.label, sublabel: wb.sublabel, min: wb.min_cop || 100000, discounts: wb.discounts || {}, terms: wb.terms_url || '' } : null;
         self.payMode();
         if (changed) {
           var sig = 'live' + Date.now();
@@ -5769,14 +5847,25 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     },
     validPhone: function (v) { return /^3\d{9}$/.test(v); },
     /* ---- carrito abandonado: el bot de recuperación le escribe si no termina ---- */
-    queueCart: function () {
+    /* Todo lo que el cliente alcanzó a escribir (ciudad, dirección, barrio, cédula) va al carrito,
+       para que la IA de recuperación no se lo vuelva a pedir. */
+    cartAddress: function () {
+      var v = function (n, max) { var i = this.el(n); return i ? String(i.value || '').replace(/\s+/g, ' ').trim().slice(0, max) : ''; }.bind(this);
+      var c = this.st.city || null;
+      return { city_text: v('city', 80), city: c ? c.municipio : '', department: c ? c.departamento : '', address1: v('address1', 160), additional: v('additional', 160), document: v('document', 20) };
+    },
+    queueCart: function (now) {
       var self = this; clearTimeout(this.cartTimer);
       if (this.test || this.done) return;
-      this.cartTimer = setTimeout(function () {
+      var send = function () {
         var ph = self.phone(); if (!self.validPhone(ph) || self.st.phoneBlock || self.done) return;
         var nm = ((self.el('first_name').value || '') + ' ' + (self.el('last_name').value || '')).trim();
-        self.api('POST', '', { action: 'cart', slug: C.checkout.slug, phone: ph, name: nm, offer_key: packById(state.pack).offerKey, bump: !!self.st.bump, session_id: self.sid, tracking: self.tracking() }, true).catch(function () {});
-      }, 1500);
+        var body = { action: 'cart', slug: C.checkout.slug, phone: ph, name: nm, offer_key: packById(state.pack).offerKey, bump: !!self.st.bump, session_id: self.sid, tracking: self.tracking(), address: self.cartAddress() };
+        var key = JSON.stringify([ph, nm, body.offer_key, body.bump, body.address]);
+        if (key === self.cartKey) return; self.cartKey = key;
+        self.api('POST', '', body, true).catch(function () {});
+      };
+      if (now) send(); else this.cartTimer = setTimeout(send, 1500);
     },
     checkPhone: function () {
       var self = this, ph = this.phone();
@@ -5797,8 +5886,10 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
        - "Colombia" y "D.C." no cuentan ("Bogotá, Colombia")
        - corregimientos, localidades y comunas conocidas llevan a su municipio ("San Antonio de Prado" → Medellín) */
     cityParts: function (raw) {
-      var parts = String(raw || '').split(/[,\/|]/);
+      /* cesar 15-11: "Ciuda /Turbo Antioquia" o "Ciudad: Turbo" buscaban "ciuda". Se quita la palabra de relleno ("Ciudad Bolívar" sigue igual) */
+      var s = String(raw || '').replace(/^\s*(ciudad\s+o\s+municipio|ciudad\s*[:\-\/,]|ciuda[sd]?\b(?!\s+bol)|municipio\b|mpio\b|mcpio\b)[\s:\-.]*/i, '');
       var clean = function (x) { return R.norm(x).replace(/\b(colombia|col|d c|dc)\b/g, ' ').replace(/\s+/g, ' ').trim(); };
+      var parts = s.split(/[,\/|]/).filter(function (x) { return clean(x); });
       return { q: clean(parts[0]), dep: clean(parts.slice(1).join(' ')) };
     },
     cityAliases: function (q) {
@@ -5810,8 +5901,12 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       });
       return out.slice(0, 4);
     },
-    citySearchNow: function (raw) {
+    citySearchNow: function (raw, cut) {
       var self = this, pr = this.cityParts(raw), seq = (this.citySeq = (this.citySeq || 0) + 1);
+      /* cesar 15-11: "Sopetran Antioquia La Ofisina Interapidi" no encontraba nada. Sin resultados, se prueba quitando palabras del final
+         (y esas palabras sirven para filtrar por departamento): "sopetran antioquia" → "sopetran". */
+      if (cut) { var w = pr.q.split(' '); pr.dep = (w.slice(w.length - cut).join(' ') + ' ' + pr.dep).trim(); pr.q = w.slice(0, w.length - cut).join(' '); }
+      this.cityQ = pr.q;
       clearTimeout(this.cityTimer);
       if (pr.q.length < 2) { this.cityList([], ''); return Promise.resolve([]); }
       var aliases = this.cityAliases(pr.q);
@@ -5819,11 +5914,13 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         var rows = (r.j && r.j.ciudades) || [];
         if (pr.dep) {   /* escribió el departamento: se queda con los que coinciden */
           var f = rows.filter(function (c) { var d = R.norm(c.departamento); return d.indexOf(pr.dep) === 0 || pr.dep.indexOf(d) === 0; });
+          if (!f.length && cut) f = rows.filter(function (c) { var d = R.norm(c.departamento); return pr.dep.indexOf(d) >= 0; });
           if (f.length) rows = f;
         }
         var all = aliases.concat(rows.filter(function (c) { return !aliases.some(function (a) { return a.municipio === c.municipio && a.departamento === c.departamento && !a.alias; }); }));
+        if (!all.length && pr.q.indexOf(' ') > 0 && seq === self.citySeq) return self.citySearchNow(raw, (cut || 0) + 1);
         if (!all.length && pr.q.length >= 4 && C.checkout.cityFuzzyApi) {   /* mal escrito: se sugieren los más parecidos */
-          return fetch(C.checkout.cityFuzzyApi, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: C.checkout.publicKey }, body: JSON.stringify({ q: pr.q }) })
+          return fetch(C.checkout.cityFuzzyApi, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: C.checkout.publicKey }, body: JSON.stringify({ q: cut ? self.cityParts(raw).q : pr.q }) })
             .then(function (r) { return r.ok ? r.json() : []; }, function () { return []; })
             .then(function (list) {
               var fz = (Array.isArray(list) ? list : []).map(function (c) { return { municipio: c.municipio, departamento: c.departamento, solo_pago_anticipado: !!c.solo_pago_anticipado, fuzzy: true }; });
@@ -5863,6 +5960,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var inp = this.el('city'), list = qs('#ep-f-city-list');
       this.st.city = { municipio: c.municipio, departamento: c.departamento, prepaid: !!c.solo_pago_anticipado };
       inp.value = c.municipio + (c.departamento !== c.municipio ? ' / ' + c.departamento : ''); this.cityLabel = inp.value;
+      this.queueCart();
       list.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant');
       var add = this.el('additional');
       if (c.alias && add && !String(add.value || '').trim()) add.value = c.alias;   /* el corregimiento o la localidad quedan en "barrio y detalles" */
@@ -5880,6 +5978,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     /* escribió la ciudad y no tocó la lista: se elige sola si hay una coincidencia clara */
     cityAuto: function () {
       var rows = this.cityRows || [], pr = this.cityParts(this.el('city').value);
+      if (this.cityQ && pr.q.indexOf(this.cityQ) === 0) pr.q = this.cityQ;   /* se buscó con menos palabras */
       if (!pr.q) return false;
       var base = function (x) { return R.norm(x).replace(/\b(d c|dc)\b/g, ' ').replace(/\s+/g, ' ').trim(); };
       var exact = rows.filter(function (c) { return c.alias ? base(c.alias.replace(/\(.*?\)/g, ' ')) === pr.q : base(c.municipio) === pr.q; });
@@ -5906,21 +6005,31 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var c = this.st.city, pre = !!(c && c.prepaid), co = C.checkout;
       if (co.payPrepaid) return pre ? 'bold' : 'cod';
       var m = this.st.pay || 'cod';
-      if ((m === 'bold' && !co.payBold) || (m === 'transfer' && !co.payTransfer)) m = 'cod';
+      if ((m === 'bold' && !co.payBold) || (m === 'transfer' && !co.payTransfer) || (m === 'wompi_bnpl' && !this.bnplOk())) m = 'cod';
       if (pre && m === 'cod') m = co.payBold ? 'bold' : co.payTransfer ? 'transfer' : 'cod';
       return m;
     },
     /* el descuento no aplica en municipios de solo pago anticipado (igual que el servidor) */
     /* cupón del popup de 5% (fuente/popup5.js): lo valida y lo aplica el CRM; aquí solo se muestra y se manda el código */
     coupon: function () { var c = this.st.coupon; if (c && c.exp && c.exp < Date.now()) { this.st.coupon = c = null; } return c || null; },
-    discount: function () { var c = this.st.city; return this.method() !== 'cod' && !(c && c.prepaid) ? (C.checkout.payDiscount || 0) : 0; },
+    discount: function () {
+      var c = this.st.city, m = this.method(); if (m === 'cod' || (c && c.prepaid)) return 0;
+      if (m === 'wompi_bnpl') return (C.checkout.payBnpl.discounts || {})[packById(state.pack).offerKey] || 0;
+      return C.checkout.payDiscount || 0;
+    },
     payMode: function () {
       if (!this.form) return;
       var on = this.payOnline(), row = qs('[data-ep-email-row]', this.form), em = this.el('email');
-      if (row) row.hidden = !on;
-      if (em) { if (on) em.setAttribute('required', ''); else { em.removeAttribute('required'); this.err('email', ''); } }
-      var m = this.method(), sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = m === 'bold' ? 'Pago seguro en línea con Bold' : m === 'transfer' ? 'Pagas por transferencia' : 'Pagas en efectivo al recibir';
-      var key = m + (this.st.city && this.st.city.prepaid ? '1' : '0');
+      /* correo fuera del formulario, también para pago en línea (cesar 2026-11-14: "quitar el correo del formulario") */
+      /* excepto cuotas Bancolombia: Wompi pide correo y cédula */
+      var bn = this.method() === 'wompi_bnpl', drow = qs('[data-ep-doc-row]', this.form), eh = qs('#ep-f-email-h', this.form);
+      if (row) row.hidden = !bn;
+      if (drow) drow.hidden = !bn;
+      if (eh) eh.textContent = bn ? 'Bancolombia te envía ahí tu plan de cuotas.' : 'Bold te envía ahí el comprobante del pago.';
+      if (em) { if (bn) em.setAttribute('required', ''); else { em.removeAttribute('required'); this.err('email', ''); } }
+      if (!bn) this.err('document', '');
+      var m = this.method(), sub = qs('[data-ep-cta-sub]', this.form); if (sub) sub.textContent = m === 'bold' ? 'Pago seguro en línea con Bold' : m === 'transfer' ? 'Pagas por transferencia' : m === 'wompi_bnpl' ? '4 cuotas sin interés con Bancolombia' : 'Pagas en efectivo al recibir';
+      var key = m + (this.st.city && this.st.city.prepaid ? '1' : '0') + (this.bnplOk() ? 'b' : '');
       if (this.payWas !== key) { this.payWas = key; this.paintPay(); this.update(); }
       if (!this.sending) this.busy(false);
     },
@@ -5941,12 +6050,35 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       try { sessionStorage.setItem('ep_pay_ref', j.payment_ref); } catch (e) {}
       this.draftSave();
       track('PaymentStart', { ref: j.payment_ref, value: j.total_cop });
+      if (j.provider === 'wompi') return this.bnplOpen(j);
       return this.loadBold().then(function () {
         var checkout = new global.BoldCheckout(j.payment);
         checkout.open();
       }, function () {
         self.formError('No pudimos abrir el pago en línea. Revisa tu conexión y toca el botón otra vez.');
       });
+    },
+    /* cuotas Bancolombia: Wompi crea la transacción y en unos segundos entrega la URL de Bancolombia; se redirige ahí */
+    bnplOpen: function (j) {
+      var self = this, tries = 0;
+      this.done = true; this.busy(true);
+      var l = qs('[data-ep-submit] .ep-cta-label b', this.form); if (l) l.textContent = 'Abriendo Bancolombia…';
+      var go = function (url) { global.location.href = url; };
+      if (j.redirect_url) { go(j.redirect_url); return Promise.resolve(); }
+      var poll = function () {
+        tries++;
+        self.api('POST', '', { action: 'payment_status', payment_ref: j.payment_ref }).then(function (r) {
+          var x = r.j || {};
+          if (x.redirect_url) { go(x.redirect_url); return; }
+          if (!/^(rejected|failed|voided)$/.test(x.status || '') && tries < 10) { setTimeout(poll, 2000); return; }
+          self.done = false; self.busy(false);
+          self.formError('Bancolombia no pudo abrir tus cuotas. Intenta de nuevo, elige otro medio de pago o pide y paga al recibir:');
+          self.payFallback();
+          Funnel.send('pay_result', { status: x.status || 'sin_url', method: 'wompi_bnpl' });
+        }, function () { if (tries < 10) setTimeout(poll, 3000); });
+      };
+      poll();
+      return Promise.resolve();
     },
     /* datos del formulario guardados antes de abrir Bold: si el pago se rechaza, el cliente no vuelve a escribir todo */
     draftSave: function () {
@@ -5983,9 +6115,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       box.appendChild(b);
     },
     /* regreso de Bold: ?bold-order-id=…&bold-tx-status=…; el estado real lo confirma el servidor */
-    payResume: function (ref, txStatus) {
+    payResume: function (ref, txStatus, via) {
       var self = this, tries = 0, sec = qs('#ep-order');
-      this.st.pay = 'bold'; this.draftLoad();
+      this.st.pay = via || 'bold'; this.draftLoad();
       if (sec) setTimeout(function () { scrollToEl(sec); }, 300);
       this.done = true; this.busy(true);
       var l = qs('[data-ep-submit] .ep-cta-label b', this.form); if (l) l.textContent = 'Confirmando tu pago…';
@@ -6000,11 +6132,12 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
             return;
           }
           var final = /^(rejected|failed|voided)$/.test(j.status || '');
-          if (!final && tries < 12) { setTimeout(poll, tries < 4 ? 2500 : 5000); return; }
+          if (!final && tries < (via ? 24 : 12)) { setTimeout(poll, tries < 4 ? 2500 : 5000); return; }
           self.done = false; self.busy(false);
           var rejected = final || /rejected|failed/.test(txStatus || '');
           self.formError(rejected
             ? 'El pago no se aprobó. Puedes intentarlo otra vez con otro medio de pago, o hacer tu pedido y pagar en efectivo cuando lo recibas:'
+            : via === 'wompi_bnpl' ? 'Bancolombia aún está revisando tus cuotas. Apenas las apruebe te escribimos por WhatsApp con tu pedido.'
             : 'Aún no vemos tu pago confirmado. Si ya pagaste, te escribimos por WhatsApp apenas Bold lo apruebe.');
           if (rejected) self.payFallback();
           track('PaymentResult', { ref: ref, status: j.status || txStatus || 'unknown' });
@@ -6037,18 +6170,21 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     },
     check: function (name) {
       var v = function (n) { var e = Order.el(n); return e ? String(e.value || '').trim() : ''; };
-      if (name === 'first_name') return v('first_name').length < 2 ? 'Escribe tu nombre' : '';
-      if (name === 'last_name') return v('last_name').length < 2 ? 'Escribe tu apellido' : '';
-      if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return p.length && p.charAt(0) !== '3' ? 'Debe ser un celular (empieza por 3). Por ahí te confirmamos el pedido' : (p.length ? 'Te faltan ' + (10 - p.length) + ' números: el celular tiene 10 dígitos' : 'Escribe tu celular (10 dígitos, empieza por 3)'); return this.st.phoneMsg || ''; }
-      if (name === 'city') { if (!this.st.city) return !v('city') ? 'Escribe tu ciudad o municipio' : this.cityAmbiguous ? 'Hay varios municipios con ese nombre: toca el tuyo en la lista' : this.cityFuzzy ? '¿Quisiste decir ' + (this.cityRows || []).slice(0, 2).map(function (c) { return c.municipio; }).join(' o ') + '? Tócalo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
+      /* P0 (cesar 23-11): un solo nombre basta, el apellido ya no bloquea el pedido. Mensajes exactos de cesar. */
+      if (name === 'first_name') return /[A-Za-zÀ-ÿ]{2}/.test(v('first_name')) ? '' : 'Escribe tu nombre para recibir el pedido';
+      if (name === 'last_name') return '';
+      if (name === 'phone') { var p = this.phone(); if (!this.validPhone(p)) return p.length < 10 ? 'Ingresa los 10 dígitos de tu celular' : 'Revisa tu número de celular colombiano'; return this.st.phoneMsg || ''; }
+      if (name === 'city') { if (!this.st.city) return !v('city') ? 'Selecciona tu ciudad de la lista' : this.cityAmbiguous ? 'Selecciona tu ciudad de la lista' : this.cityFuzzy ? '¿Quisiste decir ' + (this.cityRows || []).slice(0, 2).map(function (c) { return c.municipio; }).join(' o ') + '? Tócalo en la lista' : 'No encontramos ese municipio. Escríbelo de nuevo y tócalo en la lista'; return this.cityProblem(); }
       /* dirección flexible: veredas, fincas, oficinas de transportadora o direcciones sin nomenclatura pasan;
          sin número, el pedido queda marcado en las notas para confirmar el punto por WhatsApp */
-      if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección o el punto de entrega' : '';
+      if (name === 'address1') return v('address1').length < 5 ? 'Escribe la dirección donde recibirás tu pedido' : '';
       if (name === 'additional') return '';   /* barrio opcional (2026-11-08): si viene vacío se confirma por WhatsApp */
-      if (name === 'email') { if (!this.payOnline()) return ''; var em = v('email'); return !em ? 'Escribe tu correo: Bold te envía ahí el comprobante' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? '' : 'Correo inválido'); }
+      var bn = this.method() === 'wompi_bnpl';
+      if (name === 'email') return bn && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v('email')) ? 'Escribe tu correo: Bancolombia te envía ahí tu plan de cuotas' : '';
+      if (name === 'document') return bn && !/^\d{5,11}$/.test(v('document').replace(/\D/g, '')) ? 'Escribe tu cédula (solo números)' : '';
       return '';
     },
-    fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'address1', 'additional'],
+    fields: ['first_name', 'last_name', 'phone', 'city', 'email', 'document', 'address1', 'additional'],
     validate: function () {
       var self = this, bad = [];
       this.fields.forEach(function (f) { var m = self.check(f); self.err(f, m); if (m) bad.push(f); });
@@ -6065,6 +6201,30 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     bind: function () {
       var self = this, f = this.form, cityInp = this.el('city'), list = qs('#ep-f-city-list');
       f.addEventListener('focusin', function (e) { var t = e.target; if (t && /^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName) && t.type !== 'radio' && t.type !== 'checkbox') self.formStart(); });
+      /* medición del formulario campo por campo (cesar 2026-11-12): vio el formulario, primer campo, cada campo completo, y en cuál se fue */
+      var fmT = function () { try { return Math.round(performance.now() / 1000); } catch (e) { return null; } };
+      var fmDone = {}, fmLast = '', fmStarted = false, fmGone = false;
+      f.addEventListener('focusin', function (e) {
+        var t = e.target, n = t && t.name;
+        if (!n || self.fields.indexOf(n) < 0) return;
+        fmLast = n;
+        if (!fmStarted) { fmStarted = true; Funnel.send('form_start', { field: n, plan: state.pack, t: fmT() }); }
+      });
+      f.addEventListener('focusout', function (e) {
+        var t = e.target, n = t && t.name;
+        if (!n || self.fields.indexOf(n) < 0 || fmDone[n]) return;
+        var val = String(t.value || '').trim();
+        if (val && !self.check(n)) { fmDone[n] = true; Funnel.send('form_field', { field: n, t: fmT() }); }
+      });
+      if ('IntersectionObserver' in global) {
+        var fmIo = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { fmIo.disconnect(); Funnel.send('form_field', { field: '_visto', plan: state.pack, t: fmT() }); } }); }, { threshold: .1 });
+        fmIo.observe(f);
+      }
+      global.addEventListener('pagehide', function () {
+        self.queueCart(true);
+        if (!fmStarted || self.done || fmGone) return; fmGone = true;
+        Funnel.send('form_field', { field: '_salida', ultimo: fmLast, completos: Object.keys(fmDone), plan: state.pack, t: fmT() });
+      });
       f.addEventListener('change', function (e) {
         var t = e.target;
         if (t.name === 'ep-ship') { self.st.ship = t.value; qsa('.ep-ship-opt', f).forEach(function (l) { l.classList.toggle('is-on', qs('input', l).checked); }); self.update(); }
@@ -6081,7 +6241,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
           var ph = self.phone(); if (t.value !== ph) t.value = ph;
           if (ph !== self.st.lastPhone) { self.st.phoneBlock = false; self.st.phoneMsg = ''; self.st.recent = null; }
           if (self.validPhone(ph)) { self.err('phone', ''); self.checkPhone(); }
-          else if (self.touched.phone) self.err('phone', ph.length >= 10 ? 'El celular debe empezar por 3' : '');
+          else if (self.touched.phone) self.err('phone', ph.length >= 10 ? 'Revisa tu número de celular colombiano' : '');
         } else if (t.name === 'city') {
           if (t.value !== self.cityLabel) { self.st.city = null; self.cityAmbiguous = false; self.cityFuzzy = false; self.err('city', ''); self.cityShow(); self.payMode(); }
           self.citySearch();
@@ -6110,7 +6270,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
             self.err('first_name', ''); self.err('last_name', '');
           }
         }
-        if (t.name === 'first_name' || t.name === 'last_name' || t.name === 'phone') self.queueCart();
+        if (['first_name', 'last_name', 'phone', 'city', 'address1', 'additional', 'document'].indexOf(t.name) >= 0) self.queueCart();
       });
       cityInp.addEventListener('focus', function () {
         if (global.innerWidth > 700) return;
@@ -6128,8 +6288,44 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         else if (e.key === 'Escape') { list.hidden = true; cityInp.setAttribute('aria-expanded', 'false'); }
       });
       f.addEventListener('submit', function (e) { e.preventDefault(); self.submit(); });
+      /* P0: el aviso de "Te falta…" se actualiza al corregir, y lo escrito queda guardado en la pestaña */
+      f.addEventListener('input', function () {
+        if (self.missShown) self.missMsg(self.fields.filter(function (n) { return !!self.check(n); }));
+        clearTimeout(self.fdTimer); self.fdTimer = setTimeout(function () { self.formDraftSave(); }, 300);
+      });
+      this.formDraftLoad();
     },
-    formError: function (msg) { var b = qs('[data-ep-form-error]', this.form); if (b) { b.textContent = msg || ''; b.hidden = !msg; } },
+    formError: function (msg) { this.missShown = false; var b = qs('[data-ep-form-error]', this.form); if (b) { b.textContent = msg || ''; b.hidden = !msg; } },
+    /* aviso junto al botón: todo toque en "Confirmar mi pedido" deja una reacción visible */
+    missMsg: function (bad) {
+      var L = { first_name: 'tu nombre', phone: 'tu celular', city: 'tu ciudad', address1: 'tu dirección', email: 'tu correo', document: 'tu cédula' };
+      if (!bad.length) { if (this.missShown) this.formError(''); return; }
+      var n = bad.map(function (k) { return L[k] || k; });
+      this.formError(bad.length >= 4 ? 'Completa tus datos de envío para hacer el pedido.' : 'Te falta ' + (n.length > 1 ? n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1] : n[0]) + '.');
+      this.missShown = true;
+    },
+    /* P0 #7: lo escrito se guarda en la pestaña (no el plan) y vuelve si la página se recarga; se borra con el pedido hecho */
+    formDraftSave: function () {
+      if (this.done) return;
+      var self = this, d = { city: this.st.city, cityLabel: this.cityLabel || '', v: {} };
+      this.fields.forEach(function (n) { var e = self.el(n); if (e) d.v[n] = String(e.value || ''); });
+      try { sessionStorage.setItem('ep_form_draft', JSON.stringify(d)); } catch (e) {}
+    },
+    formDraftLoad: function () {
+      var d = null; try { d = JSON.parse(sessionStorage.getItem('ep_form_draft') || 'null'); } catch (e) {}
+      if (!d || !d.v) return;
+      var self = this, any = false;
+      Object.keys(d.v).forEach(function (n) { var e = self.el(n); if (e && d.v[n] && !String(e.value || '').trim()) { e.value = d.v[n]; any = true; } });
+      if (d.city && d.city.municipio && d.cityLabel && this.el('city') && this.el('city').value === d.cityLabel) { this.st.city = d.city; this.cityLabel = d.cityLabel; try { this.cityShow(); this.payMode(); } catch (e) {} }
+      if (any) try { this.paint(); } catch (e) {}
+    },
+    idem: function () {
+      var k = null; try { k = sessionStorage.getItem('ep_idem'); } catch (e) {}
+      if (!k) { k = this.idemK || ''; }
+      if (!k) { try { k = global.crypto && crypto.randomUUID ? crypto.randomUUID() : ''; } catch (e) {} if (!k) k = 'k' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 12); this.idemK = k; try { sessionStorage.setItem('ep_idem', k); } catch (e) {} }
+      return k;
+    },
+    idemNew: function () { this.idemK = ''; try { sessionStorage.removeItem('ep_idem'); sessionStorage.removeItem('ep_form_draft'); } catch (e) {} },
     busy: function (on) {
       var b = qs('[data-ep-submit]', this.form); if (!b) return;
       if (on) b.setAttribute('aria-busy', 'true'); else b.removeAttribute('aria-busy');
@@ -6149,7 +6345,9 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
         track('FormInvalid', { fields: bad.join(',') });
         var cityTxt = bad.indexOf('city') >= 0 ? String(this.el('city').value || '').slice(0, 40) : null;
         Funnel.send('form_error', { fields: bad, city: cityTxt, plan: p.checkoutPlan || p.id });
-        var first = this.el(bad[0]); if (first) { first.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); setTimeout(function () { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, reduce ? 0 : 350); }
+        this.missMsg(bad);
+        /* el foco va dentro del mismo toque (así el celular abre el teclado, también en Facebook / Instagram) */
+        var first = this.el(bad[0]); if (first) { try { first.focus({ preventScroll: true }); } catch (e) { try { first.focus(); } catch (e2) {} } try { first.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); } catch (e) { try { first.scrollIntoView(); } catch (e2) {} } }
         return;
       }
       /* upsell: el pedido se guarda PRIMERO; el spray se ofrece después y solo se suma si dice que sí (cesar 11-nov) */
@@ -6157,14 +6355,16 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       var v = function (n) { return String(self.el(n).value || '').trim(); };
       var body = {
         action: 'order', slug: C.checkout.slug, session_id: this.sid, website: v('website'),
-        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(), email: this.payOnline() ? v('email') : undefined },
+        customer: { first_name: v('first_name'), last_name: v('last_name'), phone: this.phone(),
+          email: this.method() === 'wompi_bnpl' ? v('email') : undefined, document: this.method() === 'wompi_bnpl' ? v('document').replace(/\D/g, '') : undefined },
         address: { department: this.st.city.departamento, city: this.st.city.municipio, address1: v('address1'), additional: v('additional') || 'Sin barrio: confirmar por WhatsApp', notes: /\d/.test(v('address1')) ? undefined : 'Dirección sin número: confirmar punto de entrega por WhatsApp' },
         offer_key: p.offerKey, bump: !!(this.st.bump && C.checkout.bump), upsell: false,
         shipping_option: this.st.ship === 'priority' && C.checkout.express ? 'priority' : 'standard',
-        payment_method: this.method(), tracking: this.tracking()
+        payment_method: this.method(), tracking: this.tracking(), idempotency_key: this.idem()
       };
       var cp = this.coupon(); if (cp && !cp.demo) body.coupon_code = cp.code;
       if (body.payment_method === 'bold') body.return_url = global.location.origin + global.location.pathname;
+      if (body.payment_method === 'wompi_bnpl') body.return_url = global.location.origin + global.location.pathname + '?wompi_ref=';
       if (this.test) body.dry_run = true;
       this.sending = true; this.busy(true);
       track('SubmitOrder', payload(p));
@@ -6172,19 +6372,29 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
       this.api('POST', '', body).then(function (r) {
         var j = r.j || {};
         if (r.ok && j.success && j.payment_required) { self.payOpen(j); return; }
-        if (r.ok && j.success) { self.success(j, body); if (upAfter && j.order_id && !j.duplicate && !j.dry_run) self.upsellOpen(up, j, body); return; }
+        if (r.ok && j.success && !j.order_number) { self.formError('No pudimos registrar tu pedido. Inténtalo nuevamente.'); track('OrderError', { status: r.status, fields: 'sin_numero' }); return; }
+        if (r.ok && j.success) { self.idemNew(); self.success(j, body); return; }
         var map = j.fields || {}, shown = false;
+        /* cuotas Bancolombia: el error es del medio de pago, no de la ciudad; se muestra arriba del botón y se ofrecen los otros medios */
+        if (body.payment_method === 'wompi_bnpl' && (map.payment_method || !Object.keys(map).length)) {
+          self.formError(map.payment_method || j.error || 'Bancolombia no pudo abrir tus cuotas. Elige otro medio de pago.');
+          if (self.payFallback) self.payFallback();
+          track('OrderError', { status: r.status, fields: 'payment_method' });
+          Funnel.send('pay_result', { status: j.bnpl_rejected ? 'bnpl_rechazado' : 'error', method: 'wompi_bnpl' });
+          return;
+        }
         Object.keys(map).forEach(function (k) {
           var key = k === 'full_name' ? 'first_name' : k === 'payment_method' ? (j.cod_blocked ? 'phone' : 'city') : k;
           if (self.fields.indexOf(key) >= 0) { self.err(key, map[k]); shown = true; }
         });
         if (j.recent_order || j.blocked) { self.st.recent = j.recent_order ? { n: j.order_number || '', wa: j.whatsapp || '' } : null; self.st.phoneBlock = true; self.st.phoneMsg = j.error || map.phone || ''; self.err('phone', self.st.phoneMsg); shown = true; }
-        self.formError(shown ? 'Revisa los datos marcados en rojo.' : (j.error || 'No pudimos registrar tu pedido. Intenta de nuevo.'));
+        self.formError(shown ? 'Revisa los datos marcados en rojo.' : (j.error || 'No pudimos registrar tu pedido. Inténtalo nuevamente.'));
         track('OrderError', { status: r.status, fields: Object.keys(map).join(',') });
         var firstBad = qs('[aria-invalid="true"]', self.form) || qs('[data-ep-form-error]', self.form);
         if (firstBad) firstBad.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
       }, function () {
-        self.formError('No pudimos enviar tu pedido. Revisa tu conexión y toca el botón otra vez.');
+        self.formDraftSave();
+        self.formError('No pudimos enviar el pedido. Tus datos siguen guardados. Intenta nuevamente.');
         track('OrderError', { status: 0 });
       }).then(function () { self.sending = false; if (!self.done) self.busy(false); });
     },
@@ -6543,6 +6753,7 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
 
 </script>
 <script>
+/* Imágenes de los planes (cesar 16-11): las 1:1 del CRM (Supabase, product-confirmation-images), reducidas a 192 px. */
 /* Selector de ofertas con el diseño del selector v13 (tarjetas horizontales).
    Reemplaza el dibujo del selector del formulario; la lógica (plan elegido, total, carrito, pedido) sigue igual.
    Precio = el del checkout (se actualiza solo). Tachado = precio de 1 caja × cajas. */
@@ -6550,12 +6761,40 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
   var R = window.EP_RENDER;
   if (!R) return;
   var LOOK = {
-    dominio: { tag: "★ El más pedido", rec: true, inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/DOMINIO.webp?v=1793468717&width=700" },
-    elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/ELITE.webp?v=1793468748&width=700" },
-    inicial: { tag: "Para probar", inc: [], basic: true, img: "https://cdn.shopify.com/s/files/1/0748/9418/0397/files/BASICO.webp?v=1793468688&width=700" }
+    dominio: { tag: "★ El más pedido", rec: true, inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Dominio%20Total%20Enerplu.png?width=192&height=192&resize=contain&quality=80" },
+    elite:   { tag: "Máximo ahorro", inc: ["Retardante 30 ml <b>gratis</b>", "Obsequio Velvet <b>gratis</b>"], img: "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Elite_%20Maximo%20Ahorro.png?width=192&height=192&resize=contain&quality=80" },
+    inicial: { tag: "Para probar", inc: [], basic: true, img: "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Basico%20Enerplu.png?width=192&height=192&resize=contain&quality=80" }
   };
+  /* E-06 · Oferta A (cesar 2026-11-12): mismos planes y precios, sin tachados ni %, precio por tableta,
+     una línea con lo que incluye cada plan. Solo en /oferta-a (window.EP_OFERTA_A). */
+  var OFA = !!window.EP_OFERTA_A;
+  if (OFA) {
+    LOOK.dominio.tag = "El más pedido"; LOOK.dominio.incA = "Incluye spray retardante 30 ml + sachet";
+    LOOK.elite.tag = "Mejor precio por tableta"; LOOK.elite.incA = "Incluye spray retardante 30 ml + sachet";
+    LOOK.inicial.incA = "Incluye sachet · sin spray retardante";
+    var derive0 = R.derive;   /* sin "precio de lista" inflado en el resumen ni en los textos de ahorro */
+    R.derive = function (c, p) { var d = derive0(c, p); d.compare = p.price; d.save = 0; return d; };
+  }
   R.selector = function (cfg, sel) {
     sel = sel || cfg.defaultPack;
+    if (OFA) return R.ordered(cfg).map(function (p) {
+      var L = LOOK[p.id] || { tag: "", img: "" }, on = p.id === sel;
+      return '<label class="ep-sel-opt eph-card eph-c' + (L.rec ? ' rec' : '') + (L.basic ? ' is-basic' : '') + (on ? ' is-on' : '') + '" data-pack="' + p.id + '">' +
+        '<input type="radio" name="ep-pack-order" value="' + p.id + '"' + (on ? ' checked' : '') + '>' +
+        (L.tag ? '<span class="eph-tag">' + L.tag + '</span>' : '') +
+        '<span class="eph-c-row">' +
+          '<span class="eph-check" aria-hidden="true"></span>' +
+          '<span class="eph-c-img"><img src="' + R.esc(L.img) + '" alt="' + R.esc(p.name) + ' ENERPLU" loading="' + (L.rec ? 'eager' : 'lazy') + '" decoding="async"></span>' +
+          '<span class="eph-c-info">' +
+            '<span class="eph-name">' + R.esc(p.name) + '</span>' +
+            '<span class="eph-qty">' + p.boxes + (p.boxes > 1 ? ' cajas' : ' caja') + ' · ' + p.tablets + ' tabletas</span>' +
+            '<span class="eph-unit">' + R.money(p.price / p.tablets) + ' por tableta</span>' +
+          '</span>' +
+          '<span class="eph-c-price"><span class="eph-price">' + R.money(p.price) + '</span></span>' +
+        '</span>' +
+        (L.incA ? '<span class="eph-c-gift eph-c-inc' + (L.basic ? ' is-miss' : '') + '"><span>' + R.esc(L.incA) + '</span></span>' : '') +
+      '</label>';
+    }).join('');
     return R.ordered(cfg).map(function (p) {
       var L = LOOK[p.id] || { tag: "", inc: [], img: "" };
       var was = cfg.singleBoxPrice * p.boxes, save = was - p.price, on = p.id === sel;
@@ -6717,168 +6956,9 @@ window.EP_POPUP_MODE = 'off';
 
 </script>
 
-<script>/* Popup de 5% en la primera compra (cesar 2026-11-10: "quiero hacer esto mismo en ENERPLU", igual que Mg Collagen).
-   Prueba "popup5" (N sin popup 20%, A 40%, B 40%), independiente de la prueba de página E-04 (sale por igual en "/" y en "/b"):
-   A = "No te vayas": aparece al intentar salir (botón atrás, volver a la pestaña, cursor que sale por arriba). Cupón con reloj de 15 min.
-   B = "Primera compra": aparece a los 8 s y deja una barra arriba.
-   El descuento lo valida y lo aplica el CRM (discount_codes, checkout-native action "coupon"); aquí solo se muestra.
-   Solo se ve en el resumen del formulario; se suma al descuento de pago anticipado. ?pop=A|B fuerza, ?pop=0 lo apaga. */
-(function () {
-  var CODE = 'ENERPLU5', PCT = 5, MIN_A = 15, SEG_B = 8, IMG = '/img/popup-enerplu.webp';
-  var I = {
-    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
-    clk: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
-    chk: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
-    truck: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="17.5" cy="17.5" r="1.5"/></svg>',
-    box: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
-    arr: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
-  };
-  var ls = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
-  var ss = { get: function (k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} } };
-  var mmss = function (ms) { var s = Math.max(0, Math.round(ms / 1000)); return ('0' + Math.floor(s / 60)).slice(-2) + ':' + ('0' + (s % 60)).slice(-2); };
-
-  function init(h) {
-    var qs = new URLSearchParams(location.search), f = (qs.get('pop') || '').toUpperCase();
-    var forced = f === 'A' || f === 'B' || f === 'N' ? f : null;
-    if (qs.get('pop') === '0') return;
-    /* N = grupo sin popup (20%), para saber si el 5% de verdad sube pedidos; A y B 40% cada uno */
-    var v = forced || ls.get('ep_pop_v');
-    if (v !== 'A' && v !== 'B' && v !== 'N') { var r = Math.random(); v = r < 0.2 ? 'N' : r < 0.6 ? 'A' : 'B'; ls.set('ep_pop_v', v); }
-    if (!ss.get('ep_pop_as')) { ss.set('ep_pop_as', '1'); h.funnel('ab_assign', { exp: 'popup5', v: v }); }
-    if (v === 'N') return;
-
-    /* cupón ya aceptado en esta sesión: se conserva al recargar */
-    try { var c0 = JSON.parse(ss.get('ep_cup') || 'null'); if (c0 && (!c0.exp || c0.exp > Date.now())) var c0ok = c0; } catch (e) {}
-
-    /* aviso de cupón aplicado, justo donde aterriza la persona (encima de "Tu pedido" o del formulario) */
-    var note = null, ntick = null;
-    function apply(c) {
-      h.applyCoupon(c); clearInterval(ntick); if (note) { note.remove(); note = null; }
-      if (!c) return;
-      var at = document.querySelector('#tp-card') || document.querySelector('#ep-order form') || document.querySelector('#ep-order');
-      if (!at) return;
-      note = document.createElement('div'); note.className = 'epp-ok';
-      note.innerHTML = I.chk + '<div><b>' + c.pct + '% de descuento aplicado</b><small>Código ' + c.code + ' · ya está en el total de tu pedido</small></div>' + (c.exp ? '<span class="epp-tm">' + I.clk + '<span data-tm></span></span>' : '');
-      at.parentNode.insertBefore(note, at);
-      if (c.exp) { var f = function () { var left = c.exp - Date.now(); if (left <= 0) { ss.set('ep_cup', 'null'); apply(null); return; } note.querySelector('[data-tm]').textContent = mmss(left); }; f(); ntick = setInterval(f, 1000); }
-    }
-    var seen = !forced && ls.get('ep_pop_seen') === '1', open = false, el = null, tick = null, expA = 0, pre = false;
-    var typing = function () { var a = document.activeElement; return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)); };
-    if (typeof c0ok !== 'undefined') apply(c0ok);
-    function preload() { if (pre) return; pre = true; new Image().src = IMG; }
-
-    function bar() {
-      if (v !== 'B' || bar.d) return; bar.d = 1;
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'epp-bar';
-      b.innerHTML = 'Primera compra · <b>' + PCT + '% con ' + CODE + '</b>';
-      b.addEventListener('click', function () { accept('bar'); });
-      document.body.insertBefore(b, document.body.firstChild);
-    }
-    function close(how) {
-      if (!open) return; open = false; clearInterval(tick);
-      document.documentElement.classList.remove('epp-lock');
-      el.classList.remove('on'); var e = el; setTimeout(function () { e.remove(); }, 260);
-      if (how) h.funnel('popup_close', { v: v, how: how });
-      bar();
-    }
-    function accept(from) {
-      h.funnel('popup_accept', { v: v, from: from });
-      /* se aplica de una vez para no hacer esperar; el CRM lo valida en segundo plano y de nuevo al crear el pedido */
-      var c = { code: CODE, pct: PCT, exp: v === 'A' ? (expA || Date.now() + MIN_A * 60000) : null, demo: !!h.test };
-      ss.set('ep_cup', JSON.stringify(c)); apply(c);
-      close(); h.goForm();
-      if (h.test) return; /* vista de prueba: se muestra aunque el código aún no exista (no se manda al pedido) */
-      h.api({ action: 'coupon', code: CODE, offer_key: h.selKey(), bump: h.bump() }).then(function (r) {
-        if (r && r.status && r.status < 500 && !(r.j && r.j.success)) { ss.set('ep_cup', 'null'); apply(null); h.funnel('form_error', { server: 1, cupon: CODE }); }
-      }, function () {});
-    }
-    function show(trig) {
-      if (seen || open || h.ordered()) return false;
-      seen = true; open = true; if (!forced) ls.set('ep_pop_seen', '1');
-      preload();
-      var A = v === 'A'; if (A) expA = Date.now() + MIN_A * 60000;
-      el = document.createElement('div'); el.className = 'epp'; el.setAttribute('data-v', v);
-      el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', PCT + '% de descuento en tu primera compra');
-      el.innerHTML =
-        '<div class="epp-card"><div class="epp-hero" style="background-image:url(' + IMG + ')"><span class="epp-mark"><i></i>ENERPLU</span><button type="button" class="epp-x" aria-label="Cerrar">' + I.x + '</button></div>' +
-        '<div class="epp-body"><p class="epp-eye">' + (A ? 'Antes de irte' : 'Primera compra') + '</p>' +
-        (A ? '<p class="epp-t">Pruébalo hoy con <em>' + PCT + '% de descuento</em></p><p class="epp-p">Tu primer pedido sale con <b>' + PCT + '% menos</b>. Lo pides ahora, llega en paquete discreto y <b>pagas al recibir</b>.</p>'
-           : '<p class="epp-t">En tu primera compra, <em>' + PCT + '% de descuento</em></p><p class="epp-p">El descuento se aplica solo en tu pedido, <b>no tienes que escribir nada</b>. Si pagas ahora, se suma al descuento de pago anticipado.</p>') +
-        '<div class="epp-cup"><span class="epp-pct">' + PCT + '<sup>%</sup></span><div class="epp-mid"><small>Tu código</small><b>' + CODE + '</b></div>' +
-        (A ? '<span class="epp-tm">' + I.clk + '<span data-tm>' + mmss(MIN_A * 60000) + '</span></span>' : '<span class="epp-tm s">1.ª compra</span>') + '</div>' +
-        '<button type="button" class="epp-go">' + (A ? 'Usar mi 5% ahora' : 'Aplicar mi 5%') + I.arr + '</button>' +
-        '<ul class="epp-tr"><li>' + I.truck + 'Envío gratis</li><li>' + I.box + 'Paquete discreto</li><li>' + I.chk + 'Pagas al recibir</li></ul>' +
-        '<button type="button" class="epp-no">' + (A ? 'No, gracias' : 'Seguir viendo') + '</button></div></div>';
-      document.body.appendChild(el);
-      document.documentElement.classList.add('epp-lock');
-      requestAnimationFrame(function () { el.classList.add('on'); });
-      el.querySelector('.epp-x').addEventListener('click', function () { close('x'); });
-      el.querySelector('.epp-no').addEventListener('click', function () { close('no'); });
-      el.querySelector('.epp-go').addEventListener('click', function () { accept('popup'); });
-      el.addEventListener('click', function (e) { if (e.target === el) close('fuera'); });
-      if (A) tick = setInterval(function () { var t = el.querySelector('[data-tm]'); if (t) t.textContent = mmss(expA - Date.now()); }, 1000);
-      h.funnel('popup_view', { v: v, trig: trig });
-      return true;
-    }
-    addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) close('esc'); });
-    if (seen) { bar(); return; }
-
-    if (v === 'A') {
-      /* 1) Botón "atrás": se arma cuando ya mostró interés (bajó en la página o lleva 15 s).
-            Chrome en celular ignora el "atrás" si la persona nunca tocó la página, así que el estado se guarda al primer toque. */
-      var armed = false, ready = false, pushed = false;
-      var active = function () { try { return !navigator.userActivation || navigator.userActivation.hasBeenActive; } catch (e) { return true; } };
-      var push = function () {
-        if (pushed || !ready || seen || !active()) return; pushed = true;
-        try { history.pushState({ eppop: 1 }, ''); } catch (e) { return; }
-        addEventListener('popstate', function onPop(e) {
-          if (e.state && e.state.eppop) return;
-          removeEventListener('popstate', onPop);
-          show('atras');
-        });
-      };
-      var arm = function () { if (armed) return; armed = true; ready = true; preload(); push(); };
-      ['pointerdown', 'touchend', 'keydown'].forEach(function (ev) { addEventListener(ev, function () { setTimeout(push, 0); }, { passive: true }); });
-      setTimeout(arm, 15000);
-      var t0 = Date.now(), maxY = 0, lastY = 0, lastT = 0, upFrom = -1;
-      addEventListener('scroll', function () {
-        var d = document.documentElement, y = scrollY, now = Date.now();
-        if ((y + innerHeight) / d.scrollHeight > 0.3) arm();
-        /* 1b) Celular: venía leyendo abajo y sube rápido (gesto típico antes de salir). Mismas medidas que Mg:
-               racha hacia arriba de más del 60% del alto de pantalla, habiendo bajado más de 1,2 pantallas y con 6 s en la página */
-        if (y > maxY) maxY = y;
-        if (y < lastY) {
-          if (upFrom < 0 || now - lastT > 300) upFrom = lastY;
-          if (now - t0 > 6000 && maxY > innerHeight * 1.2 && upFrom - y > innerHeight * 0.6 && !typing()) show('sube');
-        } else upFrom = -1;
-        lastY = y; lastT = now;
-      }, { passive: true });
-      /* 2) Se fue a otra app o pestaña y volvió (2 s o más por fuera) */
-      var away = 0;
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden) { away = Date.now(); return; }
-        if (away && Date.now() - away >= 2000 && !typing()) show('vuelve');
-      });
-      /* 3) Computador: el cursor sale por arriba */
-      document.addEventListener('mouseout', function (e) { if (!e.relatedTarget && e.clientY <= 0 && !typing()) show('cursor'); });
-    } else {
-      setTimeout(preload, 2000);
-      setTimeout(function go() { if (typing()) { setTimeout(go, 4000); return; } show('tiempo'); }, SEG_B * 1000);
-    }
-  }
-  if (window.EP_POP) init(window.EP_POP); else addEventListener('ep:pop-ready', function () { init(window.EP_POP); }, { once: true });
-})();
-</script>
-<script>
-(function(){
-  var q=new URLSearchParams(location.search); if(q.get('ep_test')==='1') return;
-  var n=0;(function go(){var sid='';try{sid=sessionStorage.getItem('ep_sid')||''}catch(e){}
-    if(!sid){if(n++<20)setTimeout(go,300);return;}
-    var b=JSON.stringify({sid:sid,ev:'ab_assign',page:(location.host+location.pathname).slice(0,300),store:'enerplu',utm_source:q.get('utm_source'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term'),extra:{exp:'E05',v:'A'}});
-    var U='https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track';
-    try{if(!(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'text/plain'}))))fetch(U,{method:'POST',body:b,keepalive:true,headers:{'Content-Type':'text/plain'}})}catch(e){}
-  })();
-})();
-</script>
+<script>(function(){document.addEventListener('click',function(e){
+  var img=e.target.closest&&e.target.closest('[data-id="gpGrrwtDmE"] img');if(!img)return;
+  var a=document.querySelector('a[href="#ep-offer-widget"]');if(!a)return;e.preventDefault();a.click();
+},false);})();</script>
 </body>
 </html>

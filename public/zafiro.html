@@ -256,6 +256,8 @@ select.sel:disabled{background-color:#E5E7EB;color:#6B7280}
 .unmute small{font:500 12.5px Inter,sans-serif;color:#CFCABB}
 @keyframes lat{50%{transform:scale(1.045)}}
 .pausa{position:absolute;inset:0;border:0;background:rgba(0,0,0,.5);color:#fff;font:800 16px var(--disp);cursor:pointer}
+.nv{position:absolute;inset:0;display:grid;place-content:center;gap:8px;padding:24px;text-align:center;font:800 17px/1.25 var(--disp);color:#fff;background:#0D0D0D}
+.nv small{display:block;font:500 13px/1.4 Inter,sans-serif;color:#A9A59A}
 .pbar{position:absolute;left:0;right:0;bottom:0;height:5px;background:rgba(255,255,255,.16)}
 .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--goldd),var(--gold),var(--gold2))}
 .lock{margin:14px 0 0;font-size:14px;color:#CFCABB;display:flex;gap:8px;justify-content:center;align-items:center}
@@ -299,6 +301,7 @@ select.sel:disabled{background-color:#E5E7EB;color:#6B7280}
     <video id="v" playsinline webkit-playsinline muted preload="auto" disablepictureinpicture controlslist="nodownload noplaybackrate"></video>
     <button class="unmute" id="un" type="button" aria-label="Activar el sonido"><span><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>Toca para activar el sonido<small>El video ya empezó</small></span></button>
     <button class="pausa" id="pa" type="button" hidden>Toca para continuar</button>
+    <div class="nv" id="nv" hidden>Aquí va el video de ZAFIR.<small>Falta el código de incrustar. Por eso la oferta se muestra de una vez.</small></div>
     <div class="pbar"><i id="pb"></i></div>
   </div>
   <p class="lock" id="lk"><svg class="i"><use href="#lock"/></svg><span>Sigue viendo para desbloquear tu oferta</span></p>
@@ -429,12 +432,17 @@ select.sel:disabled{background-color:#E5E7EB;color:#6B7280}
   ver.addEventListener('click',function(){zf('cta_click',{where:'vsl'});document.getElementById('paso1').scrollIntoView({behavior:'smooth',block:'start'})});
   /* cargar el video: Safari lo reproduce directo; en los demás navegadores con hls.js */
   function cargar(){
-    if(/\.m3u8/.test(SRC)&&!v.canPlayType('application/vnd.apple.mpegurl')){
+    if(/\.m3u8/.test(SRC)&&(window.MediaSource||window.ManagedMediaSource)&&!/iP(hone|ad|od)/.test(navigator.userAgent)){
       var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js';
-      s.onload=function(){ if(window.Hls&&Hls.isSupported()){var h=new Hls({capLevelToPlayerSize:true,startLevel:-1}); h.loadSource(SRC); h.attachMedia(v); h.on(Hls.Events.MANIFEST_PARSED,arrancar);} };
+      s.onload=function(){ if(window.Hls&&Hls.isSupported()){var h=new Hls({capLevelToPlayerSize:true,startLevel:-1}); h.loadSource(SRC); h.attachMedia(v); h.on(Hls.Events.MANIFEST_PARSED,arrancar); h.on(Hls.Events.ERROR,function(e,d){ if(d&&d.fatal)sinVideo(); });} else { v.src=SRC; arrancar(); } };
+      s.onerror=function(){ v.src=SRC; arrancar(); };
       document.head.appendChild(s);
     } else { v.src=SRC; arrancar(); }
   }
+  /* si el video no carga: aviso en el reproductor y la oferta no se queda escondida para siempre */
+  var caido=false;
+  function sinVideo(){ if(caido)return; caido=true; un.hidden=true; pa.hidden=true; document.getElementById('nv').hidden=false; zf('vsl_error'); abrir('sin_video'); }
+  v.addEventListener('error',sinVideo);
   function arrancar(){ v.muted=true; var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
   v.addEventListener('loadedmetadata',function(){ if(v.videoWidth>v.videoHeight)pl.classList.add('h169'); });
   v.addEventListener('playing',function(){ if(!hitos.play){hitos.play=1; zf('vsl_play');} });

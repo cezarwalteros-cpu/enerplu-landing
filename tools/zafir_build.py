@@ -507,10 +507,11 @@ PAGE = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0A0A0A">
-<title>ZAFIR | Información para hombres</title>
-<meta name="description" content="Mira el video completo. Pago contra entrega en Colombia.">
+<title>Tienda AlNatural</title>
+<meta name="description" content="Pago contra entrega y envío discreto a toda Colombia.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ZAFIR | Información para hombres">
+<meta property="og:title" content="Tienda AlNatural">
+<meta property="og:description" content="Pago contra entrega y envío discreto a toda Colombia.">
 <meta property="og:image" content="/og.jpg">
 <!-- ZAFIR: página con VSL + formulario contraentrega. Generada por tools/zafir_build.py (no editar a mano). __ESTADO__ -->
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -627,15 +628,17 @@ try:
     fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 150)
 except OSError:
     fnt = ImageFont.load_default()
-w = d.textlength("ZAFIR", font=fnt)
-d.text(((1200 - w) / 2, 220), "ZAFIR", font=fnt, fill=(247, 215, 116))
+TXT = "Tienda AlNatural"   # cesar 25-nov: el título y la vista previa no dicen ZAFIR
+fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 96)
+w = d.textlength(TXT, font=fnt)
+d.text(((1200 - w) / 2, 255), TXT, font=fnt, fill=(247, 215, 116))
 og.save(OUT / "og.jpg", quality=88)
 
 (OUT / "vercel.json").write_text(json.dumps({
     "framework": None, "buildCommand": "", "outputDirectory": ".", "cleanUrls": True,
     "rewrites": [
-        {"source": "/ZAFIRO", "destination": "/index.html"},
-        {"source": "/zafiro", "destination": "/index.html"},
+        {"source": "/ZAFIRO", "destination": "/"},
+        {"source": "/zafiro", "destination": "/"},
         {"source": "/api/c", "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-native"},
         {"source": "/api/f", "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track"},
     ],

@@ -6,11 +6,11 @@
   "rewrites": [
     {
       "source": "/ZAFIRO",
-      "destination": "/index.html"
+      "destination": "/"
     },
     {
       "source": "/zafiro",
-      "destination": "/index.html"
+      "destination": "/"
     },
     {
       "source": "/api/c",

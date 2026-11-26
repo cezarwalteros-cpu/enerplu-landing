@@ -27,10 +27,11 @@ TITULAR = "El secreto de los hombres que nunca fallan."  # página que vendía (
 # Orden, nombres, etiquetas y precios "antes" de la página que vendía. Precios de venta = mínimos que dio cesar el 25-nov
 # (la página vieja tenía 2 botellas a $110.300; el mínimo de cesar es $116.000).
 GIFT = "Obsequio sorpresa"   # cesar 25-nov: no hay libros digitales, solo obsequio
+BONO = "Bono $10.000 próxima compra"   # cesar 26-nov: bono de recompra en 2 y 3 botellas
 PLANS = [
     {"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": [GIFT], "gift": GIFT},
-    {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 116000, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": True, "extras": [GIFT], "gift": GIFT},
-    {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": [GIFT], "gift": GIFT},
+    {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 116000, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": True, "extras": [GIFT, BONO], "gift": GIFT, "bono": BONO},
+    {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": [GIFT, BONO], "gift": GIFT, "bono": BONO},
 ]
 BUMP = 5000                        # "Envío Nacional prioritario con seguro" de la página que vendía
 # departamentos donde no hay contraentrega: no salen en la lista (regla de cesar 25-nov)
@@ -80,7 +81,7 @@ cambia_re(r"function paintPlans\(\) \{.*?\n  \}\n\n  function render\(\) \{", r'
         '<span class="ptag">' + esc(p.tag) + "</span>" +
         '<span class="pbody"><span class="radio"></span>' +
         '<img class="pim" src="/img/b' + p.boxes + '.webp" alt="" width="72" height="72">' +
-        '<span class="pm"><div class="pn">' + esc(p.name) + '</div><div class="pg">' + ico("gift") + "<span>" + esc(p.gift) + "</span></div></span>" +
+        '<span class="pm"><div class="pn">' + esc(p.name) + '</div><div class="pg">' + ico("gift") + "<span>" + esc(p.gift) + "</span></div>" + (p.bono ? '<div class="pg">' + ico("gift") + "<span>" + esc(p.bono) + "</span></div>" : "") + "</span>" +
         '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><small>AHORA</small><strong>" + fmt(p.price) + "</strong></span></span></label>";
     }).join("");
   }

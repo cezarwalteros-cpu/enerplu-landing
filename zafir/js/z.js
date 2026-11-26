@@ -8,7 +8,7 @@
     pixel: "534952895765160",
     live: true
   };
-  var PLANS = [{"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}, {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 116000, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": true, "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}, {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}];
+  var PLANS = [{"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}, {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 116000, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": true, "extras": ["Obsequio sorpresa", "Bono $10.000 próxima compra"], "gift": "Obsequio sorpresa", "bono": "Bono $10.000 próxima compra"}, {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": ["Obsequio sorpresa", "Bono $10.000 próxima compra"], "gift": "Obsequio sorpresa", "bono": "Bono $10.000 próxima compra"}];
   var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
   var fmt = function (n) { return "$" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "."); };
   var clean = function (v) { return String(v || "").replace(/\s+/g, " ").trim(); };
@@ -74,7 +74,7 @@
         '<span class="ptag">' + esc(p.tag) + "</span>" +
         '<span class="pbody"><span class="radio"></span>' +
         '<img class="pim" src="/img/b' + p.boxes + '.webp" alt="" width="72" height="72">' +
-        '<span class="pm"><div class="pn">' + esc(p.name) + '</div><div class="pg">' + ico("gift") + "<span>" + esc(p.gift) + "</span></div></span>" +
+        '<span class="pm"><div class="pn">' + esc(p.name) + '</div><div class="pg">' + ico("gift") + "<span>" + esc(p.gift) + "</span></div>" + (p.bono ? '<div class="pg">' + ico("gift") + "<span>" + esc(p.bono) + "</span></div>" : "") + "</span>" +
         '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><small>AHORA</small><strong>" + fmt(p.price) + "</strong></span></span></label>";
     }).join("");
   }

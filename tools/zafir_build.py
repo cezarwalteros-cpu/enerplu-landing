@@ -20,7 +20,8 @@ PUB = ROOT / "public"
 LIVE = False                       # True solo cuando el CRM tenga el slug y cesar dé el OK
 SLUG = "zafir"
 PIXEL = "534952895765160"          # el pixel que usan las campañas viejas de ZAFIR
-DELAY = 0                          # segundos de video para mostrar la oferta. 0 = todo visible desde el inicio, como la página que vendía
+DELAY = 120                        # cesar 25-nov: lo de debajo del video aparece a los 120 segundos de verlo (tiempo real)
+SPEED = 1.75                       # cesar 25-nov: el video corre a 1,75x
 VIDEO = "https://vz-c91527a7-3a2.b-cdn.net/b62d6978-a4c2-4d3f-aed5-9a2db3a89796/playlist.m3u8"  # Bunny de cesar (biblioteca 821672), subido 25-nov, 9:46 min
 TITULAR = "El secreto de los hombres que nunca fallan."  # página que vendía (captura de cesar 25-nov)
 # Orden, nombres, etiquetas y precios "antes" de la página que vendía. Precios de venta = mínimos que dio cesar el 25-nov
@@ -444,7 +445,7 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
 
 VSL_JS = r"""
 (function(){
-  var DELAY=__DELAY__, SRC="__VIDEO__";
+  var DELAY=__DELAY__, SPEED=__SPEED__, SRC="__VIDEO__";
   var q=new URLSearchParams(location.search), v=document.getElementById('v'), pl=document.getElementById('pl');
   var un=document.getElementById('un'), pa=document.getElementById('pa'), pb=document.getElementById('pb');
   var of=document.getElementById('oferta'), lk=document.getElementById('lk'), ver=document.getElementById('ver');
@@ -473,7 +474,9 @@ VSL_JS = r"""
   var caido=false;
   function sinVideo(){ if(caido)return; caido=true; un.hidden=true; pa.hidden=true; document.getElementById('nv').hidden=false; zf('vsl_error'); abrir('sin_video'); }
   v.addEventListener('error',sinVideo);
-  function arrancar(){ v.muted=true; var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+  function vel(){ try{v.defaultPlaybackRate=SPEED; v.playbackRate=SPEED;}catch(e){} }
+  ['loadedmetadata','play','playing','ratechange'].forEach(function(ev){ v.addEventListener(ev,function(){ if(Math.abs(v.playbackRate-SPEED)>.01)vel(); }); });
+  function arrancar(){ vel(); v.muted=true; var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
   v.addEventListener('loadedmetadata',function(){ if(v.videoHeight>v.videoWidth)pl.classList.add('v916'); });
   v.addEventListener('playing',function(){ if(!hitos.play){hitos.play=1; zf('vsl_play');} });
   un.addEventListener('click',function(){
@@ -491,14 +494,14 @@ VSL_JS = r"""
     if(sonido&&t>maxT)maxT=t;
     pb.style.width=(Math.pow(t/d,0.55)*100).toFixed(2)+'%';   /* avanza rápido al inicio, como las barras de los VSL */
     if(sonido){[25,50,75,95].forEach(function(h){ if(!hitos[h]&&t/d*100>=h){hitos[h]=1; zf('vsl_'+h);} });}
-    if(sonido&&DELAY>0&&t>=DELAY)abrir('video');
+    if(DELAY>0&&t>=DELAY*SPEED)abrir('video');
   });
   v.addEventListener('ended',function(){ abrir('fin'); });
   var ya=false; try{ya=localStorage.getItem('zf_oferta')==='1'}catch(e){}
   function inicio(){ if(DELAY<=0)abrir('directo'); else if(q.get('oferta')==='1')abrir('link'); else if(ya)abrir('regreso'); cargar(); }
   if(document.readyState==='complete')inicio(); else window.addEventListener('load',inicio);
 })();
-""".replace("__DELAY__", str(DELAY)).replace("__VIDEO__", VIDEO)
+""".replace("__DELAY__", str(DELAY)).replace("__SPEED__", str(SPEED)).replace("__VIDEO__", VIDEO)
 
 PAGE = """<!doctype html>
 <html lang="es">

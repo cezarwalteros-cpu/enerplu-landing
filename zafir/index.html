@@ -552,7 +552,7 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
 <script src="/js/z.js" defer></script>
 <script>
 (function(){
-  var DELAY=0, SRC="https://vz-c91527a7-3a2.b-cdn.net/b62d6978-a4c2-4d3f-aed5-9a2db3a89796/playlist.m3u8";
+  var DELAY=120, SPEED=1.75, SRC="https://vz-c91527a7-3a2.b-cdn.net/b62d6978-a4c2-4d3f-aed5-9a2db3a89796/playlist.m3u8";
   var q=new URLSearchParams(location.search), v=document.getElementById('v'), pl=document.getElementById('pl');
   var un=document.getElementById('un'), pa=document.getElementById('pa'), pb=document.getElementById('pb');
   var of=document.getElementById('oferta'), lk=document.getElementById('lk'), ver=document.getElementById('ver');
@@ -579,7 +579,9 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
   var caido=false;
   function sinVideo(){ if(caido)return; caido=true; un.hidden=true; pa.hidden=true; document.getElementById('nv').hidden=false; zf('vsl_error'); abrir('sin_video'); }
   v.addEventListener('error',sinVideo);
-  function arrancar(){ v.muted=true; var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+  function vel(){ try{v.defaultPlaybackRate=SPEED; v.playbackRate=SPEED;}catch(e){} }
+  ['loadedmetadata','play','playing','ratechange'].forEach(function(ev){ v.addEventListener(ev,function(){ if(Math.abs(v.playbackRate-SPEED)>.01)vel(); }); });
+  function arrancar(){ vel(); v.muted=true; var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
   v.addEventListener('loadedmetadata',function(){ if(v.videoHeight>v.videoWidth)pl.classList.add('v916'); });
   v.addEventListener('playing',function(){ if(!hitos.play){hitos.play=1; zf('vsl_play');} });
   un.addEventListener('click',function(){
@@ -597,7 +599,7 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
     if(sonido&&t>maxT)maxT=t;
     pb.style.width=(Math.pow(t/d,0.55)*100).toFixed(2)+'%';   
     if(sonido){[25,50,75,95].forEach(function(h){ if(!hitos[h]&&t/d*100>=h){hitos[h]=1; zf('vsl_'+h);} });}
-    if(sonido&&DELAY>0&&t>=DELAY)abrir('video');
+    if(DELAY>0&&t>=DELAY*SPEED)abrir('video');
   });
   v.addEventListener('ended',function(){ abrir('fin'); });
   var ya=false; try{ya=localStorage.getItem('zf_oferta')==='1'}catch(e){}

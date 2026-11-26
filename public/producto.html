@@ -5979,6 +5979,14 @@ window.EP_CONFIG.tracking.fireStandardEvents = true;
     },
     cityList: function (rows, q) {
       var list = qs('#ep-f-city-list'), inp = this.el('city'); if (!list) return;
+      /* cesar 2026-11-26 (caso ENL-2702 Quibdó): municipios de solo pago anticipado no reciben pedidos desde la página */
+      var bloq = (rows || []).filter(function (c) { return c.solo_pago_anticipado; });
+      rows = (rows || []).filter(function (c) { return !c.solo_pago_anticipado; });
+      if (!rows.length && bloq.length) {
+        this.cityRows = []; this.cityIdx = -1;
+        list.innerHTML = '<li class="ep-city-empty" role="presentation">Por ahora no hacemos envíos a ' + R.esc(bloq[0].municipio) + '.</li>';
+        list.hidden = false; inp.setAttribute('aria-expanded', 'true'); return;
+      }
       this.cityRows = rows; this.cityIdx = -1;
       if (!rows.length) {
         list.innerHTML = q ? '<li class="ep-city-empty" role="presentation">No encontramos “' + R.esc(q) + '”. Escribe el municipio; si vives en un corregimiento o vereda, escribe el municipio al que pertenece.</li>' : '';

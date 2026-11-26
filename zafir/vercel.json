@@ -1,0 +1,35 @@
+{
+  "framework": null,
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/ZAFIRO",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/zafiro",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/api/c",
+      "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-native"
+    },
+    {
+      "source": "/api/f",
+      "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ]
+}

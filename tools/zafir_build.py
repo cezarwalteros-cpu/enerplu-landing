@@ -1,6 +1,6 @@
 """ZAFIR · página con VSL + formulario contraentrega (cesar 25-nov: "fondo negro con formulario COD, muy similar a ENERPLU").
 
-Genera public/zafiro.html y public/js/checkout-zf.js a partir del checkout aparte de ENERPLU
+Genera el sitio aparte zafir/ (index.html, js/z.js, og.jpg, vercel.json) a partir del checkout aparte de ENERPLU
 (public/checkout.html + public/js/checkout-ep.js), para que el formulario sea el mismo que ya funciona.
 
   - Arriba: titular + video (VSL). La oferta y el formulario aparecen cuando el video llega a DELAY segundos.
@@ -176,7 +176,6 @@ cambia("\n  paintPlans(); render(); loadDraft();\n})();\n", LISTAS)
 import sys
 for m in re.finditer(r"(?i)enerplu", js): print("AVISO ENERPLU:", js[max(0,m.start()-80):m.start()+60].replace("\n"," "), file=sys.stderr)
 assert "tableta" not in js
-(PUB / "js" / "checkout-zf.js").write_text(js, encoding="utf-8")
 
 # ------------------------------------------------------------------ HTML
 ck = (PUB / "checkout.html").read_text(encoding="utf-8")
@@ -512,7 +511,7 @@ PAGE = """<!doctype html>
 <meta name="description" content="Mira el video completo. Pago contra entrega en Colombia.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ZAFIR | Información para hombres">
-<meta property="og:image" content="/og-negro.png">
+<meta property="og:image" content="/og.jpg">
 <!-- ZAFIR: página con VSL + formulario contraentrega. Generada por tools/zafir_build.py (no editar a mano). __ESTADO__ -->
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://vz-c91527a7-3a2.b-cdn.net" crossorigin>
@@ -570,14 +569,76 @@ PAGE = """<!doctype html>
 
 <div class="ok" id="ok" hidden><div class="okc2" id="okBox" tabindex="-1"></div></div>
 
-<script src="/js/checkout-zf.js" defer></script>
+<script src="/js/z.js" defer></script>
 <script>""" + VSL_JS + """</script>
 </body>
 </html>
 """
 PAGE = (PAGE.replace("__TITULAR__", TITULAR)
         .replace("__ESTADO__", "EN VIVO" if LIVE else "MUESTRA: no crea pedidos ni dispara el pixel")
-        .replace("__SINVIDEO__", "No pudimos cargar el video. Recarga la página." if LIVE else "Aquí va el video de ZAFIR.<small>Falta el código de incrustar.</small>")
+        .replace("__SINVIDEO__", "No pudimos cargar el video.<small>Recarga la página.</small>")
         .replace("__AVISO__", "MODO PRUEBA: este pedido no se crea" if LIVE else "PÁGINA DE MUESTRA: todavía no crea pedidos"))
-(PUB / "zafiro.html").write_text(PAGE, encoding="utf-8")
-print("ok zafiro.html", len(PAGE), "· checkout-zf.js", len(js))
+
+# ------------------------------------------------------------------ sitio aparte (cesar 25-nov)
+# Nada de ZAFIR se puede asociar con las otras marcas: sitio propio en la carpeta zafir/ (proyecto de Vercel aparte),
+# sin comentarios, sin nombres de otras marcas, sin archivos compartidos, imagen de vista previa propia
+# y el servidor de pedidos detrás de /api del mismo dominio.
+import shutil
+OUT = ROOT / "zafir"
+(OUT / "js").mkdir(parents=True, exist_ok=True)
+(OUT / "img").mkdir(parents=True, exist_ok=True)
+for n in (1, 2, 3):
+    shutil.copyfile(ROOT / "tools" / "zafir-img" / ("b%d.png" % n), OUT / "img" / ("b%d.png" % n))
+
+def sin_comentarios_js(t):
+    # quita /* ... */ y // de línea completa (no toca URLs ni textos)
+    t = re.sub(r"/\*.*?\*/", "", t, flags=re.S)
+    t = re.sub(r"(?m)^\s*//.*\n", "", t)
+    t = re.sub(r"(?m)[ \t]+//[^\"'\n]*$", "", t)
+    return re.sub(r"\n\s*\n+", "\n", t)
+
+def limpiar(t):
+    t = t.replace("https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-native", "/api/c")
+    t = t.replace("https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track", "/api/f")
+    t = t.replace("ep_utm", "zf_utm").replace('"ep_test"', '"zf_test"').replace("ep_sid", "zf_sid")
+    return t
+
+jz = limpiar(sin_comentarios_js(js))
+pg = limpiar(PAGE)
+pg = re.sub(r"<!--.*?-->", "", pg, flags=re.S)
+pg = re.sub(r"<style>(.*?)</style>", lambda m: "<style>" + re.sub(r"/\*.*?\*/", "", m.group(1), flags=re.S) + "</style>", pg, flags=re.S)
+pg = re.sub(r"<script>(.*?)</script>", lambda m: "<script>" + sin_comentarios_js(m.group(1)) + "</script>", pg, flags=re.S)
+pg = re.sub(r'\s*<div class="logos">.*?</div>', "", pg, flags=re.S)
+pg = re.sub(r"\n\s*\n+", "\n", pg)
+PROHIBIDO = r"(?i)enerplu|bienestar|gasfrut|collagen|\bmgc\b|todoguate|losgomosos|tiendavital|origenvital|supabase|cloudinary|og-negro|/img/pay|ep_|checkout-ep|derman|vital mastery"
+for nombre, t in (("index.html", pg), ("js/z.js", jz)):
+    m = re.search(PROHIBIDO, t)
+    assert not m, "quedó rastro de otra marca en %s: %r" % (nombre, t[max(0, m.start() - 60):m.end() + 40])
+    (OUT / nombre).write_text(t, encoding="utf-8")
+
+# imagen de vista previa propia (negro y dorado, solo la palabra ZAFIR)
+from PIL import Image, ImageDraw, ImageFont
+og = Image.new("RGB", (1200, 630), (8, 6, 4))
+d = ImageDraw.Draw(og)
+for r in range(420, 0, -6):
+    c = int(38 * (1 - r / 420))
+    d.ellipse((600 - r * 1.6, 315 - r, 600 + r * 1.6, 315 + r), fill=(8 + c, 6 + int(c * .7), 4))
+try:
+    fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 150)
+except OSError:
+    fnt = ImageFont.load_default()
+w = d.textlength("ZAFIR", font=fnt)
+d.text(((1200 - w) / 2, 220), "ZAFIR", font=fnt, fill=(247, 215, 116))
+og.save(OUT / "og.jpg", quality=88)
+
+(OUT / "vercel.json").write_text(json.dumps({
+    "framework": None, "buildCommand": "", "outputDirectory": ".", "cleanUrls": True,
+    "rewrites": [
+        {"source": "/ZAFIRO", "destination": "/index.html"},
+        {"source": "/zafiro", "destination": "/index.html"},
+        {"source": "/api/c", "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/checkout-native"},
+        {"source": "/api/f", "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/functions/v1/funnel-track"},
+    ],
+    "headers": [{"source": "/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]}],
+}, indent=2) + "\n", encoding="utf-8")
+print("ok zafir/index.html", len(pg), "· zafir/js/z.js", len(jz))

@@ -24,11 +24,11 @@ DELAY = 0                          # segundos de video para mostrar la oferta. 0
 VIDEO = "https://vz-d6192f8d-204.b-cdn.net/463c894e-8ea6-4da9-819a-1372d05af358/playlist.m3u8"  # VSL de la página vieja (provisional)
 TITULAR = "El secreto de los hombres que nunca fallan."  # página que vendía (captura de cesar 25-nov)
 # Orden, nombres, etiquetas y precios "antes" de la página que vendía. Precios de venta = mínimos que dio cesar el 25-nov
-# (la página vieja tenía 2 botellas a $110.300; el mínimo de cesar es $113.250).
-GIFT = "3 Libros digitales + obsequio sorpresa"
+# (la página vieja tenía 2 botellas a $110.300; el mínimo de cesar es $116.000).
+GIFT = "Obsequio sorpresa"   # cesar 25-nov: no hay libros digitales, solo obsequio
 PLANS = [
     {"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": [GIFT], "gift": GIFT},
-    {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 113250, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": True, "extras": [GIFT], "gift": GIFT},
+    {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 116000, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": True, "extras": [GIFT], "gift": GIFT},
     {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": [GIFT], "gift": GIFT},
 ]
 BUMP = 5000                        # "Envío Nacional prioritario con seguro" de la página que vendía
@@ -205,8 +205,8 @@ html_cambia('<div class="plans" id="plans"></div>', '''<div class="tabla"><div c
 html_cambia("<h3>Resumen</h3>", "<h3>RESUMEN DE PEDIDO</h3>")
 html_cambia("PÍDELO YA - Pagas al recibir", "PEDIR Y PAGAR AL RECIBIR")
 html_cambia("Hoy no pagas nada · Envío gratis", "Pago 100% seguro contra entrega. Pagas al recibir en la puerta de tu casa")
-html_cambia('<span id="sumName">Plan Dominio Total</span><span id="sumSub">$129.900</span>', '<span id="sumName">2 Botellas de ZAFIR</span><span id="sumSub">$113.250</span>')
-html_cambia('<strong id="tot">$129.900</strong>', '<strong id="tot">$113.250</strong>')
+html_cambia('<span id="sumName">Plan Dominio Total</span><span id="sumSub">$129.900</span>', '<span id="sumName">2 Botellas de ZAFIR</span><span id="sumSub">$116.000</span>')
+html_cambia('<strong id="tot">$129.900</strong>', '<strong id="tot">$116.000</strong>')
 html_re(r'<div class="trust">.*?</div>\s*</div>', '''<div class="sellos">
     <div class="sello"><svg class="i"><use href="#truck"/></svg><b>ENVÍO GRATIS</b><small>Pago contra entrega</small></div>
     <div class="sello"><svg class="i"><use href="#shield"/></svg><b>CALIDAD PREMIUM</b></div>

@@ -8,7 +8,7 @@
     pixel: "534952895765160",
     live: false
   };
-  var PLANS = [{"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": ["3 Libros digitales + obsequio sorpresa"], "gift": "3 Libros digitales + obsequio sorpresa"}, {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 113250, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": true, "extras": ["3 Libros digitales + obsequio sorpresa"], "gift": "3 Libros digitales + obsequio sorpresa"}, {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": ["3 Libros digitales + obsequio sorpresa"], "gift": "3 Libros digitales + obsequio sorpresa"}];
+  var PLANS = [{"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}, {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 116000, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": true, "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}, {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": ["Obsequio sorpresa"], "gift": "Obsequio sorpresa"}];
 
   var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
   var fmt = function (n) { return "$" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "."); };

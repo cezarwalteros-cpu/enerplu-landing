@@ -21,7 +21,7 @@ LIVE = False                       # True solo cuando el CRM tenga el slug y ces
 SLUG = "zafir"
 PIXEL = "534952895765160"          # el pixel que usan las campañas viejas de ZAFIR
 DELAY = 0                          # segundos de video para mostrar la oferta. 0 = todo visible desde el inicio, como la página que vendía
-VIDEO = "https://vz-d6192f8d-204.b-cdn.net/463c894e-8ea6-4da9-819a-1372d05af358/playlist.m3u8"  # VSL de la página vieja (provisional)
+VIDEO = "https://vz-c91527a7-3a2.b-cdn.net/b62d6978-a4c2-4d3f-aed5-9a2db3a89796/playlist.m3u8"  # Bunny de cesar (biblioteca 821672), subido 25-nov, 9:46 min
 TITULAR = "El secreto de los hombres que nunca fallan."  # página que vendía (captura de cesar 25-nov)
 # Orden, nombres, etiquetas y precios "antes" de la página que vendía. Precios de venta = mínimos que dio cesar el 25-nov
 # (la página vieja tenía 2 botellas a $110.300; el mínimo de cesar es $116.000).
@@ -515,7 +515,7 @@ PAGE = """<!doctype html>
 <meta property="og:image" content="/og-negro.png">
 <!-- ZAFIR: página con VSL + formulario contraentrega. Generada por tools/zafir_build.py (no editar a mano). __ESTADO__ -->
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://vz-d6192f8d-204.b-cdn.net" crossorigin>
+<link rel="preconnect" href="https://vz-c91527a7-3a2.b-cdn.net" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=Oswald:wght@500;600;700&display=swap">
 <style>""" + css + EXTRA_CSS + """</style>
 </head>

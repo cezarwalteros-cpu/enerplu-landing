@@ -56,6 +56,10 @@
   ],
   "rewrites": [
     {
+      "source": "/ZAFIRO",
+      "destination": "/zafiro"
+    },
+    {
       "source": "/m/f01.png",
       "destination": "https://mqwscbpdozrdiqxofmod.supabase.co/storage/v1/render/image/public/product-confirmation-images/Plan%20Basico%20Enerplu.png?width=192&height=192&resize=contain&quality=80"
     },

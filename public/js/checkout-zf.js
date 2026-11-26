@@ -8,7 +8,7 @@
     pixel: "534952895765160",
     live: false
   };
-  var PLANS = [{"key": "x2", "id": "x2", "name": "2 tarros", "boxes": 2, "price": 113250, "extras": ["Obsequio"], "gift": "Obsequio", "badge": "RECOMENDADO"}, {"key": "x3", "id": "x3", "name": "3 tarros", "boxes": 3, "price": 147000, "extras": ["Obsequio"], "gift": "Obsequio", "badge": "MEJOR PRECIO", "dark": true}, {"key": "x1", "id": "x1", "name": "1 tarro", "boxes": 1, "price": 73500, "extras": ["Obsequio"], "gift": "Obsequio", "note": "Para probar"}];
+  var PLANS = [{"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": ["3 Libros digitales + obsequio sorpresa"], "gift": "3 Libros digitales + obsequio sorpresa"}, {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 113250, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": true, "extras": ["3 Libros digitales + obsequio sorpresa"], "gift": "3 Libros digitales + obsequio sorpresa"}, {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": ["3 Libros digitales + obsequio sorpresa"], "gift": "3 Libros digitales + obsequio sorpresa"}];
 
   var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
   var fmt = function (n) { return "$" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "."); };
@@ -70,26 +70,20 @@
 
   /* ---------- estado ---------- */
   var alias = { "1": "x1", x1: "x1", "2": "x2", x2: "x2", "3": "x3", x3: "x3" };
-  var plan = PLANS.filter(function (p) { return p.id === alias[(qs.get("plan") || "").toLowerCase()]; })[0] || PLANS[0];   // orden de cesar 15-11: Dominio, Élite, Básico
+  var plan = PLANS.filter(function (p) { return p.id === alias[(qs.get("plan") || "").toLowerCase()]; })[0] || PLANS[1];   // orden de cesar 15-11: Dominio, Élite, Básico
   var pay = "cod", city = null, prepaidCity = false, phoneBlock = null;
   var boldOn = false, transferOn = false, discount = 0;
   var single = function () { return PLANS.filter(function (p) { return p.id === "x1"; })[0].price; };
   var disc = function () { return pay === "cod" ? 0 : discount; };
-  var total = function () { return plan.price - disc(); };
+  var bump = false, BUMP = 5000;
+  var total = function () { return plan.price - disc() + (bump ? BUMP : 0); };
 
   function paintPlans() {
     $("#plans").innerHTML = PLANS.map(function (p, i) {
-      var save = single() * p.boxes - p.price;
-      return '<label class="plan" data-i="' + i + '">' +
-        (p.badge ? '<span class="badge' + (p.dark ? " dark" : "") + '">' + p.badge + "</span>" : "") +
-        '<input type="radio" name="plan"><span class="radio"></span>' +
-        '<span class="qty"><b>' + p.boxes + "</b>" + (p.boxes > 1 ? "tarros" : "tarro") + "</span>" +
-        '<span><div class="pn">' + esc(p.name) + " de ZAFIR</div>" +
-        (p.gift ? '<div class="pg">' + ico("gift") + "<span>+ " + esc(p.gift) + "</span></div>" : "") +
-        (p.note ? '<div class="pd">' + p.note + "</div>" : "") +
-        (save > 0 ? '<span class="save">' + ico("check") + "Ahorras " + fmt(save) + "</span>" : "") +
-        "</span>" +
-        '<span class="pr"><strong>' + fmt(p.price) + "</strong>" + (p.boxes > 1 ? "<span>" + fmt(p.price / p.boxes) + " c/tarro</span>" : "") + "</span></label>";
+      return '<label class="plan' + (p.hot ? " hot" : "") + '" data-i="' + i + '"><input type="radio" name="plan"><span class="radio"></span>' +
+        '<img class="pim" src="/img/zafir/b' + p.boxes + '.png" alt="" width="60" height="60">' +
+        '<span class="pm"><span class="ptag">' + esc(p.tag) + '</span><div class="pn">' + esc(p.name) + "</div></span>" +
+        '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><strong>AHORA " + fmt(p.price) + "</strong></span></label>";
     }).join("");
   }
 
@@ -97,13 +91,12 @@
     $$(".plan").forEach(function (l) { var on = PLANS[+l.getAttribute("data-i")] === plan; l.classList.toggle("sel", on); l.querySelector("input").checked = on; });
     var saveTxt = single() * plan.boxes - plan.price;
     $("#incl").innerHTML =
-      "<li>" + ico("box") + "<span><b>" + plan.boxes + (plan.boxes > 1 ? " tarros" : " tarro") + " de ZAFIR</b></span></li>" +
+      "<li>" + ico("box") + "<span><b>" + plan.boxes + (plan.boxes > 1 ? " botellas" : " botella") + " de ZAFIR</b></span></li>" +
       plan.extras.map(function (x) { return "<li>" + ico("gift") + "<span><b>" + esc(x) + "</b> <em>· de regalo</em></span></li>"; }).join("") +
       "<li>" + ico("bag") + "<span><b>Envío gratis</b> <em>· empaque discreto</em></span></li>";
-    $("#sumName").textContent = plan.name + " de ZAFIR";
-    $("#sumSub").textContent = fmt(plan.price);
-    $("#sumGifts").innerHTML = plan.extras.map(function (x) { return '<div class="row g"><span>' + esc(x) + "</span><span>REGALO</span></div>"; }).join("") +
-      (saveTxt > 0 ? '<div class="row g"><span>Ahorro frente a comprar de a 1</span><span>-' + fmt(saveTxt) + "</span></div>" : "");
+    $("#sumName").textContent = plan.name;
+    $("#sumSub").innerHTML = "<s>ANTES " + fmt(plan.was) + "</s><b>AHORA " + fmt(plan.price) + "</b>";
+    $("#sumGifts").innerHTML = plan.extras.map(function (x) { return '<div class="row g"><span>' + esc(x) + "</span><span>GRATIS</span></div>"; }).join("") + (bump ? '<div class="row"><span>Envío prioritario con seguro</span><span>' + fmt(BUMP) + "</span></div>" : "");
     $$(".pay").forEach(function (l) { var on = l.getAttribute("data-m") === pay; l.classList.toggle("sel", on); l.querySelector("input").checked = on; });
     $('.pay[data-m="bold"]').hidden = !boldOn;
     $('.pay[data-m="transfer"]').hidden = !transferOn;
@@ -116,7 +109,7 @@
     $("#rowDisc").lastElementChild.textContent = "-" + fmt(disc());
     $("#tot").textContent = fmt(total());
     $("#sumNote").lastElementChild.textContent = pay === "cod" ? "Lo pagas cuando lo recibes" : pay === "bold" ? "Pago protegido por Bold" : "Transfieres y envías el comprobante por WhatsApp";
-    $("#goSub").lastElementChild.textContent = pay === "cod" ? "Hoy no pagas nada · Envío gratis" : "Pago seguro · Envío gratis";
+    $("#goSub").lastElementChild.textContent = pay === "cod" ? "Pago 100% seguro contra entrega. Pagas al recibir en la puerta de tu casa" : "Pago seguro · Envío gratis";
     check();
   }
 
@@ -195,7 +188,7 @@
     $("#s3").classList.toggle("on", !m.length);
     b.classList.toggle("miss", !!m.length);
     $("#goTx").innerHTML = m.length ? "Faltan " + m.length + " " + (m.length > 1 ? "datos" : "dato") + " · <em>completa tu envío</em>"
-      : pay === "cod" ? "PÍDELO YA - Pagas al recibir" : pay === "bold" ? "PAGAR " + fmt(total()) + " EN LÍNEA" : "PEDIR Y PAGAR POR TRANSFERENCIA";
+      : pay === "cod" ? "REALIZAR PEDIDO<small>Paga al recibir</small>" : pay === "bold" ? "PAGAR " + fmt(total()) + " EN LÍNEA" : "PEDIR Y PAGAR POR TRANSFERENCIA";
   }
   var started = false, done1 = {};
   Object.keys(F).forEach(function (k) {
@@ -343,7 +336,7 @@
     var address = { city_text: clean(F.city.value).slice(0, 80), city: city ? city.municipio : "", department: city ? city.departamento : "", address1: clean(F.addr.value).slice(0, 160), additional: clean(F.opt ? F.opt.value : "").slice(0, 160) };
     var name = clean(F.name.value), key = JSON.stringify([p, name, plan.key, address]);
     if (key === cartKey) return; cartKey = key;
-    api({ action: "cart", phone: p, name: name, offer_key: plan.key, bump: false, tracking: tracking(), address: address }).catch(function () {});
+    api({ action: "cart", phone: p, name: name, offer_key: plan.key, bump: bump, tracking: tracking(), address: address }).catch(function () {});
   }
   window.addEventListener("pagehide", sendCart);
 
@@ -373,7 +366,7 @@
     sending = true; var b = $("#go"); b.disabled = true; b.setAttribute("aria-busy", "true"); $("#goTx").textContent = "Enviando tu pedido…";
     var nm = splitName(F.name.value), addr = clean(F.addr.value);
     var body = {
-      action: "order", offer_key: plan.key, bump: false, upsell: false,
+      action: "order", offer_key: plan.key, bump: bump, upsell: false,
       customer: { first_name: nm.first, last_name: nm.last, phone: phone10(F.tel.value) },
       address: { department: city.departamento, city: city.municipio, address1: addr, additional: clean(F.opt.value) || "Sin barrio: confirmar por WhatsApp",
         notes: /\d/.test(addr) ? undefined : "Dirección sin número: confirmar punto de entrega por WhatsApp" },
@@ -411,7 +404,7 @@
     var first = esc(clean(F.name.value || d.name || "").split(" ")[0]);
     var telRaw = phone10(F.tel.value) || d.phone || "", tel = telRaw.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
     var tr = pay === "transfer" && j.transfer, mun = city ? city.municipio : (d.city || "");
-    var li = '<li><span>' + esc(plan.name) + " de ZAFIR</span><span>" + fmt(plan.price) + "</span></li>" +
+    var li = '<li><span>' + esc(plan.name) + "</span><span>" + fmt(plan.price) + "</span></li>" +
       plan.extras.map(function (x) { return "<li><span>" + esc(x) + "</span><span>Regalo</span></li>"; }).join("") +
       "<li><span>Envío</span><span>Gratis</span></li>" +
       (d.total < plan.price ? "<li><span>Descuento pago anticipado</span><span>-" + fmt(plan.price - d.total) + "</span></li>" : "") +
@@ -533,6 +526,7 @@
     selMun.innerHTML = DEPS[d].map(function (x) { return "<option>" + esc(x) + "</option>"; }).join("") + '<option value="__otro">Mi municipio no aparece (escribirlo)</option>';
     selMun.disabled = false; selMun.value = m; selMun.classList.remove("vac");
   }
+  var bp = $("#bp"); if (bp) bp.addEventListener("change", function () { bump = bp.checked; funnel("bump_toggle", { on: bump }); render(); });
   window.ZF = { funnel: funnel, pixel: pixel, test: TEST, live: CFG.live, plan: function () { return plan; } };
 
   paintPlans(); render(); loadDraft(); syncSel();

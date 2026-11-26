@@ -20,15 +20,18 @@ PUB = ROOT / "public"
 LIVE = False                       # True solo cuando el CRM tenga el slug y cesar dé el OK
 SLUG = "zafir"
 PIXEL = "534952895765160"          # el pixel que usan las campañas viejas de ZAFIR
-DELAY = 60                         # segundos de video para mostrar la oferta (PROVISIONAL: falta el minuto real)
+DELAY = 0                          # segundos de video para mostrar la oferta. 0 = todo visible desde el inicio, como la página que vendía
 VIDEO = "https://vz-d6192f8d-204.b-cdn.net/463c894e-8ea6-4da9-819a-1372d05af358/playlist.m3u8"  # VSL de la página vieja (provisional)
-TITULAR = "El secreto natural que está devolviendo la virilidad a miles de hombres en Colombia"  # el de la página vieja
-# precios mínimos que dio cesar el 25-nov
+TITULAR = "El secreto de los hombres que nunca fallan."  # página que vendía (captura de cesar 25-nov)
+# Orden, nombres, etiquetas y precios "antes" de la página que vendía. Precios de venta = mínimos que dio cesar el 25-nov
+# (la página vieja tenía 2 botellas a $110.300; el mínimo de cesar es $113.250).
+GIFT = "3 Libros digitales + obsequio sorpresa"
 PLANS = [
-    {"key": "x2", "id": "x2", "name": "2 tarros", "boxes": 2, "price": 113250, "extras": ["Obsequio"], "gift": "Obsequio", "badge": "RECOMENDADO"},
-    {"key": "x3", "id": "x3", "name": "3 tarros", "boxes": 3, "price": 147000, "extras": ["Obsequio"], "gift": "Obsequio", "badge": "MEJOR PRECIO", "dark": True},
-    {"key": "x1", "id": "x1", "name": "1 tarro", "boxes": 1, "price": 73500, "extras": ["Obsequio"], "gift": "Obsequio", "note": "Para probar"},
+    {"key": "x1", "id": "x1", "name": "1 Botella de ZAFIR", "boxes": 1, "price": 73500, "was": 99900, "tag": "Ideal para probar", "extras": [GIFT], "gift": GIFT},
+    {"key": "x2", "id": "x2", "name": "2 Botellas de ZAFIR", "boxes": 2, "price": 113250, "was": 147000, "tag": "TRATAMIENTO RECOMENDADO 🔥", "hot": True, "extras": [GIFT], "gift": GIFT},
+    {"key": "x3", "id": "x3", "name": "3 Botellas de ZAFIR", "boxes": 3, "price": 147000, "was": 220500, "tag": "⭐ Más vendido – Ahorras $73.500", "extras": [GIFT], "gift": GIFT},
 ]
+BUMP = 5000                        # "Envío Nacional prioritario con seguro" de la página que vendía
 # departamentos donde no hay contraentrega: no salen en la lista (regla de cesar 25-nov)
 SIN_COD = {"Amazonas", "Chocó", "Guainía", "Vaupés", "Vichada", "San Andrés y Providencia"}
 
@@ -62,33 +65,32 @@ cambia('var boldOn = true, transferOn = false, discount = 12000;', 'var boldOn =
 cambia('return p.id === "basico"; })[0].price; };', 'return p.id === "x1"; })[0].price; };')
 cambia('"enerplu-"', '"zafir-"', 0)
 cambia('funnel("selector_view");\n', '')
+cambia('})[0] || PLANS[0];', '})[0] || PLANS[1];')
+cambia('var total = function () { return plan.price - disc(); };', 'var bump = false, BUMP = %d;\n  var total = function () { return plan.price - disc() + (bump ? BUMP : 0); };' % BUMP)
+cambia('bump: false', 'bump: bump', 0)
+cambia('"PÍDELO YA - Pagas al recibir"', '"REALIZAR PEDIDO<small>Paga al recibir</small>"')
+cambia('"Hoy no pagas nada · Envío gratis"', '"Pago 100% seguro contra entrega. Pagas al recibir en la puerta de tu casa"')
 
 # tarjetas de los paquetes: tarros en vez de cajas y tabletas, sin foto hasta tener las del producto
 cambia_re(r"function paintPlans\(\) \{.*?\n  \}\n\n  function render\(\) \{", r'''function paintPlans() {
     $("#plans").innerHTML = PLANS.map(function (p, i) {
-      var save = single() * p.boxes - p.price;
-      return '<label class="plan" data-i="' + i + '">' +
-        (p.badge ? '<span class="badge' + (p.dark ? " dark" : "") + '">' + p.badge + "</span>" : "") +
-        '<input type="radio" name="plan"><span class="radio"></span>' +
-        '<span class="qty"><b>' + p.boxes + "</b>" + (p.boxes > 1 ? "tarros" : "tarro") + "</span>" +
-        '<span><div class="pn">' + esc(p.name) + " de ZAFIR</div>" +
-        (p.gift ? '<div class="pg">' + ico("gift") + "<span>+ " + esc(p.gift) + "</span></div>" : "") +
-        (p.note ? '<div class="pd">' + p.note + "</div>" : "") +
-        (save > 0 ? '<span class="save">' + ico("check") + "Ahorras " + fmt(save) + "</span>" : "") +
-        "</span>" +
-        '<span class="pr"><strong>' + fmt(p.price) + "</strong>" + (p.boxes > 1 ? "<span>" + fmt(p.price / p.boxes) + " c/tarro</span>" : "") + "</span></label>";
+      return '<label class="plan' + (p.hot ? " hot" : "") + '" data-i="' + i + '"><input type="radio" name="plan"><span class="radio"></span>' +
+        '<img class="pim" src="/img/zafir/b' + p.boxes + '.png" alt="" width="60" height="60">' +
+        '<span class="pm"><span class="ptag">' + esc(p.tag) + '</span><div class="pn">' + esc(p.name) + "</div></span>" +
+        '<span class="pr"><s>ANTES ' + fmt(p.was) + "</s><strong>AHORA " + fmt(p.price) + "</strong></span></label>";
     }).join("");
   }
 
   function render() {''')
 cambia('''"<li>" + ico("box") + "<span><b>" + plan.boxes + (plan.boxes > 1 ? " cajas" : " caja") + " ENERPLU</b> <em>· " + plan.tablets + " tabletas</em></span></li>" +''',
-       '''"<li>" + ico("box") + "<span><b>" + plan.boxes + (plan.boxes > 1 ? " tarros" : " tarro") + " de ZAFIR</b></span></li>" +''')
+       '''"<li>" + ico("box") + "<span><b>" + plan.boxes + (plan.boxes > 1 ? " botellas" : " botella") + " de ZAFIR</b></span></li>" +''')
 cambia('''"<li>" + ico("bag") + "<span><b>Envío gratis</b> <em>· bolsa negra sellada, sin marcas por fuera</em></span></li>" +''',
        '''"<li>" + ico("bag") + "<span><b>Envío gratis</b> <em>· empaque discreto</em></span></li>";''')
 cambia_re(r"\n\s*\(plan\.boxes > 1 \? \"<li>\" \+ ico\(\"shield\"\).*?: \"\"\);", "")
-cambia('$("#sumName").textContent = plan.name + " · " + plan.tablets + " tabletas";', '$("#sumName").textContent = plan.name + " de ZAFIR";')
-cambia('''<span>Ahorro vs ' + plan.boxes + " Básicos</span><span>-" + fmt(saveTxt)''', '''<span>Ahorro frente a comprar de a 1</span><span>-' + fmt(saveTxt)''')
-cambia('''esc(plan.name) + " · " + plan.tablets + " tabletas</span><span>"''', '''esc(plan.name) + " de ZAFIR</span><span>"''')
+cambia('$("#sumName").textContent = plan.name + " · " + plan.tablets + " tabletas";', '$("#sumName").textContent = plan.name;')
+cambia('$("#sumSub").textContent = fmt(plan.price);', '$("#sumSub").innerHTML = "<s>ANTES " + fmt(plan.was) + "</s><b>AHORA " + fmt(plan.price) + "</b>";')
+cambia_re(r'\$\("#sumGifts"\)\.innerHTML = .*?: ""\);', '''$("#sumGifts").innerHTML = plan.extras.map(function (x) { return '<div class="row g"><span>' + esc(x) + "</span><span>GRATIS</span></div>"; }).join("") + (bump ? '<div class="row"><span>Envío prioritario con seguro</span><span>' + fmt(BUMP) + "</span></div>" : "");''')
+cambia('''esc(plan.name) + " · " + plan.tablets + " tabletas</span><span>"''', '''esc(plan.name) + "</span><span>"''')
 cambia_re(r"\(mun \? '<div class=\"eta\">'.*?: \"\"\) \+\n", "")
 
 # página de muestra: el pedido no sale del celular
@@ -160,6 +162,7 @@ LISTAS = r'''
     selMun.innerHTML = DEPS[d].map(function (x) { return "<option>" + esc(x) + "</option>"; }).join("") + '<option value="__otro">Mi municipio no aparece (escribirlo)</option>';
     selMun.disabled = false; selMun.value = m; selMun.classList.remove("vac");
   }
+  var bp = $("#bp"); if (bp) bp.addEventListener("change", function () { bump = bp.checked; funnel("bump_toggle", { on: bump }); render(); });
   window.ZF = { funnel: funnel, pixel: pixel, test: TEST, live: CFG.live, plan: function () { return plan; } };
 
   paintPlans(); render(); loadDraft(); syncSel();
@@ -193,13 +196,23 @@ def html_re(patron, nuevo):
 
 html_re(r'<section class="hero">.*?</section>\s*', "")
 html_cambia("Bolsa negra sellada y discreta", "Empaque discreto")
-html_cambia("Elige tu plan<small>Entre más cajas, menos pagas por cada tableta</small>", "Elige tu paquete<small>Entre más tarros lleves, menos pagas por cada uno</small>")
-html_cambia('<span id="sumName">Plan Dominio Total</span><span id="sumSub">$129.900</span>', '<span id="sumName">2 tarros de ZAFIR</span><span id="sumSub">$113.250</span>')
+html_cambia("Elige tu plan<small>Entre más cajas, menos pagas por cada tableta</small>", "PASO 1. SELECCIONA LA OFERTA")
+html_cambia("¿A dónde te lo enviamos?<small>Solo 4 datos. Toma menos de 1 minuto.</small>", "PASO 2. DIGITA TUS DATOS DE ENVÍO")
+html_cambia('<div class="plans" id="plans"></div>', '''<div class="tabla"><div class="th"><span>OFERTAS</span><span>PRECIOS</span></div><div class="plans" id="plans"></div></div>
+    <label class="bump"><input type="checkbox" id="bp"><span><b>Sí, 🔥 Envío Nacional prioritario con seguro por $5.000.</b><small>Tu paquete será EMPACADO con prioridad al solicitar esta opción (El tiempo de entrega puede ser de 2 a 4 días dependiendo de la transportadora)</small></span></label>''')
+html_cambia("<h3>Resumen</h3>", "<h3>RESUMEN DE PEDIDO</h3>")
+html_cambia("PÍDELO YA - Pagas al recibir", "REALIZAR PEDIDO<small>Paga al recibir</small>")
+html_cambia("Hoy no pagas nada · Envío gratis", "Pago 100% seguro contra entrega. Pagas al recibir en la puerta de tu casa")
+html_cambia('<span id="sumName">Plan Dominio Total</span><span id="sumSub">$129.900</span>', '<span id="sumName">2 Botellas de ZAFIR</span><span id="sumSub">$113.250</span>')
 html_cambia('<strong id="tot">$129.900</strong>', '<strong id="tot">$113.250</strong>')
-html_re(r'\s*<div class="tr"><svg class="i"><use href="#shield"/></svg>Registro INVIMA[^\n]*\n\s*<div class="tr">[^\n]*Garantía Real 15 días</a></div>',
-        '\n    <div class="tr"><svg class="i"><use href="#bag"/></svg>Empaque discreto</div>\n    <div class="tr"><svg class="i"><use href="#lock"/></svg>Tus datos están protegidos</div>')
+html_re(r'<div class="trust">.*?</div>\s*</div>', '''<div class="sellos">
+    <div class="sello"><svg class="i"><use href="#truck"/></svg><b>ENVÍO GRATIS</b><small>Pago contra entrega</small></div>
+    <div class="sello"><svg class="i"><use href="#shield"/></svg><b>CALIDAD PREMIUM</b></div>
+    <div class="sello"><svg class="i"><use href="#check"/></svg><b>PRODUCTO GARANTIZADO</b></div>
+  </div>
+  <div class="pce"><div class="pch"><i></i>PAGO CONTRAENTREGA</div><p>Haz clic en REALIZAR PEDIDO para completar tu compra. Solo pagarás el pedido una vez que se entregue en tu domicilio.</p></div>''')
 html_re(r'<footer class="ft">.*?</footer>', '<footer class="ft"><p>ZAFIR · Pago contra entrega en Colombia.</p></footer>')
-assert "ENERPLU" not in main and "INVIMA" not in main and "/garantia" not in main
+assert "ENERPLU" not in main and "/garantia" not in main
 
 EXTRA_CSS = r"""
 /* ===== ZAFIR: fondo negro, tarjetas blancas (mismo esquema del checkout de ENERPLU) ===== */
@@ -253,7 +266,83 @@ select.sel:disabled{background-color:#E5E7EB;color:#6B7280}
 .ver{margin:14px auto 0;max-width:460px}
 #oferta{animation:sube .6s ease both}
 @keyframes sube{from{opacity:0;transform:translateY(18px)}}
-@media (min-width:960px){.vsl{max-width:620px}.vsl h1{font-size:32px}.steps{max-width:1040px}}
+
+/* ===== estructura de la página que vendía (captura de cesar 25-nov) ===== */
+body{background:#0B0E17}
+.lock[hidden]{display:none}
+.vsl{text-align:left;padding-top:26px}
+.vsl h1{font:700 34px/1.25 Georgia,"Times New Roman",serif;color:#C9A45C;margin:0 0 18px;letter-spacing:0}
+.bajada{font-size:15.5px;line-height:1.35;color:#fff;margin:0 0 16px}
+.rayos{list-style:none;margin:0 0 16px;padding:0;font-size:15.5px;line-height:1.35;color:#fff}
+.rayos li{padding-left:26px;position:relative;margin-bottom:4px}
+.rayos li::before{content:"⚡";position:absolute;left:0}
+.player{border-radius:12px;border:1px solid #7A1526;box-shadow:none}
+.unmute span{background:#19C332;border:2px solid #fff;box-shadow:0 0 0 4px #19C332;border-radius:14px;padding:14px 20px;gap:8px;font:700 13.5px/1.2 Inter,sans-serif;color:#fff}
+.unmute span small{font:700 12.5px Inter,sans-serif;color:#fff}
+.unmute svg{width:46px;height:46px;stroke:#fff}
+.prueba{max-width:520px;margin:0 auto;padding:22px 16px 0}
+.rr{font:900 21px/1.1 var(--disp);color:#E11D48;margin:0 0 14px;letter-spacing:.01em}
+.testi{background:#fff;color:#374151;border-radius:14px;padding:18px 18px 14px}
+.testi .est{color:#F59E0B;letter-spacing:2px;font-size:15px}
+.testi p{font-style:italic;font-size:15px;line-height:1.5;margin:10px 0 12px}
+.quien{display:flex;gap:10px;align-items:center;border-top:1px solid #EEF0F3;padding-top:12px}
+.quien i{width:34px;height:34px;border-radius:50%;background:#EEF2F7;display:grid;place-items:center;font:700 13px Inter,sans-serif;color:#475569;font-style:normal}
+.quien b{display:block;color:#111;font-size:14px}.quien small{color:#6B7280;font-size:12px}
+.res{background:#DDDDDD;color:#111;border-radius:6px;margin-top:22px;padding:12px 10px 14px;text-align:center}
+.res h3{font:900 28px/1 var(--disp);margin:0 0 10px;letter-spacing:.01em}
+.res ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.res li{font:700 10.5px/1.25 Inter,sans-serif}
+.res li::before{content:"✓";display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#111;color:#E9CB6B;font-size:18px;margin:0 auto 6px}
+.invima{background:#fff;color:#111;margin-top:10px;padding:16px;display:flex;gap:16px;align-items:center;justify-content:center}
+.orig{width:92px;height:92px;border-radius:50%;flex:none;background:radial-gradient(circle,#1a1a1a 55%,#C9A227 57%,#F3D46B 70%,#B8860B 100%);color:#E9CB6B;display:grid;place-content:center;text-align:center;font:800 10px/1.1 Inter,sans-serif}
+.orig b{display:block;font:900 20px/1 var(--disp);color:#F3D46B}
+.reg{font:900 25px/1.15 var(--disp);letter-spacing:.02em}
+.llamado{background:#000;text-align:center;padding:30px 16px 6px;margin-top:0}
+.llamado h2{font:700 29px/1.25 Georgia,"Times New Roman",serif;color:#fff;margin:0 0 14px}
+.llamado p{font:700 16.5px/1.25 Inter,sans-serif;color:#fff;margin:0 auto;max-width:380px}
+#oferta{background:#000}
+.wrap{display:block!important;max-width:520px!important;padding-bottom:40px}
+.side{position:static!important;display:flex;flex-direction:column}
+.perks,.incl,#paso3,.num{display:none!important}
+.h h2{font:900 21px/1.15 var(--disp);color:#fff;text-transform:uppercase}
+.tabla{background:#fff;border-radius:8px;border:2px solid #F5E11A;overflow:hidden}
+.th{display:flex;justify-content:space-between;padding:12px 14px;font:800 12px Inter,sans-serif;color:#111;border-bottom:1px solid #E5E7EB}
+.plans{gap:0}
+.plan{grid-template-columns:22px 60px minmax(0,1fr) auto;gap:10px;border:0;border-bottom:1px solid #E5E7EB;border-radius:0;padding:16px 10px;background:#fff;color:#111;box-shadow:none!important}
+.plan:last-child{border-bottom:0}
+.plan.sel{background:#fff;border-color:#E5E7EB}
+.plan .radio{border-color:#8A8A8A}.plan.sel .radio{border-color:#1D6FE0}.plan .radio::after{background:#1D6FE0}
+.pim{width:60px;height:60px;object-fit:contain;border:1px solid #EEE;border-radius:4px;background:#fff}
+.ptag{display:inline-block;background:#1F2937;color:#fff;font:700 11px/1.2 Inter,sans-serif;padding:4px 8px;margin-bottom:6px}
+.pn{font:700 15px/1.2 Inter,sans-serif;color:#111}
+.pr s{display:block;font:700 12px Inter,sans-serif;color:#8A8A8A}
+.pr strong{font:800 13.5px Inter,sans-serif;color:#111}
+.plan.hot .pr strong{color:#E00000}
+.bump{display:flex;gap:14px;align-items:flex-start;background:#F9E51B;color:#111;border-radius:0 0 8px 8px;padding:14px 16px;margin-top:-2px;cursor:pointer}
+.bump input{width:24px;height:24px;flex:none;margin-top:6px;accent-color:#16A34A}
+.bump b{display:block;font:600 19px/1.3 Inter,sans-serif}
+.bump small{display:block;font:700 12.5px/1.6 Inter,sans-serif;margin-top:8px}
+.btn{flex-direction:column;gap:2px;border-radius:8px;min-height:74px;background:#28A745;font:900 19px/1.15 Georgia,"Times New Roman",serif;letter-spacing:.06em;color:#0B0B0B}
+.btn small{display:block;font:500 16px Inter,sans-serif;letter-spacing:.02em}
+.btn>svg{display:none}
+.cta{order:1}.sub{font-style:italic;color:#fff;text-align:center;justify-content:center}.sub svg{display:none}
+.sellos{order:2;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 4px}
+.sello{aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#F3D46B 0 58%,#1a1a1a 60% 90%,#C9A227 92%);display:grid;place-content:center;justify-items:center;text-align:center;color:#111;padding:22px}
+.sello svg{width:24px;height:24px;color:#111;margin-bottom:3px}
+.sello b{font:800 8px/1.1 Inter,sans-serif;letter-spacing:.02em}.sello small{font:600 7px Inter,sans-serif;color:#111}
+.sum{order:3;background:#fff;color:#111;border-radius:4px;border:0;margin-top:20px}
+.sum::after{display:none}
+.sum h3{color:#111;text-align:center;font:900 20px var(--disp);letter-spacing:0;margin-bottom:14px}
+.sum .row{color:#111;font-weight:700;align-items:center}.sum .row.g{color:#111}
+#sumSub{text-align:right}#sumSub s{display:block;color:#8A8A8A}#sumSub b{display:block;color:#E00000}
+.sum .row.t{border-top:1px solid #E5E7EB;color:#374151}.sum .row.t strong{color:#111;font:800 20px Inter,sans-serif}
+.sum .note{color:#6B7280}
+.pce{order:4;background:#F3F4F6;color:#4B5563;border-radius:8px;margin-top:16px;overflow:hidden;text-align:center}
+.pch{background:#fff;text-align:left;padding:14px 18px;font:800 14px Inter,sans-serif;color:#4B5563;display:flex;gap:12px;align-items:center;border-bottom:1px solid #E5E7EB}
+.pch i{width:16px;height:16px;border-radius:50%;background:#F97316}
+.pce p{margin:0;padding:22px 20px;font-size:14.5px;line-height:1.6}
+.ft{order:5}
+@media (min-width:960px){.vsl{max-width:620px}.prueba{max-width:620px}}
 """
 
 VSL_JS = r"""
@@ -266,7 +355,8 @@ VSL_JS = r"""
   function zf(ev,extra){try{window.ZF&&window.ZF.funnel(ev,extra||{})}catch(e){}}
   function abrir(como){
     if(abierto)return; abierto=true;
-    of.hidden=false; ver.hidden=false;
+    if(DELAY<=0||como==='sin_video'){lk.hidden=true;}
+    of.hidden=false; ver.hidden=(DELAY<=0);
     lk.className='lock listo'; lk.lastElementChild.textContent='Oferta desbloqueada. Elige tu paquete abajo.';
     try{localStorage.setItem('zf_oferta','1')}catch(e){}
     zf('offer_unlock',{como:como,seg:Math.round(maxT)}); zf('selector_view');
@@ -304,11 +394,11 @@ VSL_JS = r"""
     if(sonido&&t>maxT)maxT=t;
     pb.style.width=(Math.pow(t/d,0.55)*100).toFixed(2)+'%';   /* avanza rápido al inicio, como las barras de los VSL */
     if(sonido){[25,50,75,95].forEach(function(h){ if(!hitos[h]&&t/d*100>=h){hitos[h]=1; zf('vsl_'+h);} });}
-    if(sonido&&t>=DELAY)abrir('video');
+    if(sonido&&DELAY>0&&t>=DELAY)abrir('video');
   });
   v.addEventListener('ended',function(){ abrir('fin'); });
   var ya=false; try{ya=localStorage.getItem('zf_oferta')==='1'}catch(e){}
-  function inicio(){ if(q.get('oferta')==='1')abrir('link'); else if(ya)abrir('regreso'); cargar(); }
+  function inicio(){ if(DELAY<=0)abrir('directo'); else if(q.get('oferta')==='1')abrir('link'); else if(ya)abrir('regreso'); cargar(); }
   if(document.readyState==='complete')inicio(); else window.addEventListener('load',inicio);
 })();
 """.replace("__DELAY__", str(DELAY)).replace("__VIDEO__", VIDEO)
@@ -339,11 +429,15 @@ PAGE = """<!doctype html>
 <input id="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
 
 <section class="vsl">
-  <div class="zf-brand">ZAFIR</div>
   <h1>__TITULAR__</h1>
+  <p class="bajada">Basta de químicos y soluciones temporales, acá está el suplemento líquido que está devolviendo la seguridad a miles de hombres en Colombia.</p>
+  <ul class="rayos">
+    <li><b>Firmeza natural:</b> Siente el cambio desde el primer shot.</li>
+    <li><b>Resistencia total:</b> Recupera el control y deja que ella pida más.</li>
+  </ul>
   <div class="player" id="pl">
     <video id="v" playsinline webkit-playsinline muted preload="auto" disablepictureinpicture controlslist="nodownload noplaybackrate"></video>
-    <button class="unmute" id="un" type="button" aria-label="Activar el sonido"><span><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>Toca para activar el sonido<small>El video ya empezó</small></span></button>
+    <button class="unmute" id="un" type="button" aria-label="Activar el sonido"><span><small>Su video ya comenzó…</small><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path d="M3 3l18 18"/></svg>Pulse aquí para escuchar</span></button>
     <button class="pausa" id="pa" type="button" hidden>Toca para continuar</button>
     <div class="nv" id="nv" hidden>__SINVIDEO__</div>
     <div class="pbar"><i id="pb"></i></div>
@@ -353,7 +447,26 @@ PAGE = """<!doctype html>
 </section>
 
 <div id="oferta" hidden>
-<div class="steps"><div class="st on" id="s1"><i></i>1 · Tu paquete</div><div class="st" id="s2"><i></i>2 · Tus datos</div><div class="st" id="s3"><i></i>3 · Pago</div></div>
+<div hidden><i id="s1"></i><i id="s2"></i><i id="s3"></i></div>
+<section class="prueba">
+  <h2 class="rr">RESULTADOS REALES</h2>
+  <div class="testi"><div class="est">★★★★★</div><p>"A los 45 años ya me fallaba la firmeza. Con Zafir recuperé la dureza de antes desde la primera semana."</p><div class="quien"><i>A</i><span><b>Alberto S.</b><small>Medellín</small></span></div></div>
+  <div class="res">
+    <h3>RESULTADOS:</h3>
+    <ul>
+      <li>Aumento garantizado de la circulación</li>
+      <li>Más libido y vigor sexual</li>
+      <li>Erecciones firmes y mucho más duraderas</li>
+      <li>Ayuda a controlar la eyaculación</li>
+      <li>Dale mucho más placer a tu pareja</li>
+    </ul>
+  </div>
+  <div class="invima"><span class="orig"><b>100%</b>ORIGINAL</span><span class="reg">REGISTRO INVIMA<br>RSA-3599-2025</span></div>
+</section>
+<section class="llamado">
+  <h2>RECUPERA TU VIGOR HOY MISMO</h2>
+  <p>Llena el formulario y paga al recibir tu paquete discreto.</p>
+</section>
 """ + main + """
 </div>
 
@@ -366,7 +479,7 @@ PAGE = """<!doctype html>
 """
 PAGE = (PAGE.replace("__TITULAR__", TITULAR)
         .replace("__ESTADO__", "EN VIVO" if LIVE else "MUESTRA: no crea pedidos ni dispara el pixel")
-        .replace("__SINVIDEO__", "No pudimos cargar el video. Recarga la página." if LIVE else "Aquí va el video de ZAFIR.<small>Falta el código de incrustar. Por eso la oferta se muestra de una vez.</small>")
+        .replace("__SINVIDEO__", "No pudimos cargar el video. Recarga la página." if LIVE else "Aquí va el video de ZAFIR.<small>Falta el código de incrustar.</small>")
         .replace("__AVISO__", "MODO PRUEBA: este pedido no se crea" if LIVE else "PÁGINA DE MUESTRA: todavía no crea pedidos"))
 (PUB / "zafiro.html").write_text(PAGE, encoding="utf-8")
 print("ok zafiro.html", len(PAGE), "· checkout-zf.js", len(js))

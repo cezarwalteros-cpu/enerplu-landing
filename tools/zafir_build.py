@@ -100,6 +100,7 @@ cambia_re(r"\(mun \? '<div class=\"eta\">'.*?: \"\"\) \+\n", "")
 cambia('  fetch(CFG.api + "?slug=" + CFG.slug + "&vista=0")', '  if (CFG.live) fetch(CFG.api + "?slug=" + CFG.slug + "&vista=0")')
 cambia('  fetch(CFG.api + "?slug=" + CFG.slug).catch(function () {});', '  if (CFG.live) fetch(CFG.api + "?slug=" + CFG.slug).catch(function () {});')
 cambia('lastChecked = p;\n', 'lastChecked = p;\n    if (!CFG.live) return;\n')
+cambia('''(tr ? "<p>Transfiere <b>"''', '''(!tr && !d.paid ? '<div class="pce"><div class="pch"><i></i>PAGO CONTRAENTREGA</div><p>Solo pagarás el pedido una vez que se entregue en tu domicilio.</p></div>' : "") + (tr ? "<p>Transfiere <b>"''')
 cambia('    missMsg([]);\n    sending = true;',
        '    missMsg([]);\n    if (!CFG.live) { showDone({ order_number: "PRUEBA", dry_run: true }, { total: total(), paid: false }); return; }\n    sending = true;')
 
@@ -211,8 +212,7 @@ html_re(r'<div class="trust">.*?</div>\s*</div>', '''<div class="sellos">
     <div class="sello"><svg class="i"><use href="#truck"/></svg><b>ENVÍO GRATIS</b><small>Pago contra entrega</small></div>
     <div class="sello"><svg class="i"><use href="#shield"/></svg><b>CALIDAD PREMIUM</b></div>
     <div class="sello"><svg class="i"><use href="#check"/></svg><b>PRODUCTO GARANTIZADO</b></div>
-  </div>
-  <div class="pce"><div class="pch"><i></i>PAGO CONTRAENTREGA</div><p>Haz clic en PEDIR Y PAGAR AL RECIBIR para completar tu compra. Solo pagarás el pedido una vez que se entregue en tu domicilio.</p></div>''')
+  </div>''')
 html_re(r'<footer class="ft">.*?</footer>', '<footer class="ft"><p>ZAFIR · Pago contra entrega en Colombia.</p></footer>')
 assert "ENERPLU" not in main and "/garantia" not in main
 
@@ -434,6 +434,13 @@ body{background:radial-gradient(120% 60% at 50% 0,#2A1205 0,#0B0706 46%,#000 100
 .pr strong,.plan.hot .pr strong{display:block;font:700 27px/1 var(--cond);color:#fff;letter-spacing:0}
 .plan.sel .pr strong{background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent}
 .btn{min-height:76px;font:700 23px/1.1 var(--cond)}
+/* cesar 25-nov: el resumen y el cuadro de pago van en la página de gracias, no en la landing */
+.sum{display:none!important}
+.okc2 .pce{margin:14px 0 4px;text-align:center}
+/* resultados con íconos propios */
+.res li::before{content:none}
+.res li i{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;margin:0 auto 7px;background:var(--oro);color:#111;box-shadow:0 0 18px rgba(247,215,116,.55)}
+.res li i svg{width:26px;height:26px}
 """
 
 VSL_JS = r"""
@@ -545,11 +552,11 @@ PAGE = """<!doctype html>
   <div class="res">
     <h3>RESULTADOS:</h3>
     <ul>
-      <li>Aumento garantizado de la circulación</li>
-      <li>Más libido y vigor sexual</li>
-      <li>Erecciones firmes y mucho más duraderas</li>
-      <li>Ayuda a controlar la eyaculación</li>
-      <li>Dale mucho más placer a tu pareja</li>
+      <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/><path d="M5 12h3l1.5-2.5 2 5 1.5-2.5H19"/></svg></i>Aumento garantizado de la circulación</li>
+      <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4 0 7-2.7 7-6.8 0-3.6-2.6-5.8-4-8.2-.6 2-1.7 3-3 3.6.4-2.8-.6-5.6-3-8.6 0 4.2-4 6.2-4 13.2C5 19.3 8 22 12 22z"/></svg></i>Más libido y vigor sexual</li>
+      <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2M10 2.5h4M12 2.5V6"/></svg></i>Erecciones firmes y mucho más duraderas</li>
+      <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6z"/><path d="M8.5 12l2.4 2.4 4.6-4.8"/></svg></i>Ayuda a controlar la eyaculación</li>
+      <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19s-6-3.7-6-8.4A3.4 3.4 0 0 1 9 8.4a3.4 3.4 0 0 1 6 2.2"/><path d="M16 21s-5-3-5-7a2.8 2.8 0 0 1 5-1.8 2.8 2.8 0 0 1 5 1.8c0 4-5 7-5 7z"/></svg></i>Dale mucho más placer a tu pareja</li>
     </ul>
   </div>
   <div class="invima"><span class="orig"><b>100%</b>ORIGINAL</span><span class="reg">REGISTRO INVIMA<br>RSA-3599-2025</span></div>

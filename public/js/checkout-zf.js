@@ -424,7 +424,7 @@
       '<div class="ring">' + ico("check") + "</div>" +
       "<h3>" + (d.paid ? "¡Pago aprobado!" : "¡Pedido recibido" + (first ? ", " + first : "") + "!") + "</h3>" +
       (j.order_number ? '<span class="num2">Pedido ' + esc(j.order_number) + (j.dry_run ? " (prueba, no se creó)" : "") + "</span>" : "") +
-      (tr ? "<p>Transfiere <b>" + fmt(d.total) + "</b> y envíanos el comprobante. Apenas lo verifiquemos, tu pedido sale a despacho.</p>" + trBox
+      (!tr && !d.paid ? '<div class="pce"><div class="pch"><i></i>PAGO CONTRAENTREGA</div><p>Solo pagarás el pedido una vez que se entregue en tu domicilio.</p></div>' : "") + (tr ? "<p>Transfiere <b>" + fmt(d.total) + "</b> y envíanos el comprobante. Apenas lo verifiquemos, tu pedido sale a despacho.</p>" + trBox
           : "<p>Te escribimos al WhatsApp <b>" + esc(tel) + "</b> para confirmar tu envío. Ten tu celular a la mano.</p>") +
       '<ul class="okl">' + li + "</ul>" +
             '<button type="button" id="okb">Listo</button>';
